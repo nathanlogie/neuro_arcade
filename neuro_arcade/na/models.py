@@ -51,7 +51,7 @@ class AI(models.Model):
 
     MAX_DESCRIPTION_LENGTH = 1024
 
-    player = models.OneToOneField(Player, on_delete=models.CASCADE) # TODO: on_delete
+    player = models.OneToOneField(Player, on_delete=models.CASCADE)
     description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH)
 
 
