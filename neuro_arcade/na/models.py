@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
@@ -22,7 +23,8 @@ class Game(models.Model):
 
     name = models.CharField(max_length=MAX_NAME_LENGTH)
     description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH)
-    icon = models.ImageField(upload_to=MEDIA_SUBDIR)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    icon = models.ImageField(upload_to=MEDIA_SUBDIR, blank=True)
     tags = models.ManyToManyField(GameTag)
 
 
@@ -52,7 +54,15 @@ class AI(models.Model):
     MAX_DESCRIPTION_LENGTH = 1024
 
     player = models.OneToOneField(Player, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH)
+
+
+class UserInfo(models.Model):
+    """Project specific user info"""
+
+    player = models.OneToOneField(Player, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
 class ScoreType(models.Model):
