@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.template.defaultfilters import slugify
 
 # Create your models here.
 
@@ -22,10 +23,15 @@ class Game(models.Model):
     MEDIA_SUBDIR = 'game_icons'
 
     name = models.CharField(max_length=MAX_NAME_LENGTH)
+    slug = models.SlugField(unique=True)
     description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     icon = models.ImageField(upload_to=MEDIA_SUBDIR, blank=True)
     tags = models.ManyToManyField(GameTag)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Game, self).save(*args, **kwargs)
 
 
 class Player(models.Model):
@@ -54,8 +60,13 @@ class AI(models.Model):
     MAX_DESCRIPTION_LENGTH = 1024
 
     player = models.OneToOneField(Player, on_delete=models.CASCADE)
+    slug = models.SlugField(unique=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.player.name)
+        super(AI, self).save(*args, **kwargs)
 
 
 class UserInfo(models.Model):
