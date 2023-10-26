@@ -1,0 +1,27 @@
+<!DOCTYPE html> {% load static %}
+<html>
+<head>
+    <title>
+        {% block title_block %} Neuro Arcade - Work in Progress {% endblock %}
+    </title>
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    {% block style_block %}
+        <!-- PUT WEBSITE WIDE STYLE HERE -->
+    {% endblock %}
+</head>
+<body>
+    {% block body_header_block %}
+        <!--  PUT NAVBAR HERE   -->
+    {% endblock %}
+
+    <div class="body-block">
+        {% block body_block %}
+            <p>empty body block</p>
+        {% endblock %}
+    </div>
+
+    {% block footer_block %}
+        <!--  PUT FOOTER BLOCK HERE  -->
+    {% endblock %}
+</body>
+</html>

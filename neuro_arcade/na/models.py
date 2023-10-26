@@ -2,7 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
 
-# Create your models here.
 
 class GameTag(models.Model):
     """Category for a game"""
@@ -95,5 +94,4 @@ class Score(models.Model):
 
     t = models.ForeignKey(ScoreType, on_delete=models.CASCADE)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    value = models.IntegerField() # TODO: does this need to be a float?
-
+    value = models.IntegerField()  # TODO: does this need to be a float?

@@ -3,10 +3,9 @@ from django.shortcuts import get_object_or_404, render
 
 from na.models import AI, Game
 
-# Create your views here.
 
 def index(request: HttpRequest) -> HttpResponse:
-    return HttpResponse("Index page.")
+    return render(request, 'index.html')
 
 
 def about(request: HttpRequest) -> HttpResponse:
