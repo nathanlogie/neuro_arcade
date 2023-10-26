@@ -8,10 +8,6 @@ def index(request: HttpRequest) -> HttpResponse:
     return render(request, 'index.html')
 
 
-def about(request: HttpRequest) -> HttpResponse:
-    return HttpResponse("About page.")
-
-
 def game_search(request: HttpRequest) -> HttpResponse:
     return HttpResponse("Game search page.")
 

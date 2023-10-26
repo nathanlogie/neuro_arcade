@@ -7,7 +7,6 @@ app_name = 'na'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('about/', views.about, name='about'),
     path('games/', views.game_search, name='game_search'),
     path('games/<slug:game_name_slug>/', views.game_view, name='game_view'),
     path('games/<slug:game_name_slug>/add_data/', views.game_data_add, name='game_data_add'),
