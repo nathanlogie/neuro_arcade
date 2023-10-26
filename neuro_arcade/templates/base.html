@@ -11,7 +11,12 @@
 </head>
 <body>
     {% block body_header_block %}
-        <!--  PUT NAVBAR HERE   -->
+        <!-- PUT NAVBAR HERE -->
+        <!-- temporary navbar for testing purposes -->
+        <ul>
+            <li><a href={% url 'na:index' %}>Index</a></li>
+            <li><a href={% url 'na:game_search' %}>Game Search</a></li>
+        </ul>
     {% endblock %}
 
     <div class="body-block">

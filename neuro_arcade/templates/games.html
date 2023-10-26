@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block body_block %}
+    <p>
+        Welcome to the games page! <br>
+        Games:
+    </p>
+    <ul>
+    {% if games %}
+        {% for game in games %}
+            <li><a href={% url 'na:game_view' game.slug %}>{{ game.name }}</a></li>
+        {% endfor %}
+    {% else %}
+        <li>NO GAMES IN DB!<br> (maybe you forgot to populate it (run populate.py))</li>
+    {% endif %}
+    </ul>
+{% endblock %}

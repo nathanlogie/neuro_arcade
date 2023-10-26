@@ -9,12 +9,15 @@ def index(request: HttpRequest) -> HttpResponse:
 
 
 def game_search(request: HttpRequest) -> HttpResponse:
-    return HttpResponse("Game search page.")
+    context_dir = {'games': []}
+    for game in Game.objects.iterator():
+        context_dir['games'].append({'name': game.name, 'slug': game.slug})
+    return render(request, 'games.html', context_dir)
 
 
 def game_view(request: HttpRequest, game_name_slug: str) -> HttpResponse:
     game = get_object_or_404(Game, slug=game_name_slug)
-    return HttpResponse("Game view page.")
+    return render(request, 'game_view.html', {"game_name": game.name})
 
 
 def game_data_add(request: HttpRequest, game_name_slug: str) -> HttpResponse:
