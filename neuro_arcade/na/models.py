@@ -1,3 +1,5 @@
+from typing import Iterable, Optional
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
@@ -10,7 +12,12 @@ class GameTag(models.Model):
     MAX_DESCRIPTION_LENGTH = 1024
 
     name = models.CharField(max_length=MAX_NAME_LENGTH)
+    slug = models.SlugField(unique=True)
     description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(GameTag, self).save(*args, **kwargs)
 
 
 class Game(models.Model):
@@ -31,6 +38,23 @@ class Game(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Game, self).save(*args, **kwargs)
+
+    def matches_search(self, query: Optional[str], tags: Optional[Iterable[GameTag]]) -> bool:
+        accept = True
+
+        # Check tags
+        if tags is not None:
+            for tag in tags:
+                if not self.tags.contains(tag):
+                    accept = False
+        
+        # Check query in name and description
+        if query is not None:
+            lower = query.lower()
+            if lower not in self.name.lower() and lower not in self.description.lower():
+                accept = False
+        
+        return accept
 
 
 class Player(models.Model):
