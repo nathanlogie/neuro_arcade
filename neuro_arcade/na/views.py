@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 
-from na.models import AI, Game
+from na.models import AI, Game, GameTag
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -9,9 +9,11 @@ def index(request: HttpRequest) -> HttpResponse:
 
 
 def game_search(request: HttpRequest) -> HttpResponse:
-    context_dir = {'games': []}
-    for game in Game.objects.iterator():
-        context_dir['games'].append({'name': game.name, 'slug': game.slug})
+    context_dir = {
+        'games': Game.objects.all(),
+        'tags': GameTag.objects.all(),
+    }
+
     return render(request, 'games.html', context_dir)
 
 

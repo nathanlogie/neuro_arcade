@@ -6,6 +6,20 @@
     Welcome to the games page! <br>
     Games:
 </p>
+
+<form id="search-form" action="{% url 'na:game_search' %}" method="GET">
+    <div>
+        <input type="text" placeholder="Search Games" id="query" name="query">
+        <button type="submit">Search</button>
+    </div>
+
+    <select name="tags" id="tags" multiple>
+        {% for tag in tags %}
+        <option value={{ tag.name }}> {{ tag.name }}</option>
+        {% endfor %}
+    </select>
+</form>
+
 <ul>
 {% if games %}
     {% for game in games %}
