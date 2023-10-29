@@ -9,8 +9,19 @@ def index(request: HttpRequest) -> HttpResponse:
 
 
 def game_search(request: HttpRequest) -> HttpResponse:
+    # Process GET parameters
+    query = request.GET.get('query')
+    wanted_tag_slugs = request.GET.getlist('tags')
+    wanted_tags = GameTag.objects.filter(slug__in=wanted_tag_slugs)
+
     context_dir = {
-        'games': Game.objects.all(),
+        # Filter games by search parameters
+        'games': [
+            game for game in Game.objects.all()
+            if game.matches_search(query, wanted_tags)
+        ],
+
+        # List the tags for selection
         'tags': GameTag.objects.all(),
     }
 
