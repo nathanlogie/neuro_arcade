@@ -64,7 +64,7 @@ games = [
         'description': "It's Game 1.",
         'owner': "User1",
         'icon': "example.png",
-        'tags': ["Tag 1", "Tag 2", "Tag 3"],
+        'tags': ["Tag 1", "Tag 2",],
     },
     {
         'name': "Game 2",

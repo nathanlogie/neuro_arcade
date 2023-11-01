@@ -1,17 +1,40 @@
 {% extends "base.html" %}
 
 {% block body_block %}
-    <p>
-        Welcome to the games page! <br>
-        Games:
-    </p>
-    <ul>
-    {% if games %}
-        {% for game in games %}
-            <li><a href={% url 'na:game_view' game.slug %}>{{ game.name }}</a></li>
+
+<h1>Game search</h1>
+
+<form id="search-form" action="{% url 'na:game_search' %}" method="GET">
+    <h2>Query</h2>
+    <div>
+        <input type="text" placeholder="Search Games" id="query" name="query">
+        <button type="submit">Search</button>
+    </div>
+
+    <h2>Filters:</h2>
+    <select name="tags" id="tags" multiple>
+        {% for tag in tags %}
+        <option value={{ tag.slug }}> {{ tag.name }}</option>
         {% endfor %}
-    {% else %}
-        <li>NO GAMES IN DB!<br> (maybe you forgot to populate it (run populate.py))</li>
-    {% endif %}
-    </ul>
+    </select>
+</form>
+
+<h2>Results</h2>
+<ul>
+{% if games %}
+    {% for game in games %}
+    <li><div>
+        <img src="{{ game.icon.url }}" width=64></img>
+        <a href={% url 'na:game_view' game.slug %}>{{ game.name }}</a>
+        <p>{{ game.description }}</p>
+        {% for tag in game.tags.all %}
+            [{{ tag.name }}] 
+        {% endfor %}
+    </div></li>
+    {% endfor %}
+{% else %}
+    <li>NO GAMES IN DB!<br> (maybe you forgot to populate it (run populate.py))</li>
+{% endif %}
+</ul>
+
 {% endblock %}
