@@ -1,9 +1,16 @@
 {% extends "base.html" %}
 
 {% block body_block %}
-    {{ block.super }}
+    <h1>{{ game.name }}</h1>
+    <img src="{{ game.icon.url }}" width=128>
+    <h3>Game Description:</h3>
     <p>
-        welcome to a game view page! <br>
-        you are viewing the game: {{ game_name }}
+        {{ game.description }}
     </p>
+    <h3>Game Tags</h3>
+    {% if game.tags %}
+        {% for tag in game.tags.all %}
+            <ul>{{ tag.name }}</ul>
+        {% endfor %}
+    {% endif %}
 {% endblock %}
