@@ -26,7 +26,7 @@ from typing import Dict
 from django.contrib.auth.models import User 
 from django.templatetags.static import static
 
-from na.models import GameTag, Game, Player, AITag, AI, UserInfo, ScoreType, Score
+from na.models import GameTag, Game, Player, AITag, AI, UserInfo, Score
 
 users = [
     {
@@ -65,6 +65,7 @@ games = [
         'owner': "User1",
         'icon': "example.png",
         'tags': ["Tag 1", "Tag 2",],
+        'score_type': "{'points': {max: 100, type: 'int'}, 'coins': {max: 10, type: 'int'}}"
     },
     {
         'name': "Game 2",
@@ -72,6 +73,7 @@ games = [
         'owner': "User2",
         'icon': "example.png",
         'tags': ["Tag 2", "Tag 3"],
+        'score_type': "{'score': {max: 20, type: 'int'}"
     },
     {
         'name': "Game 3",
@@ -79,6 +81,42 @@ games = [
         'owner': "User3",
         'icon': "example.png",
         'tags': ["Tag 3"],
+        'score_type': "{'score': {max: 100.0, type: 'float'}"
+    },
+]
+
+players = [
+    {
+        'name': 'Player1',
+    },
+    {
+        'name': 'Player2',
+    },
+    {
+        'name': 'Player3',
+    },
+]
+
+scores = [
+    {
+        'values': "{points: 90, coins:10}",
+        'player': "Player1",
+        'game': 'Game 1',
+    },
+    {
+        'values': "{points: 75, coins:2}",
+        'player': "Player2",
+        'game': 'Game 1',
+    },
+    {
+        'values': "{score: 9}",
+        'player': "Player3",
+        'game': 'Game 2',
+    },
+    {
+        'values': "{score: 50.5}",
+        'player': "Player3",
+        'game': 'Game 3',
     },
 ]
 
@@ -114,7 +152,7 @@ def add_user(data: Dict) -> User:
 
 
 def add_game_tag(data: Dict) -> GameTag:
-    """Create an na game tag"""
+    """Create n na game tag"""
 
     tag = GameTag.objects.get_or_create(name=data['name'])[0]
     tag.description = data.get('description', "")
@@ -124,7 +162,7 @@ def add_game_tag(data: Dict) -> GameTag:
 
 
 def add_game(data: Dict) -> Game:
-    """Create an na game"""
+    """Create a na game"""
 
     game = Game.objects.get_or_create(
         name=data['name'],
@@ -141,11 +179,23 @@ def add_game(data: Dict) -> Game:
         tag = GameTag.objects.get(name=tag_name)
         game.tags.add(tag)
 
+    game.score_type = data.get('score_type', "{}")
+
     game.save()
 
     return game
 
-# TODO: Player, AITag, AI, UserInfo, ScoreType, Score
+
+def add_player(data: Dict):
+    Player.objects.get_or_create(name=data['name'])
+
+def add_score(data: Dict):
+    player = Player.objects.get(name=data['player'])
+    game = Game.objects.get(name=data['game'])
+    score = Score.objects.get_or_create(player_id=player.id, game_id=game.id)[0]
+    score.values = data['values']
+
+# TODO: AITag, AI, UserInfo
 
 def populate():
     """Populate the database with example data"""
@@ -156,6 +206,10 @@ def populate():
         add_game_tag(data)
     for data in games:
         add_game(data)
+    for data in players:
+        add_player(data)
+    for data in scores:
+        add_score(data)
 
 
 if __name__ == "__main__":
