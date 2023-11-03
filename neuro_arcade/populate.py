@@ -64,8 +64,8 @@ games = [
         'description': "It's Game 1.",
         'owner': "User1",
         'icon': "example.png",
-        'tags': ["Tag 1", "Tag 2",],
-        'score_type': "{'points': {max: 100, type: 'int'}, 'coins': {max: 10, type: 'int'}}"
+        'tags': ["Tag 1", "Tag 2"],
+        'score_type': "{points: {max: 100, type: int}, coins: {max: 10, type: int}}"
     },
     {
         'name': "Game 2",
@@ -73,7 +73,7 @@ games = [
         'owner': "User2",
         'icon': "example.png",
         'tags': ["Tag 2", "Tag 3"],
-        'score_type': "{'score': {max: 20, type: 'int'}"
+        'score_type': "{score: {max: 20, type: int}}"
     },
     {
         'name': "Game 3",
@@ -81,7 +81,7 @@ games = [
         'owner': "User3",
         'icon': "example.png",
         'tags': ["Tag 3"],
-        'score_type': "{'score': {max: 100.0, type: 'float'}"
+        'score_type': "{score: {max: 100.0, type: float}}"
     },
 ]
 
@@ -189,13 +189,16 @@ def add_game(data: Dict) -> Game:
 def add_player(data: Dict):
     Player.objects.get_or_create(name=data['name'])
 
+
 def add_score(data: Dict):
     player = Player.objects.get(name=data['player'])
     game = Game.objects.get(name=data['game'])
     score = Score.objects.get_or_create(player_id=player.id, game_id=game.id)[0]
     score.values = data['values']
 
+
 # TODO: AITag, AI, UserInfo
+
 
 def populate():
     """Populate the database with example data"""
