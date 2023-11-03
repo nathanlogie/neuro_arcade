@@ -30,7 +30,8 @@ def game_search(request: HttpRequest) -> HttpResponse:
 
 def game_view(request: HttpRequest, game_name_slug: str) -> HttpResponse:
     game = get_object_or_404(Game, slug=game_name_slug)
-    context = {"game": game}
+    scores = game.score_set.all()
+    context = {"game": game, 'scores': scores}
     return render(request, 'game_view.html', context)
 
 

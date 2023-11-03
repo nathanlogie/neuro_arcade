@@ -13,4 +13,11 @@
             <ul>{{ tag.name }}</ul>
         {% endfor %}
     {% endif %}
+    {% if scores %}
+        {% for score in scores %}
+            <ul>score: {{ score.values }}</ul>
+        {% endfor %}
+    {% else %}
+        <p>No scores loaded!</p>
+    {% endif %}
 {% endblock %}

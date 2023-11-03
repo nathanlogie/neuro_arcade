@@ -5,6 +5,8 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 
+MAX_SCORE_VALUE_SIZE = 256
+
 class GameTag(models.Model):
     """Category for a game"""
 
@@ -34,6 +36,7 @@ class Game(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     icon = models.ImageField(upload_to=MEDIA_SUBDIR, blank=True)
     tags = models.ManyToManyField(GameTag)
+    score_type = models.CharField(max_length=MAX_SCORE_VALUE_SIZE)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -62,6 +65,8 @@ class Player(models.Model):
     
     AI players will also have an AI instance linked to it"""
 
+    # todo: maybe this should be unified with AI more?
+    #  the fields for a human player and an AI player shouldn't be much different
     MAX_NAME_LENGTH = 64
 
     name = models.CharField(max_length=MAX_NAME_LENGTH)
@@ -99,23 +104,29 @@ class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
-class ScoreType(models.Model):
-    """A category of score for a game"""
-
-    MAX_NAME_LENGTH = 64
-    MAX_DESCRIPTION_LENGTH = 1024
-
-    MEDIA_SUBDIR = 'evaluation_functions'
-
-    name = models.CharField(max_length=MAX_NAME_LENGTH)
-    description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH)
-    code = models.FileField(upload_to=MEDIA_SUBDIR)
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+# class ScoreType(models.Model):
+#     """A category of score for a game"""
+#
+#     MAX_NAME_LENGTH = 64
+#     MAX_DESCRIPTION_LENGTH = 1024
+#
+#     MEDIA_SUBDIR = 'evaluation_functions'
+#
+#     name = models.CharField(max_length=MAX_NAME_LENGTH)
+#     description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH)
+#     code = models.FileField(upload_to=MEDIA_SUBDIR)
+#     game = models.ForeignKey(Game, on_delete=models.CASCADE)
 
 
 class Score(models.Model):
     """A result of a player playing a game"""
 
-    t = models.ForeignKey(ScoreType, on_delete=models.CASCADE)
-    player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    value = models.IntegerField()  # TODO: does this need to be a float?
+    # t = models.ForeignKey(ScoreType, on_delete=models.CASCADE)
+    # todo do we need CASCADE delete here? If a score is deleted,
+    #  neither the player or the game should be affected
+    # ideally values should be models.JSONField(default=dict)
+
+    values = models.CharField(max_length=MAX_SCORE_VALUE_SIZE)
+    player = models.ForeignKey(Player, default=None, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game, default=None, on_delete=models.CASCADE)
+
