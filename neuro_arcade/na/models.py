@@ -104,20 +104,6 @@ class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
-# class ScoreType(models.Model):
-#     """A category of score for a game"""
-#
-#     MAX_NAME_LENGTH = 64
-#     MAX_DESCRIPTION_LENGTH = 1024
-#
-#     MEDIA_SUBDIR = 'evaluation_functions'
-#
-#     name = models.CharField(max_length=MAX_NAME_LENGTH)
-#     description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH)
-#     code = models.FileField(upload_to=MEDIA_SUBDIR)
-#     game = models.ForeignKey(Game, on_delete=models.CASCADE)
-
-
 class Score(models.Model):
     """A result of a player playing a game"""
 
