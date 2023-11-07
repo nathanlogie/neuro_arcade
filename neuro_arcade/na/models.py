@@ -104,15 +104,43 @@ class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
+class ScoreType(models.Model):
+    """Definition of the type of score returned by an evaluation script"""
+
+    MAX_NAME_LENGTH = 64
+    MAX_DESCRIPTION_LENGTH = 1024
+
+    MEDIA_SUBDIR = 'evaluation_functions'
+
+    name = models.CharField(max_length=MAX_NAME_LENGTH)
+    description = models.CharField(max_length=MAX_DESCRIPTION_LENGTH)
+    code = models.FileField(upload_to=MEDIA_SUBDIR)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+
+
+class ScoreFieldType(models.Model):
+    """Definition of a field of a score in an evaluation script"""
+
+    MAX_NAME_LENGTH = 64
+    MAX_DESCRIPTION_LENGTH = 1024
+
+    group = models.ForeignKey(ScoreType, on_delete=models.CASCADE)
+    name = models.CharField(max_length=MAX_NAME_LENGTH)
+    description = models.CharField(max_length=MAX_DESCRIPTION_LENGTH)
+    min = models.IntegerField(null=True)
+    max = models.IntegerField(null=True)
+
+
 class Score(models.Model):
-    """A result of a player playing a game"""
+    """A single set of values for a ScoreType"""
 
-    # t = models.ForeignKey(ScoreType, on_delete=models.CASCADE)
-    # todo do we need CASCADE delete here? If a score is deleted,
-    #  neither the player or the game should be affected
-    # ideally values should be models.JSONField(default=dict)
+    group = models.ForeignKey(ScoreType, on_delete=models.CASCADE)
+    time = models.DateTimeField()
 
-    values = models.CharField(max_length=MAX_SCORE_VALUE_SIZE)
-    player = models.ForeignKey(Player, default=None, on_delete=models.CASCADE)
-    game = models.ForeignKey(Game, default=None, on_delete=models.CASCADE)
 
+class ScoreField(models.Model):
+    """A single value for a ScoreFieldType in a score"""
+
+    group = models.ForeignKey(Score, on_delete=models.CASCADE)
+    type = models.ForeignKey(ScoreFieldType, on_delete=models.CASCADE)
+    value = models.IntegerField()
