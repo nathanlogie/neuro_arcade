@@ -189,8 +189,8 @@ def add_game(data: Dict) -> Game:
             'owner': User.objects.get(username=data['owner']),
         },
     )[0]
-    game.description = data.get('description', "")
-    
+    game.description = data.get('description', "no description")
+
     if 'icon' in data:
         game.icon.name = add_media_from_static(Game.MEDIA_SUBDIR, data['icon'])
 
