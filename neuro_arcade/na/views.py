@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 
-from na.models import AI, Game, GameTag
+from na.models import Game, GameTag
 
 
 def index(request: HttpRequest) -> HttpResponse:
