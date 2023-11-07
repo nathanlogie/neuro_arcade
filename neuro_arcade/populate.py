@@ -25,8 +25,10 @@ from typing import Dict
 
 from django.contrib.auth.models import User 
 from django.templatetags.static import static
+from django.utils import timezone
+from pytz import utc
 
-from na.models import GameTag, Game, Player, AITag, AI, UserInfo, Score
+from na.models import GameTag, Game, Player, AITag, AI, ScoreField, ScoreFieldType, ScoreType, UserInfo, Score
 
 users = [
     {
@@ -97,27 +99,48 @@ players = [
     },
 ]
 
+score_types = [
+    {
+        'name': 'Evaluation 1',
+        'description': "Evaluation script 1",
+        'code': "example.py",
+        'game': "Game 1",
+    },
+]
+
+score_field_types = [
+    {
+        'group': 'Evaluation 1',
+        'name': 'collected_coins',
+        'description': "Coins collected",
+        'min': 0,
+        'max': None,
+    },
+    {
+        'group': 'Evaluation 1',
+        'name': 'accuracy',
+        'description': "Accuracy",
+        # TODO: should these be set
+        'min': None,
+        'max': None,
+    },
+]
+
 scores = [
     {
-        'values': "{points: 90, coins:10}",
-        'player': "Player1",
-        'game': 'Game 1',
-    },
-    {
-        'values': "{points: 75, coins:2}",
-        'player': "Player2",
-        'game': 'Game 1',
-    },
-    {
-        'values': "{score: 9}",
-        'player': "Player3",
-        'game': 'Game 2',
-    },
-    {
-        'values': "{score: 50.5}",
-        'player': "Player3",
-        'game': 'Game 3',
-    },
+        'type': 'Evaluation 1',
+        'time': '2000-01-01 01:00:00',
+        'fields': [
+            {
+                'type': 'collected_coins',
+                'value': 25,
+            },
+            {
+                'type': 'accuracy',
+                'value': 1, # TODO: is this realistic
+            },
+        ]
+    }
 ]
 
 def add_file(folder: str, filename: str) -> str:
@@ -190,11 +213,63 @@ def add_player(data: Dict):
     Player.objects.get_or_create(name=data['name'])
 
 
-def add_score(data: Dict):
-    player = Player.objects.get(name=data['player'])
+def add_score_type(data: Dict) -> ScoreType:
+    """Create an na score type"""
+
     game = Game.objects.get(name=data['game'])
-    score = Score.objects.get_or_create(player_id=player.id, game_id=game.id)[0]
-    score.values = data['values']
+    score_type = ScoreType.objects.get_or_create(
+        name=data['name'],
+        defaults={
+            'description': data['description'],
+            'code': add_file(ScoreType.MEDIA_SUBDIR, data['code']),
+            'game': game,
+        },
+    )[0]
+
+    return score_type
+
+
+def add_score_field_type(data: Dict) -> ScoreFieldType:
+    """Create an na score field type"""
+
+    group = ScoreType.objects.get(name=data['group'])
+    score_type = ScoreFieldType.objects.get_or_create(
+        group=group,
+        name=data['name'],
+        defaults={
+            'description': data['description'],
+            'min': data['min'],
+            'max': data['max'],
+        },
+    )[0]
+
+    return score_type
+
+
+def add_score_field(data: Dict, group: Score) -> ScoreField:
+    """Create an na score field"""
+
+    field_type = ScoreFieldType.objects.get(group=group.group, name=data['type'])
+    type = ScoreField.objects.get_or_create(
+        type=field_type,
+        group=group,
+        defaults={
+            'value': data['value'],
+        }
+    )[0]
+    return type
+
+
+def add_score(data: Dict):
+    group = ScoreType.objects.get(name=data['type'])
+    time = timezone.datetime.strptime(data['time'], "%Y-%m-%d %I:%M:%S").replace(tzinfo=utc)
+    score = Score.objects.get_or_create(
+        group=group,
+        time=time,
+    )[0]
+    for field in data['fields']:
+        add_score_field(field, score)
+    return score
 
 
 # TODO: AITag, AI, UserInfo
@@ -211,6 +286,10 @@ def populate():
         add_game(data)
     for data in players:
         add_player(data)
+    for data in score_types:
+        add_score_type(data)
+    for data in score_field_types:
+        add_score_field_type(data)
     for data in scores:
         add_score(data)
 
