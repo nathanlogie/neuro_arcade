@@ -51,3 +51,7 @@ def model_view(request: HttpRequest, model_name_slug: str) -> HttpResponse:
 
 def model_add(request: HttpRequest) -> HttpResponse:
     return HttpResponse("Model add page")
+
+
+def about(request):
+    return HttpResponse("about page")
