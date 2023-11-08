@@ -1,6 +1,9 @@
 build
 .idea
 
+# MacOS #
+.DS_store
+
 # Django #
 *.log
 *.pot
