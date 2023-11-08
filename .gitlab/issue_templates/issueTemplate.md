@@ -4,7 +4,7 @@
 - [ ] Issue has due date
 
 
-* ** What is the motivation behind this issue?**
+* **What is the motivation behind this issue?**
 
 
 
