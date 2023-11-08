@@ -251,7 +251,7 @@ def add_score_type(data: Dict) -> ScoreType:
         name=data['name'],
         defaults={
             'description': data['description'],
-            'code': add_file(ScoreType.MEDIA_SUBDIR, data['code']),
+            'code': add_media_from_static(ScoreType.MEDIA_SUBDIR, data['code']),
             'game': game,
         },
     )[0]
@@ -260,7 +260,7 @@ def add_score_type(data: Dict) -> ScoreType:
 
 
 def add_score_field_type(data: Dict) -> ScoreFieldType:
-    """Create an na score field type"""
+    """Create a na score field type"""
 
     group = ScoreType.objects.get(name=data['group'])
     score_type = ScoreFieldType.objects.get_or_create(
@@ -277,7 +277,7 @@ def add_score_field_type(data: Dict) -> ScoreFieldType:
 
 
 def add_score_field(data: Dict, group: Score) -> ScoreField:
-    """Create an na score field"""
+    """Create a na score field"""
 
     field_type = ScoreFieldType.objects.get(group=group.group, name=data['type'])
     type = ScoreField.objects.get_or_create(
