@@ -90,28 +90,28 @@ games = [
 players = [
     {
         'name': 'Human Player 1',
-        'is_ai': 0,
+        'is_ai': False,
         'user': 'User1',
         'description': 'human player that is owned by User1',
         'player_tags': [],  # TODO populate player tags
     },
     {
         'name': 'Human Player 2',
-        'is_ai': 0,
+        'is_ai': False,
         'user': 'User2',
         'description': 'human player that is owned by User2',
         'player_tags': [],
     },
     {
         'name': 'AI Player 1',
-        'is_ai': 1,
+        'is_ai': True,
         'user': 'User3',
         'description': 'first AI player that is owned by User3',
         'player_tags': [],
     },
     {
         'name': 'AI Player 2',
-        'is_ai': 1,
+        'is_ai': True,
         'user': 'User3',
         'description': 'second AI player that is owned by User3',
         'player_tags': [],

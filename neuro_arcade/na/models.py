@@ -83,7 +83,7 @@ class Player(models.Model):
 
     name = models.CharField(max_length=MAX_PLAYER_NAME_LENGTH)
     slug = models.SlugField(unique=True, null=True)
-    is_ai = models.IntegerField(default=0)
+    is_ai = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)  # todo is CASCADE right here?
     description = models.TextField(max_length=MAX_PLAYER_DESCRIPTION_LENGTH, default='')
     player_tags = models.ManyToManyField(PlayerTag)
