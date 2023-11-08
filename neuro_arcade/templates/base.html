@@ -4,29 +4,34 @@
     <title>
         {% block title_block %} Neuro Arcade - Work in Progress {% endblock %}
     </title>
-    <link rel="stylesheet" type="text/css" href="/styles/main.css">
-    {% block style_block %}
-        <!-- PUT WEBSITE WIDE STYLE HERE -->
-    {% endblock %}
+    <link rel="stylesheet" href="../static/styles/main.css">
+        {% block style_block %}
+        {% endblock %}
 </head>
 <body>
+<img src="../media/assets/background.png" alt="" id="hexagon">
+<div class="gradient">
+    <header class="glass">
     {% block body_header_block %}
         <!-- PUT NAVBAR HERE -->
         <!-- temporary navbar for testing purposes -->
-        <ul>
-            <li><a href={% url 'na:index' %}>Index</a></li>
-            <li><a href={% url 'na:game_search' %}>Game Search</a></li>
-        </ul>
     {% endblock %}
+    </header>
 
     <div class="body-block">
         {% block body_block %}
-            <p>empty body block</p>
+            <ul>
+                <li><a href={% url 'na:index' %}>Index</a></li>
+                <li><a href={% url 'na:game_search' %}>Game Search</a></li>
+            </ul>
         {% endblock %}
     </div>
 
+    <footer class="glass">
     {% block footer_block %}
         <!--  PUT FOOTER BLOCK HERE  -->
     {% endblock %}
+    </footer>
+</div>
 </body>
 </html>
