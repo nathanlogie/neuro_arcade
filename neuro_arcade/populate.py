@@ -28,7 +28,7 @@ from django.templatetags.static import static
 from django.utils import timezone
 from pytz import utc
 
-from na.models import GameTag, Game, Player, AITag, AI, ScoreField, ScoreFieldType, ScoreType, UserInfo, Score
+from na.models import GameTag, Game, Player, PlayerTag, Score, ScoreField, ScoreFieldType, ScoreType
 
 users = [
     {
@@ -89,13 +89,32 @@ games = [
 
 players = [
     {
-        'name': 'Player1',
+        'name': 'Human Player 1',
+        'is_ai': False,
+        'user': 'User1',
+        'description': 'human player that is owned by User1',
+        'player_tags': [],  # TODO populate player tags
     },
     {
-        'name': 'Player2',
+        'name': 'Human Player 2',
+        'is_ai': False,
+        'user': 'User2',
+        'description': 'human player that is owned by User2',
+        'player_tags': [],
     },
     {
-        'name': 'Player3',
+        'name': 'AI Player 1',
+        'is_ai': True,
+        'user': 'User3',
+        'description': 'first AI player that is owned by User3',
+        'player_tags': [],
+    },
+    {
+        'name': 'AI Player 2',
+        'is_ai': True,
+        'user': 'User3',
+        'description': 'second AI player that is owned by User3',
+        'player_tags': [],
     },
 ]
 
@@ -143,7 +162,7 @@ scores = [
     }
 ]
 
-def add_file(folder: str, filename: str) -> str:
+def add_media_from_static(folder: str, filename: str) -> str:
     """Copies a file from /static/population/ to /media/"""
 
     # Build paths
@@ -193,10 +212,10 @@ def add_game(data: Dict) -> Game:
             'owner': User.objects.get(username=data['owner']),
         },
     )[0]
-    game.description = data.get('description', "")
-    
+    game.description = data.get('description', "no description")
+
     if 'icon' in data:
-        game.icon.name = add_file(Game.MEDIA_SUBDIR, data['icon'])
+        game.icon.name = add_media_from_static(Game.MEDIA_SUBDIR, data['icon'])
 
     for tag_name in data.get('tags', []):
         tag = GameTag.objects.get(name=tag_name)
@@ -210,7 +229,18 @@ def add_game(data: Dict) -> Game:
 
 
 def add_player(data: Dict):
-    Player.objects.get_or_create(name=data['name'])
+    player = Player.objects.get_or_create(name=data['name'])[0]
+    player.is_ai = data['is_ai']
+    player.user = User.objects.get(username=data['user'])
+    player.description = data['description']
+
+    for tag_name in data.get('player_tags', []):
+        tag = PlayerTag.objects.get(name=tag_name)
+        player.player_tags.add(tag)
+
+    player.save()
+
+    return player
 
 
 def add_score_type(data: Dict) -> ScoreType:
@@ -221,7 +251,7 @@ def add_score_type(data: Dict) -> ScoreType:
         name=data['name'],
         defaults={
             'description': data['description'],
-            'code': add_file(ScoreType.MEDIA_SUBDIR, data['code']),
+            'code': add_media_from_static(ScoreType.MEDIA_SUBDIR, data['code']),
             'game': game,
         },
     )[0]
@@ -230,7 +260,7 @@ def add_score_type(data: Dict) -> ScoreType:
 
 
 def add_score_field_type(data: Dict) -> ScoreFieldType:
-    """Create an na score field type"""
+    """Create a na score field type"""
 
     group = ScoreType.objects.get(name=data['group'])
     score_type = ScoreFieldType.objects.get_or_create(
@@ -247,7 +277,7 @@ def add_score_field_type(data: Dict) -> ScoreFieldType:
 
 
 def add_score_field(data: Dict, group: Score) -> ScoreField:
-    """Create an na score field"""
+    """Create a na score field"""
 
     field_type = ScoreFieldType.objects.get(group=group.group, name=data['type'])
     type = ScoreField.objects.get_or_create(
@@ -272,7 +302,7 @@ def add_score(data: Dict):
     return score
 
 
-# TODO: AITag, AI, UserInfo
+# TODO: PlayerTag
 
 
 def populate():
