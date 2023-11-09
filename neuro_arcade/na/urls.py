@@ -13,4 +13,7 @@ urlpatterns = [
     path('add_game/', views.game_add, name='game_add'),
     path('models/<slug:model_name_slug>/', views.player_view, name='model_view'),
     path('add_model/', views.model_add, name='model_add'),
+    path('logout/', views.logout, name='logout'),
+    path('login/', views.login, name='login'),
+    path('sign_up/', views.sign_up, name='sign_up'),
 ]
