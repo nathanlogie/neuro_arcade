@@ -1,28 +1,29 @@
 <!DOCTYPE html> {% load static %}
-<html lang="en">
+<html>
 <head>
     <title>
         {% block title_block %} Neuro Arcade - Work in Progress {% endblock %}
     </title>
     <link rel="stylesheet" href="../static/styles/main.css">
-    <link rel="stylesheet" href="../static/styles/index.css">
-    <link rel="stylesheet" href="../static/styles/games.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
-
         {% block style_block %}
         {% endblock %}
 </head>
 <body>
-<img src="../static/images/background.png" alt="" id="hexagon">
+<img src="../media/assets/background.png" alt="" id="hexagon">
 <div class="gradient">
-
     <header class="glass">
-    {% block header_block %}
+    {% block body_header_block %}
+        <!-- PUT NAVBAR HERE -->
+        <!-- temporary navbar for testing purposes -->
     {% endblock %}
     </header>
 
     <div class="body-block">
         {% block body_block %}
+            <ul>
+                <li><a href={% url 'na:index' %}>Index</a></li>
+                <li><a href={% url 'na:game_search' %}>Game Search</a></li>
+            </ul>
         {% endblock %}
     </div>
 
