@@ -23,7 +23,7 @@ Main program
 
 from typing import Dict
 
-from django.contrib.auth.models import User 
+from django.contrib.auth.models import Group, Permission, User
 from django.templatetags.static import static
 from django.utils import timezone
 from pytz import utc
@@ -42,6 +42,11 @@ users = [
     {
         'username': "User3",
         'email': "user3@email.com",
+    },
+    {
+        'username': "Admin1",
+        'email': "admin1@email.com",
+        'groups': ["Administrator"],
     },
 ]
 
@@ -162,6 +167,13 @@ scores = [
     }
 ]
 
+groups = [
+    {
+        'name': "Administrator",
+        'permissions': [],
+    },
+]
+
 def add_media_from_static(folder: str, filename: str) -> str:
     """Copies a file from /static/population/ to /media/"""
 
@@ -188,10 +200,26 @@ def add_user(data: Dict) -> User:
     user = User.objects.get_or_create(username=data['username'])[0]
     user.email = data['email']
     user.set_password(user.username)
+
+    for group_name in data.get('groups', []):
+        group = Group.objects.get(name=group_name)
+        user.groups.add(group)
+
     user.save()
 
     return user
 
+def add_group(data: Dict) -> Group:
+    """Create a django user group"""
+
+    group = Group.objects.get_or_create(name=data['name'])[0]
+    for perm_name in data['permissions']:
+        perm = Permission.objects.get(codename=perm_name)
+        group.permissions.add(perm)
+
+    group.save()
+
+    return group
 
 def add_game_tag(data: Dict) -> GameTag:
     """Create n na game tag"""
@@ -308,6 +336,8 @@ def add_score(data: Dict):
 def populate():
     """Populate the database with example data"""
 
+    for data in groups:
+        add_group(data)
     for data in users:
         add_user(data)
     for data in game_tags:
