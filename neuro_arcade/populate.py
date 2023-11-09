@@ -108,6 +108,11 @@ users = [
         'email': "admin1@email.com",
         'groups': ["Administrator"],
     },
+    {
+        'username': "Admin1",
+        'email': "admin1@email.com",
+        'groups': ["Administrator"],
+    },
 ]
 
 game_tags = [
@@ -901,6 +906,13 @@ score_row = [
                 'value': 25,
             },
         ]
+    },
+]
+
+groups = [
+    {
+        'name': "Administrator",
+        'permissions': [],
     },
 ]
 
