@@ -75,7 +75,7 @@ a:visited {
 }
 
 .searchIcon {
-    background: url("neuro_arcade/media/assets/searchIcon.png");
+    background: url("../images/searchIcon.png");
     width:89px;
     height: 89px;
     flex-shrink: 0;
