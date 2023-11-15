@@ -4,15 +4,7 @@
 - [ ] Docs have been added / updated (for bug fixes / features)
 
 
-* **What kind of change does this merge request introduce?** (Bug fix, feature, docs update, ...)
-
-
-
-* **What is the current behavior?** (You can also link to an open issue here)
-
-
-
-* **What is the new behavior (if this is a feature change)?**
+* **What kind of change does this merge request introduce? If this a feature, please explain the change in behavior** (Bug fix, feature, docs update, ...)
 
 
 
