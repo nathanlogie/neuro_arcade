@@ -1,63 +1,39 @@
-@font-face {
-    font-family: "Bahnschrift";
-    src: url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.eot");
-    src: url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.eot?#iefix") format("embedded-opentype"),
-    url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.woff2") format("woff2"),
-    url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.woff") format("woff"),
-    url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.ttf") format("truetype"),
-    url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.svg#Bahnschrift") format("svg");
-}
-
 body {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    margin: 0;
     padding: 0;
+    margin: 0;
     background-color: #190A28;
     color: #FFFFFF;
-    font-family: Bahnschrift, serif;
 }
-
-.body-block {
-    flex: 1;
-}
-
 #hexagon {
     position: absolute;
     height: 100%;
 }
-
 .gradient {
     position: absolute;
     width: 100%;
     height: 100%;
+    flex-shrink: 0;
     background: linear-gradient(rgba(253, 253, 255, 0.20) 0%, rgba(0, 0, 0, 0.65) 88.48%);
 }
-
 .glass {
     backdrop-filter: blur(20px);
     background: rgba(255, 255, 255, 0.075);
 }
-
 header {
-    padding: 10px;
+    width: 100%;
+    position: absolute;
+    height: 15em;
 }
-
-header#mainpage {
-    min-height: 150px;
-}
-
-header#subpage {
-    min-height: 50px;
-}
-
 footer {
+    width: 100%;
+    position: absolute;
+    height: 5em;
     bottom: 0;
-    margin-top: auto;
-    min-height: 50px;
 }
-
+.body-block {
+    position: absolute;
+    top: 15em;
+}
 /* visited is just to see the hyperlinks as white in the dark purple background */
 a:visited {
     color: white;
@@ -78,153 +54,10 @@ a:visited {
     text-align: center;
     line-height: normal;
 }
+.searchBar:focus{
+    border: 2px solid #D14081
+}
 
-#searchBar {
-    width: 90%;
-    height: 80%;
-    flex-shrink: 0;
-    color: white;
+.searchBar {
     border-radius: 100px;
-    background: rgba(255, 255, 255, 0.30);
-    backdrop-filter: blur(10px);
-    outline: 0;
-    border: 0;
-    padding-left: 2em;
-    font-size: 1.1em;
-    margin: 0;
-}
-
-#searchBar::placeholder {
-    color: white;
-}
-
-.searchBlock {
-    position: relative;
-    padding-bottom: 10%;
-    flex: 1;
-}
-
-.filtersBlock {
-    position: relative;
-    flex: 2;
-    margin: 1em;
-}
-
-#searchButton {
-    position: absolute;
-    nav-left: inherit;
-    left: 85%;
-    /*width: 25%;*/
-    height: 90%;
-    width: fit-content;
-    top: 0;
-    float: inherit;
-    align-content: center;
-    background-color: #D14081;
-    border-radius: 100px;
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-    border: 5px;
-    font-family: "Font Awesome 5 Free", serif;
-    font-weight: bold;
-    text-align: center;
-    font-size: 2em;
-}
-
-
-#leftBlocking {
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-    float: left;
-    padding-left: 5%;
-}
-
-#rightDiv {
-    flex: 2;
-    text-align: center;
-    display: inline-block;
-    float: right;
-    position: absolute;
-}
-
-.gameImage {
-    width: 7.5%;
-    height: 7.5%;
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-
-}
-
-.headerBlocks {
-    text-align: center;
-    justify-content: center;
-    color: #FFFFFF;
-    font-family: "Font Awesome 5 Free", serif;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    display: flex;
-    position: static;
-}
-
-.menu-container {
-    display: inline-flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    width: 100%;
-}
-
-
-.game_card {
-    flex: none;
-    display: inline-block;
-    flex-direction: row;
-    width: 100%;
-    height: 100%;
-    padding: 2em;
-}
-.game_card img{
-    border-radius: 5%;
-}
-.cardImage {
-    border-radius: 5%;
-    object-fit: contain;
-    width: 75%;
-    height: auto;
-}
-
-#cardItem {
-    /*background: #D14081;*/
-    text-align: center;
-    margin-bottom: 5%;
-    position: relative;
-    width: 20%;
-    height: auto;
-    padding-bottom: 25%;
-    font-size: inherit;
-}
-
-/*#cardItem + #cardItem {*/
-/*    margin-left: 3%;*/
-/*}*/
-img.class { overflow:hidden}
-
-.filtersBlock{
-    background: #8e8e8e;
-    backdrop-filter: opacity(0.2);
-}
-
-.filtersBlock label{
-    float: right;
-    color: #FFF;
-    text-align: center;
-    font-family: "Font Awesome 5 Free", serif;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    display: inline-block;
-}
-
-.filtersBlock input{
-    display: inline-block;
-    float: left;
 }
