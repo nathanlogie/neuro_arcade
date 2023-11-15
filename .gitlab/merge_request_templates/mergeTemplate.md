@@ -4,7 +4,7 @@
 - [ ] Docs have been added / updated (for bug fixes / features)
 
 
-* **What kind of change does this PR introduce?** (Bug fix, feature, docs update, ...)
+* **What kind of change does this merge request introduce?** (Bug fix, feature, docs update, ...)
 
 
 
