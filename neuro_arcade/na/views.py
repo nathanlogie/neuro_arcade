@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 
-from na.models import Game, GameTag, Player
+from na.models import Game, GameTag, Player, ScoreTable, ScoreRow
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -30,9 +30,9 @@ def game_search(request: HttpRequest) -> HttpResponse:
 
 def game_view(request: HttpRequest, game_name_slug: str) -> HttpResponse:
     game = get_object_or_404(Game, slug=game_name_slug)
+    context_dict = {'game': game}
     # TODO: Display scores on the game view page
-    # scores = game.score_set.all()
-    return render(request, 'game_view.html', {'game': game})
+    return render(request, 'game_view.html', context_dict)
 
 
 def game_data_add(request: HttpRequest, game_name_slug: str) -> HttpResponse:
