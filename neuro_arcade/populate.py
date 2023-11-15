@@ -28,7 +28,7 @@ from django.templatetags.static import static
 from django.utils import timezone
 from pytz import utc
 
-from na.models import GameTag, Game, Player, PlayerTag, Score, ScoreField, ScoreFieldType, ScoreType
+from na.models import GameTag, Game, Player, PlayerTag, ScoreRow, ScoreField, ScoreColumn, ScoreTable
 
 users = [
     {
@@ -249,8 +249,6 @@ def add_game(data: Dict) -> Game:
         tag = GameTag.objects.get(name=tag_name)
         game.tags.add(tag)
 
-    game.score_type = data.get('score_type', "{}")
-
     game.save()
 
     return game
@@ -271,15 +269,15 @@ def add_player(data: Dict):
     return player
 
 
-def add_score_type(data: Dict) -> ScoreType:
+def add_score_type(data: Dict) -> ScoreTable:
     """Create an na score type"""
 
     game = Game.objects.get(name=data['game'])
-    score_type = ScoreType.objects.get_or_create(
+    score_type = ScoreTable.objects.get_or_create(
         name=data['name'],
         defaults={
             'description': data['description'],
-            'code': add_media_from_static(ScoreType.MEDIA_SUBDIR, data['code']),
+            'code': add_media_from_static(ScoreTable.MEDIA_SUBDIR, data['code']),
             'game': game,
         },
     )[0]
@@ -287,11 +285,11 @@ def add_score_type(data: Dict) -> ScoreType:
     return score_type
 
 
-def add_score_field_type(data: Dict) -> ScoreFieldType:
+def add_score_field_type(data: Dict) -> ScoreColumn:
     """Create a na score field type"""
 
-    group = ScoreType.objects.get(name=data['group'])
-    score_type = ScoreFieldType.objects.get_or_create(
+    group = ScoreTable.objects.get(name=data['group'])
+    score_type = ScoreColumn.objects.get_or_create(
         group=group,
         name=data['name'],
         defaults={
@@ -304,10 +302,10 @@ def add_score_field_type(data: Dict) -> ScoreFieldType:
     return score_type
 
 
-def add_score_field(data: Dict, group: Score) -> ScoreField:
+def add_score_field(data: Dict, group: ScoreRow) -> ScoreField:
     """Create a na score field"""
 
-    field_type = ScoreFieldType.objects.get(group=group.group, name=data['type'])
+    field_type = ScoreColumn.objects.get(group=group.table, name=data['type'])
     type = ScoreField.objects.get_or_create(
         type=field_type,
         group=group,
@@ -319,9 +317,9 @@ def add_score_field(data: Dict, group: Score) -> ScoreField:
 
 
 def add_score(data: Dict):
-    group = ScoreType.objects.get(name=data['type'])
+    group = ScoreTable.objects.get(name=data['type'])
     time = timezone.datetime.strptime(data['time'], "%Y-%m-%d %I:%M:%S").replace(tzinfo=utc)
-    score = Score.objects.get_or_create(
+    score = ScoreRow.objects.get_or_create(
         group=group,
         time=time,
     )[0]
