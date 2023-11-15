@@ -24,7 +24,7 @@
 {% if games %}
     {% for game in games %}
     <li><div>
-        <a href={% url 'na:game_view' game.slug %}>
+        <a class="gamesIcons" href={% url 'na:game_view' game.slug %}>
             <img src="{{ game.icon.url }}" width=64 alt="{{ game.name }} - Icon"> </img>
             <p>{{ game.description }}</p>
         </a>
