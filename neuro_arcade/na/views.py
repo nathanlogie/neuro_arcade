@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
 from na.models import Game, GameTag, Player, About
-from na.forms import UserForm, AboutPageForm
+from na.forms import UserForm, AboutPageFormSet
 
 
 def index(request: HttpRequest) -> HttpResponse:

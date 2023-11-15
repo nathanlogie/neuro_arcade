@@ -28,7 +28,7 @@ from django.templatetags.static import static
 from django.utils import timezone
 from pytz import utc
 
-from na.models import GameTag, Game, Player, PlayerTag, Score, ScoreField, ScoreFieldType, ScoreType
+from na.models import GameTag, Game, Player, PlayerTag, Score, ScoreField, ScoreFieldType, ScoreType, About, Publication
 
 users = [
     {
@@ -172,6 +172,20 @@ groups = [
         'name': "Administrator",
         'permissions': [],
     },
+]
+
+about = [
+    {
+        'description': "WELCOME TO NEUROARCADE."
+    }
+]
+
+publications = [
+    {
+        'title': "Brain-score",
+        'author': "Someone",
+        'link': "http://www.brain-score.org/"
+    }
 ]
 
 def add_media_from_static(folder: str, filename: str) -> str:
@@ -329,6 +343,23 @@ def add_score(data: Dict):
         add_score_field(field, score)
     return score
 
+def add_about(about: Dict, publications: Dict):
+    about_page = About.objects.create(
+        description=about['description']
+    )
+
+    # Create associated Publication instances
+    for publication_data in publications:
+        Publication.objects.create(
+            title=publication_data['title'],
+            author=publication_data['author'],
+            link=publication_data['link'],
+            about_page=about_page
+        )
+
+    return about_page
+
+
 
 # TODO: PlayerTag
 
@@ -352,6 +383,8 @@ def populate():
         add_score_field_type(data)
     for data in scores:
         add_score(data)
+    for data in about:
+        add_about(data, publications)
 
 
 if __name__ == "__main__":
