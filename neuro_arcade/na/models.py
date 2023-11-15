@@ -37,6 +37,7 @@ class Game(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     icon = models.ImageField(upload_to=MEDIA_SUBDIR, blank=True)
     tags = models.ManyToManyField(GameTag)
+    score_type = models.JSONField()
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -92,44 +93,9 @@ class Player(models.Model):
         super(Player, self).save(*args, **kwargs)
 
 
-class ScoreTable(models.Model):
-    """Definition of the type of score returned by an evaluation script"""
+class Score(models.Model):
+    """Scores. """
 
-    MAX_NAME_LENGTH = 64
-    MAX_DESCRIPTION_LENGTH = 1024
-
-    MEDIA_SUBDIR = 'evaluation_functions'
-
-    name = models.CharField(max_length=MAX_NAME_LENGTH)
-    description = models.CharField(max_length=MAX_DESCRIPTION_LENGTH)
-    evaluation = models.FileField(upload_to=MEDIA_SUBDIR)
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
-
-
-class ScoreColumn(models.Model):
-    """Definition of a field of a score in an evaluation script"""
-
-    MAX_NAME_LENGTH = 64
-    MAX_DESCRIPTION_LENGTH = 1024
-
-    table = models.ForeignKey(ScoreTable, on_delete=models.CASCADE)
-    name = models.CharField(max_length=MAX_NAME_LENGTH)
-    description = models.CharField(max_length=MAX_DESCRIPTION_LENGTH)
-    min = models.IntegerField(null=True)
-    max = models.IntegerField(null=True)
-
-
-class ScoreRow(models.Model):
-    """A single set of values for a ScoreType"""
-
-    table = models.ForeignKey(ScoreTable, on_delete=models.CASCADE)
+    score = models.JSONField()
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    time = models.DateTimeField()
-
-
-class ScoreField(models.Model):
-    """A single value for a ScoreFieldType in a score"""
-
-    value = models.IntegerField(default=0)
-    row = models.ForeignKey(ScoreRow, on_delete=models.CASCADE)
-    column = models.ForeignKey(ScoreColumn, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
