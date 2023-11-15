@@ -59,5 +59,25 @@ a:visited {
 }
 
 .searchBar {
-    border-radius: 100px;
+    border-radius: 15px;
+    width: 380px;
+    height: 90px;
+    flex-shrink: 0;
+    color: #FFF;
+    padding-left: 15px;
+    text-align: left;
+    font-family: AppleGothic, serif;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+}
+
+.searchIcon {
+    background: url("neuro_arcade/media/assets/searchIcon.png");
+    width:89px;
+    height: 89px;
+    flex-shrink: 0;
+    display: block;
 }
