@@ -130,6 +130,6 @@ class ScoreRow(models.Model):
 class ScoreField(models.Model):
     """A single value for a ScoreFieldType in a score"""
 
+    value = models.IntegerField(default=0)
     row = models.ForeignKey(ScoreRow, on_delete=models.CASCADE)
     column = models.ForeignKey(ScoreColumn, on_delete=models.CASCADE)
-    value = models.IntegerField()
