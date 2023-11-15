@@ -4,7 +4,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from na.models import Game, GameTag, Player, ScoreTable, ScoreRow
+from na.models import Game, GameTag, Player, Score
 from na.forms import UserForm
 
 
@@ -96,7 +96,7 @@ def login(request: HttpRequest) -> HttpResponse:
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        # Try find user
+        # Try to find user
         user = auth.authenticate(username=username, password=password)
         if user:
             # TODO: check is_active
