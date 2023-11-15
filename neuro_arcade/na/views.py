@@ -4,8 +4,8 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from na.models import Game, GameTag, Player
-from na.forms import UserForm
+from na.models import Game, GameTag, Player, About
+from na.forms import UserForm, AboutPageForm
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -118,3 +118,27 @@ def login(request: HttpRequest) -> HttpResponse:
 def logout(request):
     auth.logout(request)
     return redirect(reverse('na:index'))
+
+
+def about(request):
+    about_page = About.objects.first()
+    publications = about_page.publications.all()
+
+    context_dict = {'about': about_page, 'publications': publications}
+
+    return render(request, 'about.html', context_dict)
+
+
+@login_required
+def edit_about(request):
+    about_page = About.objects.first()
+
+    if request.method =='POST':
+        form = AboutPageForm(request.POST, request.FILES, instance=about_page)
+        if form.is_valid():
+            form.save()
+            return redirect('about_page')
+    else:
+        form = AboutPageForm(instance=about_page)
+
+    return render(request, 'edit_about.html', {'form': form, 'about_page': about_page})

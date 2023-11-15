@@ -133,3 +133,18 @@ class ScoreField(models.Model):
     group = models.ForeignKey(Score, on_delete=models.CASCADE)
     type = models.ForeignKey(ScoreFieldType, on_delete=models.CASCADE)
     value = models.IntegerField()
+
+
+class Publication(models.Model):
+
+    title = models.CharField(max_length=255)
+    author = models.CharField(max_length=255)
+    link = models.URLField(max_length=255)
+    about_page = models.ForeignKey('About', on_delete=models.CASCADE, related_name='publications')
+
+
+class About(models.Model):
+
+    description = models.TextField(default="Neuro Arcade Description")
+    image = models.ImageField()
+

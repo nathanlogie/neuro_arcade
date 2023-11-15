@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block body_block %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {{ form.pub_formset.as_p }}  <!-- Render the formset -->
+
+    <input type="submit" value="Save Changes">
+</form>
+
+<a href="{% url 'about' %}">Back to About Page</a>
+
+{% endblock %}
