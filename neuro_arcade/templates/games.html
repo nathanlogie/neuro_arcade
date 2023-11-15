@@ -8,7 +8,7 @@
     <h2>Query</h2>
     <div>
         <input class = "searchBar" type="text" placeholder="Search Games" id="query" name="query">
-        <button type="submit">Search</button>
+        <button id = "icon" type="submit"><span class='icon'></span></button>
     </div>
 
     <h2>Filters:</h2>
@@ -24,9 +24,10 @@
 {% if games %}
     {% for game in games %}
     <li><div>
-        <img src="{{ game.icon.url }}" width=64 alt="{{ game.name }} - Icon"> </img>
-        <a href={% url 'na:game_view' game.slug %}>{{ game.name }}</a>
-        <p>{{ game.description }}</p>
+        <a href={% url 'na:game_view' game.slug %}>
+            <img src="{{ game.icon.url }}" width=64 alt="{{ game.name }} - Icon"> </img>
+            <p>{{ game.description }}</p>
+        </a>
         {% for tag in game.tags.all %}
             [{{ tag.name }}] 
         {% endfor %}
