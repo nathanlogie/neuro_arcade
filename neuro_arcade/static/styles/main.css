@@ -38,3 +38,26 @@ footer {
 a:visited {
     color: white;
 }
+
+#taskHeader {
+    display: flex;
+    width: 200px;
+    height: 120px;
+    flex-direction: column;
+    flex-shrink: inherit;
+    justify-content: center;
+    color: #FFFFFF;
+    /* Just a generic font while I try to see how to get the one he wants */
+    font-family: AppleGothic, sans-serif;
+    font-size: 40px;
+    font-weight: normal;
+    text-align: center;
+    line-height: normal;
+}
+.searchBar:focus{
+    border: 2px solid #D14081
+}
+
+.searchBar {
+    border-radius: 100px;
+}
