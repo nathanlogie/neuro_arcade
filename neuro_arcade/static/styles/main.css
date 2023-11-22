@@ -8,11 +8,17 @@
     url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.svg#Bahnschrift")format("svg");
 }
 body {
-    padding: 0;
+    display:flex;
+    flex-direction:column;
+    height: 100%;
     margin: 0;
+    padding: 0;
     background-color: #190A28;
     color: #FFFFFF;
-    font-family: Bahnschrift;
+    font-family: Bahnschrift, serif;
+}
+.body-block {
+    flex:1;
 }
 #hexagon {
     position: absolute;
@@ -28,23 +34,19 @@ body {
     backdrop-filter: blur(20px);
     background: rgba(255, 255, 255, 0.075);
 }
+header {
+    padding: 10px;
+}
 header#mainpage {
-    width: 100%;
-    position: absolute;
-    height: 15em;
+    min-height:150px;
 }
 header#subpage {
-    height: 10em;
+    min-height:50px;
 }
 footer {
-    width: 100%;
-    position: absolute;
-    height: 5em;
     bottom: 0;
-}
-.body-block {
-    position: absolute;
-    top: 15em;
+    margin-top: auto;
+    min-height:50px;
 }
 /* visited is just to see the hyperlinks as white in the dark purple background */
 a:visited {
