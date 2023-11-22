@@ -1,14 +1,19 @@
 {% extends "base.html" %}
 
-{% block body_block %}
+<header id="subpage">
+{% block body_header_block %}
+    <h1>Game search</h1>
+{% endblock %}
+    <link rel="stylesheet" href="../static/styles/game_page.css">
+</header>
 
-<h1>Game search</h1>
+{% block body_block %}
 
 <form id="search-form" action="{% url 'na:game_search' %}" method="GET">
     <h2>Query</h2>
     <div>
-        <input type="text" placeholder="Search Games" id="query" name="query">
-        <button type="submit">Search</button>
+        <input type="text" placeholder="search..." id="searchBar" name="query">
+        <button type="submit" id="searchButton"></button>
     </div>
 
     <h2>Filters:</h2>

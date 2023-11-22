@@ -1,8 +1,18 @@
+@font-face {
+    font-family: "Bahnschrift";
+    src: url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.eot");
+    src: url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.eot?#iefix")format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.woff2")format("woff2"),
+    url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.woff")format("woff"),
+    url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.ttf")format("truetype"),
+    url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.svg#Bahnschrift")format("svg");
+}
 body {
     padding: 0;
     margin: 0;
     background-color: #190A28;
     color: #FFFFFF;
+    font-family: Bahnschrift;
 }
 #hexagon {
     position: absolute;
@@ -12,17 +22,19 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    flex-shrink: 0;
     background: linear-gradient(rgba(253, 253, 255, 0.20) 0%, rgba(0, 0, 0, 0.65) 88.48%);
 }
 .glass {
     backdrop-filter: blur(20px);
     background: rgba(255, 255, 255, 0.075);
 }
-header {
+header#mainpage {
     width: 100%;
     position: absolute;
     height: 15em;
+}
+header#subpage {
+    height: 10em;
 }
 footer {
     width: 100%;
@@ -37,4 +49,54 @@ footer {
 /* visited is just to see the hyperlinks as white in the dark purple background */
 a:visited {
     color: white;
+}
+
+#taskHeader {
+    display: flex;
+    width: 200px;
+    height: 120px;
+    flex-direction: column;
+    flex-shrink: inherit;
+    justify-content: center;
+    color: #FFFFFF;
+    /* Just a generic font while I try to see how to get the one he wants */
+    font-family: AppleGothic, sans-serif;
+    font-size: 40px;
+    font-weight: normal;
+    text-align: center;
+    line-height: normal;
+}
+
+#searchBar {
+    width: 25em;
+    height: 4em;
+    flex-shrink: 0;
+    color: white;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.30);
+    backdrop-filter: blur(10px);
+    outline: 0;
+    border: 0;
+    padding-left: 2em;
+    font-size: 1.1em;
+}
+#searchBar::placeholder {
+    color: white;
+}
+#searchButton {
+    width: 3em;
+    height: 3em;
+    flex-shrink: 0;
+    background-color: #D14081;
+    border-radius: 100px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    border: 0;
+    font-family: "Font Awesome 5 Free";
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    font-size: 2em;
+    padding: 0;
+    font-style: normal;
+    line-height: normal;
 }
