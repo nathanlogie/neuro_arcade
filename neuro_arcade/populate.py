@@ -28,7 +28,7 @@ from django.templatetags.static import static
 from django.utils import timezone
 from pytz import utc
 
-from na.models import GameTag, Game, Player, PlayerTag, ScoreRow, ScoreField, ScoreColumn, ScoreTable
+from na.models import GameTag, Game, Player, PlayerTag, Score
 
 users = [
     {
@@ -242,7 +242,8 @@ games = [
     },
     {
         'name': "Music Jump",
-        'description': "A game where you need to jump and dodge obstacles however it is the same puzzle each time so requires memory",
+        'description': "A game where you need to jump and dodge obstacles however it is the same puzzle each time so "
+                       "requires memory",
         'owner': "kangaroo14",
         'icon': "example.png",
         'tags': ["Reflex Games", "Pattern Recognition Games", "Memory Games", "Timing Games", "Featured"],
@@ -988,6 +989,7 @@ def add_game(data: Dict) -> Game:
         name=data['name'],
         defaults={
             'owner': User.objects.get(username=data['owner']),
+            'score_type': '{}'
         },
     )[0]
     game.description = data.get('description', "no description")
@@ -996,10 +998,13 @@ def add_game(data: Dict) -> Game:
         game.icon.name = add_media_from_static(Game.MEDIA_SUBDIR, data['icon'])
 
     for tag_name in data.get('tags', []):
+        # TODO(bug): tag does not get added to game object
         try:
             tag = GameTag.objects.get(name=tag_name)
         except GameTag.DoesNotExist:
             tag = add_game_tag({'name': tag_name, 'description': 'Default description'})
+
+    # TODO: create score types for Games in the population script
 
     game.save()
 
@@ -1015,12 +1020,12 @@ def add_player_tag(data: Dict) -> PlayerTag:
 
     return tag
 
+
 def add_player(data: Dict):
     player = Player.objects.get_or_create(name=data['name'])[0]
     player.is_ai = data['is_ai']
     player.user = User.objects.get(username=data['user'])
     player.description = data['description']
-
 
     for tag_name in data.get('player_tags', []):
         try:
@@ -1036,67 +1041,70 @@ def add_player(data: Dict):
     return player
 
 
-def add_score_table(data: Dict) -> ScoreTable:
-    """Create an na score table"""
-
-    game = Game.objects.get(name=data['game'])
-    score_table = ScoreTable.objects.get_or_create(
-        name=data['name'],
-        defaults={
-            'description': data['description'],
-            'evaluation': add_media_from_static(ScoreTable.MEDIA_SUBDIR, data['evaluation']),
-            'game': game,
-        },
-    )[0]
-
-    return score_table
-
-
-def add_score_column(data: Dict) -> ScoreColumn:
-    """Create a na score field type"""
-
-    table = ScoreTable.objects.get(name=data['table'])
-    score_column = ScoreColumn.objects.get_or_create(
-        table=table,
-        name=data['name'],
-        defaults={
-            'description': data['description'],
-            'min': data['min'],
-            'max': data['max'],
-        },
-    )[0]
-
-    return score_column
+# DEPRECATED!!
+# def add_score_table(data: Dict) -> ScoreTable:
+#     """Create an na score table"""
+#
+#     game = Game.objects.get(name=data['game'])
+#     score_table = ScoreTable.objects.get_or_create(
+#         name=data['name'],
+#         defaults={
+#             'description': data['description'],
+#             'evaluation': add_media_from_static(ScoreTable.MEDIA_SUBDIR, data['evaluation']),
+#             'game': game,
+#         },
+#     )[0]
+#
+#     return score_table
 
 
-def add_score_field(data: Dict, group: ScoreRow) -> ScoreField:
-    """Create a na score field"""
+# DEPRECATED!!
+# def add_score_column(data: Dict) -> ScoreColumn:
+#     """Create a na score field type"""
+#
+#     table = ScoreTable.objects.get(name=data['table'])
+#     score_column = ScoreColumn.objects.get_or_create(
+#         table=table,
+#         name=data['name'],
+#         defaults={
+#             'description': data['description'],
+#             'min': data['min'],
+#             'max': data['max'],
+#         },
+#     )[0]
+#
+#     return score_column
 
-    score_column = ScoreColumn.objects.get(table=group.table, name=data['column'])
-    score_field = ScoreField.objects.get_or_create(
-        column=score_column,
-        row=group,
-        defaults={
-            'value': data['value'],
-        }
-    )[0]
-    return score_field
+
+# DEPRECATED!!
+# def add_score_field(data: Dict, group: ScoreRow) -> ScoreField:
+#     """Create a na score field"""
+#
+#     score_column = ScoreColumn.objects.get(table=group.table, name=data['column'])
+#     score_field = ScoreField.objects.get_or_create(
+#         column=score_column,
+#         row=group,
+#         defaults={
+#             'value': data['value'],
+#         }
+#     )[0]
+#     return score_field
 
 
-def add_score_row(data: Dict):
-    table = ScoreTable.objects.get(name=data['type'])
-    time = timezone.datetime.strptime(data['time'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=utc)
-    player, _ = Player.objects.get_or_create(name=data['player'])
-    score = ScoreRow.objects.get_or_create(
-        table=table,
-        time=time,
-        player=player,
-    )[0]
-
-    for field in data['fields']:
-        add_score_field(field, score)
-    return score
-
+# DEPRECATED!!
+# def add_score_row(data: Dict):
+#     table = ScoreTable.objects.get(name=data['type'])
+#     time = timezone.datetime.strptime(data['time'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=utc)
+#     player, _ = Player.objects.get_or_create(name=data['player'])
+#     score = ScoreRow.objects.get_or_create(
+#         table=table,
+#         time=time,
+#         player=player,
+#     )[0]
+#
+#     for field in data['fields']:
+#         add_score_field(field, score)
+#     return score
 
 
 def populate():
@@ -1114,13 +1122,14 @@ def populate():
         add_player_tag(data)
     for data in players:
         add_player(data)
-    for data in score_table:
-        add_score_table(data)
-    for data in score_column:
-        add_score_column(data)
-    for data in score_row:
-        add_score_row(data)
+    # for data in score_table:
+    #     add_score_table(data)
+    # for data in score_column:
+    #     add_score_column(data)
+    # for data in score_row:
+    #     add_score_row(data)
 
+    print("Database populated!")
 
 if __name__ == "__main__":
     populate()
