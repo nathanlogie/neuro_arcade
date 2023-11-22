@@ -998,11 +998,12 @@ def add_game(data: Dict) -> Game:
         game.icon.name = add_media_from_static(Game.MEDIA_SUBDIR, data['icon'])
 
     for tag_name in data.get('tags', []):
-        # TODO(bug): tag does not get added to game object
         try:
             tag = GameTag.objects.get(name=tag_name)
         except GameTag.DoesNotExist:
             tag = add_game_tag({'name': tag_name, 'description': 'Default description'})
+
+        game.tags.add(tag)
 
     # TODO: create score types for Games in the population script
 
