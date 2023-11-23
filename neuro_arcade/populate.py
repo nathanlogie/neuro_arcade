@@ -1013,7 +1013,7 @@ def add_game(data: Dict) -> Game:
         name=data['name'],
         defaults={
             'owner': User.objects.get(username=data['owner']),
-            'score_type': '{}'
+            'score_type': dict
         },
     )[0]
     game.description = data.get('description', "no description")

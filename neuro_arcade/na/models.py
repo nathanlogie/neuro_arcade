@@ -7,6 +7,12 @@ from django.template.defaultfilters import slugify
 
 MAX_SCORE_VALUE_SIZE = 256
 
+# functions for setting default fields:
+def default_score_type():
+    return {"headers": []}
+
+def default_score():
+    return []
 
 class GameTag(models.Model):
     """Category for a game. """
@@ -21,6 +27,9 @@ class GameTag(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(GameTag, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
 
 
 class Game(models.Model):
@@ -37,7 +46,7 @@ class Game(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     icon = models.ImageField(upload_to=MEDIA_SUBDIR, blank=True)
     tags = models.ManyToManyField(GameTag)
-    score_type = models.JSONField()
+    score_type = models.JSONField(default=default_score_type)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -60,6 +69,25 @@ class Game(models.Model):
 
         return accept
 
+    def get_score_table(self):
+        try:
+            headers = self.score_type['headers']
+            score_objs = self.score_set.all()
+            scores = []
+
+            for score in score_objs:
+                scores.append([score.score[header['name']] for header in headers])
+
+            return headers, scores
+
+        except TypeError:  # this can happen if score_type is not populated
+            print("[WARN] Something went wrong when trying to get the scores for ", self)
+            print("[WARN] This can happen if score_type is not populated")
+            return None, None
+
+    def __str__(self):
+        return self.name
+
 
 class PlayerTag(models.Model):
     """A category of Player. Mostly used for AI players. """
@@ -69,6 +97,9 @@ class PlayerTag(models.Model):
 
     name = models.CharField(max_length=MAX_NAME_LENGTH)
     description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH)
+
+    def __str__(self):
+        return self.name
 
 
 class Player(models.Model):
@@ -92,10 +123,16 @@ class Player(models.Model):
         self.slug = slugify(self.name)
         super(Player, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.name
+
 
 class Score(models.Model):
     """Scores. """
 
-    score = models.JSONField()
+    score = models.JSONField(default=default_score)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.player.name + "'s score at " + self.game.name
