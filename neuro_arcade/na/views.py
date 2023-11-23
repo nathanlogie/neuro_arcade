@@ -38,7 +38,7 @@ def game_view(request: HttpRequest, game_name_slug: str) -> HttpResponse:
     headers, scores = game.get_score_table()
     if headers is not None and scores is not None:
         context_dict['table_headers'] = headers
-        context_dict['scores'] = scores
+        context_dict['rows'] = scores
     return render(request, 'game_view.html', context_dict)
 
 
