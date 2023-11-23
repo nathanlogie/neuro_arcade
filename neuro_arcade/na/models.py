@@ -76,7 +76,8 @@ class Game(models.Model):
             scores = []
 
             for score in score_objs:
-                scores.append({'player': score.player, 'score': score.score})
+                s = [score.score[header['name']] for header in headers]
+                scores.append({'player': score.player, 'score': s})
 
             return headers, scores
 
