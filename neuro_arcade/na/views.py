@@ -59,7 +59,6 @@ def player_view(request: HttpRequest, player_name_slug: str) -> HttpResponse:
 def model_add(request: HttpRequest) -> HttpResponse:
     return HttpResponse("Model add page")
 
-
 def sign_up(request: HttpRequest) -> HttpResponse:
     # Check not already logged in
     if request.user.is_authenticated:
