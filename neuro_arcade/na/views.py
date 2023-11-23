@@ -136,8 +136,9 @@ def edit_about(request):
         data = json.load(f)
 
     if request.method == 'POST':
-        aboutForm = AboutForm(request.POST, request.FILES)
-        publicationForms = PublicationFormSet(request.POST)
+        aboutForm = AboutForm(request.POST, request.FILES, initial={'description': data['description'], 'image': data['image']})
+        current_publications = [{'title': p['title'], 'author': p['author'], 'link':p['link']} for p in data['publications']]
+        publicationForms = PublicationFormSet(request.POST, initial=current_publications)
         if aboutForm.is_valid() and publicationForms.is_valid():
             for p in publicationForms:
                 title = p.cleaned_data['title']
@@ -155,10 +156,10 @@ def edit_about(request):
 
             return redirect(reverse('na:about'))
         else:
-            context_dict["AboutForm"] = aboutForm
-            context_dict["Publications"] = publicationForms
+            context_dict["aboutForm"] = aboutForm
+            context_dict["publicationForms"] = publicationForms
     else:
-        context_dict["AboutForm"] = AboutForm(initial=data)
-        context_dict["Publications"] = PublicationFormSet(initial=data['publications'])
+        context_dict["aboutForm"] = AboutForm(initial=data)
+        context_dict["publicationForms"] = PublicationFormSet(initial=data['publications'])
 
     return render(request, 'edit_about.html', context_dict)

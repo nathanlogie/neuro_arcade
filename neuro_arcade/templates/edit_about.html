@@ -6,13 +6,14 @@
 
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <p>Description: <input type="text" name="description" value="" size="50" /></p>
-    <p>Upload Image: <input type="file" name="image" accept=".jpg, .png"></p>
+    <p>Description: {{ aboutForm.description }}</p>
+    <p>Upload Image: {{ aboutForm.image }}</p>
 
-    {% for p in Publications %}
-        <p>Title: <input type="text" name="title" value="" size="50" /></p>
-        <p>Author: <input type="text" name="author" value="" size="50" /></p>
-        <p>Link: <input type="text" name="link" value="" size="50" /></p>
+
+    {% for p in publicationForms %}
+    <p>Title: {{ p.title }}</p>
+    <p>Author: {{ p.author }}</p>
+    <p>Link: {{ p.link }}</p>
     {% endfor %}
 
     <input type="submit" value="Save Changes">

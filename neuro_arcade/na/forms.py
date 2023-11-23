@@ -24,9 +24,8 @@ PublicationFormSet = formset_factory(PublicationForm, extra=1)
 
 
 class AboutForm(forms.Form):
-    description = forms.CharField(widget=forms.TextInput())
-    publications = PublicationFormSet()
+    description = forms.CharField(required=False, widget=forms.TextInput())
     image = forms.ImageField(required=False)
 
     class Meta:
-        fields = ('description', 'publications', 'image')
+        fields = ('description', 'image')
