@@ -7,6 +7,8 @@ from django.urls import reverse
 from na.models import Game, GameTag, Player
 from na.forms import UserForm, AboutForm, PublicationFormSet
 import json
+from na.models import Game, GameTag, Player, Score
+from na.forms import UserForm
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -35,9 +37,9 @@ def game_search(request: HttpRequest) -> HttpResponse:
 
 def game_view(request: HttpRequest, game_name_slug: str) -> HttpResponse:
     game = get_object_or_404(Game, slug=game_name_slug)
+    context_dict = {'game': game}
     # TODO: Display scores on the game view page
-    # scores = game.score_set.all()
-    return render(request, 'game_view.html', {'game': game})
+    return render(request, 'game_view.html', context_dict)
 
 
 def game_data_add(request: HttpRequest, game_name_slug: str) -> HttpResponse:
@@ -97,14 +99,14 @@ def login(request: HttpRequest) -> HttpResponse:
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        # Try find user
+        # Try to find user
         user = auth.authenticate(username=username, password=password)
         if user:
             # TODO: check is_active
             auth.login(request, user)
             return redirect(reverse('na:index'))
         else:
-            error = "Invalid login details." 
+            error = "Invalid login details."
     else:
         # Setup empty form
         error = None
@@ -113,7 +115,7 @@ def login(request: HttpRequest) -> HttpResponse:
         'error': error,
     }
 
-    return render(request, 'login.html', context=context_dict)    
+    return render(request, 'login.html', context=context_dict)
 
 @login_required
 def logout(request):
