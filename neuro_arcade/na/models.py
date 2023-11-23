@@ -76,13 +76,13 @@ class Game(models.Model):
             scores = []
 
             for score in score_objs:
-                scores.append([score.score[header['name']] for header in headers])
+                scores.append({'player': score.player, 'score': score.score})
 
             return headers, scores
 
         except TypeError:  # this can happen if score_type is not populated
             print("[WARN] Something went wrong when trying to get the scores for ", self)
-            print("[WARN] This can happen if score_type is not populated")
+            print("[WARN]  This might happen if score_type is not populated.")
             return None, None
 
     def __str__(self):
