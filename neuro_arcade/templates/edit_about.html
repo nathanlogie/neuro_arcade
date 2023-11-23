@@ -2,14 +2,22 @@
 
 {% block body_block %}
 
-<form method="post" enctype="multipart/form-data">
+<h1>Edit About</h1>
+
+<form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
-    {{ form.pub_formset.as_p }}  <!-- Render the formset -->
+    <p>Description: <input type="text" name="description" value="" size="50" /></p>
+    <p>Upload Image: <input type="file" name="image" accept=".jpg, .png"></p>
+
+    {% for p in Publications %}
+        <p>Title: <input type="text" name="title" value="" size="50" /></p>
+        <p>Author: <input type="text" name="author" value="" size="50" /></p>
+        <p>Link: <input type="text" name="link" value="" size="50" /></p>
+    {% endfor %}
 
     <input type="submit" value="Save Changes">
 </form>
 
-<a href="{% url 'about' %}">Back to About Page</a>
+<a href="{% url 'na:about' %}">Back to About Page</a>
 
 {% endblock %}

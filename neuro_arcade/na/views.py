@@ -4,8 +4,9 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from na.models import Game, GameTag, Player, About
-from na.forms import UserForm, AboutPageFormSet
+from na.models import Game, GameTag, Player
+from na.forms import UserForm, AboutForm, PublicationFormSet
+import json
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -121,24 +122,42 @@ def logout(request):
 
 
 def about(request):
-    about_page = About.objects.first()
-    publications = about_page.publications.all()
+    with open('media/about.json') as f:
+        data = json.load(f)
 
-    context_dict = {'about': about_page, 'publications': publications}
-
-    return render(request, 'about.html', context_dict)
+    return render(request, 'about.html', data)
 
 
 @login_required
 def edit_about(request):
-    about_page = About.objects.first()
+    context_dict = {}
+    with open('media/about.json', 'r') as f:
+        data = json.load(f)
 
-    if request.method =='POST':
-        form = AboutPageForm(request.POST, request.FILES, instance=about_page)
-        if form.is_valid():
-            form.save()
-            return redirect('about_page')
+    if request.method == 'POST':
+        aboutForm = AboutForm(request.POST, request.FILES)
+        publicationForms = PublicationFormSet(request.POST)
+        if aboutForm.is_valid() and publicationForms.is_valid():
+            for p in publicationForms:
+                title = p.cleaned_data['title']
+                author = p.cleaned_data['author']
+                link = p.cleaned_data['link']
+                data['publications'].append({'title': title, 'author': author, 'link': link})
+
+            description = request.POST.get('description')
+
+            if description:
+                data['description'] = description
+
+            with open('media/about.json', 'w') as f:
+                json.dump(data, f)
+
+            return redirect(reverse('na:about'))
+        else:
+            context_dict["AboutForm"] = aboutForm
+            context_dict["Publications"] = publicationForms
     else:
-        form = AboutPageForm(instance=about_page)
+        context_dict["AboutForm"] = AboutForm(initial=data)
+        context_dict["Publications"] = PublicationFormSet(initial=data['publications'])
 
-    return render(request, 'edit_about.html', {'form': form, 'about_page': about_page})
+    return render(request, 'edit_about.html', context_dict)

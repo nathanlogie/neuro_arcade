@@ -4,16 +4,19 @@
 
      <h1>About</h1>
 
-     <p>{{ about.description }}</p>
+     <p>{{ description }}</p>
+     <div>
+         <img src="{{ MEDIA_URL }}{{ image }}" alt="{{ item.name }} Image" style="width: 300px; height: auto;">
+     </div>
 
+     <h2>PUBLICATIONS</h2>
      <ul>
     {% for publication in publications %}
-        <li><a href="{{ publication.link }}" target="_blank">{{ publication.title }} - {{ publication.authors }}</a></li>
+        <li><a href="{{ publication.link }}">{{ publication.title }} - {{ publication.authors }}</a></li>
     {% endfor %}
     </ul>
-
 {% if user.is_authenticated %}
-<a href="{% url 'edit_about' %}">Edit</a>
+<a href={% url 'na:edit_about' %}>Edit</a>
 {% endif %}
 
 {% endblock %}

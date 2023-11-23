@@ -343,7 +343,7 @@ def add_score(data: Dict):
         add_score_field(field, score)
     return score
 
-def add_about(about: Dict, publications: Dict):
+def add_about(about, publications):
     about_page = About.objects.create(
         description=about['description']
     )
