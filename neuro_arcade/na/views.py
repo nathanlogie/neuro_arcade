@@ -35,7 +35,10 @@ def game_search(request: HttpRequest) -> HttpResponse:
 def game_view(request: HttpRequest, game_name_slug: str) -> HttpResponse:
     game = get_object_or_404(Game, slug=game_name_slug)
     context_dict = {'game': game}
-    # TODO: Display scores on the game view page
+    headers, scores = game.get_score_table()
+    if headers is not None and scores is not None:
+        context_dict['table_headers'] = headers
+        context_dict['scores'] = scores
     return render(request, 'game_view.html', context_dict)
 
 
