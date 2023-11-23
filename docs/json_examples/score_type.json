@@ -1,0 +1,15 @@
+{
+  "headers": [
+    {
+      "name": "Coins",
+      "type": "int",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "Points",
+      "type": "float",
+      "min": 0
+    }
+  ]
+}
