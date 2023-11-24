@@ -3,7 +3,6 @@
 """
 Populate the database with example data
 """
-from django.db.models import QuerySet
 
 """
 Setup django
@@ -22,16 +21,10 @@ django.setup()
 Main program
 """
 
+from django.contrib.auth.models import Group, Permission
 from typing import Dict
-
-from django.contrib.auth.models import Group, Permission, User
-from django.templatetags.static import static
-from django.utils import timezone
-from pytz import utc
 import random
-
-
-from na.models import GameTag, Game, Player, PlayerTag, Score
+from na.models import *
 
 users = [
     {
@@ -636,6 +629,7 @@ groups = [
     },
 ]
 
+
 def add_random_score(game: Game, player_list):
     player = random.choice(player_list)
     score = {}
@@ -748,7 +742,6 @@ def add_player_tag(data: Dict) -> PlayerTag:
 
     return tag
 
-
 def add_player(data: Dict):
     player = Player.objects.get_or_create(name=data['name'])[0]
     player.is_ai = data['is_ai']
@@ -769,72 +762,6 @@ def add_player(data: Dict):
     return player
 
 
-# DEPRECATED!!
-# def add_score_table(data: Dict) -> ScoreTable:
-#     """Create an na score table"""
-#
-#     game = Game.objects.get(name=data['game'])
-#     score_table = ScoreTable.objects.get_or_create(
-#         name=data['name'],
-#         defaults={
-#             'description': data['description'],
-#             'evaluation': add_media_from_static(ScoreTable.MEDIA_SUBDIR, data['evaluation']),
-#             'game': game,
-#         },
-#     )[0]
-#
-#     return score_table
-
-
-# DEPRECATED!!
-# def add_score_column(data: Dict) -> ScoreColumn:
-#     """Create a na score field type"""
-#
-#     table = ScoreTable.objects.get(name=data['table'])
-#     score_column = ScoreColumn.objects.get_or_create(
-#         table=table,
-#         name=data['name'],
-#         defaults={
-#             'description': data['description'],
-#             'min': data['min'],
-#             'max': data['max'],
-#         },
-#     )[0]
-#
-#     return score_column
-
-
-# DEPRECATED!!
-# def add_score_field(data: Dict, group: ScoreRow) -> ScoreField:
-#     """Create a na score field"""
-#
-#     score_column = ScoreColumn.objects.get(table=group.table, name=data['column'])
-#     score_field = ScoreField.objects.get_or_create(
-#         column=score_column,
-#         row=group,
-#         defaults={
-#             'value': data['value'],
-#         }
-#     )[0]
-#     return score_field
-
-
-# DEPRECATED!!
-# def add_score_row(data: Dict):
-#     table = ScoreTable.objects.get(name=data['type'])
-#     time = timezone.datetime.strptime(data['time'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=utc)
-#     player, _ = Player.objects.get_or_create(name=data['player'])
-#     score = ScoreRow.objects.get_or_create(
-#         table=table,
-#         time=time,
-#         player=player,
-#     )[0]
-#
-#     for field in data['fields']:
-#         add_score_field(field, score)
-#     return score
-
-
 def populate():
     """Populate the database with example data"""
 
@@ -852,14 +779,8 @@ def populate():
     for data in games:
         add_game(data)
 
-    # for data in score_table:
-    #     add_score_table(data)
-    # for data in score_column:
-    #     add_score_column(data)
-    # for data in score_row:
-    #     add_score_row(data)
-
     print("Database populated!")
+
 
 if __name__ == "__main__":
     populate()
