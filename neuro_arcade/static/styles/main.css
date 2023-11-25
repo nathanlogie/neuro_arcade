@@ -7,29 +7,35 @@
     url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.ttf")format("truetype"),
     url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.svg#Bahnschrift")format("svg");
 }
+@font-face {
+    font-family: "MuseoModerno Regular";
+    src: url("https://db.onlinewebfonts.com/t/737bd26de7fe662af815bcf421c09198.eot");
+    src: url("https://db.onlinewebfonts.com/t/737bd26de7fe662af815bcf421c09198.eot?#iefix")format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/737bd26de7fe662af815bcf421c09198.woff2")format("woff2"),
+    url("https://db.onlinewebfonts.com/t/737bd26de7fe662af815bcf421c09198.woff")format("woff"),
+    url("https://db.onlinewebfonts.com/t/737bd26de7fe662af815bcf421c09198.ttf")format("truetype"),
+    url("https://db.onlinewebfonts.com/t/737bd26de7fe662af815bcf421c09198.svg#MuseoModerno Regular")format("svg");
+}
 body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
     margin: 0;
     padding: 0;
     background-color: #190A28;
     color: #FFFFFF;
     font-family: Bahnschrift, serif;
 }
-.body-block {
-    flex:1;
-    min-height: calc(100vh - 234px);
-}
 #hexagon {
     position: absolute;
     object-fit: cover;
     width: 100%;
-    height: 100%;
+    height: 100vh;
+    z-index: -1;
 }
 .gradient {
-    position: absolute;
-    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
     width: 100%;
     background: linear-gradient(rgba(253, 253, 255, 0.20) 0%, rgba(0, 0, 0, 0.65) 88.48%);
 }
@@ -38,70 +44,133 @@ body {
     background: rgba(255, 255, 255, 0.075);
 }
 header {
-    padding: 10px;
-}
-header#mainpage {
-    min-height:150px;
-}
-header#subpage {
     min-height:50px;
+    padding: 30px;
 }
 footer {
-    bottom: 0;
     margin-top: auto;
     min-height:50px;
 }
+
 /* visited is just to see the hyperlinks as white in the dark purple background */
 a:visited {
     color: white;
 }
 
-#taskHeader {
-    display: flex;
-    width: 200px;
-    height: 120px;
-    flex-direction: column;
-    flex-shrink: inherit;
-    justify-content: center;
-    color: #FFFFFF;
-    /* Just a generic font while I try to see how to get the one he wants */
-    font-family: AppleGothic, sans-serif;
-    font-size: 40px;
-    font-weight: normal;
-    text-align: center;
-    line-height: normal;
+.logo {
+    position: relative;
+    #title_1, #title_2 {
+        text-align: center;
+        text-shadow: 0 4px 4px #D14081;
+        font-family: MuseoModerno Regular, sans-serif;
+        font-size: 50px;
+        font-style: normal;
+        font-weight: 900;
+        line-height: normal;
+        height: 15%;
+        width: 47%;
+        bottom: 0;
+    }
+    #title_1 {
+        position: absolute;
+        left: 0;
+        color: #E7FFF2;
+        -webkit-text-stroke: 3px #D14081;
+    }
+    #title_2 {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        color: #41584C;
+        -webkit-text-stroke: 2px #79FFB7;
+    }
+    & img {
+        position: absolute;
+        width: 60%;
+        left: 20%;
+    }
 }
 
-#searchBar {
-    width: 25em;
-    height: 4em;
-    flex-shrink: 0;
-    color: white;
-    border-radius: 100px;
-    background: rgba(255, 255, 255, 0.30);
-    backdrop-filter: blur(10px);
-    outline: 0;
-    border: 0;
-    padding-left: 2em;
-    font-size: 1.1em;
+
+.logo#big {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    height: 170px;
 }
-#searchBar::placeholder {
-    color: white;
+
+.logo#small {
+    width: 200px;
+    height: 115px;
+    margin-left: 50px;
+    margin-bottom: 20px;
+    #title_1, #title_2 {
+        font-size: 32px;
+    }
+    #title_1 {
+        -webkit-text-stroke: 2px #D14081;
+    }
+    #title_2 {
+        -webkit-text-stroke: 1px #79FFB7;
+    }
 }
-#searchButton {
-    width: 3em;
-    height: 3em;
-    flex-shrink: 0;
-    background-color: #D14081;
-    border-radius: 100px;
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-    border: 0;
-    font-family: "Font Awesome 5 Free";
-    font-weight: bold;
-    color: white;
+
+#blurb {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
     text-align: center;
-    font-size: 2em;
-    padding: 0;
-    font-style: normal;
-    line-height: normal;
+}
+
+.button {
+    position: relative;
+    top: -74px;
+    cursor: pointer;
+    .link {
+        margin-top: 10px;
+        position: absolute;
+        color: #FFF;
+        text-align: center;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 400;
+        width: max-content;
+        border-radius: 10px;
+        background: #D14081;
+        box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    }
+    .arrow {
+        position: absolute;
+        z-index: 1;
+        width: 74px;
+        height: 74px;
+        border-radius: 100px;
+        background-color: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(5px);
+        color: #41584C;
+        text-align: center;
+        font-family: "Font Awesome 5 Free";
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 900;
+        line-height: 74px;
+    }
+    .link#left {
+        margin-left: 37px;
+        padding: 15px 20px 10px 50px;
+        left: 0;
+    }
+    .link#right {
+        margin-right: 37px;
+        padding: 15px 50px 10px 20px;
+        right: 0;
+    }
+    .arrow#left {
+        left: 0;
+    }
+    .arrow#right {
+        right: 0;
+    }
 }
