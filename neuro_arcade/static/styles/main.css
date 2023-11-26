@@ -70,8 +70,8 @@ a:visited {
 }
 
 #searchBar {
-    width: 25em;
-    height: 4em;
+    width: 90%;
+    height: 80%;
     flex-shrink: 0;
     color: white;
     border-radius: 100px;
@@ -88,14 +88,22 @@ a:visited {
 }
 .searchBlock{
     position: relative;
-    width: fit-content;
+    padding-bottom: 10%;
+    flex: 1;
+}
+.filtersBlock{
+    position: relative;
+    flex: 2;
+    margin: 1em;
 }
 #searchButton {
     position: absolute;
     nav-left: inherit;
     left: 85%;
-    width: 2.75em;
-    height: 2.75em;
+    /*width: 25%;*/
+    height: 90%;
+    width: fit-content;
+    top: 0;
     float: inherit;
     align-content: center;
     background-color: #D14081;
@@ -110,13 +118,25 @@ a:visited {
 
 .Body{
     display: flex;
-    width: 50%;
+    flex-direction: column;
 }
 
 #leftBlocking{
-
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    float: left;
+    padding-left: 5%;
 }
 
 #rightDiv{
+    flex: 2;
+    text-align: center;
+}
+.gameImage{
+    width: 7.5%;
+    height: 7.5%;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
 }
+
