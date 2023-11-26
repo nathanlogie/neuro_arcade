@@ -81,24 +81,42 @@ a:visited {
     border: 0;
     padding-left: 2em;
     font-size: 1.1em;
+    margin: 0;
 }
 #searchBar::placeholder {
     color: white;
 }
+.searchBlock{
+    position: relative;
+    width: fit-content;
+}
 #searchButton {
-    width: 3em;
-    height: 3em;
-    flex-shrink: 0;
+    position: absolute;
+    nav-left: inherit;
+    left: 85%;
+    width: 2.75em;
+    height: 2.75em;
+    float: inherit;
+    align-content: center;
     background-color: #D14081;
     border-radius: 100px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-    border: 0;
-    font-family: "Font Awesome 5 Free";
+    border: 5px;
+    font-family: "Font Awesome 5 Free", serif;
     font-weight: bold;
-    color: white;
     text-align: center;
     font-size: 2em;
-    padding: 0;
-    font-style: normal;
-    line-height: normal;
+}
+
+.Body{
+    display: flex;
+    width: 50%;
+}
+
+#leftBlocking{
+
+}
+
+#rightDiv{
+
 }
