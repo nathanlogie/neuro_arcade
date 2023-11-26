@@ -21,7 +21,7 @@ body {
     padding: 0;
     background-color: #190A28;
     color: #FFFFFF;
-    font-family: Bahnschrift, serif;
+    font-family: Bahnschrift, sans-serif;
 }
 #hexagon {
     position: absolute;
