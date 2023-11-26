@@ -17,7 +17,15 @@
 <div class="gradient">
 
     <header class="glass">
-    {% block header_block %}
+    {% block body_header_block %}
+        <!-- PUT NAVBAR HERE -->
+        <!-- temporary navbar for testing purposes -->
+        {% if user.is_authenticated %}
+        <a href={% url 'na:logout' %}>Logout</a>
+        {% else %}
+        <a href={% url 'na:login' %}>Login</a>
+        <a href={% url 'na:sign_up' %}>Sign up</a>
+        {% endif %}
     {% endblock %}
     </header>
 
