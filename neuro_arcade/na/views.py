@@ -4,9 +4,8 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
+from na.forms import AboutForm, PublicationFormSet
 from na.models import Game, GameTag, Player
-from na.forms import UserForm, AboutForm, PublicationFormSet
-from na.models import Game, GameTag, Player, Score
 from na.forms import UserForm
 import json
 
