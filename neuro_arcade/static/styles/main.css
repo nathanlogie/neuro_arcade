@@ -1,15 +1,16 @@
 @font-face {
     font-family: "Bahnschrift";
     src: url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.eot");
-    src: url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.eot?#iefix")format("embedded-opentype"),
-    url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.woff2")format("woff2"),
-    url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.woff")format("woff"),
-    url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.ttf")format("truetype"),
-    url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.svg#Bahnschrift")format("svg");
+    src: url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.eot?#iefix") format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.woff2") format("woff2"),
+    url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.woff") format("woff"),
+    url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.ttf") format("truetype"),
+    url("https://db.onlinewebfonts.com/t/0a6ee448d1bd65c56f6cf256a7c6f20a.svg#Bahnschrift") format("svg");
 }
+
 body {
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
     height: 100%;
     margin: 0;
     padding: 0;
@@ -17,37 +18,46 @@ body {
     color: #FFFFFF;
     font-family: Bahnschrift, serif;
 }
+
 .body-block {
-    flex:1;
+    flex: 1;
 }
+
 #hexagon {
     position: absolute;
     height: 100%;
 }
+
 .gradient {
     position: absolute;
     width: 100%;
     height: 100%;
     background: linear-gradient(rgba(253, 253, 255, 0.20) 0%, rgba(0, 0, 0, 0.65) 88.48%);
 }
+
 .glass {
     backdrop-filter: blur(20px);
     background: rgba(255, 255, 255, 0.075);
 }
+
 header {
     padding: 10px;
 }
+
 header#mainpage {
-    min-height:150px;
+    min-height: 150px;
 }
+
 header#subpage {
-    min-height:50px;
+    min-height: 50px;
 }
+
 footer {
     bottom: 0;
     margin-top: auto;
-    min-height:50px;
+    min-height: 50px;
 }
+
 /* visited is just to see the hyperlinks as white in the dark purple background */
 a:visited {
     color: white;
@@ -83,19 +93,23 @@ a:visited {
     font-size: 1.1em;
     margin: 0;
 }
+
 #searchBar::placeholder {
     color: white;
 }
-.searchBlock{
+
+.searchBlock {
     position: relative;
     padding-bottom: 10%;
     flex: 1;
 }
-.filtersBlock{
+
+.filtersBlock {
     position: relative;
     flex: 2;
     margin: 1em;
 }
+
 #searchButton {
     position: absolute;
     nav-left: inherit;
@@ -116,12 +130,12 @@ a:visited {
     font-size: 2em;
 }
 
-.Body{
+.Body {
     display: flex;
     flex-direction: column;
 }
 
-#leftBlocking{
+#leftBlocking {
     flex: 1;
     display: flex;
     flex-direction: row;
@@ -129,14 +143,57 @@ a:visited {
     padding-left: 5%;
 }
 
-#rightDiv{
+#rightDiv {
     flex: 2;
     text-align: center;
+    display: inline-block;
+float:right;
+    position: absolute;
 }
-.gameImage{
+
+.gameImage {
     width: 7.5%;
     height: 7.5%;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
 }
 
+.headerBlocks {
+    text-align: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-family: "Font Awesome 5 Free", serif;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    display: flex;
+}
+
+.menu-container {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 100%;
+}
+.game_card{
+    flex: none;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    padding: 2em;
+}
+#cardItem{
+    background: #D14081;
+    text-align: center;
+    margin-bottom: 5%;
+    position: relative;
+    width: 25%;
+    height: 0;
+    padding-bottom: 25%;
+    font-size: inherit;
+}
+
+#cardItem + #cardItem{
+    margin-left: 5%;
+}
