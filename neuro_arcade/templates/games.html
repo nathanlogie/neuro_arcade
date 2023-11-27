@@ -11,17 +11,20 @@
         <div id="leftBlocking">
             <form id="search-form" action="{% url 'na:game_search' %}" method="GET">
                 <div class="searchBlock">
-                    <label for="searchBar"></label><input type="text" placeholder="Search..." id="searchBar" name="query">
+                    <label for="searchBar"></label><input type="text" placeholder="Search..." id="searchBar"
+                                                          name="query">
                     <button type="submit" id="searchButton">
                         <i class="fas fa-search" style="color: #ffffff;"></i>
                     </button>
                 </div>
                 <div class="filtersBlock">
                     <h2 class="headerBlocks">Filters:</h2>
-                    <label for="tags"></label><select name="tags" id="tags" multiple>
-                        {% for tag in tags %}
-                            <option value={{ tag.slug }}> {{ tag.name }}</option>
-                        {% endfor %}
+                    <select name="tags" id="tags" multiple>
+                    {% for tag in tags %}
+                        <input type="checkbox" name="tagz" value={{ tag.slug }}>
+                        <label for="tagz">{{ tag.name }} </label>
+                        <br>
+                    {% endfor %}
                     </select>
                 </div>
             </form>
@@ -34,7 +37,7 @@
                         {% for game in games %}
                             <a id="cardItem" href="{% url 'na:game_view' game.slug %}">
                                 <div class="game_card">
-                                    <img src="{{ game.icon }}" alt="{{ game.name }} icon &#10 alt text">
+                                    <img class = "cardImage" src="{{ game.icon.url }}" alt="{{ game.name }} icon &#10 alt text">
                                     <p>
                                         <strong>{{ game.name }}</strong>
                                     </p>
