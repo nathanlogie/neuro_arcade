@@ -4,8 +4,10 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from na.models import Game, GameTag, Player, Score
+from na.forms import AboutForm, PublicationFormSet
+from na.models import Game, GameTag, Player
 from na.forms import UserForm
+import json
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -58,7 +60,6 @@ def player_view(request: HttpRequest, player_name_slug: str) -> HttpResponse:
 
 def model_add(request: HttpRequest) -> HttpResponse:
     return HttpResponse("Model add page")
-
 
 def sign_up(request: HttpRequest) -> HttpResponse:
     # Check not already logged in
@@ -121,3 +122,55 @@ def login(request: HttpRequest) -> HttpResponse:
 def logout(request):
     auth.logout(request)
     return redirect(reverse('na:index'))
+
+
+def about(request):
+    try:
+        with open('media/about.json') as f:
+            data = json.load(f)
+    except FileNotFoundError:  # fallback to a static about.json
+        with open('static/about.json') as f:
+            data = json.load(f)
+
+    return render(request, 'about.html', data)
+
+
+@login_required
+def edit_about(request):
+    context_dict = {}
+    try:
+        with open('media/about.json') as f:
+            data = json.load(f)
+    except FileNotFoundError:  # fallback to a static about.json
+        with open('static/about.json') as f:
+            data = json.load(f)
+
+    if request.method == 'POST':
+        aboutForm = AboutForm(request.POST, request.FILES, initial={'description': data['description'], 'image': data['image']})
+        current_publications = [{'title': p['title'], 'author': p['author'], 'link':p['link']} for p in data['publications']]
+        publicationForms = PublicationFormSet(request.POST, initial=current_publications)
+        if aboutForm.is_valid():
+            if publicationForms.is_valid():
+                for p in publicationForms:
+                    title = p.cleaned_data['title']
+                    author = p.cleaned_data['author']
+                    link = p.cleaned_data['link']
+                    data['publications'].append({'title': title, 'author': author, 'link': link})
+
+            description = request.POST.get('description')
+
+            if description:
+                data['description'] = description
+
+            with open('media/about.json', 'w') as f:
+                json.dump(data, f)
+
+            return redirect(reverse('na:about'))
+        else:
+            context_dict["aboutForm"] = aboutForm
+            context_dict["publicationForms"] = publicationForms
+    else:
+        context_dict["aboutForm"] = AboutForm(initial=data)
+        context_dict["publicationForms"] = PublicationFormSet(initial=data['publications'])
+
+    return render(request, 'edit_about.html', context_dict)
