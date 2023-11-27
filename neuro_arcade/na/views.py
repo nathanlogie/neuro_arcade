@@ -139,12 +139,13 @@ def edit_about(request):
         aboutForm = AboutForm(request.POST, request.FILES, initial={'description': data['description'], 'image': data['image']})
         current_publications = [{'title': p['title'], 'author': p['author'], 'link':p['link']} for p in data['publications']]
         publicationForms = PublicationFormSet(request.POST, initial=current_publications)
-        if aboutForm.is_valid() and publicationForms.is_valid():
-            for p in publicationForms:
-                title = p.cleaned_data['title']
-                author = p.cleaned_data['author']
-                link = p.cleaned_data['link']
-                data['publications'].append({'title': title, 'author': author, 'link': link})
+        if aboutForm.is_valid():
+            if publicationForms.is_valid():
+                for p in publicationForms:
+                    title = p.cleaned_data['title']
+                    author = p.cleaned_data['author']
+                    link = p.cleaned_data['link']
+                    data['publications'].append({'title': title, 'author': author, 'link': link})
 
             description = request.POST.get('description')
 
