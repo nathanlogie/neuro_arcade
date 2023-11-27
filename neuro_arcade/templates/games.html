@@ -34,7 +34,7 @@
                         {% for game in games %}
                             <a id="cardItem" href="{% url 'na:game_view' game.slug %}">
                                 <div class="game_card">
-                                    <img src="{{ game.icon }}" alt="{{ game.name }} icon">
+                                    <img src="{{ game.icon }}" alt="{{ game.name }} icon &#10 alt text">
                                     <p>
                                         <strong>{{ game.name }}</strong>
                                     </p>
