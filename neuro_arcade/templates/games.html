@@ -11,14 +11,14 @@
         <div id="leftBlocking">
             <form id="search-form" action="{% url 'na:game_search' %}" method="GET">
                 <div class="searchBlock">
-                    <input type="text" placeholder="Search..." id="searchBar" name="query">
+                    <label for="searchBar"></label><input type="text" placeholder="Search..." id="searchBar" name="query">
                     <button type="submit" id="searchButton">
                         <i class="fas fa-search" style="color: #ffffff;"></i>
                     </button>
                 </div>
                 <div class="filtersBlock">
                     <h2 class="headerBlocks">Filters:</h2>
-                    <select name="tags" id="tags" multiple>
+                    <label for="tags"></label><select name="tags" id="tags" multiple>
                         {% for tag in tags %}
                             <option value={{ tag.slug }}> {{ tag.name }}</option>
                         {% endfor %}
@@ -32,13 +32,11 @@
                 {% if games %}
                     <div class="menu-container">
                         {% for game in games %}
-                            <a id="cardItem" href="{% url 'na:game_view' game.slug %}"
-                               style="background-image: url('neuro_arcade/media/game_icons/example.png')">
+                            <a id="cardItem" href="{% url 'na:game_view' game.slug %}">
                                 <div class="game_card">
+                                    <img src="{{ game.icon }}" alt="{{ game.name }} icon">
                                     <p>
                                         <strong>{{ game.name }}</strong>
-                                        <br>
-                                        {{ game.description }}
                                     </p>
                                 </div>
                             </a>
