@@ -10,7 +10,6 @@
     {% block body_block %}
         <div id="leftBlocking">
             <form id="search-form" action="{% url 'na:game_search' %}" method="GET">
-                <h2>Query</h2>
                 <div class="searchBlock">
                     <input type="text" placeholder="Search..." id="searchBar" name="query">
                     <button type="submit" id="searchButton">
@@ -18,31 +17,34 @@
                     </button>
                 </div>
                 <div class="filtersBlock">
-                <h2>Filters:</h2>
-                <select name="tags" id="tags" multiple>
-                    {% for tag in tags %}
-                        <option value={{ tag.slug }}> {{ tag.name }}</option>
-                    {% endfor %}
-                </select>
+                    <h2 class="headerBlocks">Filters:</h2>
+                    <select name="tags" id="tags" multiple>
+                        {% for tag in tags %}
+                            <option value={{ tag.slug }}> {{ tag.name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </form>
         </div>
         <div id="rightDiv">
-            <h2>Results</h2>
+            <h2 class="headerBlocks">All Games</h2>
             <ul>
                 {% if games %}
-                    {% for game in games %}
-                        <li>
-                            <div>
-                                <img src="{{ game.icon.url }}" class="gameImage" alt="game icon">
-                                <a href={% url 'na:game_view' game.slug %}>{{ game.name }}</a>
-                                <p>{{ game.description }}</p>
-                                {% for tag in game.tags.all %}
-                                    [{{ tag.name }}]
-                                {% endfor %}
-                            </div>
-                        </li>
-                    {% endfor %}
+                    <div class="menu-container">
+                        {% for game in games %}
+                            <a id="cardItem" href="{% url 'na:game_view' game.slug %}"
+                               style="background-image: url('neuro_arcade/media/game_icons/example.png')">
+                                <div class="game_card">
+                                    <p>
+                                        <strong>{{ game.name }}</strong>
+                                        <br>
+                                        {{ game.description }}
+                                    </p>
+                                </div>
+                            </a>
+
+                        {% endfor %}
+                    </div>
                 {% else %}
                     <li>NO GAMES IN DB!<br> (maybe you forgot to populate it (run populate.py))</li>
                 {% endif %}
