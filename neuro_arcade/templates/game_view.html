@@ -13,10 +13,28 @@
             <ul>{{ tag.name }}</ul>
         {% endfor %}
     {% endif %}
-    {% if scores %}
-        {% for score in scores %}
-            <ul>score: {{ score.values }}</ul>
-        {% endfor %}
+    <h3>Score Table</h3>
+    {% if rows %}
+        <table>
+            <tr>
+                <th>Players:</th>
+                {% for header in table_headers %}
+                    <th>{{ header.name }}</th>
+                {% endfor %}
+            </tr>
+            {% for row in rows %}
+                <tr>
+                    <th>{{ row.player.name }}</th>
+                    {% for value in row.score %}
+                        <th>{{ value }}</th>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+
+{#        {% for score in scores %}#}
+{#            <ul>score: {{ score }}</ul>#}
+{#        {% endfor %}#}
     {% else %}
         <p>No scores loaded!</p>
     {% endif %}

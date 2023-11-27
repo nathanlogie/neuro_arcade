@@ -21,14 +21,10 @@ django.setup()
 Main program
 """
 
+from django.contrib.auth.models import Group, Permission
 from typing import Dict
-
-from django.contrib.auth.models import Group, Permission, User
-from django.templatetags.static import static
-from django.utils import timezone
-from pytz import utc
-
-from na.models import GameTag, Game, Player, PlayerTag, Score
+import random
+from na.models import *
 
 users = [
     {
@@ -164,7 +160,6 @@ game_tags = [
         'name': "Memory Games",
         'description': "Games where memorisation is required",
     },
-    
 ]
 
 games = [
@@ -434,481 +429,203 @@ players = [
     },
 ]
 
-score_table = [
-    {
-        'name': 'Varying Shapes Evaluation',
-        'description': "Varying Shapes Script",
-        'evaluation': "example.py",
-        'game': "Varying Shapes",
-    },
-    {
-        'name': 'Flying Objects Evaluation',
-        'description': "Flying Objects Script",
-        'evaluation': "example.py",
-        'game': "Flying Objects",
-    },
-    {
-        'name': 'Object Crops Evaluation',
-        'description': "Object Crops Script",
-        'evaluation': "example.py",
-        'game': "Object Crops",
-    },
-    {
-        'name': 'Block Drops Evaluation',
-        'description': "Block Drops Script",
-        'evaluation': "example.py",
-        'game': "Block Drops",
-    },
-    {
-        'name': '2048 Evaluation',
-        'description': "2048 Script",
-        'evaluation': "example.py",
-        'game': "2048",
-    },
-    {
-        'name': 'Space Creatures Evaluation',
-        'description': "Space Creatures Script",
-        'evaluation': "example.py",
-        'game': "Space Creatures",
-    },
-    {
-        'name': 'Flying Bird Evaluation',
-        'description': "Flying Bird Script",
-        'evaluation': "example.py",
-        'game': "Flying Bird",
-    },
-    {
-        'name': 'Suduko Evaluation',
-        'description': "Suduko Script",
-        'evaluation': "example.py",
-        'game': "Suduko",
-    },
-    {
-        'name': 'Maze Evaluation',
-        'description': "Maze Script",
-        'evaluation': "example.py",
-        'game': "Maze",
-    },
-    {
-        'name': 'Music Jump Evaluation',
-        'description': "Music Jump Script",
-        'evaluation': "example.py",
-        'game': "Music Jump",
-    },
-    {
-        'name': 'Brick Breaker Evaluation',
-        'description': "Brick Breaker Script",
-        'evaluation': "example.py",
-        'game': "Brick Breaker",
-    },
-    {
-        'name': 'Minesweeper Evaluation',
-        'description': "Minesweeper Script",
-        'evaluation': "example.py",
-        'game': "Minesweeper",
-    },
-    {
-        'name': 'Snake Evaluation',
-        'description': "Snake Script",
-        'evaluation': "example.py",
-        'game': "Snake",
-    },
-    {
-        'name': 'Simon Says Evaluation',
-        'description': "Simon Says Script",
-        'evaluation': "example.py",
-        'game': "Simon Says",
-    },
-    {
-        'name': 'Frog Road Evaluation',
-        'description': "Frog Road Script",
-        'evaluation': "example.py",
-        'game': "Frog Road",
-    },
-    {
-        'name': 'Spelling Evaluation',
-        'description': "Spelling Script",
-        'evaluation': "example.py",
-        'game': "Spelling",
-    },
-    {
-        'name': 'Connections Evaluation',
-        'description': "Connections Script",
-        'evaluation': "example.py",
-        'game': "Connections",
-    },
-    {
-        'name': 'Words Evaluation',
-        'description': "Words Script",
-        'evaluation': "example.py",
-        'game': "Words",
-    },
-    {
-        'name': 'Wordsearch Evaluation',
-        'description': "Wordsearch Script",
-        'evaluation': "example.py",
-        'game': "Wordsearch",
-    },
-]
-
-score_column = [
-    {
-        'table': 'Varying Shapes Evaluation',
-        'name': 'Varying Shapes Field',
-        'description': "Number of coins collected",
-        'min': 0,
-        'max': 100,
-    },
-    {
-        'table': 'Flying Objects Evaluation',
-        'name': 'Flying Objects Field',
-        'description': "Number of points collected",
-        'min': 0,
-        'max': 20,
-    },
-    {
-        'table': 'Object Crops Evaluation',
-        'name': 'Object Crops Field',
-        'description': "Number of points collected",
-        'min': 0,
-        'max': 100,
-    },
-    {
-        'table': 'Block Drops Evaluation',
-        'name': 'Block Drops Field',
-        'description': "Number of points collected",
-        'min': 0,
-        'max': 10000,
-    },
-    {
-        'table': '2048 Evaluation',
-        'name': '2048 Field',
-        'description': "Number of points collected",
-        'min': 0,
-        'max': 10000,
-    },
-    {
-        'table': 'Space Creatures Evaluation',
-        'name': 'Space Creatures Field',
-        'description': "Number of points collected",
-        'min': 0,
-        'max': 10,
-    },
-    {
-        'table': 'Flying Bird Evaluation',
-        'name': 'Flying Bird Field',
-        'description': "Number of points collected",
-        'min': 0,
-        'max': 10000,
-    },
-    {
-        'table': 'Suduko Evaluation',
-        'name': 'Suduko Field',
-        'description': "Time taken to complete",
-        'min': 0,
-        'max': 600,
-    },
-    {
-        'table': 'Maze Evaluation',
-        'name': 'Maze Field',
-        'description': "Time taken to complete",
-        'min': 0,
-        'max': 600,
-    },
-    {
-        'table': 'Music Jump Evaluation',
-        'name': 'Music Jump Field',
-        'description': "Number of attempts taken to complete",
-        'min': 0,
-        'max': 100,
-    },
-    {
-        'table': 'Brick Breaker Evaluation',
-        'name': 'Brich Breaker Field',
-        'description': "Time taken to complete",
-        'min': 0,
-        'max': 600,
-    },
-    {
-        'table': 'Minesweeper Evaluation',
-        'name': 'Minesweeper Field',
-        'description': "Time taken to complete",
-        'min': 0,
-        'max': 600,
-    },
-    {
-        'table': 'Snake Evaluation',
-        'name': 'Snake Field',
-        'description': "Number of points collected",
-        'min': 0,
-        'max': 200,
-    },
-    {
-        'table': 'Simon Says Evaluation',
-        'name': 'Simon Says Field',
-        'description': "Number of points collected",
-        'min': 0,
-        'max': 25,
-    },
-    {
-        'table': 'Frog Road Evaluation',
-        'name': 'Frog Road Field',
-        'description': "Number of points collected",
-        'min': 0,
-        'max': 250,
-    },
-    {
-        'table': 'Spelling Evaluation',
-        'name': 'Spelling Field',
-        'description': "Time taken to complete",
-        'min': 0,
-        'max': 600,
-    },
-    {
-        'table': 'Connections Evaluation',
-        'name': 'Connections Field',
-        'description': "Time taken to complete",
-        'min': 0,
-        'max': 600,
-    },
-    {
-        'table': 'Words Evaluation',
-        'name': 'Words Field',
-        'description': "Number of points collected",
-        'min': 0,
-        'max': 75,
-    },
-    {
-        'table': 'Wordsearch Evaluation',
-        'name': 'Wordsearch Field',
-        'description': "Time taken to complete",
-        'min': 0,
-        'max': 600,
-    },
-]
-
-score_row = [
-    {
-        'type': 'Varying Shapes Evaluation',
-        'time': '2023-01-04 19:20:50',
-        'player': 'Amanda Wilson',
-        'fields': [
+score_types = {
+    'Varying Shapes': {
+        'headers': [
             {
-                'column': 'Varying Shapes Field',
-                'value': 25,
-            },
+                'name': 'Coins',
+                'description': "Number of coins collected",
+                'min': 0,
+                'max': 100,
+            }
         ]
     },
-    {
-        'type': 'Flying Objects Evaluation',
-        'time': '2023-01-21 00:03:18',
-        'player': 'Leonard Garry',
-        'fields': [
+    'Flying Objects': {
+        'headers': [
             {
-                'column': 'Flying Objects Field',
-                'value': 6,
-            },
+                'name': 'Points',
+                'description': "Number of points collected",
+                'min': 0,
+                'max': 20,
+            }
         ]
     },
-    {
-        'type': 'Object Crops Evaluation',
-        'time': '2023-02-03 10:45:36',
-        'player': 'Shelly Giles',
-        'fields': [
+    'Object Crops': {
+        'headers': [
             {
-                'column': 'Object Crops Field',
-                'value': 9,
-            },
+                'name': 'Points',
+                'description': "Number of points collected",
+                'min': 0,
+                'max': 100,
+            }
         ]
     },
-    {
-        'type': 'Block Drops Evaluation',
-        'time': '2023-01-08 15:57:54',
-        'player': 'Billy Bennett',
-        'fields': [
+    'Block Drops': {
+        'headers': [
             {
-                'column': 'Block Drops Field',
-                'value': 1627.3,
-            },
+                'name': 'Points',
+                'description': "Number of points collected",
+                'min': 0,
+                'max': 10000,
+            }
         ]
     },
-    {
-        'type': '2048 Evaluation',
-        'time': '2023-02-12 02:19:42',
-        'player': 'Zebra Bot',
-        'fields': [
+    '2048': {
+        'headers': [
             {
-                'column': '2048 Field',
-                'value': 82934.1,
-            },
+                'name': 'Points',
+                'description': "Number of points collected",
+                'min': 0,
+                'max': 10000,
+            }
         ]
     },
-    {
-        'type': 'Space Creatures Evaluation',
-        'time': '2023-01-16 20:28:27',
-        'player': 'Monkey Bot',
-        'fields': [
+    'Space Creatures': {
+        'headers': [
             {
-                'column': 'Space Creatures Field',
-                'value': 28,
-            },
+                'name': 'Points',
+                'description': "Number of points collected",
+                'min': 0,
+                'max': 10,
+            }
         ]
     },
-    {
-        'type': 'Flying Bird Evaluation',
-        'time': '2023-01-21 04:50:04',
-        'player': 'Tiger Bot',
-        'fields': [
+    'Flying Bird': {
+        'headers': [
             {
-                'column': 'Flying Bird Field',
-                'value': 25,
+                "name": "Coins",
+                "type": "int",
+                "min": 0,
+                "max": 100
             },
+            {
+                "name": "Points",
+                "type": "float",
+                "min": 0
+            }
         ]
     },
-    {
-        'type': 'Suduko Evaluation',
-        'time': '2023-02-05 15:12:01',
-        'player': 'Elephant Bot',
-        'fields': [
+    'Suduko': {
+        'headers': [
             {
-                'column': 'Suduko Field',
-                'value': 273.2,
-            },
+                'name': 'Time',
+                'description': "Time taken to complete",
+                'min': 0,
+                'max': 600,
+            }
         ]
     },
-    {
-        'type': 'Maze Evaluation',
-        'time': '2023-02-06 03:01:16',
-        'player': 'Elephant Bot',
-        'fields': [
+    'Maze': {
+        'headers': [
             {
-                'column': 'Maze Field',
-                'value': 202.2,
-            },
+                'name': 'Time',
+                'description': "Time taken to complete",
+                'min': 0,
+                'max': 600,
+            }
         ]
     },
-    {
-        'type': 'Music Jump Evaluation',
-        'time': '2023-02-01 09:14:38',
-        'player': 'Tiger Bot',
-        'fields': [
+    'Music Jump': {
+        'headers': [
             {
-                'column': 'Music Jump Field',
-                'value': 16,
-            },
+                'name': 'Attempts',
+                'description': "Number of attempts taken to complete",
+                'min': 0,
+                'max': 100,
+            }
         ]
     },
-    {
-        'type': 'Varying Shapes Evaluation',
-        'time': '2023-01-14 02:36:26',
-        'player': 'Monkey Bot',
-        'fields': [
+    'Brick Breaker': {
+        'headers': [
             {
-                'column': 'Varying Shapes Field',
-                'value': 12,
-            },
+                'name': 'Time',
+                'description': "Time taken to complete",
+                'min': 0,
+                'max': 600,
+            }
         ]
     },
-    {
-        'type': 'Flying Objects Evaluation',
-        'time': '2023-02-03 04:47:10',
-        'player': 'Zebra Bot',
-        'fields': [
+    'Minesweeper': {
+        'headers': [
             {
-                'column': 'Flying Objects Field',
-                'value': 3,
-            },
+                'name': 'Time',
+                'description': "Time taken to complete",
+                'min': 0,
+                'max': 600,
+            }
         ]
     },
-    {
-        'type': 'Object Crops Evaluation',
-        'time': '2023-02-10 17:08:25',
-        'player': 'Billy Bennett',
-        'fields': [
+    'Snake': {
+        'headers': [
             {
-                'column': 'Object Crops Field',
-                'value': 6,
-            },
+                'name': 'Points',
+                'description': "Number of points collected",
+                'min': 0,
+                'max': 200,
+            }
         ]
     },
-    {
-        'type': 'Block Drops Evaluation',
-        'time': '2023-01-19 21:31:52',
-        'player': 'Shelly Giles',
-        'fields': [
+    'Simon Says': {
+        'headers': [
             {
-                'column': 'Block Drops Field',
-                'value': 1738.2,
-            },
+                'name': 'Points',
+                'description': "Number of points collected",
+                'min': 0,
+                'max': 25,
+            }
         ]
     },
-    {
-        'type': '2048 Evaluation',
-        'time': '2023-02-13 15:43:40',
-        'player': 'Leonard Garry',
-        'fields': [
+    'Frog Road': {
+        'headers': [
             {
-                'column': '2048 Field',
-                'value': 627.2,
-            },
+                'name': 'Points',
+                'description': "Number of points collected",
+                'min': 0,
+                'max': 250,
+            }
         ]
     },
-    {
-        'type': 'Space Creatures Evaluation',
-        'time': '2023-02-12 23:32:55',
-        'player': 'Amanda Wilson',
-        'fields': [
+    'Spelling': {
+        'headers': [
             {
-                'column': 'Space Creatures Field',
-                'value': 3,
-            },
+                'name': 'Time',
+                'description': "Time taken to complete",
+                'min': 0,
+                'max': 600,
+            }
         ]
     },
-    {
-        'type': 'Flying Bird Evaluation',
-        'time': '2023-01-26 18:55:22',
-        'player': 'Amanda Wilson',
-        'fields': [
+    'Connections': {
+        'headers': [
             {
-                'column': 'Flying Bird Field',
-                'value': 45,
-            },
+                'name': 'Time',
+                'description': "Time taken to complete",
+                'min': 0,
+                'max': 600,
+            }
         ]
     },
-    {
-        'type': 'Suduko Evaluation',
-        'time': '2023-01-11 13:17:49',
-        'player': 'Leonard Garry',
-        'fields': [
+    'Words': {
+        'headers': [
             {
-                'column': 'Suduko Field',
-                'value': 347.2,
-            },
+                'name': 'Points',
+                'description': "Number of points collected",
+                'min': 0,
+                'max': 75,
+            }
         ]
     },
-    {
-        'type': 'Maze Evaluation',
-        'time': '2023-01-12 06:39:37',
-        'player': 'Shelly Giles',
-        'fields': [
+    'Wordsearch': {
+        'headers': [
             {
-                'column': 'Maze Field',
-                'value': 502.1,
-            },
+                'name': 'Time',
+                'description': "Time taken to complete",
+                'min': 0,
+                'max': 600,
+            }
         ]
     },
-    {
-        'type': 'Music Jump Evaluation',
-        'time': '2023-01-04 19:20:50',
-        'player': 'Billy Bennett',
-        'fields': [
-            {
-                'column': 'Music Jump Field',
-                'value': 25,
-            },
-        ]
-    },
-]
+}
 
 groups = [
     {
@@ -917,12 +634,21 @@ groups = [
     },
 ]
 
-groups = [
-    {
-        'name': "Administrator",
-        'permissions': [],
-    },
-]
+
+def add_random_score(game: Game, player_list):
+    player = random.choice(player_list)
+    score = {}
+
+    for header in game.score_type['headers']:
+        mini = header.get('min', 0)
+        maxi = header.get('max', 1000)
+        score[header['name']] = random.randint(mini, maxi)
+
+    game.score_set.create(
+        player_id=player.id,
+        game_id=game.id,
+        score=score
+    )
 
 def add_media_from_static(folder: str, filename: str) -> str:
     """Copies a file from /static/population/ to /media/"""
@@ -942,7 +668,6 @@ def add_media_from_static(folder: str, filename: str) -> str:
 
     # Return relative path
     return os.path.join(folder, filename)
-
 
 def add_user(data: Dict) -> User:
     """Create a django user"""
@@ -981,7 +706,6 @@ def add_game_tag(data: Dict) -> GameTag:
 
     return tag
 
-
 def add_game(data: Dict) -> Game:
     """Create a na game"""
 
@@ -989,9 +713,9 @@ def add_game(data: Dict) -> Game:
         name=data['name'],
         defaults={
             'owner': User.objects.get(username=data['owner']),
-            'score_type': '{}'
         },
     )[0]
+    game.score_type = score_types[data['name']]
     game.description = data.get('description', "no description")
 
     if 'icon' in data:
@@ -1005,9 +729,11 @@ def add_game(data: Dict) -> Game:
 
         game.tags.add(tag)
 
-    # TODO: create score types for Games in the population script
-
     game.save()
+
+    # adding some random scores to this game
+    for _ in range(random.randint(2, 4)):
+        add_random_score(game, Player.objects.all())
 
     return game
 
@@ -1020,7 +746,6 @@ def add_player_tag(data: Dict) -> PlayerTag:
     tag.save()
 
     return tag
-
 
 def add_player(data: Dict):
     player = Player.objects.get_or_create(name=data['name'])[0]
@@ -1042,72 +767,6 @@ def add_player(data: Dict):
     return player
 
 
-# DEPRECATED!!
-# def add_score_table(data: Dict) -> ScoreTable:
-#     """Create an na score table"""
-#
-#     game = Game.objects.get(name=data['game'])
-#     score_table = ScoreTable.objects.get_or_create(
-#         name=data['name'],
-#         defaults={
-#             'description': data['description'],
-#             'evaluation': add_media_from_static(ScoreTable.MEDIA_SUBDIR, data['evaluation']),
-#             'game': game,
-#         },
-#     )[0]
-#
-#     return score_table
-
-
-# DEPRECATED!!
-# def add_score_column(data: Dict) -> ScoreColumn:
-#     """Create a na score field type"""
-#
-#     table = ScoreTable.objects.get(name=data['table'])
-#     score_column = ScoreColumn.objects.get_or_create(
-#         table=table,
-#         name=data['name'],
-#         defaults={
-#             'description': data['description'],
-#             'min': data['min'],
-#             'max': data['max'],
-#         },
-#     )[0]
-#
-#     return score_column
-
-
-# DEPRECATED!!
-# def add_score_field(data: Dict, group: ScoreRow) -> ScoreField:
-#     """Create a na score field"""
-#
-#     score_column = ScoreColumn.objects.get(table=group.table, name=data['column'])
-#     score_field = ScoreField.objects.get_or_create(
-#         column=score_column,
-#         row=group,
-#         defaults={
-#             'value': data['value'],
-#         }
-#     )[0]
-#     return score_field
-
-
-# DEPRECATED!!
-# def add_score_row(data: Dict):
-#     table = ScoreTable.objects.get(name=data['type'])
-#     time = timezone.datetime.strptime(data['time'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=utc)
-#     player, _ = Player.objects.get_or_create(name=data['player'])
-#     score = ScoreRow.objects.get_or_create(
-#         table=table,
-#         time=time,
-#         player=player,
-#     )[0]
-#
-#     for field in data['fields']:
-#         add_score_field(field, score)
-#     return score
-
-
 def populate():
     """Populate the database with example data"""
 
@@ -1115,22 +774,18 @@ def populate():
         add_group(data)
     for data in users:
         add_user(data)
+    for data in players:
+        add_player(data)
+    for data in player_tags:
+        add_player_tag(data)
     for data in game_tags:
+        # players need to exist at this point
         add_game_tag(data)
     for data in games:
         add_game(data)
-    for data in player_tags:
-        add_player_tag(data)
-    for data in players:
-        add_player(data)
-    # for data in score_table:
-    #     add_score_table(data)
-    # for data in score_column:
-    #     add_score_column(data)
-    # for data in score_row:
-    #     add_score_row(data)
 
     print("Database populated!")
+
 
 if __name__ == "__main__":
     populate()
