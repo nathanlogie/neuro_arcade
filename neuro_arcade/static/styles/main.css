@@ -201,3 +201,5 @@ a:visited {
 #cardItem + #cardItem {
     margin-left: 5%;
 }
+img.class { overflow:hidden }
+
