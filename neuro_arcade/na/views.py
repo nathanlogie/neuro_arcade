@@ -6,9 +6,9 @@ from django.urls import reverse
 
 from na.models import Game, GameTag, Player
 from na.forms import UserForm, AboutForm, PublicationFormSet
-import json
 from na.models import Game, GameTag, Player, Score
 from na.forms import UserForm
+import json
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -126,8 +126,12 @@ def logout(request):
 
 
 def about(request):
-    with open('media/about.json') as f:
-        data = json.load(f)
+    try:
+        with open('media/about.json') as f:
+            data = json.load(f)
+    except FileNotFoundError:  # fallback to a static about.json
+        with open('static/about.json') as f:
+            data = json.load(f)
 
     return render(request, 'about.html', data)
 
@@ -135,8 +139,12 @@ def about(request):
 @login_required
 def edit_about(request):
     context_dict = {}
-    with open('media/about.json', 'r') as f:
-        data = json.load(f)
+    try:
+        with open('media/about.json') as f:
+            data = json.load(f)
+    except FileNotFoundError:  # fallback to a static about.json
+        with open('static/about.json') as f:
+            data = json.load(f)
 
     if request.method == 'POST':
         aboutForm = AboutForm(request.POST, request.FILES, initial={'description': data['description'], 'image': data['image']})
