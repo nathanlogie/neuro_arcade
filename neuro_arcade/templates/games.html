@@ -27,8 +27,8 @@
                     <div id="tagList">
                     <select name="tags" id="tags" multiple>
                         {% for tag in tags %}
-                            <input type="checkbox" name="tagz" value={{ tag.slug }}>
-                            <label for="tagz">{{ tag.name }} </label>
+                            <input type="checkbox" name="tags" value={{ tag.slug }}>
+                            <label for="tags">{{ tag.name }} </label>
                             <br>
                         {% endfor %}
                     </select>
