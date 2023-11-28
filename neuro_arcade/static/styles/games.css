@@ -15,9 +15,8 @@
 }
 
 #searchBar {
-    width: 90%;
-    height: 80%;
-    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
     color: white;
     border-radius: 100px;
     background: rgba(255, 255, 255, 0.30);
@@ -27,6 +26,7 @@
     padding-left: 2em;
     font-size: 1.1em;
     margin: 0;
+    z-index: -100;
 }
 
 #searchBar::placeholder {
@@ -37,26 +37,26 @@
     position: relative;
     padding-bottom: 10%;
     flex: 1;
+    width: 85.3%;
+    height: 12.1%;
 }
 
 .filtersBlock {
     position: relative;
     flex: 2;
-    margin: 1em;
+    margin-top: 4.2%
 }
 
 #searchButton {
     position: absolute;
-    nav-left: inherit;
-    left: 85%;
-    /*width: 25%;*/
-    height: 90%;
-    width: fit-content;
+    height: 130%;
+    left: 100%;
     top: 0;
-    float: inherit;
+    width: auto;
+    z-index: -1;
     align-content: center;
     background-color: #D14081;
-    border-radius: 100px;
+    border-radius: 50%;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     border: 5px;
     font-family: "Font Awesome 5 Free", serif;
@@ -67,31 +67,36 @@
 
 
 #leftBlocking {
-    flex: 1;
     display: flex;
     flex-direction: row;
     float: left;
-    padding-left: 5%;
+    width: 30.9%;
+    margin-left: 6.18%;
+    margin-right: 2.28%;
+    margin-top: 3.16%;
+
 }
 
 #rightDiv {
-    flex: 2;
-    text-align: center;
+    width: 54.6%;
+    text-align: left;
     display: inline-block;
     float: right;
     position: absolute;
+    margin-top: 3.16%;
+    margin-right: 6.45%;
 }
 
 .gameImage {
-    width: 7.5%;
-    height: 7.5%;
+    width: 100%;
+    height: auto;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
 }
 
 .headerBlocks {
-    text-align: center;
-    justify-content: center;
+    text-align: left;
+    justify-content: left;
     color: #FFFFFF;
     font-family: "Font Awesome 5 Free", serif;
     font-style: normal;
@@ -113,18 +118,15 @@
     flex: none;
     display: inline-block;
     flex-direction: row;
-    width: 100%;
-    height: 100%;
-    padding: 2em;
+    width: 12.7%;
+    height: auto;
+    margin-right: 3.5%;
 }
-.game_card img{
-    border-radius: 5%;
-}
+
 .cardImage {
     border-radius: 5%;
-    object-fit: contain;
-    width: 75%;
-    height: auto;
+    width: 100%;
+    height: 100%;
 }
 
 #cardItem {
@@ -133,8 +135,7 @@
     margin-bottom: 5%;
     position: relative;
     width: 20%;
-    height: auto;
-    padding-bottom: 25%;
+    height: 21.9%;
     font-size: inherit;
 }
 
@@ -146,6 +147,8 @@ img.class { overflow:hidden}
 .filtersBlock{
     background: #8e8e8e;
     backdrop-filter: opacity(0.2);
+    opacity: 0.5;
+
 }
 
 .filtersBlock label{

@@ -37,7 +37,6 @@
             <h2 class="headerBlocks">All Games</h2>
             <ul>
                 {% if games %}
-                    <div class="menu-container">
                         {% for game in games %}
                             <a id="cardItem" href="{% url 'na:game_view' game.slug %}">
                                 <div class="game_card">
@@ -50,8 +49,7 @@
                             </a>
 
                         {% endfor %}
-                    </div>
-                {% else %}
+s                {% else %}
                     <li>NO GAMES IN DB!<br> (maybe you forgot to populate it (run populate.py))</li>
                 {% endif %}
             </ul>
