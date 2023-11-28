@@ -1,32 +1,18 @@
 {% extends "base_large_banner.html" %}
 
-<header class="glass">
-    {% block header_block %}
-        {{ block.super }}
-    <div class="button" id="about">
-        <div class="link" id="left">About</div>
-        <div class="arrow" id="left"></div>
-    </div>
-    <div class="button" id="add_content">
-        <div class="link" id="right">Add Content</div>
-        <div class="arrow" id="right"></div>
-    </div>
-{% endblock %}
-</header>
-
 
 <header class="glass">
     {% block header_block %}
         {{ block.super }}
-    <div class="button" id="about" onclick="location.href='{% url 'na:about' %}';">
-        <div class="link" id="left">About</div>
-        <div class="arrow" id="left"></div>
-    </div>
-    <div class="button" id="add_content" onclick="location.href='{% url 'na:model_add' %}';">
-        <div class="link" id="right">Add Content</div>
-        <div class="arrow" id="right"></div>
-    </div>
-{% endblock %}
+        <div class="button" id="about" onclick="location.href='{% url 'na:about' %}';">
+            <div class="link" id="left">About</div>
+            <div class="arrow" id="left"></div>
+        </div>
+        <div class="button" id="add_content" onclick="location.href='{% url 'na:model_add' %}';">
+            <div class="link" id="right">Add Content</div>
+            <div class="arrow" id="right"></div>
+        </div>
+    {% endblock %}
 </header>
 
 
