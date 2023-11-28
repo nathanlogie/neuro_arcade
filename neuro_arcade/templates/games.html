@@ -4,39 +4,58 @@
     {{ block.super }}
 {% endblock %}
 
-{% block body_block %}
+<header id="subpage">
+    {% block body_header_block %}
+        <h1>Game search</h1>
+    {% endblock %}
+    <link rel="stylesheet" href="../static/styles/games.css">
+    <link rel="stylesheet" href="../static/styles/main.css">
+</header>
+<div class="Body">
+    {% block body_block %}
+        <div id="leftBlocking">
+            <form id="search-form" action="{% url 'na:game_search' %}" method="GET">
+                <div class="searchBlock">
+                    <label for="searchBar"></label><input type="text" placeholder="Search..." id="searchBar"
+                                                          name="query">
+                    <button type="submit" id="searchButton">
+                        <i class="fas fa-search" style="color: #ffffff;"></i>
+                    </button>
+                </div>
+                <div class="filtersBlock">
+                    <h2 class="headerBlocks">Filters:</h2>
+                    <div id="tagList">
+                    <select name="tags" id="tags" multiple>
+                        {% for tag in tags %}
+                            <input type="checkbox" name="tagz" value={{ tag.slug }}>
+                            <label for="tagz">{{ tag.name }} </label>
+                            <br>
+                        {% endfor %}
+                    </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="rightDiv">
+            <h2 class="headerBlocks">All Games</h2>
+            <ul>
+                {% if games %}
+                        {% for game in games %}
+                            <a id="cardItem" href="{% url 'na:game_view' game.slug %}">
+                                <div class="game_card">
+                                    <img class="cardImage" src="{{ game.icon.url }}"
+                                         alt="{{ game.name }} icon &#10 alt text">
+                                    <p id = "gameTitle">
+                                        <strong>{{ game.name }}</strong>
+                                    </p>
+                                </div>
+                            </a>
 
-<form id="search-form" action="{% url 'na:game_search' %}" method="GET">
-    <h2>Query</h2>
-    <div>
-        <input type="text" placeholder="search..." id="searchBar" name="query">
-        <button type="submit" id="searchButton"></button>
-    </div>
-
-    <h2>Filters:</h2>
-    <select name="tags" id="tags" multiple>
-        {% for tag in tags %}
-        <option value={{ tag.slug }}> {{ tag.name }}</option>
-        {% endfor %}
-    </select>
-</form>
-
-<h2>Results</h2>
-<ul>
-{% if games %}
-    {% for game in games %}
-    <li><div>
-        <img src="{{ game.icon.url }}" width=64></img>
-        <a href={% url 'na:game_view' game.slug %}>{{ game.name }}</a>
-        <p>{{ game.description }}</p>
-        {% for tag in game.tags.all %}
-            [{{ tag.name }}] 
-        {% endfor %}
-    </div></li>
-    {% endfor %}
-{% else %}
-    <li>NO GAMES IN DB!<br> (maybe you forgot to populate it (run populate.py))</li>
-{% endif %}
-</ul>
-
-{% endblock %}
+                        {% endfor %}
+                {% else %}
+                    <li>NO GAMES IN DB!<br> (maybe you forgot to populate it (run populate.py))</li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endblock %}
+</div>
