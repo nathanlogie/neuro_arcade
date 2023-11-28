@@ -8,6 +8,7 @@
     {% block body_header_block %}
         <h1>Game search</h1>
     {% endblock %}
+    <link rel="stylesheet" href="../static/styles/games.css">
     <link rel="stylesheet" href="../static/styles/main.css">
 </header>
 <div class="Body">
@@ -23,6 +24,7 @@
                 </div>
                 <div class="filtersBlock">
                     <h2 class="headerBlocks">Filters:</h2>
+                    <div id="tagList">
                     <select name="tags" id="tags" multiple>
                         {% for tag in tags %}
                             <input type="checkbox" name="tagz" value={{ tag.slug }}>
@@ -30,6 +32,7 @@
                             <br>
                         {% endfor %}
                     </select>
+                    </div>
                 </div>
             </form>
         </div>
@@ -42,14 +45,14 @@
                                 <div class="game_card">
                                     <img class="cardImage" src="{{ game.icon.url }}"
                                          alt="{{ game.name }} icon &#10 alt text">
-                                    <p>
+                                    <p id = "gameTitle">
                                         <strong>{{ game.name }}</strong>
                                     </p>
                                 </div>
                             </a>
 
                         {% endfor %}
-s                {% else %}
+                {% else %}
                     <li>NO GAMES IN DB!<br> (maybe you forgot to populate it (run populate.py))</li>
                 {% endif %}
             </ul>

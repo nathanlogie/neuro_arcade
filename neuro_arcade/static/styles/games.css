@@ -49,11 +49,11 @@
 
 #searchButton {
     position: absolute;
-    height: 130%;
-    left: 100%;
+    height: 75%;
+    left: 95%;
     top: 0;
-    width: auto;
-    z-index: -1;
+    width: 30%;
+    z-index: 1;
     align-content: center;
     background-color: #D14081;
     border-radius: 50%;
@@ -103,7 +103,8 @@
     font-weight: 500;
     line-height: normal;
     display: flex;
-    position: static;
+    position: relative;
+    left: 5%
 }
 
 .menu-container {
@@ -133,36 +134,39 @@
     /*background: #D14081;*/
     text-align: center;
     margin-bottom: 5%;
-    position: relative;
     width: 20%;
     height: 21.9%;
     font-size: inherit;
 }
 
-/*#cardItem + #cardItem {*/
-/*    margin-left: 3%;*/
-/*}*/
-img.class { overflow:hidden}
 
-.filtersBlock{
-    background: #8e8e8e;
-    backdrop-filter: opacity(0.2);
-    opacity: 0.5;
+#gameTitle {
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 75%;
+}
+
+.filtersBlock input {
+    z-index: 1000;
 
 }
 
-.filtersBlock label{
+.filtersBlock label {
     float: right;
     color: #FFF;
-    text-align: center;
     font-family: "Font Awesome 5 Free", serif;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
     display: inline-block;
+    z-index: 1000;
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+
 }
 
-.filtersBlock input{
+.filtersBlock input {
     display: inline-block;
     float: left;
 }
