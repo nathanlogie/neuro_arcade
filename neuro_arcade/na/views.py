@@ -146,16 +146,17 @@ def edit_about(request):
             data = json.load(f)
 
     if request.method == 'POST':
-        aboutForm = AboutForm(request.POST, request.FILES, initial={'description': data['description'], 'image': data['image']})
-        current_publications = [{'title': p['title'], 'author': p['author'], 'link':p['link']} for p in data['publications']]
-        publicationForms = PublicationFormSet(request.POST, initial=current_publications)
-        if aboutForm.is_valid():
-            if publicationForms.is_valid():
-                for p in publicationForms:
-                    title = p.cleaned_data['title']
-                    author = p.cleaned_data['author']
-                    link = p.cleaned_data['link']
-                    data['publications'].append({'title': title, 'author': author, 'link': link})
+        about_form = AboutForm(request.POST, request.FILES, initial={'description': data['description'], 'image': data['image']})
+        # publication_forms = PublicationFormSet(request.POST, initial=data['publications'])
+        if about_form.is_valid():
+            # todo: fix the publication form
+
+            # if publication_forms.is_valid():
+            #     for p in publication_forms:
+            #         title = p.cleaned_data['title']
+            #         author = p.cleaned_data['author']
+            #         link = p.cleaned_data['link']
+            #         data['publications'].append({'title': title, 'author': author, 'link': link})
 
             description = request.POST.get('description')
 
@@ -167,10 +168,10 @@ def edit_about(request):
 
             return redirect(reverse('na:about'))
         else:
-            context_dict["aboutForm"] = aboutForm
-            context_dict["publicationForms"] = publicationForms
+            context_dict["aboutForm"] = about_form
+            # context_dict["publicationForms"] = publication_forms
     else:
         context_dict["aboutForm"] = AboutForm(initial=data)
-        context_dict["publicationForms"] = PublicationFormSet(initial=data['publications'])
+        # context_dict["publicationForms"] = PublicationFormSet(initial=data['publications'])
 
     return render(request, 'edit_about.html', context_dict)
