@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block body_block %}
+
+     <h1>About</h1>
+
+     <p>{{ description }}</p>
+     <div>
+         <img src="{{ MEDIA_URL }}{{ image }}" alt="{{ item.name }} Image" style="width: 300px; height: auto;">
+     </div>
+
+     <h2>PUBLICATIONS</h2>
+     <ul>
+    {% for publication in publications %}
+        <li><a href="{{ publication.link }}">{{ publication.title }} - {{ publication.authors }}</a></li>
+    {% endfor %}
+    </ul>
+{% if user.is_authenticated %}
+<a href={% url 'na:edit_about' %}>Edit</a>
+{% endif %}
+
+{% endblock %}

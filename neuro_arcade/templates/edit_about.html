@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block body_block %}
+
+<h1>Edit About</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>Description: {{ aboutForm.description }}</p>
+    <p>Upload Image: {{ aboutForm.image }}</p>
+
+
+    {% for p in publicationForms %}
+    <p>Title: {{ p.title }}</p>
+    <p>Author: {{ p.author }}</p>
+    <p>Link: {{ p.link }}</p>
+    {% endfor %}
+
+    <input type="submit" value="Save Changes">
+</form>
+
+<a href="{% url 'na:about' %}">Back to About Page</a>
+
+{% endblock %}
