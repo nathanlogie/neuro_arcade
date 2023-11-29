@@ -24,7 +24,8 @@
     outline: 0;
     border: 0;
     padding-left: 2em;
-    font-size: 1.1em;
+    padding: 0.5em;
+    font-size: 14px;
     margin: 0;
     z-index: -100;
 }
@@ -49,10 +50,10 @@
 
 #searchButton {
     position: absolute;
-    height: 75%;
+    height: 50px;
     left: 95%;
-    top: 0;
-    width: 30%;
+    top: -0.25em;
+    width: 50px;
     z-index: 1;
     align-content: center;
     background-color: #D14081;
@@ -62,7 +63,7 @@
     font-family: "Font Awesome 5 Free", serif;
     font-weight: bold;
     text-align: center;
-    font-size: 2em;
+    font-size: 20px;
 }
 
 
