@@ -15,7 +15,7 @@
         <li><a href="{{ publication.link }}">{{ publication.title }} - {{ publication.authors }}</a></li>
     {% endfor %}
     </ul>
-{% if user.is_authenticated %}
+{% if user.is_authenticated and user.is_superuser %}
 <a href={% url 'na:edit_about' %}>Edit</a>
 {% endif %}
 
