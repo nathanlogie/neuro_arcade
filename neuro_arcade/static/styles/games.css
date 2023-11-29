@@ -24,8 +24,7 @@
     outline: 0;
     border: 0;
     padding-left: 2em;
-    padding: 0.5em;
-    font-size: 14px;
+    font-size: 18px;
     margin: 0;
     z-index: -100;
 }
@@ -52,7 +51,7 @@
     position: absolute;
     height: 50px;
     left: 95%;
-    top: -0.25em;
+    top: -0.5em;
     width: 50px;
     z-index: 1;
     align-content: center;
