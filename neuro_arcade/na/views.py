@@ -1,3 +1,5 @@
+import os
+
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
@@ -131,6 +133,11 @@ def about(request):
     except FileNotFoundError:  # fallback to a static about.json
         with open('static/about.json') as f:
             data = json.load(f)
+
+    if data['image'] is None or not os.path.exists(data['image']):
+        data['image'] = '/static/images/happy-brain.jpg'
+    else:
+        data['image'] = '/media' + data['image']
 
     return render(request, 'about.html', data)
 
