@@ -19,10 +19,12 @@
 {% block body_block %}
     {{ block.super }}
     <div id="content">
-        <div class="button" id="more_games" onclick="location.href='{% url 'na:game_search' %}';">
+        <a href="{% url 'na:game_search' %}">
+            <div class="button" id="more_games">
             <div class="link" id="right">More Games</div>
             <div class="arrow" id="right"></div>
         </div>
+        </a>
     </div>
 {% endblock %}
 

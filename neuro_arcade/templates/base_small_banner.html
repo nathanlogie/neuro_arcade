@@ -1,9 +1,12 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block header_block %}
+    <a href="{% url 'na:index' %}">
     <div class="logo" id="small">
-        <img src="../static/images/logo.png" alt="Neuro Arcade Logo">
+        <img src="{% static 'images/logo.png' %}" alt="">
         <h1 id="title_1">neuro</h1>
         <h1 id="title_2">arcade</h1>
     </div>
+    </a>
 {% endblock %}
