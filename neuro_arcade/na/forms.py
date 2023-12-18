@@ -37,7 +37,7 @@ class AboutForm(forms.Form):
 class GameForm(forms.ModelForm):
     class Meta:
         model = Game
-        fields = ('name', 'description', 'icon', 'tags')
+        fields = ('name', 'description', 'icon', 'tags', 'play_link')
 
     def clean(self):
         # Check uniqueness constraint on slug
