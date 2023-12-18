@@ -1,6 +1,9 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import formset_factory
+from django.template.defaultfilters import slugify
+
+from na.models import Game
 
 
 class UserForm(forms.ModelForm):
@@ -29,3 +32,18 @@ class AboutForm(forms.Form):
 
     class Meta:
         fields = ('description', 'image')
+
+
+class GameForm(forms.ModelForm):
+    class Meta:
+        model = Game
+        fields = ('name', 'description', 'icon', 'tags')
+
+    def clean(self):
+        # Check uniqueness constraint on slug
+        # TODO: this feels like it should be possible builtin?
+        name = self.cleaned_data['name']
+        if Game.objects.filter(slug=slugify(name)).count() > 0:
+            raise forms.ValidationError(f"A game already exists with the name {name}")
+
+        return self.cleaned_data

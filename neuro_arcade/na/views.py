@@ -6,7 +6,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from na.forms import AboutForm, PublicationFormSet
+from na.forms import AboutForm, GameForm, PublicationFormSet
 from na.models import Game, GameTag, Player
 from na.forms import UserForm
 import json
@@ -51,8 +51,31 @@ def game_data_add(request: HttpRequest, game_name_slug: str) -> HttpResponse:
     return HttpResponse("Game data add page.")
 
 
+@login_required
 def game_add(request: HttpRequest) -> HttpResponse:
-    return HttpResponse("Game add page.")
+    # Check if submitting or loading
+    if request.method == 'POST':
+        # Validate submission
+        game_form = GameForm(request.POST)
+        if game_form.is_valid():
+            # Update database
+            game: Game = game_form.save(commit=False)
+            game.owner = request.user
+            game.icon = request.FILES['icon']
+            game.save()
+            game_form.save_m2m()
+
+            # Send user to the new game's page
+            return redirect(reverse('na:game_view', args=[game.slug]))
+    else:
+        # Setup empty form
+        game_form = GameForm()
+
+    context_dict = {
+        'game_form': game_form
+    }
+
+    return render(request, 'add_game.html', context=context_dict)
 
 
 def player_view(request: HttpRequest, player_name_slug: str) -> HttpResponse:
