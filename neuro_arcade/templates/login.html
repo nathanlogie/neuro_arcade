@@ -1,4 +1,5 @@
 {% extends "base_large_banner.html" %}
+{% load static %}
 
 {% block header_block %}
     {{ block.super }}
@@ -8,7 +9,7 @@
 
 <h1>Login</h1>
 
-<form id="login_form" method="post" action="{% url 'na:login' %}" enctype="multipart/form-data">
+<form id="login_form" method="post" action="{{ submit_url }}" enctype="multipart/form-data">
     {% csrf_token %}
 
     <p>Username: <input type="text" name="username" value="" size="50" /></p>
