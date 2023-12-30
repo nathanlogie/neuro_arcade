@@ -714,7 +714,10 @@ def add_game(data: Dict) -> Game:
     game.description = data.get('description', "no description")
 
     if 'icon' in data:
-        game.icon.name = add_media_from_static(Game.MEDIA_SUBDIR, data['icon'])
+        game.icon.name = add_media_from_static(Game.ICON_SUBDIR, data['icon'])
+    
+    if 'evaluation' in data:
+        game.evaluation_script.name = add_media_from_static(Game.EVALUATION_SUBDIR, data['evaluation'])
 
     for tag_name in data.get('tags', []):
         try:
