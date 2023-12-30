@@ -6,7 +6,9 @@
 
 {% block body_block %}
     <h1>{{ game.name }}</h1>
+    {% if game.icon %}
     <img src="{{ game.icon.url }}" alt="game icon" width=128>
+    {% endif %}
     <h3>Game Description:</h3>
     <p>
         {{ game.description }}
