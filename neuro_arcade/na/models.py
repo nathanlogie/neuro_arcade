@@ -45,7 +45,7 @@ class Game(models.Model):
     description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     icon = models.ImageField(upload_to=MEDIA_SUBDIR, blank=True)
-    tags = models.ManyToManyField(GameTag)
+    tags = models.ManyToManyField(GameTag, blank=True)
     score_type = models.JSONField(default=default_score_type)
     play_link = models.URLField()
 
@@ -119,7 +119,7 @@ class Player(models.Model):
     is_ai = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     description = models.TextField(max_length=MAX_PLAYER_DESCRIPTION_LENGTH, default='')
-    player_tags = models.ManyToManyField(PlayerTag)
+    player_tags = models.ManyToManyField(PlayerTag, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
