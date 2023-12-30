@@ -56,12 +56,11 @@ def game_add(request: HttpRequest) -> HttpResponse:
     # Check if submitting or loading
     if request.method == 'POST':
         # Validate submission
-        game_form = GameForm(request.POST)
+        game_form = GameForm(request.POST, request.FILES)
         if game_form.is_valid():
             # Update database
             game: Game = game_form.save(commit=False)
             game.owner = request.user
-            game.icon = request.FILES['icon']
             game.save()
             game_form.save_m2m()
 
