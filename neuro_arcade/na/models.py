@@ -47,6 +47,7 @@ class Game(models.Model):
     icon = models.ImageField(upload_to=MEDIA_SUBDIR, blank=True)
     tags = models.ManyToManyField(GameTag)
     score_type = models.JSONField(default=default_score_type)
+    play_link = models.URLField()
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
