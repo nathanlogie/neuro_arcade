@@ -130,7 +130,12 @@ def login(request: HttpRequest) -> HttpResponse:
         if user:
             # TODO: check is_active
             auth.login(request, user)
-            return redirect(reverse('na:index'))
+
+            # Send user to next page if requested, fallback to index
+            dest = request.GET.get('next', '')
+            if dest == '':
+                dest = reverse('na:index')
+            return redirect(dest)
         else:
             error = "Invalid login details."
     else:
@@ -139,6 +144,7 @@ def login(request: HttpRequest) -> HttpResponse:
 
     context_dict = {
         'error': error,
+        'submit_url': request.get_full_path(),
     }
 
     return render(request, 'login.html', context=context_dict)
