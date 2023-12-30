@@ -47,3 +47,30 @@ class GameForm(forms.ModelForm):
             raise forms.ValidationError(f"A game already exists with the name {name}")
 
         return self.cleaned_data
+
+class ScoreTypeForm(forms.Form):
+    name = forms.CharField()
+    type = forms.ChoiceField(choices=Game.SCORE_DATATYPES)
+    min = forms.CharField()
+    max = forms.CharField()
+
+    def clean(self):
+        t = self.cleaned_data['type']
+        if t == Game.SCORE_INT:
+            cast = int
+        else:
+            cast = float
+
+        min_val = self.cleaned_data['min']
+        try:
+            self.cleaned_data['min'] = cast(min_val)
+        except ValueError:
+            raise forms.ValidationError(f"Invalid minimum value '{min_val}'")
+
+        max_val = self.cleaned_data['max']
+        try:
+            self.cleaned_data['max'] = cast(max_val)
+        except ValueError:
+            raise forms.ValidationError(f"Invalid maximum value '{max_val}'")
+
+        return self.cleaned_data

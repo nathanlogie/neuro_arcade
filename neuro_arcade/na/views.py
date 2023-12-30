@@ -1,12 +1,14 @@
 import os
+from typing import Type
 
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.forms import BaseFormSet, formset_factory
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from na.forms import AboutForm, GameForm, PublicationFormSet
+from na.forms import AboutForm, GameForm, PublicationFormSet, ScoreTypeForm
 from na.models import Game, GameTag, Player
 from na.forms import UserForm
 import json
@@ -53,14 +55,18 @@ def game_data_add(request: HttpRequest, game_name_slug: str) -> HttpResponse:
 
 @login_required
 def game_add(request: HttpRequest) -> HttpResponse:
+    ScoreTypeFormset: Type[BaseFormSet] = formset_factory(ScoreTypeForm, extra=0)
+
     # Check if submitting or loading
     if request.method == 'POST':
         # Validate submission
         game_form = GameForm(request.POST, request.FILES)
-        if game_form.is_valid():
+        scoretype_formset = ScoreTypeFormset(request.POST)
+        if game_form.is_valid() and scoretype_formset.is_valid():
             # Update database
             game: Game = game_form.save(commit=False)
             game.owner = request.user
+            game.score_type["headers"] = scoretype_formset.cleaned_data
             game.save()
             game_form.save_m2m()
 
@@ -69,9 +75,11 @@ def game_add(request: HttpRequest) -> HttpResponse:
     else:
         # Setup empty form
         game_form = GameForm()
+        scoretype_formset = ScoreTypeFormset()
 
     context_dict = {
-        'game_form': game_form
+        'game_form': game_form,
+        'scoretype_formset': scoretype_formset,
     }
 
     return render(request, 'add_game.html', context=context_dict)

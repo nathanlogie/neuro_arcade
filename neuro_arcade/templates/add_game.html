@@ -1,6 +1,10 @@
 {% extends "base_small_banner.html" %}
 {% load static %}
 
+{% block script_block %}
+<script src="{% static 'js/na/add_game.js' %}"></script>
+{% endblock %}
+
 {% block header_block %}
     {{ block.super }}
 {% endblock %}
@@ -9,10 +13,30 @@
 
 <h1>Add game</h1>
 
-<form id="add_game_form" method="post" action="{% url 'na:game_add' %}" enctype="multipart/form-data">
+{# Blank form for duplicating in js #}
+<div id="empty-scoretype" style="display:none">
+    <div>
+        {{ scoretype_formset.empty_form.as_p }}
+    </div>
+</div>
+
+<form id="add-game-form" method="post" action="{% url 'na:game_add' %}" enctype="multipart/form-data">
     {% csrf_token %}
+    {{ scoretype_formset.management_form}}
     
     {{ game_form.as_p }}
+
+    <h2>Score Types</h2>
+
+    <div id="scoretypes">
+        {% for form in scoretype_formset.forms %}
+        <div>
+            {{ form.as_p }}
+        </div>
+        {% endfor %}
+    </div>
+
+    <button id="add-type" type="button">Add another score type</button>
 
     <input type="submit" name="submit" value="Add game" />
 </form>

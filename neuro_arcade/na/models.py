@@ -41,6 +41,14 @@ class Game(models.Model):
     ICON_SUBDIR = 'game_icons'
     EVALUATION_SUBDIR = 'evaluation_functions'
 
+    SCORE_INT = "int"
+    SCORE_FLOAT = "float"
+
+    SCORE_DATATYPES = [
+        (SCORE_INT, "Integer"),
+        (SCORE_FLOAT, "Float"),
+    ]
+
     name = models.CharField(max_length=MAX_NAME_LENGTH)
     slug = models.SlugField(unique=True)
     description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH)
