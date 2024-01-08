@@ -55,7 +55,7 @@ def game_data_add(request: HttpRequest, game_name_slug: str) -> HttpResponse:
 
 @login_required
 def game_add(request: HttpRequest) -> HttpResponse:
-    ScoreTypeFormset: Type[BaseFormSet] = formset_factory(ScoreTypeForm, extra=0)
+    ScoreTypeFormset: Type[BaseFormSet] = formset_factory(ScoreTypeForm, extra=1)
 
     # Check if submitting or loading
     if request.method == 'POST':

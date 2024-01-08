@@ -13,13 +13,6 @@
 
 <h1>Add game</h1>
 
-{# Blank form for duplicating in js #}
-<div id="empty-scoretype" style="display:none">
-    <div>
-        {{ scoretype_formset.empty_form.as_p }}
-    </div>
-</div>
-
 <form id="add-game-form" method="post" action="{% url 'na:game_add' %}" enctype="multipart/form-data">
     {% csrf_token %}
     {{ scoretype_formset.management_form}}
@@ -30,14 +23,11 @@
 
     <div id="scoretypes">
         {% for form in scoretype_formset.forms %}
-        <div>
+        <div class="scoretype-container">
             {{ form.as_p }}
         </div>
         {% endfor %}
     </div>
-
-    <button id="add-type" type="button">Add another score type</button>
-
     <input type="submit" name="submit" value="Add game" />
 </form>
 
