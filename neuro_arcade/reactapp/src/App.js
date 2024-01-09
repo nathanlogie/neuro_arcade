@@ -1,13 +1,13 @@
 import './App.css';
 import {useEffect, useState} from "react";
 
-function App() {
+function Fibbonacci() {
     const api_url = '/react_test/api/';
 
     const [data, setData] = useState('nothing');
 
     const options_body = {
-        'skip': '1',
+        'skip': '0',
         'numbers:': '12',
     };
 
@@ -38,9 +38,15 @@ function App() {
     }, []);
 
     return (
+        <p>Fibonacci's sequence: {data}</p>
+    );
+}
+
+function App() {
+    return (
         <div className="App">
             <p>hi!</p>
-            <p>response: {data}</p>
+            <Fibbonacci />
         </div>
     );
 }
