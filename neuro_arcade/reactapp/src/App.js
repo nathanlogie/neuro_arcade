@@ -32,7 +32,7 @@ function Fibbonacci() {
     useEffect(() => {
         // fetch sends 'options' at 'api_url'
         fetch(api_url, options)
-            // 1. We check if we got a valid Reponse
+            // 1. We check if we got a valid Response
             .then(response => {
                 if (response.ok) {
                     return response.json(); // parse JSON data
@@ -42,7 +42,7 @@ function Fibbonacci() {
             })
             // 2. update the data state using the 'setData' setter got earlier
             .then(jsonData => {
-                // remember that data is a string so jsonData needs to be stringifyed
+                // remember that data is a string so jsonData needs to be stringify
                 setData(JSON.stringify(jsonData, null, 2));
             })
             // Catching any errors that would show up
