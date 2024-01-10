@@ -54,6 +54,11 @@ def game_data_add(request: HttpRequest, game_name_slug: str) -> HttpResponse:
 
 
 @login_required
+def content_add(request: HttpRequest) -> HttpResponse:
+    return render(request, 'add_content.html')
+
+
+@login_required
 def game_add(request: HttpRequest) -> HttpResponse:
     ScoreTypeFormset: Type[BaseFormSet] = formset_factory(ScoreTypeForm, extra=1)
 
@@ -90,6 +95,7 @@ def player_view(request: HttpRequest, player_name_slug: str) -> HttpResponse:
     return HttpResponse("Player view page")
 
 
+@login_required
 def model_add(request: HttpRequest) -> HttpResponse:
     return HttpResponse("Model add page")
 
