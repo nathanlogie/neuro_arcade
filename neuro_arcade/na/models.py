@@ -38,16 +38,26 @@ class Game(models.Model):
     MAX_NAME_LENGTH = 64
     MAX_DESCRIPTION_LENGTH = 1024
 
-    MEDIA_SUBDIR = 'game_icons'
+    ICON_SUBDIR = 'game_icons'
+    EVALUATION_SUBDIR = 'evaluation_functions'
+
+    SCORE_INT = "int"
+    SCORE_FLOAT = "float"
+
+    SCORE_DATATYPES = [
+        (SCORE_INT, "Integer"),
+        (SCORE_FLOAT, "Float"),
+    ]
 
     name = models.CharField(max_length=MAX_NAME_LENGTH)
     slug = models.SlugField(unique=True)
     description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    icon = models.ImageField(upload_to=MEDIA_SUBDIR, blank=True)
+    icon = models.ImageField(upload_to=ICON_SUBDIR, blank=True)
     tags = models.ManyToManyField(GameTag, blank=True)
     score_type = models.JSONField(default=default_score_type)
     play_link = models.URLField()
+    evaluation_script = models.FileField(upload_to=EVALUATION_SUBDIR)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
