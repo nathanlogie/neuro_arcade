@@ -32,7 +32,7 @@ def fibbonaci(request: Request) -> Response:
     if n is None or n <= 0:
         return Response({'numbers': []})
     elif skip + n < 3:
-        return Response({'numbers': arr[::n]})
+        return Response({'numbers': arr[:n]})
     else:
         for _ in range(skip + n):
             arr.append(arr[-1] + arr[-2])
