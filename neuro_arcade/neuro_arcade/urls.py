@@ -18,8 +18,6 @@ from django.contrib import admin
 from django.urls import include, path
 from django.contrib.staticfiles.urls import static
 
-from na import views
-
 
 urlpatterns = [
     path('', include('na.urls')),
