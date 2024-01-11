@@ -1,5 +1,6 @@
-import './App.css';
+import '../styles/App.css';
 import {useEffect, useState} from "react";
+import {Button} from "../components/Button";
 
 function Fibbonacci() {
     // URL used to fetch the data
@@ -62,6 +63,7 @@ function App() {
         <div className="App">
             <p>hi!</p>
             <Fibbonacci />
+            <Button />
         </div>
     );
 }
