@@ -12,7 +12,7 @@
      <h2>PUBLICATIONS</h2>
      <ul>
     {% for publication in publications %}
-        <li><a href="{{ publication.link }}">{{ publication.title }} - {{ publication.authors }}</a></li>
+        <li><a href="{{ publication.link }}">{{ publication.title }} - {{ publication.author }}</a></li>
     {% endfor %}
     </ul>
 {% if user.is_authenticated and user.is_superuser %}

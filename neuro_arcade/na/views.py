@@ -7,6 +7,7 @@ from django.forms import BaseFormSet, formset_factory
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.core.files.storage import default_storage
 
 from na.forms import AboutForm, GameForm, PublicationFormSet, ScoreTypeForm
 from na.models import Game, GameTag, Player
@@ -196,21 +197,35 @@ def edit_about(request):
 
     if request.method == 'POST':
         about_form = AboutForm(request.POST, request.FILES, initial={'description': data['description'], 'image': data['image']})
-        # publication_forms = PublicationFormSet(request.POST, initial=data['publications'])
+        publication_forms = PublicationFormSet(request.POST, initial=data['publications'])
         if about_form.is_valid():
             # todo: fix the publication form
-
-            # if publication_forms.is_valid():
-            #     for p in publication_forms:
-            #         title = p.cleaned_data['title']
-            #         author = p.cleaned_data['author']
-            #         link = p.cleaned_data['link']
-            #         data['publications'].append({'title': title, 'author': author, 'link': link})
-
             description = request.POST.get('description')
 
             if description:
                 data['description'] = description
+
+            if request.FILES.get('image'):
+                image = request.FILES['image']
+
+                with default_storage.open('images/' + image.name, 'wb+') as f:
+                    for chunk in image.chunks():
+                        f.write(chunk)
+
+                data['image'] = 'images/' + image.name
+
+            if publication_forms.is_valid():
+                print("VALID p forms")
+            else:
+                print("NOT VALID")
+
+            data['publications'] = []
+            for publication in publication_forms:
+                if publication.is_valid():
+                    title = publication.cleaned_data['title']
+                    author = publication.cleaned_data['author']
+                    link = publication.cleaned_data['link']
+                    data['publications'].append({'title':title, 'author':author, 'link':link})
 
             with open('media/about.json', 'w') as f:
                 json.dump(data, f)
@@ -218,9 +233,10 @@ def edit_about(request):
             return redirect(reverse('na:about'))
         else:
             context_dict["aboutForm"] = about_form
-            # context_dict["publicationForms"] = publication_forms
+            context_dict["publicationForms"] = publication_forms
     else:
+        print("REQUEST METHOD NOT POST")
         context_dict["aboutForm"] = AboutForm(initial=data)
-        # context_dict["publicationForms"] = PublicationFormSet(initial=data['publications'])
+        context_dict["publicationForms"] = PublicationFormSet(initial=data['publications'])
 
     return render(request, 'edit_about.html', context_dict)
