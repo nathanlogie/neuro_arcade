@@ -49,6 +49,8 @@ class Game(models.Model):
         (SCORE_FLOAT, "Float"),
     ]
 
+    DEFAULT_PRIORITY = 0
+
     name = models.CharField(max_length=MAX_NAME_LENGTH)
     slug = models.SlugField(unique=True)
     description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH)
@@ -58,6 +60,7 @@ class Game(models.Model):
     score_type = models.JSONField(default=default_score_type)
     play_link = models.URLField()
     evaluation_script = models.FileField(upload_to=EVALUATION_SUBDIR)
+    priority = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
