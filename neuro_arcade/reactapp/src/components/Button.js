@@ -1,36 +1,41 @@
-import { FaAngleRight } from "react-icons/fa6";
-import { FaAngleLeft } from "react-icons/fa6";
-import { FaAngleUp } from "react-icons/fa6";
-import { FaAngleDown } from "react-icons/fa6";
+import { FaArrowRight } from "react-icons/fa6";
+import { FaArrowLeft } from "react-icons/fa6";
+import { FaArrowUp } from "react-icons/fa6";
+import { FaArrowDown } from "react-icons/fa6";
+import styles from '../styles/Button.module.css';
 
-export function Button(name, link, direction) {
+export function Button({name, link, direction, orientation}) {
     return (
         <div
-            className={'button'}
-            
-
+            className={styles.Button}
+            onClick={link} // TODO Django API
         >
-                JBHEIUFUIEBFjkenf
+            <div className={styles.ButtonBlock} id={styles[orientation]}>
+                {name}
+            </div>
+            <div className={styles.Arrow} id={styles[orientation]}>
+                <Arrow direction={direction} />
+            </div>
         </div>
     );
 }
 
-function Arrow(direction) {
+function Arrow({direction}) {
     if (direction === 'left') {
         return (
-            <FaAngleLeft></FaAngleLeft>
-        );
-    } else if (direction === 'right') {
-        return (
-            <FaAngleRight></FaAngleRight>
+            <FaArrowLeft />
         );
     } else if (direction === 'up') {
         return (
-            <FaAngleUp></FaAngleUp>
+            <FaArrowUp />
         );
     } else if (direction === 'down') {
         return (
-            <FaAngleDown></FaAngleDown>
+            <FaArrowDown />
         )
+    } else {
+        return (
+            <FaArrowRight />
+        );
     }
 }
