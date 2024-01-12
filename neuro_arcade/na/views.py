@@ -108,7 +108,6 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
     game = get_object_or_404(Game, slug=game_name_slug)
     player = get_object_or_404(Player, id=request.data.get('player'))
     added_score = {}
-    invalid_scores = []
     # for score type header in game
     for header in game.score_type['headers']:
         score = request.data.get(header['name'])
