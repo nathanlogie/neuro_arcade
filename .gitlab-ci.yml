@@ -29,16 +29,18 @@ variables:
   MYSQL_USER: $MYSQL_USER
   MYSQL_PASSWORD: $MYSQL_PASS
 
+before_script:
+  - apt-get install -y python 3.11.5
+  - update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11.5
+  - python3 -m venv venv
+  - source venv/bin/activate
+  - pip install -r requirements.txt
+
 
 build-job:       # This job runs in the build stage, which runs first. It sets up the virtual environment in order to run the tests
   stage: build
   script:
     - echo "Compiling the code..."
-    - apt-get install -y python3.11.5
-    - update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11.5
-    - python3 -m venv venv
-    - source venv/bin/activate
-    - pip install -r requirements.txt
     - echo "Compile complete."
 
 server-job:
