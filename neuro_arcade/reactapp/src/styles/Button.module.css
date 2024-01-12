@@ -1,0 +1,48 @@
+.Button {
+    cursor: pointer;
+    width: max-content;
+    height: max-content;
+    display: -webkit-inline-flex;
+    position: relative;
+}
+.ButtonBlock {
+    margin-top: 10px;
+    position: absolute;
+    color: #FFFFFF;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    width: max-content;
+    border-radius: 10px;
+    background: #D14081;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+.Arrow {
+    position: absolute;
+    z-index: 1;
+    width: 74px;
+    height: 74px;
+    border-radius: 100px;
+    background-color: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(5px);
+    color: #41584C;
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 74px;
+}
+.ButtonBlock#left {
+    margin-left: 37px;
+    padding: 15px 20px 10px 50px;
+    left: 0;
+}
+.ButtonBlock#right {
+    margin-right: 37px;
+    padding: 15px 50px 10px 20px;
+    right: 0;
+}
+.Arrow#left {
+    left: 0;
+}
+.Arrow#right {
+    right: 0;
+}
