@@ -1,0 +1,4 @@
+Django==4.2.6
+Pillow==10.1.0
+pytz==2023.3.post1
+djangorestframework==3.14.0
