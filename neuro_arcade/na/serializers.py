@@ -1,5 +1,6 @@
 from na.models import Game
 
+# TODO Ideally don't do manual serialisation
 
 def serialize_game(game: Game):
     d = {
