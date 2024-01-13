@@ -11,14 +11,14 @@ const Graph = ({score_field, inputData, x_axis}) => {
 
   return (
     <LineChart
-          width={500}
-          height={300}
+          width={700}
+          height={500}
           data={data}
           margin={{
-            top: 5,
+            top: 30,
             right: 60,
             left: 20,
-            bottom: 90,
+            bottom: 120,
           }}
           style={{ background: 'linear-gradient(270deg, rgba(217, 217, 217, 0.43) 0%, rgba(217, 217, 217, 0.00) 100%)' }}
         >
@@ -26,6 +26,7 @@ const Graph = ({score_field, inputData, x_axis}) => {
             dataKey="name" 
             angle={290} 
             dy={40} 
+            label={{ value: "AI Platforms", position: 'bottom', offset: 90 }} 
             axisLine={{ stroke: 'transparent' }} 
             padding={{ left: 10 }} 
             tickLine={false}
