@@ -1,6 +1,8 @@
 import '../styles/App.css';
 import {useEffect, useState} from "react";
 import {Button} from "../components/Button";
+import {Banner} from "../components/Banner";
+import {Background} from "../components/Background";
 
 function Fibbonacci() {
     // URL used to fetch the data
@@ -61,9 +63,24 @@ function Fibbonacci() {
 function App() {
     return (
         <div className="App">
-            <p>hi!</p>
-            <Fibbonacci />
-            <Button />
+            {/*<Fibbonacci />*/}
+            <Background />
+            <Banner size={'big'}>
+            </Banner>
+            <div className={'split'}>
+                <Button
+                    name={'Button Test'}
+                    link={'hh'}
+                    direction={'up'}
+                    orientation={'left'}
+                />
+                <Button
+                    name={'hfgjdfghhfghj Test'}
+                    link={'hh'}
+                    direction={'down'}
+                    orientation={'right'}
+                />
+            </div>
         </div>
     );
 }

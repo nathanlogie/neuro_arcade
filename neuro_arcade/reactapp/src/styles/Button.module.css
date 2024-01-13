@@ -1,15 +1,17 @@
 .Button {
-    cursor: pointer;
-    width: max-content;
-    height: max-content;
-    display: -webkit-inline-flex;
     position: relative;
+    cursor: pointer;
+    max-width: max-content;
+    max-height: max-content;
+    padding: 0 0 4em 16em;
+    margin: 0 auto;
+    border: 2px solid red;
 }
 .ButtonBlock {
-    margin-top: 10px;
+    margin-top:0.75rem;
     position: absolute;
     color: #FFFFFF;
-    font-size: 24px;
+    font-size: 1.25rem;
     font-style: normal;
     font-weight: 400;
     width: max-content;
@@ -20,24 +22,24 @@
 .Arrow {
     position: absolute;
     z-index: 1;
-    width: 74px;
-    height: 74px;
+    width: 4rem;
+    height: 4rem;
     border-radius: 100px;
     background-color: rgba(255, 255, 255, 0.72);
     backdrop-filter: blur(5px);
     color: #41584C;
-    font-size: 32px;
+    font-size: 2rem;
     font-weight: 900;
-    line-height: 74px;
+    line-height: 4.5rem;
 }
 .ButtonBlock#left {
-    margin-left: 37px;
-    padding: 15px 20px 10px 50px;
+    margin-left: 1.5rem;
+    padding: 0.5rem 1rem 0.5rem 3rem;
     left: 0;
 }
 .ButtonBlock#right {
-    margin-right: 37px;
-    padding: 15px 50px 10px 20px;
+    margin-right: 1.5rem;
+    padding: 0.5rem 3rem 0.5rem 1rem;
     right: 0;
 }
 .Arrow#left {
