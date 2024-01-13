@@ -6,11 +6,12 @@ import styles from '../styles/Button.module.css';
 
 export function Button({name, link, direction, orientation}) {
     return (
-        <div
-            className={styles.Button}
-            onClick={link} // TODO Django API
-        >
-            <div className={styles.ButtonBlock} id={styles[orientation]}>
+        <div className={styles.Button}>
+            <div
+                className={styles.ButtonBlock}
+                id={styles[orientation]}
+                onClick={link} // TODO Django API
+            >
                 {name}
             </div>
             <div className={styles.Arrow} id={styles[orientation]}>

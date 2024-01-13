@@ -1,9 +1,12 @@
 import styles from "../styles/Logo.module.css"
+import logo from "../temp_static/images/logo.png"
 
-export function Logo() {
+export function Logo({size}) {
     return  (
-        <div>
-            <img src="../../../static/images/logo.png" alt=""/> //TODO DJANGO API
+        <div className={styles.Logo} id={styles[size]}>
+            <img src={logo} alt="" />
+            <h1 id={styles['title_1']}>neuro</h1>
+            <h1 id={styles['title_2']}>arcade</h1>
         </div>
     );
 }
