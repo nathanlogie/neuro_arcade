@@ -1,5 +1,9 @@
 .App {
   text-align: center;
+  background-color: #190A28;
+  color: #FFFFFF;
+  font-family: Bahnschrift, sans-serif;
+  height: 100vh;
 }
 
 .App-logo {
@@ -34,5 +38,12 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (min-width: 40em) {
+  .split {
+    display: flex;
+    gap: 2em;
   }
 }

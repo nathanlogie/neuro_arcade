@@ -1,0 +1,10 @@
+.Banner {
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.075);
+}
+.Banner#small {
+    min-height: 5em;
+}
+.Banner#big {
+    min-height: 10em;
+}
