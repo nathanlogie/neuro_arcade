@@ -1,64 +1,12 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import React from 'react';
+import PropTypes from 'prop-types'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Label, ReferenceLine } from 'recharts';
 
-const Graph = () => {
-
-    //example data
-    const inputData = {
-        "game": {
-            "name": "Varying Shapes",
-            "slug": "varying-shapes",
-            "description": "A game where you deal with a number of varying shapes",
-            "tags": [
-                "Tracking Games",
-                "High AI Score"
-            ],
-            "score_type": {
-                //need to use this
-                "headers": [
-                    {
-                        "name": "Coins",
-                        "description": "Number of coins collected",
-                        "min": 0,
-                        "max": 100
-                    }
-                ]
-            },
-            "play_link": ""
-        },
-        "table_headers": [
-            {
-                "name": "Coins",
-                "description": "Number of coins collected",
-                "min": 0,
-                "max": 100
-            }
-        ],
-        "rows": [
-            {
-                "player_name": "Tiger Bot",
-                "score": [
-                    84
-                ]
-            },
-            {
-                "player_name": "Amanda Wilson",
-                "score": [
-                    80
-                ]
-            },
-            {
-                "player_name": "Monkey Bot",
-                "score": [
-                    4
-                ]
-            }
-        ]
-    }
+const Graph = ({score_field, inputData, x_axis}) => {
 
     const data = inputData.rows.map(player => ({
         name: player.player_name,
-        //need to be able to view each score individually
-        value: player.score[0]
+        value: player.score[score_field]
     }));
 
   return (
@@ -68,19 +16,45 @@ const Graph = () => {
           data={data}
           margin={{
             top: 5,
-            right: 30,
+            right: 60,
             left: 20,
-            bottom: 5,
+            bottom: 90,
           }}
+          style={{ background: 'linear-gradient(270deg, rgba(217, 217, 217, 0.43) 0%, rgba(217, 217, 217, 0.00) 100%)' }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
+        <XAxis
+            dataKey="name" 
+            angle={290} 
+            dy={40} 
+            axisLine={{ stroke: 'transparent' }} 
+            padding={{ left: 10 }} 
+            tickLine={false}
+        />
+
+        <YAxis 
+            label={{ value: x_axis, angle: -90, position: 'insideLeft' }} 
+            axisLine={{ stroke: '#FFFFFF' }} 
+            domain={['auto', 'auto']}
+        />
+        <ReferenceLine 
+            y={0} 
+            stroke="#FFFFFF" 
+        />
+
+        <Line 
+            dataKey="value" 
+            stroke="#FFFFFF" 
+            dot={false} 
+        />
+
     </LineChart>
   )
+}
+
+Graph.propTypes = {
+    score_field: PropTypes.number.isRequired,
+    inputData: PropTypes.object.isRequired,
+    x_axis: PropTypes.string.isRequired,
 }
 
 export default Graph
