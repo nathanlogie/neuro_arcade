@@ -1,12 +1,12 @@
 .Button {
     position: relative;
-    cursor: pointer;
     max-width: max-content;
     max-height: max-content;
     padding: 2em 0 4em 16em;
     margin: 0 auto;
 }
 .ButtonBlock {
+    cursor: pointer;
     position: absolute;
     color: #FFFFFF;
     font-size: 1.25rem;
@@ -47,4 +47,34 @@
 }
 .Arrow#right {
     right: 10%;
+}
+
+@media (max-width: 50em) {
+    .Button {
+        padding: 1em 0 3em 12em;
+        .ButtonBlock {
+            font-size: 1.1em;
+            bottom: calc(10% + 0.35rem);
+        }
+        .Arrow {
+            font-size: 1.5em;
+            width: 2em;
+            height: 2em;
+            line-height: 2.5em;
+        }
+        .ButtonBlock#left {
+            margin-left: 1rem;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+        }
+        .ButtonBlock#right {
+            margin-right: 1rem;
+            padding: 0.5rem 2.5rem 0.5rem 1rem;
+        }
+        .Arrow#left {
+            left: 10%;
+        }
+        .Arrow#right {
+            right: 10%;
+        }
+    }
 }

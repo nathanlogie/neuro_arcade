@@ -1,8 +1,11 @@
-.App {
-  text-align: center;
+body {
   background-color: #190A28;
   color: #FFFFFF;
   font-family: Bahnschrift, sans-serif;
+}
+
+.App {
+  text-align: center;
   height: 100vh;
 }
 
