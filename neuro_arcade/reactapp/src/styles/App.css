@@ -1,7 +1,12 @@
+@font-face {
+  font-family: 'Fira Sans';
+  src: url('../temp_static/fonts/Fira Sans/FiraSans-Regular.ttf') format('truetype');
+}
+
 body {
   background-color: #190A28;
   color: #FFFFFF;
-  font-family: Bahnschrift, sans-serif;
+  font-family: 'Fira Sans', Calibri, sans-serif;
 }
 
 .App {

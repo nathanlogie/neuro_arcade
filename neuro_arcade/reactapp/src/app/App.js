@@ -63,6 +63,7 @@ function App() {
     return (
         <div className="App">
             {/*<Fibbonacci />*/}
+
             <Background />
             <Index />
         </div>
