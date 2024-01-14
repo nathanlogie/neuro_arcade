@@ -1,0 +1,11 @@
+.GameCard {
+    position: relative;
+    display: grid;
+    width: max-content;
+    & img {
+        padding: 0.5em;
+        width: 6em;
+        height: 6em;
+        border-radius: 1.5em;
+    }
+}

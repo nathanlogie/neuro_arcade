@@ -13,7 +13,7 @@
     font-style: normal;
     font-weight: 400;
     width: max-content;
-    border-radius: 10px;
+    border-radius: 0.75em;
     background: #D14081;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     bottom: calc(10% + 0.75rem);
