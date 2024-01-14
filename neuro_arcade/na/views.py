@@ -18,8 +18,6 @@ from na.forms import UserForm
 
 import json
 
-from na.serializers import serialize_game
-
 
 # ------------------
 #  HELPER FUNCTIONS
@@ -31,7 +29,7 @@ def get_game_dict(game_slug: str):
     :param game_slug: string representing the game slug
     """
     game = get_object_or_404(Game, slug=game_slug)
-    dictionary = {'game': serialize_game(game)}
+    dictionary = {'game': game.serialize()}
     headers, scores = game.get_score_table()
     if headers is not None and scores is not None:
         dictionary['table_headers'] = headers
@@ -87,7 +85,7 @@ def get_games_sorted(request: Request) -> Response:
 
     game_list = get_game_list(query, wanted_tags, num)
 
-    return Response([serialize_game(game) for game in game_list])
+    return Response([game.serialize() for game in game_list])
 
 # TODO maybe you should be logged in for this request
 @api_view(['POST'])
