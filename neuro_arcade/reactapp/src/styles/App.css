@@ -10,8 +10,12 @@ body {
 }
 
 .App {
+  position: relative;
   text-align: center;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
+  overflow: auto;
+  margin: 0;
 }
 
 .App-logo {
@@ -46,12 +50,5 @@ body {
   }
   to {
     transform: rotate(360deg);
-  }
-}
-
-@media (min-width: 40em) {
-  .split {
-    display: flex;
-    gap: 2em;
   }
 }

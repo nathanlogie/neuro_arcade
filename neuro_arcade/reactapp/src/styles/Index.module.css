@@ -1,0 +1,41 @@
+.MainBlock {
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 3em 0;
+    .Content {
+        width: 42.5em;
+    }
+    & h1 {
+        position: relative;
+        text-align: left;
+        padding-left: 1em;
+    }
+}
+.MobileBannerBuffer {
+    display: none;
+    height: 7em;
+}
+.MoreGames {
+    margin-left: 0;
+}
+
+@media (max-width: 50em) {
+    .DesktopBanner {
+        display: none;
+    }
+    .MainBlock {
+        margin: 1em;
+        width: calc(100vw - 2em);
+        .Content {
+            width: 100%;
+        }
+        & h1 {
+            font-size: 1.5em;
+        }
+    }
+    .MobileBannerBuffer {
+        display: block;
+    }
+}

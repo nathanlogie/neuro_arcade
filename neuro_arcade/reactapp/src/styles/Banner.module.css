@@ -1,12 +1,18 @@
-.Banner {
+.Banner, .MobileBanner {
     display: flex;
     backdrop-filter: blur(20px);
     background: rgba(255, 255, 255, 0.075);
 }
+.MobileBanner {
+    display: none;
+}
 
 @media (max-width: 50em) {
     .Banner {
-        display: block;
+        display: none;
+    }
+    .MobileBanner {
+        display: flex;
     }
 }
 

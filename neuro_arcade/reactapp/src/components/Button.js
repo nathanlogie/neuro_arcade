@@ -4,9 +4,9 @@ import { FaArrowUp } from "react-icons/fa6";
 import { FaArrowDown } from "react-icons/fa6";
 import styles from '../styles/Button.module.css';
 
-export function Button({name, link, direction, orientation}) {
+export function Button({id, name, link, direction, orientation}) {
     return (
-        <div className={styles.Button}>
+        <div className={styles.Button} id={styles[id]}>
             <div
                 className={styles.ButtonBlock}
                 id={styles[orientation]}

@@ -1,4 +1,4 @@
-import styles from"../styles/Background.module.css"
+import styles from "../styles/Background.module.css"
 import background from "../temp_static/images/background.png"
 export function Background() {
     return (
