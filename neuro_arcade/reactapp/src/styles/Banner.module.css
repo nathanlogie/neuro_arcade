@@ -9,3 +9,9 @@
         display: block;
     }
 }
+
+@media (max-width: 12em) {
+    .Banner {
+        background: rgba(255,255,255,0);
+    }
+}

@@ -12,7 +12,7 @@
     background: linear-gradient(rgba(253, 253, 255, 0.20) 0%, rgba(0, 0, 0, 0.65) 88.48%);
 }
 
-@media (max-width: 20em) {
+@media (max-width: 12em) {
     #hexagon {
         display: none;
     }
