@@ -1,6 +1,6 @@
 import styles from '../styles/GameCard.module.css'
 
-export function gameCard ({name, image, link}) {
+export function GameCard ({name, image, link}) {
     return (
         <div
             className={styles.GameCard}
