@@ -9,10 +9,19 @@ import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, ReferenceLine } fro
 //x-axis: the name of the score type to be displayed on the x-axis
 const Graph = ({score_field, inputData, x_axis}) => {
 
-    const data = inputData.rows.map(player => ({
+     //setting the default switcher value to the first score
+    const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(
+        inputData.table_headers[0].name // Set the default switcher value
+    );
+
+    const data = inputData.rows.map((player) => ({
         name: player.player_name,
-        value: player.score[score_field]
+        value: player.score[inputData.table_headers.findIndex((h) => h.name === selectedSwitcherValue)],
     }));
+
+    const handleSwitcherChange = (selectedValue) => {
+        setSelectedSwitcherValue(selectedValue);
+    }
 
     // const headerNames = data.table_headers.map(header => header.name);
 
@@ -34,7 +43,7 @@ const Graph = ({score_field, inputData, x_axis}) => {
         ))} */}
         
         <div className='Switcher'>
-            <Switcher data={inputData}/>
+            <Switcher data={inputData} onSwitcherChange={handleSwitcherChange}/>
         </div>
 
         <LineChart

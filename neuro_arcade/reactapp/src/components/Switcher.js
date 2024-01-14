@@ -5,7 +5,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import styles from '../styles/Switcher.module.css'
 
 
-const Switcher = ({data}) => { 
+const Switcher = ({data , onSwitcherChange}) => { 
 
     const [alignment, setAlignment] = React.useState('web');
 
@@ -16,6 +16,7 @@ const Switcher = ({data}) => {
     const handleAlignment = (event, newAlignment) => {
         if (newAlignment !== null) {
           setAlignment(newAlignment);
+          onSwitcherChange(newAlignment);
         }
     };
 
