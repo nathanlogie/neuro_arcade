@@ -212,16 +212,11 @@ def edit_about(request):
                     for chunk in image.chunks():
                         f.write(chunk)
 
-                data['image'] = 'images/' + image.name
-
-            if publication_forms.is_valid():
-                print("VALID p forms")
-            else:
-                print("NOT VALID")
+                data['image'] = '/images/' + image.name
 
             data['publications'] = []
             for publication in publication_forms:
-                if publication.is_valid():
+                if publication.is_valid() and publication is not None:
                     title = publication.cleaned_data['title']
                     author = publication.cleaned_data['author']
                     link = publication.cleaned_data['link']
@@ -235,7 +230,6 @@ def edit_about(request):
             context_dict["aboutForm"] = about_form
             context_dict["publicationForms"] = publication_forms
     else:
-        print("REQUEST METHOD NOT POST")
         context_dict["aboutForm"] = AboutForm(initial=data)
         context_dict["publicationForms"] = PublicationFormSet(initial=data['publications'])
 
