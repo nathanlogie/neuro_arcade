@@ -3,6 +3,7 @@
 """
 Populate the database with example data
 """
+import random
 
 """
 Setup django
@@ -12,9 +13,11 @@ import os
 from shutil import copy
 
 from neuro_arcade.settings import MEDIA_ROOT, STATIC_DIR
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'neuro_arcade.settings')
 
 import django
+
 django.setup()
 
 """
@@ -23,8 +26,10 @@ Main program
 
 from django.contrib.auth.models import Group, Permission
 from typing import Dict
-import random
 from na.models import *
+
+# For the randomly assigned priority
+
 
 users = [
     {
@@ -310,7 +315,7 @@ games = [
         'icon': "example.png",
         'tags': ["Puzzle Games", "Problem Solving Games", "Featured"],
         'score_type': "{time_taken: {max: 600.0, type: float}}"
-    },    
+    },
 ]
 
 player_tags = [
@@ -362,7 +367,7 @@ player_tags = [
         'name': "High Memory Performance",
         'description': "Players with high performance in memory games",
     },
-    
+
 ]
 
 players = [
@@ -645,6 +650,7 @@ def add_random_score(game: Game, player_list):
         score=score
     )
 
+
 def add_media_from_static(folder: str, filename: str) -> str:
     """Copies a file from /static/population/ to /media/"""
 
@@ -664,6 +670,7 @@ def add_media_from_static(folder: str, filename: str) -> str:
     # Return relative path
     return os.path.join(folder, filename)
 
+
 def add_user(data: Dict) -> User:
     """Create a django user"""
 
@@ -679,6 +686,7 @@ def add_user(data: Dict) -> User:
 
     return user
 
+
 def add_group(data: Dict) -> Group:
     """Create a django user group"""
 
@@ -691,8 +699,8 @@ def add_group(data: Dict) -> Group:
 
     return group
 
+
 def add_game_tag(data: Dict) -> GameTag:
-    
     """Create n na game tag"""
 
     tag = GameTag.objects.get_or_create(name=data['name'])[0]
@@ -701,7 +709,11 @@ def add_game_tag(data: Dict) -> GameTag:
 
     return tag
 
+
 def add_game(data: Dict) -> Game:
+    MINIMUM_PRIORITY = 0
+    MAXIMUM_PRIORITY = 50
+
     """Create a na game"""
 
     game = Game.objects.get_or_create(
@@ -712,10 +724,11 @@ def add_game(data: Dict) -> Game:
     )[0]
     game.score_type = score_types[data['name']]
     game.description = data.get('description', "no description")
+    game.priority = random.randint(MINIMUM_PRIORITY, MAXIMUM_PRIORITY)
 
     if 'icon' in data:
         game.icon.name = add_media_from_static(Game.ICON_SUBDIR, data['icon'])
-    
+
     if 'evaluation' in data:
         game.evaluation_script.name = add_media_from_static(Game.EVALUATION_SUBDIR, data['evaluation'])
 
@@ -735,8 +748,8 @@ def add_game(data: Dict) -> Game:
 
     return game
 
+
 def add_player_tag(data: Dict) -> PlayerTag:
-    
     """Create a na player tag"""
 
     tag = PlayerTag.objects.get_or_create(name=data['name'])[0]
@@ -744,6 +757,7 @@ def add_player_tag(data: Dict) -> PlayerTag:
     tag.save()
 
     return tag
+
 
 def add_player(data: Dict):
     player = Player.objects.get_or_create(name=data['name'])[0]
