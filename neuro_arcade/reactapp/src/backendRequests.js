@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from "axios";
 /**
  * This file contains functions that request or upload data from/to the backend
  */
