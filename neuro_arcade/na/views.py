@@ -13,7 +13,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.request import Request
 
-from na.forms import AboutForm, GameForm, ScoreTypeForm
+from na.forms import AboutForm, GameForm, ScoreTypeForm, PublicationFormSet
 from na.models import Game, GameTag, Player
 from na.forms import UserForm
 
@@ -37,6 +37,7 @@ def get_game_dict(game_slug: str):
         dictionary['rows'] = scores
     return dictionary
 
+
 def get_game_list(query, wanted_tags=None, num=10):
     """
     Gets a list of games.
@@ -55,6 +56,7 @@ def get_game_list(query, wanted_tags=None, num=10):
     games = games[:num]
     return games
 
+
 # ----------------
 #    API CALLS
 # ----------------
@@ -66,12 +68,14 @@ def get_game(request: Request, game_name_slug: str) -> Response:
     game = get_game_dict(game_name_slug)
     return Response(game)
 
+
 @api_view(['GET'])
 def get_tags(request: Request) -> Response:
     """
     Retrieves the GameTags
     """
     return Response(GameTag.objects.all())
+
 
 @api_view(['GET'])
 def get_games_sorted(request: Request) -> Response:
@@ -87,6 +91,7 @@ def get_games_sorted(request: Request) -> Response:
     game_list = get_game_list(query, wanted_tags, num)
 
     return Response([game.serialize() for game in game_list])
+
 
 # TODO maybe you should be logged in for this request
 @api_view(['POST'])
@@ -140,9 +145,11 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
 
     return Response(status=200)
 
+
 @api_view(['POST'])
 def post_game(request: Request) -> Response:
     pass
+
 
 # -----------------
 #   PAGE VIEWS
@@ -220,6 +227,7 @@ def player_view(request: HttpRequest, player_name_slug: str) -> HttpResponse:
 def model_add(request: HttpRequest) -> HttpResponse:
     return HttpResponse("Model add page")
 
+
 def sign_up(request: HttpRequest) -> HttpResponse:
     # Check not already logged in
     if request.user.is_authenticated:
@@ -283,6 +291,7 @@ def login(request: HttpRequest) -> HttpResponse:
 
     return render(request, 'login.html', context=context_dict)
 
+
 @login_required
 def logout(request):
     auth.logout(request)
@@ -315,8 +324,14 @@ def edit_about(request):
         with open('static/about.json') as f:
             data = json.load(f)
 
+    if len(data['publications']) == 0:
+        PublicationFormSet.extra = 1
+    else:
+        PublicationFormSet.extra = 0
+
     if request.method == 'POST':
-        about_form = AboutForm(request.POST, request.FILES, initial={'description': data['description'], 'image': data['image']})
+        about_form = AboutForm(request.POST, request.FILES,
+                               initial={'description': data['description'], 'image': data['image']})
         publication_forms = PublicationFormSet(request.POST, initial=data['publications'])
         if about_form.is_valid():
             # todo: fix the publication form
@@ -332,7 +347,7 @@ def edit_about(request):
                     for chunk in image.chunks():
                         f.write(chunk)
 
-                data['image'] = '/images/' + image.name
+                data['image'] = 'images/' + image.name
 
             try:
                 data['publications'] = []
@@ -341,8 +356,8 @@ def edit_about(request):
                         title = publication.cleaned_data['title']
                         author = publication.cleaned_data['author']
                         link = publication.cleaned_data['link']
-                        data['publications'].append({'title':title, 'author':author, 'link':link})
-            except KeyError as k:
+                        data['publications'].append({'title': title, 'author': author, 'link': link})
+            except KeyError:
                 context_dict["missing_field"] = True
                 context_dict["aboutForm"] = about_form
                 context_dict["publicationForms"] = publication_forms
