@@ -68,3 +68,15 @@ class ModelTests(TestCase):
         self.assertEquals(bool, type(testPlayer.is_ai))
         self.assertIsNone(testPlayer.user)
 
+    def create_score(self):
+        return Score.objects.create(
+            player=self.create_player(),
+            game=self.create_game()
+        )
+
+    def test_score(self):
+        testScore = self.create_score()
+        self.assertIsInstance(testScore,Score)
+        self.assertIsInstance(testScore.player, Player)
+        self.assertIsInstance(testScore.game, Game)
+        self.assertEquals(str(testScore), "Tester's score at TestGame")
