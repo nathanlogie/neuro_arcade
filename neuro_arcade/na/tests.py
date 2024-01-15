@@ -1,7 +1,9 @@
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.test import TestCase
-from models import Game, GameTag
+from models import Game, GameTag, PlayerTag
+
+
 # Create your tests here.
 
 
@@ -38,3 +40,14 @@ class ModelTests(TestCase):
         self.assertEquals(testTag.slug, slugify(testTag.name))
         self.assertEquals(testTag.name, str(testTag))
         self.assertEquals(testTag.name, "TestGameTag")
+
+    def create_playerTag(self):
+        return PlayerTag.objects.create(
+            name="playerTag",
+            description="wow"
+        )
+
+    def test_playerTag(self):
+        testTag = self.create_playerTag()
+        self.assertTrue(isinstance(testTag, PlayerTag))
+        self.assertEquals(testTag.name, str(testTag))
