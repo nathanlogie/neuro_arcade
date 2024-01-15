@@ -1,8 +1,10 @@
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.test import TestCase
-from na.models import Game, GameTag, PlayerTag, Player, Score
 
+# The ide will shout at you to remove the na from the import but don't
+# The na allows it to run in terminal and in the pipeline
+from na.models import Game, GameTag, PlayerTag, Player, Score
 
 
 # Create your tests here.
@@ -26,7 +28,7 @@ class ModelTests(TestCase):
         self.assertTrue(isinstance(testGame, Game))
         self.assertEquals(testGame.slug, slugify(testGame.name))
         self.assertEquals(str(testGame), testGame.name)
-        self.assertTrue(isinstance(testGame.owner,User))
+        self.assertTrue(isinstance(testGame.owner, User))
         self.assertEquals(testGame.score_type, {"headers": []})
 
     def create_gameTag(self) -> GameTag:
@@ -37,7 +39,7 @@ class ModelTests(TestCase):
 
     def test_gameTag(self):
         testTag = self.create_gameTag()
-        self.assertTrue(isinstance(testTag,GameTag))
+        self.assertTrue(isinstance(testTag, GameTag))
         self.assertEquals(testTag.slug, slugify(testTag.name))
         self.assertEquals(testTag.name, str(testTag))
         self.assertEquals(testTag.name, "TestGameTag")
@@ -62,7 +64,7 @@ class ModelTests(TestCase):
 
     def test_player(self):
         testPlayer = self.create_player()
-        self.assertTrue(isinstance(testPlayer,Player))
+        self.assertTrue(isinstance(testPlayer, Player))
         self.assertEquals(testPlayer.slug, slugify(testPlayer.name))
         self.assertEquals(testPlayer.name, str(testPlayer))
         self.assertEquals(bool, type(testPlayer.is_ai))
@@ -76,7 +78,7 @@ class ModelTests(TestCase):
 
     def test_score(self):
         testScore = self.create_score()
-        self.assertIsInstance(testScore,Score)
+        self.assertIsInstance(testScore, Score)
         self.assertIsInstance(testScore.player, Player)
         self.assertIsInstance(testScore.game, Game)
         self.assertEquals(str(testScore), "Tester's score at TestGame")
