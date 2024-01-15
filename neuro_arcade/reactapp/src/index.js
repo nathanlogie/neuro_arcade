@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import {createRoot} from 'react-dom/client';
 import './styles/index.css';
 import App from './app/App';
 import reportWebVitals from './app/reportWebVitals';
@@ -11,7 +11,7 @@ import {
 
 const router = createBrowserRouter([
     {
-        path: "/",
+        path: "react_test", // TODO change to / after everything is moved
         element: (
             <div>
                 <App />
@@ -20,15 +20,14 @@ const router = createBrowserRouter([
         ),
     },
     {
-        path: "other_page",
+        path: "react_test/other_page",  // TODO change to / after everything is moved
         element: (
             <div>Other Page</div>
         ),
     },
 ]);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+createRoot(document.getElementById('root')).render(
     <RouterProvider router={router} />
 );
 
