@@ -187,7 +187,7 @@ def about(request):
 
 @login_required
 def edit_about(request):
-    context_dict = {}
+    context_dict = {"missing_field": False}
     try:
         with open('media/about.json') as f:
             data = json.load(f)
@@ -214,13 +214,19 @@ def edit_about(request):
 
                 data['image'] = '/images/' + image.name
 
-            data['publications'] = []
-            for publication in publication_forms:
-                if publication.is_valid() and publication is not None:
-                    title = publication.cleaned_data['title']
-                    author = publication.cleaned_data['author']
-                    link = publication.cleaned_data['link']
-                    data['publications'].append({'title':title, 'author':author, 'link':link})
+            try:
+                data['publications'] = []
+                for publication in publication_forms:
+                    if publication.is_valid():
+                        title = publication.cleaned_data['title']
+                        author = publication.cleaned_data['author']
+                        link = publication.cleaned_data['link']
+                        data['publications'].append({'title':title, 'author':author, 'link':link})
+            except KeyError as k:
+                context_dict["missing_field"] = True
+                context_dict["aboutForm"] = about_form
+                context_dict["publicationForms"] = publication_forms
+                return render(request, 'edit_about.html', context_dict)
 
             with open('media/about.json', 'w') as f:
                 json.dump(data, f)

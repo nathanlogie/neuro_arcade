@@ -20,13 +20,20 @@
     {% csrf_token %}
     {{ publicationForms.management_form }}
 
+    <h3>Publications</h3>
+    {% if missing_field %}
+    <p><strong>Fields indicated with * are required.</strong></p>
+    {% else %}
+        <p>Fields indicated with * are required.</p>
+    {% endif %}
     <div id="publication_form">
         {% for p in publicationForms %}
             <div class="publication_form-container">
-                <p>Title: {{ p.title }}</p>
-                <p>Author: {{ p.author }}</p>
-                <p>Link: {{ p.link }}</p>
+                <p>Title*: {{ p.title }}</p>
+                <p>Author*: {{ p.author }}</p>
+                <p>Link*: {{ p.link }}</p>
             </div>
+
         {% endfor %}
     </div>
 

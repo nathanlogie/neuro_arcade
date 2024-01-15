@@ -20,7 +20,7 @@ class PublicationForm(forms.Form):
     link = forms.URLField(required=False)
 
 
-PublicationFormSet = formset_factory(PublicationForm, extra=1)
+PublicationFormSet = formset_factory(PublicationForm, extra=0)
 
 
 
