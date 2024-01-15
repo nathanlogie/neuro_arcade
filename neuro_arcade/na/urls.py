@@ -19,4 +19,8 @@ urlpatterns = [
     path('sign_up/', views.sign_up, name='sign_up'),
     path('about/', views.about, name='about'),
     path('about/edit_about/', views.edit_about, name='edit_about'),
+    # api endpoints:
+    path('games/<slug:game_name_slug>/data/', views.get_game, name='get_game'),
+    path('games/<slug:game_name_slug>/add_score/', views.post_game_score, name='post_game_score'),
+    path('tags', views.get_tags, name='get_tags'),
 ]
