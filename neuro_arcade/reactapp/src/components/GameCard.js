@@ -1,13 +1,14 @@
 import styles from '../styles/GameCard.module.css'
 
-export function GameCard ({name, image, link}) {
+export function GameCard ({key, game}) {
+    // TODO implement onClick for GameCard
     return (
         <div
             className={styles.GameCard}
-            onClick={link} // TODO Django API
+            // onClick={''}
         >
-            <img src={image} alt='game'/>
-            {name}
+            <img src={game.icon || '/media/game_icons/example.png'} alt='game icon'/>
+            {game.name || 'Game Name'}
         </div>
     );
 }

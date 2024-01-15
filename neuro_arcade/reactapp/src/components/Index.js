@@ -20,19 +20,6 @@ function MoreGamesButton() {
 }
 
 export function Index() {
-    let featuredGames = []; // TODO Django API for games
-    
-    // temporary featured game population
-    for (let i = 0; i < 10; i++) {
-        featuredGames.push(
-            <GameCard
-                name={'test game'}
-                image={game_image}
-                link={'...'}
-            />
-        )
-    }
-
     return (
         <div>
             <Banner size={'big'} button_left={{
@@ -62,7 +49,7 @@ export function Index() {
             <div className={styles.MainBlock}>
                 <div className={styles.Content}>
                     <h1>Featured games</h1>
-                    <GameGrid gameCardList={featuredGames} />
+                    <GameGrid query={'?query=&tags=featured'} />
                     <Button
                         id={'MoreGames'}
                         name={'More Games'}
