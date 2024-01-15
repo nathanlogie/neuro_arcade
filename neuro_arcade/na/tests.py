@@ -29,7 +29,7 @@ class ModelTests(TestCase):
         self.assertTrue(isinstance(testGame.owner,User))
         self.assertEquals(testGame.score_type, {"headers": []})
 
-    def create_gameTag(self):
+    def create_gameTag(self) -> GameTag:
         return GameTag.objects.create(
             name="TestGameTag",
             description="WOW this game has tags"
@@ -42,7 +42,7 @@ class ModelTests(TestCase):
         self.assertEquals(testTag.name, str(testTag))
         self.assertEquals(testTag.name, "TestGameTag")
 
-    def create_playerTag(self):
+    def create_playerTag(self) -> PlayerTag:
         return PlayerTag.objects.create(
             name="playerTag",
             description="wow"
@@ -53,7 +53,7 @@ class ModelTests(TestCase):
         self.assertTrue(isinstance(testTag, PlayerTag))
         self.assertEquals(testTag.name, str(testTag))
 
-    def create_player(self):
+    def create_player(self) -> Player:
         return Player.objects.create(
             name="Tester",
             is_ai=True,
@@ -68,7 +68,7 @@ class ModelTests(TestCase):
         self.assertEquals(bool, type(testPlayer.is_ai))
         self.assertIsNone(testPlayer.user)
 
-    def create_score(self):
+    def create_score(self) -> Score:
         return Score.objects.create(
             player=self.create_player(),
             game=self.create_game()
