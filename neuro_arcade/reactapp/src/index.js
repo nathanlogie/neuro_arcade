@@ -13,41 +13,25 @@ import {GameView} from "./app/GameView";
 const router = createBrowserRouter([
     {
         path: '',
-        element: (
-            <div>
-                <HomePage />
-            </div>
-        ),
+        element: <HomePage />
     },
     {
         path: "about",
-        element: (
-            <div>
-                <AboutPage />
-            </div>
-        ),
+        element: <AboutPage />
     },
     {
         path: "add_content",
         element: (
-            <div>
-                <AddContent />
-            </div>
+            <AddContent />
         ),
     },
     {
+        path: 'all_games/:game_slug',
+        element: <GameView />
+    },
+    {
         path: "all_games",
-        element: <MoreGames />,
-        children: [
-            {
-                path: ':game_slug',
-                element: (
-                    <div>
-                        <GameView />
-                    </div>
-                ),
-            }
-        ]
+        element: <MoreGames />
     },
 ]);
 
