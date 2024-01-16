@@ -6,11 +6,11 @@
     .Content {
         margin: 3em 0;
         width: 60%;
-    }
-    & h1 {
-        position: relative;
-        text-align: left;
-        padding-left: 1em;
+        & h1 {
+            position: relative;
+            text-align: left;
+            padding-left: 1em;
+        }
     }
 }
 .MobileBannerBuffer {
