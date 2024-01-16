@@ -7,6 +7,7 @@ import reportWebVitals from './app/reportWebVitals';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {AddContent} from "./app/AddContent";
 import {MoreGames} from "./app/MoreGames";
+import {GameView} from "./app/GameView";
 
 
 const router = createBrowserRouter([
@@ -36,11 +37,17 @@ const router = createBrowserRouter([
     },
     {
         path: "all_games",
-        element: (
-            <div>
-                <MoreGames />
-            </div>
-        ),
+        element: <MoreGames />,
+        children: [
+            {
+                path: ':game_slug',
+                element: (
+                    <div>
+                        <GameView />
+                    </div>
+                ),
+            }
+        ]
     },
 ]);
 
