@@ -38,19 +38,12 @@ export function Banner({size, button_left, button_right}) {
 }
 
 export function MobileBanner({size}) {
-    if (size === 'big') {
-        return (
-          <div>
-          </div>
-        );
-    } else {
-        return (
-            <div
-                className={styles.MobileBanner}
-                id={styles[size]}
-            >
-                <Logo size={size}/>
-            </div>
-        );
-    }
+    return (
+        <div
+            className={styles.MobileBanner}
+            id={styles[size]}
+        >
+            <Logo size={size}/>
+        </div>
+    );
 }

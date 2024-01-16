@@ -29,7 +29,10 @@ export function AboutPage() {
             <MobileBanner size={'big'} />
             <div className={styles.MainBlock}>
                 <div className={styles.Content}>
+                    <h1>About</h1>
+                    // TODO Ask andrei to add text here
                 </div>
+                <div className={styles.Side}></div>
             </div>
             <div className={styles.MobileBannerBuffer} />
         </div>

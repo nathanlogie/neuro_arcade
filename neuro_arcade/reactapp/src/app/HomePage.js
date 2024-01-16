@@ -46,6 +46,7 @@ export function HomePage() {
                         direction={'down'}
                     />
                 </div>
+                <div className={styles.Side}></div>
             </div>
             <div className={styles.MobileBannerBuffer} />
         </div>

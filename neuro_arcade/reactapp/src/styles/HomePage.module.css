@@ -1,16 +1,19 @@
 .MainBlock {
+    margin: 3em 0;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     .Content {
-        margin: 3em 0;
         width: 60%;
         & h1 {
             position: relative;
             text-align: left;
             padding-left: 1em;
         }
+    }
+    .Side {
+        width: 40%;
     }
 }
 .MobileBannerBuffer {
@@ -26,6 +29,7 @@
         display: none;
     }
     .MainBlock {
+        display: block;
         width: calc(100% - 6em);
         margin: 3em;
         .Content {
