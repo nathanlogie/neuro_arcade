@@ -5,6 +5,7 @@ from django.test import TestCase
 # The ide will shout at you to remove the na from the import but don't
 # The na allows it to run in terminal and in the pipeline
 from na.models import Game, GameTag, PlayerTag, Player, Score
+import populate
 
 
 # Create your tests here.
@@ -82,3 +83,19 @@ class ModelTests(TestCase):
         self.assertIsInstance(testScore.player, Player)
         self.assertIsInstance(testScore.game, Game)
         self.assertEquals(str(testScore), "Tester's score at TestGame")
+
+
+class PopulationScriptTests(TestCase):
+
+    def testAdded(self):
+        populate.populate()
+
+        games = Game.objects.all()
+        gametags = GameTag.objects.all()
+        players = Player.objects.all()
+        playertags = PlayerTag.objects.all()
+
+        self.assertTrue(len(games) > 1)
+        self.assertTrue(len(gametags) > 1)
+        self.assertTrue(len(players) > 1)
+        self.assertTrue(len(playertags) > 1)
