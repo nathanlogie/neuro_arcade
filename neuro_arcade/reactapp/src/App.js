@@ -1,5 +1,6 @@
 import './App.css';
-import {useEffect, useState} from "react";
+
+import React, { Component, useEffect, useState }  from 'react';
 
 function Fibbonacci() {
     // URL used to fetch the data
