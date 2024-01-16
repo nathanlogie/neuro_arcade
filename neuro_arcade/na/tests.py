@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.test import TestCase
+from django.urls import reverse
 
 # The ide will shout at you to remove the na from the import but don't
 # The na allows it to run in terminal and in the pipeline
@@ -87,7 +88,7 @@ class ModelTests(TestCase):
 
 class PopulationScriptTests(TestCase):
 
-    def testAdded(self):
+    def test_Added(self):
         populate.populate()
 
         games = Game.objects.all()
@@ -111,3 +112,25 @@ class FormTests(TestCase):
         self.assertTrue('GameForm' in dir(na.forms))
         form = GameForm()
         self.assertEqual(type(form.__dict__['instance']), Game)
+
+class ViewTests(TestCase):
+
+    model = ModelTests()
+
+    def test_index(self):
+        url = reverse("na:index")
+        resp = self.client.get(url)
+        self.assertEquals(resp.status_code, 200)
+
+    def test_loggedin_index(self):
+        url = reverse("na:index")
+        self.client.force_login(user=User.objects.create())
+        resp = self.client.get(url)
+        self.assertEquals(resp.status_code, 200)
+
+    def test_game_add(self):
+        url = reverse("na:game_add")
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+
