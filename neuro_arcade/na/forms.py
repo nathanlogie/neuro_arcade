@@ -19,11 +19,9 @@ class PublicationForm(forms.Form):
     author = forms.CharField(max_length=255, required=False)
     link = forms.URLField(required=False)
 
-    class Meta:
-        fields = ('title', 'author', 'link')
 
+PublicationFormSet = formset_factory(PublicationForm, extra=0)
 
-PublicationFormSet = formset_factory(PublicationForm, extra=1)
 
 
 class AboutForm(forms.Form):

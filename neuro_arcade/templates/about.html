@@ -1,4 +1,5 @@
 {% extends "base_large_banner.html" %}
+{% load static %}
 
 {% block body_block %}
 
@@ -12,7 +13,7 @@
      <h2>PUBLICATIONS</h2>
      <ul>
     {% for publication in publications %}
-        <li><a href="{{ publication.link }}">{{ publication.title }} - {{ publication.authors }}</a></li>
+        <li><a href="{{ publication.link }}">{{ publication.title }} - {{ publication.author }}</a></li>
     {% endfor %}
     </ul>
 {% if user.is_authenticated and user.is_superuser %}
