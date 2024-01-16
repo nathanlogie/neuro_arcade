@@ -6,8 +6,8 @@ from django.test import TestCase
 # The na allows it to run in terminal and in the pipeline
 from na.models import Game, GameTag, PlayerTag, Player, Score
 import populate
-
-
+import na.forms
+from na.forms import UserForm, GameForm
 # Create your tests here.
 
 
@@ -99,3 +99,15 @@ class PopulationScriptTests(TestCase):
         self.assertTrue(len(gametags) > 1)
         self.assertTrue(len(players) > 1)
         self.assertTrue(len(playertags) > 1)
+
+
+class FormTests(TestCase):
+    def test_register(self):
+        self.assertTrue('UserForm' in dir(na.forms))
+        form = UserForm()
+        self.assertEqual(type(form.__dict__['instance']), User)
+
+    def test_add_game(self):
+        self.assertTrue('GameForm' in dir(na.forms))
+        form = GameForm()
+        self.assertEqual(type(form.__dict__['instance']), Game)
