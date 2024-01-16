@@ -6,7 +6,7 @@
     margin: 0 auto;
 }
 .ButtonBlock {
-    cursor: pointer;
+    text-decoration: none;
     position: absolute;
     color: #FFFFFF;
     font-size: 1.25rem;

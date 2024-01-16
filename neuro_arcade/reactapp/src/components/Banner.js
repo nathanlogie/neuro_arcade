@@ -1,6 +1,8 @@
 import styles from '../styles/Banner.module.css';
 import {Button} from "./Button";
 import {Logo} from "./Logo";
+import {Link} from "react-router-dom";
+import React from "react";
 
 export function Banner({size, button_left, button_right}) {
     if (size === 'big' && button_right !== null && button_left !== null) {

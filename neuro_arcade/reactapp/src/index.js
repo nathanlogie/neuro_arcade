@@ -1,28 +1,34 @@
 import React from 'react';
 import {createRoot} from 'react-dom/client';
 import './styles/index.css';
-import App from './app/App';
+import {HomePage} from "./app/HomePage";
+import {AboutPage} from './app/AboutPage';
 import reportWebVitals from './app/reportWebVitals';
 import {
     createBrowserRouter,
     RouterProvider,
     Link,
 } from "react-router-dom";
+import {Background} from "./components/Background";
+
 
 const router = createBrowserRouter([
     {
         path: "react_test", // TODO change to / after everything is moved
         element: (
             <div>
-                <App />
-                <Link to="other_page">other page</Link>
+                <Background />
+                <HomePage />
             </div>
         ),
     },
     {
-        path: "react_test/other_page",  // TODO change to / after everything is moved
+        path: "react_test/about",  // TODO change to / after everything is moved
         element: (
-            <div>Other Page</div>
+            <div>
+                <Background />
+                <AboutPage />
+            </div>
         ),
     },
 ]);

@@ -1,16 +1,16 @@
-import {Banner} from "./Banner";
-import {GameGrid} from "./GameGrid";
-import styles from '../styles/Index.module.css'
-import {NavBar} from "./NavBar";
-import {MobileBanner} from "./Banner";
-import {Button} from "./Button";
+import {Banner} from "../components/Banner";
+import {GameGrid} from "../components/GameGrid";
+import styles from '../styles/HomePage.css'
+import {NavBar} from "../components/NavBar";
+import {MobileBanner} from "../components/Banner";
+import {Button} from "../components/Button";
 
-export function Index() {
+export function HomePage() {
     return (
         <div>
             <Banner size={'big'} button_left={{
                 name: 'About',
-                link: '...', // TODO Django link API
+                link: 'about',
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{
