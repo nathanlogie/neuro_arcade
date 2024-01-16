@@ -4,33 +4,43 @@ import {Logo} from "./Logo";
 import React from "react";
 
 export function Banner({size, button_left, button_right}) {
-    return (
-        <div
-            className={styles.Banner}
-            id={styles[size]}
-        >
-            <Button
-                name={button_left.name}
-                link={button_left.link}
-                direction={button_left.direction}
-                orientation={button_left.orientation}
-            />
-            <Logo size={size}/>
-            <Button
-                name={button_right.name}
-                link={button_right.link}
-                direction={button_right.direction}
-                orientation={button_right.orientation}
-            />
-        </div>
-    );
+    if (size === 'big') {
+        return (
+            <div
+                className={styles.Banner}
+                id={styles[size]}
+            >
+                <Button
+                    name={button_left.name}
+                    link={button_left.link}
+                    direction={button_left.direction}
+                    orientation={button_left.orientation}
+                />
+                <Logo size={size}/>
+                <Button
+                    name={button_right.name}
+                    link={button_right.link}
+                    direction={button_right.direction}
+                    orientation={button_right.orientation}
+                />
+            </div>
+        );
+    } else {
+        return (
+            <div
+                className={styles.Banner}
+                id={styles[size]}
+            >
+                <Logo size={size}/>
+            </div>
+        );
+    }
 }
 
 export function MobileBanner({size}) {
-    if (size === 'small') {
+    if (size === 'big') {
         return (
           <div>
-
           </div>
         );
     } else {

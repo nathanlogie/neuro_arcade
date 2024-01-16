@@ -17,7 +17,7 @@ export function HomePage() {
                 direction: 'left'
             }} button_right={{
                 name: 'add content',
-                link: 'add_content', // TODO Django link API
+                link: 'add_content',
                 orientation: 'right',
                 direction: 'right'
             }} />
@@ -28,7 +28,7 @@ export function HomePage() {
                 direction: 'left'
             }} button_right={{
                 name: 'add content',
-                link: 'add_content', // TODO Django link API
+                link: 'add_content',
                 orientation: 'right',
                 direction: 'right'
             }}
@@ -41,7 +41,7 @@ export function HomePage() {
                     <Button
                         id={'MoreGames'}
                         name={'more games'}
-                        link={'...'} // TODO Django Link API
+                        link={'all_games'}
                         orientation={'right'}
                         direction={'down'}
                     />
