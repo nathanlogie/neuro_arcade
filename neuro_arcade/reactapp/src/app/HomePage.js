@@ -4,10 +4,12 @@ import styles from '../styles/HomePage.module.css';
 import {NavBar} from "../components/NavBar";
 import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
+import {Background} from "../components/Background";
 
 export function HomePage() {
     return (
         <div>
+            <Background />
             <Banner size={'big'} button_left={{
                 name: 'About',
                 link: 'about',

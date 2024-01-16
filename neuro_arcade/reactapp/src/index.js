@@ -17,7 +17,6 @@ const router = createBrowserRouter([
         path: "react_test", // TODO change to / after everything is moved
         element: (
             <div>
-                <Background />
                 <HomePage />
             </div>
         ),
@@ -26,7 +25,6 @@ const router = createBrowserRouter([
         path: "react_test/about",  // TODO change to / after everything is moved
         element: (
             <div>
-                <Background />
                 <AboutPage />
             </div>
         ),

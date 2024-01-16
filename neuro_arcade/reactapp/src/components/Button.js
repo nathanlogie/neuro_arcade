@@ -6,23 +6,29 @@ import styles from '../styles/Button.module.css';
 import {Link} from "react-router-dom";
 
 export function Button({id, name, link, direction, orientation}) {
-    return (
-        <div className={styles.Button} id={styles[id]}>
-            <Link
-                className={styles.ButtonBlock}
-                id={styles[orientation]}
-                to={link}
-            >
-                {name}
-            </Link>
-            <Link className={styles.Arrow}
-                  id={styles[orientation]}
-                  to={link}
-            >
-                <Arrow direction={direction} />
-            </Link>
-        </div>
-    );
+    if (link !== '') {
+        return (
+            <div className={styles.Button} id={styles[id]}>
+                <Link
+                    className={styles.ButtonBlock}
+                    id={styles[orientation]}
+                    to={link}
+                >
+                    {name}
+                </Link>
+                <Link className={styles.Arrow}
+                      id={styles[orientation]}
+                      to={link}
+                >
+                    <Arrow direction={direction} />
+                </Link>
+            </div>
+        );
+    } else {
+        return (
+            <div className={styles.Button} id={styles[id]} />
+        );
+    }
 }
 
 function Arrow({direction}) {
