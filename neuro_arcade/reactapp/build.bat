@@ -1,5 +1,5 @@
 npm run build
 
-rename ./build/index.html ./build/react_index.html
+@REM rename ./build/index.html ./build/react_index.html
 
-echo 'React App built!'
+@REM echo 'React App built!'

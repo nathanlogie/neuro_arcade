@@ -12,4 +12,4 @@ npm run build
 # so it doesn't conflict with the index in /templates/
 #mv ./build/index.html ./build/react_index.html
 
-echo 'React App built!'
+#echo 'React App built!'
