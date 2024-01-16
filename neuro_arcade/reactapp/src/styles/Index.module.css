@@ -1,11 +1,11 @@
 .MainBlock {
-    width: 60%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 3em 0;
     .Content {
-        width: 42.5em;
+        margin: 3em 0;
+        width: 60%;
     }
     & h1 {
         position: relative;
@@ -21,15 +21,16 @@
     margin-left: 0;
 }
 
-@media (max-width: 50em) {
+@media (max-width: 70em) {
     .DesktopBanner {
         display: none;
     }
     .MainBlock {
-        margin: 1em;
-        width: calc(100vw - 2em);
+        width: calc(100% - 6em);
+        margin: 3em;
         .Content {
             width: 100%;
+            margin: 0;
         }
         & h1 {
             font-size: 1.5em;

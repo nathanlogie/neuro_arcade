@@ -1,15 +1,24 @@
 .GameCard {
     position: relative;
     float: left;
-    display: grid;
-    font-size: 1em;
     width: max-content;
     margin: 1.25em;
+    padding-bottom: 3em;
     & img {
         padding: 0.5em;
         width: 5em;
         height: 5em;
         border-radius: 1.5em;
+        object-fit: contain;
+    }
+    & p {
+        position: absolute;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+        font-size: 1em;
+        height: max-content;
+        margin: 0;
     }
 }
 

@@ -10,7 +10,6 @@ export function Banner({size, button_left, button_right}) {
                 id={styles[size]}
             >
                 <Button
-                    className={styles.BannerButton}
                     name={button_left.name}
                     link={button_left.link}
                     direction={button_left.direction}
@@ -18,7 +17,6 @@ export function Banner({size, button_left, button_right}) {
                 />
                 <Logo size={size}/>
                 <Button
-                    className={styles.BannerButton}
                     name={button_right.name}
                     link={button_right.link}
                     direction={button_right.direction}
@@ -34,7 +32,6 @@ export function Banner({size, button_left, button_right}) {
             >
                 <Logo size={size}/>
                 <Button
-                    className={styles.BannerButton}
                     name={button_right.name}
                     link={button_right.link}
                     direction={button_right.direction}
@@ -49,7 +46,6 @@ export function Banner({size, button_left, button_right}) {
                 id={styles[size]}
             >
                 <Button
-                    className={styles.BannerButton}
                     name={button_left.name}
                     link={button_left.link}
                     direction={button_left.direction}

@@ -1,14 +1,16 @@
 .GameGrid {
     display: inline-block;
     width: 42.5em;
-    height: 20em;
+    height: 22.5em;
 }
 
 @media (max-width: 70em) {
     .GameGrid {
         display: grid;
-        grid-template-columns: auto auto auto auto;
         width: 100%;
-        height: max-content;
+        height: 100%;
+        grid-template-rows: min-content;
+        grid-auto-rows: min-content;
+        grid-template-columns: repeat(auto-fit, minmax(7.5em, 1fr));
     }
 }

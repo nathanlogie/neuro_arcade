@@ -1,23 +1,9 @@
 import {Banner} from "./Banner";
-import {GameCard} from "./GameCard";
-import game_image from '../temp_static/images/game_icon.png'
 import {GameGrid} from "./GameGrid";
 import styles from '../styles/Index.module.css'
 import {NavBar} from "./NavBar";
 import {MobileBanner} from "./Banner";
 import {Button} from "./Button";
-
-function MoreGamesButton() {
-    return (
-        <Button
-            className={styles.MoreGames}
-            name={'More Games'}
-            link={'...'} // TODO Django Link API
-            orientation={'right'}
-            direction={'down'}
-        />
-    );
-}
 
 export function Index() {
     return (
