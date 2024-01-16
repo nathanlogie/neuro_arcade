@@ -4,17 +4,13 @@ import './styles/index.css';
 import {HomePage} from "./app/HomePage";
 import {AboutPage} from './app/AboutPage';
 import reportWebVitals from './app/reportWebVitals';
-import {
-    createBrowserRouter,
-    RouterProvider,
-    Link,
-} from "react-router-dom";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {Background} from "./components/Background";
 
 
 const router = createBrowserRouter([
     {
-        path: "react_test", // TODO change to / after everything is moved
+        path: '',
         element: (
             <div>
                 <HomePage />
@@ -22,7 +18,7 @@ const router = createBrowserRouter([
         ),
     },
     {
-        path: "react_test/about",  // TODO change to / after everything is moved
+        path: "about",
         element: (
             <div>
                 <AboutPage />
@@ -32,7 +28,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById('root')).render(
-    <RouterProvider router={router} />
+    <RouterProvider router={router}/>
 );
 
 // If you want to start measuring performance in your app, pass a function
