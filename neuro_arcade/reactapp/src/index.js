@@ -5,7 +5,7 @@ import {HomePage} from "./app/HomePage";
 import {AboutPage} from './app/AboutPage';
 import reportWebVitals from './app/reportWebVitals';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {Background} from "./components/Background";
+import {AddContent} from "./app/AddContent";
 
 
 const router = createBrowserRouter([
@@ -22,6 +22,14 @@ const router = createBrowserRouter([
         element: (
             <div>
                 <AboutPage />
+            </div>
+        ),
+    },
+        {
+        path: "add_content",
+        element: (
+            <div>
+                <AddContent />
             </div>
         ),
     },

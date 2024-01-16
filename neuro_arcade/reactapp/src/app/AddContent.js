@@ -6,46 +6,31 @@ import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {Background} from "../components/Background";
 
-export function HomePage() {
+export function AddContent() {
     return (
         <div>
             <Background />
             <Banner size={'big'} button_left={{
-                name: 'about',
-                link: 'about',
+                name: 'home',
+                link: '/',
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{
-                name: 'add content',
-                link: 'add_content', // TODO Django link API
-                orientation: 'right',
-                direction: 'right'
+                link: '',
+                orientation: 'right'
             }} />
             <NavBar button_left={{
-                name: 'about',
-                link: 'about',
+                name: 'home',
+                link: 'home',
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{
-                name: 'add content',
-                link: 'add_content', // TODO Django link API
-                orientation: 'right',
+                link: '...',
                 direction: 'right'
             }}
             />
             <MobileBanner size={'big'} />
             <div className={styles.MainBlock}>
-                <div className={styles.Content}>
-                    <h1>Featured games</h1>
-                    <GameGrid query={'?query=&tags=featured'} />
-                    <Button
-                        id={'MoreGames'}
-                        name={'more games'}
-                        link={'...'} // TODO Django Link API
-                        orientation={'right'}
-                        direction={'down'}
-                    />
-                </div>
             </div>
             <div className={styles.MobileBannerBuffer} />
         </div>

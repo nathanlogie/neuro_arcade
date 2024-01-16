@@ -11,8 +11,8 @@ export function AboutPage() {
                 link: '',
                 orientation: 'left'
             }} button_right={{
-                name: 'Home',
-                link: '../react_test', // TODO Django link API
+                name: 'home',
+                link: '/',
                 orientation: 'right',
                 direction: 'right'
             }} />
@@ -20,8 +20,8 @@ export function AboutPage() {
                 link: '',
                 orientation: 'left'
             }} button_right={{
-                name: 'Home',
-                link: '../react_test',
+                name: 'home',
+                link: '/',
                 orientation: 'right',
                 direction: 'right'
             }}
