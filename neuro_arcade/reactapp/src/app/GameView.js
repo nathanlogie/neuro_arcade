@@ -1,4 +1,4 @@
-import styles from "../styles/HomePage.module.css";
+import styles from "../styles/App.module.css";
 
 export function GameView() {
     //todo game view page

@@ -1,6 +1,6 @@
 import {Banner} from "../components/Banner";
 import {GameGrid} from "../components/GameGrid";
-import styles from '../styles/HomePage.module.css';
+import styles from '../styles/App.module.css';
 import {NavBar} from "../components/NavBar";
 import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";

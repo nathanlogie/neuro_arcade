@@ -3,11 +3,11 @@ import {Link} from "react-router-dom";
 
 export function GameCard ({key, game}) {
     return (
-        <div className={styles.GameCard}>
+        <Link className={styles.GameCard} to={'all_games/' + game.slug}>
             <img src={game.icon || '/media/game_icons/example.png'} alt='game icon'/>
-            <Link to={'all_games/' + game.slug}>
+            <p>
                 {game.name || 'Game Name'}
-            </Link>
-        </div>
+            </p>
+        </Link>
     );
 }

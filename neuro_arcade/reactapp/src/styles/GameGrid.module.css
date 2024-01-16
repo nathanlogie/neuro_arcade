@@ -1,10 +1,10 @@
 .GameGrid {
-    display: inline-block;
+    display: block;
     width: 42.5em;
     height: 22.5em;
 }
 
-@media (max-width: 70em) {
+@media (max-width: 75em) {
     .GameGrid {
         display: grid;
         width: 100%;

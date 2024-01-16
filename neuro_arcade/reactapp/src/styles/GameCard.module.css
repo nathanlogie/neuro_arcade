@@ -19,6 +19,8 @@
         font-size: 1em;
         height: max-content;
         margin: 0;
+        text-decoration: none;
+        color: #FFFFFF;
     }
 }
 
