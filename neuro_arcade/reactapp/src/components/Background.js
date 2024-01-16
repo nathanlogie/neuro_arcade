@@ -1,10 +1,10 @@
 import styles from "../styles/Background.module.css"
-import background from "../temp_static/images/background.png"
+import background from "../static/images/background.png"
 export function Background() {
     return (
         <div>
             <img
-                src={background} //TODO Django API
+                src={background}
                 id={styles['hexagon']}
                 alt={''}
             />

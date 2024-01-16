@@ -1,5 +1,5 @@
 import styles from "../styles/Logo.module.css"
-import logo from "../temp_static/images/logo.png"
+import logo from "../static/images/logo.png"
 import {Link} from "react-router-dom";
 
 export function Logo({size}) {

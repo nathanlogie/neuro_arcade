@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'MuseoModerno Regular';
-  src: url('../temp_static/fonts/MuseoModerno/MuseoModerno-VariableFont_wght.ttf') format('truetype');
+  src: url('../static/fonts/MuseoModerno/MuseoModerno-VariableFont_wght.ttf') format('truetype');
 }
 
 .Logo {

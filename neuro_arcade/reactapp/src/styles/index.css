@@ -1,7 +1,6 @@
-
 @font-face {
   font-family: 'Exo_2';
-  src: url('../temp_static/fonts/Exo_2/Exo2-VariableFont_wght.ttf') format('truetype');
+  src: url('../static/fonts/Exo_2/Exo2-VariableFont_wght.ttf') format('truetype');
 }
 
 body {
