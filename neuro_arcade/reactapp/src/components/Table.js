@@ -4,8 +4,7 @@ import Switcher from './Switcher'
 import { DataGrid } from '@mui/x-data-grid';
 
 
-
-const Table = ({inputData}) => {
+export function Table({inputData}) {
 
     const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(
         inputData.table_headers[0].name
@@ -82,5 +81,3 @@ const Table = ({inputData}) => {
 Table.propTypes = {
     inputData: PropTypes.object.isRequired,
 }
-
-export default Table

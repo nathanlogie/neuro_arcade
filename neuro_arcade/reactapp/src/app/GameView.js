@@ -1,17 +1,18 @@
+import {useParams} from "react-router-dom";
+import {requestGame} from "../backendRequests";
 import styles from "../styles/App.module.css";
+import {Table} from "../components/Table";
+
 
 export function GameView() {
-    //todo game view page
-
     // see: https://reactrouter.com/en/main/start/concepts#data-access
-    // use these:
-    // let location = useLocation();
-    // let urlParams = useParams();
-    // let [urlSearchParams] = useSearchParams();
+    let {game_slug} = useParams();
+    let game_data = requestGame(game_slug);
 
     return (
         <div className={styles.MainBlock}>
             <p>GAME VIEW!!!</p>
+            <Table inputData={game_data}/>
         </div>
     )
 }
