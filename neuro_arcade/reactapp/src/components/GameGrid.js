@@ -3,7 +3,7 @@ import {GameCard} from "./GameCard";
 import {requestGamesSorted} from "../backendRequests";
 import {useEffect, useState} from "react";
 
-export function GameGrid({query}) {
+export function GameGrid({query, linkPrefix}) {
     let [isLoading, setLoading] = useState(true);
     let [games, setGames] = useState({});
     useEffect(() => {
@@ -26,6 +26,7 @@ export function GameGrid({query}) {
                     <GameCard
                         key={index}
                         game={game}
+                        linkPrefix={linkPrefix}
                     />
                 ))}
             </div>

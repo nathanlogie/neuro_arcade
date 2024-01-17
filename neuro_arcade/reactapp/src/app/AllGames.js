@@ -16,7 +16,7 @@ export function AllGames() {
             </div>
             <div className={styles.Content}>
                 <h1>Games:</h1>
-                <GameGrid query={query} />
+                <GameGrid query={query} linkPrefix={''}/>
             </div>
         </div>
     );
