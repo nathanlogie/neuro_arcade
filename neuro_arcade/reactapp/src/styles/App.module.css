@@ -1,5 +1,5 @@
 .MainBlock {
-    padding: 3em;
+    margin: 3em;
     width: calc(100% - 6em);
     height: 100%;
     display: flex;
@@ -18,8 +18,8 @@
         .ContentBlock {
             display: flex;
             & img {
-                width: 10em;
-                height: 10em;
+                width: 10rem;
+                height: 10rem;
                 object-fit: contain;
                 border-radius: 2em;
             }
@@ -39,11 +39,10 @@
 }
 
 @media (max-width: 75em) {
-    .DesktopBanner {
-        display: none;
-    }
     .MainBlock {
         display: block;
+        width: calc(100% - 2em);
+        margin: 1em;
         .Content {
             float: none;
             width: 100%;

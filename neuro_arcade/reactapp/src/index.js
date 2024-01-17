@@ -6,8 +6,10 @@ import {AboutPage} from './app/AboutPage';
 import reportWebVitals from './app/reportWebVitals';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {AddContent} from "./app/AddContent";
-import {MoreGames} from "./app/MoreGames";
+import {AllGames} from "./app/AllGames";
 import {GameView} from "./app/GameView";
+
+import {AnimatePresence} from 'framer-motion'
 
 
 const router = createBrowserRouter([
@@ -31,12 +33,15 @@ const router = createBrowserRouter([
     },
     {
         path: "all_games",
-        element: <MoreGames />
+        element: <AllGames />
     },
 ]);
 
+
 createRoot(document.getElementById('root')).render(
-    <RouterProvider router={router}/>
+    <AnimatePresence>
+        <RouterProvider router={router}/>
+    </AnimatePresence>
 );
 
 // If you want to start measuring performance in your app, pass a function

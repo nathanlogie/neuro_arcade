@@ -1,7 +1,10 @@
 .Banner, .MobileBanner {
-    display: flex;
     backdrop-filter: blur(20px);
     background: rgba(255, 255, 255, 0.075);
+    .AnimationContainer {
+        display: flex;
+        align-items: center;
+    }
 }
 .MobileBanner {
     display: none;
@@ -13,11 +16,16 @@
     }
     .MobileBanner {
         display: flex;
+        align-items: center;
+        justify-content: center;
+        .AnimationContainer {
+            margin: auto 0;
+        }
     }
 }
 
-@media (max-width: 12em) {
-    .Banner {
+@media (max-width: 20em) {
+    .MobileBanner {
         background: rgba(255,255,255,0);
     }
 }

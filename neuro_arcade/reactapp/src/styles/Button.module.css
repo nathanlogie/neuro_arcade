@@ -1,8 +1,7 @@
 .Button {
     position: relative;
-    max-width: max-content;
-    max-height: max-content;
-    padding: 2em 0 4em 16em;
+    width: 14em;
+    height: 5em;
     margin: 0 auto;
 }
 .ButtonBlock {
@@ -49,46 +48,28 @@
     right: 10%;
 }
 #MoreGames {
-    padding: 2em 0 4em 100%;
+    margin: 0 0 0 auto;
 }
 
 @media (max-width: 50em) {
     .Button {
-        margin: 0;
-        padding: 2em 0 2.5em 50vw;
-        .ButtonBlock {
-            font-size: 1.1em;
-            bottom: 0.75em;
-        }
-        .Arrow {
-            font-size: 1.5em;
-            width: 2em;
-            height: 2em;
-            line-height: 2.5em;
-        }
-        .ButtonBlock#left {
-            margin-left: 1rem;
-            padding: 0.5rem 1rem 0.5rem 2.5rem;
-        }
-        .ButtonBlock#right {
-            margin-right: 1rem;
-            padding: 0.5rem 2.5rem 0.5rem 1rem;
-        }
+        scale: 85%;
     }
 }
 
 @media (max-width: 20em) {
     .Button {
+        scale: 75%;
         .ButtonBlock#left {
             left: 10%;
-            bottom: 3em;
+            bottom: 4em;
         }
         .Arrow#left {
             left: 10%;
             bottom: 2em;
         }
         .ButtonBlock#right {
-            bottom: 0.25em;
+            bottom: 0.5em;
             right: 10%;
         }
         .Arrow#right {

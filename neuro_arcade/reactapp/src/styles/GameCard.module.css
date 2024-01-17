@@ -26,11 +26,6 @@
 
 @media (max-width: 50em) {
     .GameCard {
-        margin: 0.75em auto;
-        font-size: 0.8em;
-        & img {
-            width: 4em;
-            height: 4em;
-        }
+        scale: 75%;
     }
 }

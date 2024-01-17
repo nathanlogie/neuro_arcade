@@ -5,6 +5,8 @@ import {NavBar} from "../components/NavBar";
 import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {Background} from "../components/Background";
+import {Table} from "../components/Table";
+import {motion} from "framer-motion"
 
 export function HomePage() {
     return (
@@ -34,7 +36,15 @@ export function HomePage() {
             }}
             />
             <MobileBanner size={'big'} />
-            <div className={styles.MainBlock}>
+            <motion.div
+                className={styles.MainBlock}
+                initial={{
+                    opacity: 0
+
+                }}
+                animate={{opacity: 1}}
+                exit={{opacity: 0}}
+            >
                 <div className={styles.Content}>
                     <h1>Featured games</h1>
                     <GameGrid query={'?query=&tags=featured'} />
@@ -46,8 +56,10 @@ export function HomePage() {
                         direction={'down'}
                     />
                 </div>
-                <div className={styles.Side}></div>
-            </div>
+                <div className={styles.Side}>
+
+                </div>
+            </motion.div>
             <div className={styles.MobileBannerBuffer} />
         </div>
     );

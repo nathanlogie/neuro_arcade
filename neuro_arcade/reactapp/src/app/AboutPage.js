@@ -2,6 +2,7 @@ import {Background} from "../components/Background";
 import {Banner, MobileBanner} from "../components/Banner";
 import {NavBar} from "../components/NavBar";
 import styles from "../styles/App.module.css";
+import {motion} from "framer-motion"
 
 export function AboutPage() {
     return (
@@ -27,7 +28,12 @@ export function AboutPage() {
             }}
             />
             <MobileBanner size={'big'} />
-            <div className={styles.MainBlock}>
+            <motion.div
+                className={styles.MainBlock}
+                initial={{x: -100}}
+                animate={{x: 0}}
+                exit={{x: -100}}
+            >
                 <div className={styles.Content}>
                     <h1>About</h1>
                     <div className={styles.ContentBlock}>
@@ -36,7 +42,7 @@ export function AboutPage() {
                     </div>
                 </div>
                 <div className={styles.Side}></div>
-            </div>
+            </motion.div>
             <div className={styles.MobileBannerBuffer} />
         </div>
     );

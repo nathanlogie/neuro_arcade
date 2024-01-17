@@ -4,11 +4,17 @@ import { FaArrowUp } from "react-icons/fa6";
 import { FaArrowDown } from "react-icons/fa6";
 import styles from '../styles/Button.module.css';
 import {Link} from "react-router-dom";
+import {motion} from "framer-motion"
 
 export function Button({id, name, link, direction, orientation}) {
     if (link !== '') {
         return (
-            <div className={styles.Button} id={styles[id]}>
+            <motion.div
+                className={styles.Button}
+                id={styles[id]}
+                whileHover={{scale: 1.1}}
+                whileTap={{scale: 0.9}}
+            >
                 <Link
                     className={styles.ButtonBlock}
                     id={styles[orientation]}
@@ -22,7 +28,7 @@ export function Button({id, name, link, direction, orientation}) {
                 >
                     <Arrow direction={direction} />
                 </Link>
-            </div>
+            </motion.div>
         );
     } else {
         return (

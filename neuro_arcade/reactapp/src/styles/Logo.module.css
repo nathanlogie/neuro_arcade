@@ -58,16 +58,6 @@
 
 @media (max-width: 50em) {
     .Logo {
-        max-width: 10.88em;
-        max-height: 8em;
-        #title_1, #title_2 {
-            font-size: 1.6em;
-        }
-        #title_1 {
-            -webkit-text-stroke: 2px #D14081;
-        }
-        #title_2 {
-            -webkit-text-stroke: 1px #79FFB7;
-        }
+        scale: 80%;
     }
 }
