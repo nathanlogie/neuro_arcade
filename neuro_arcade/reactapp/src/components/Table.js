@@ -7,14 +7,11 @@ import { DataGrid } from '@mui/x-data-grid';
 
 const Table = ({inputData}) => {
 
-    const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(
-        inputData.table_headers[0].name
-    );
+    const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState("All");
 
     const handleSwitcherChange = (selectedValue) => {
         setSelectedSwitcherValue(selectedValue);
     }
-
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 90, hide: true },
@@ -25,7 +22,7 @@ const Table = ({inputData}) => {
             type: header.type === 'int' ? 'number' : 'float',
             width: 150,
         })),
-        { field: 'is_AI', headerName: 'Is AI', type: 'boolean', width: 120 },
+        { field: 'is_AI', headerName: 'Is AI?', type: 'boolean', width: 120 },
     ];
 
     const rows = inputData.rows.map((row, index) => ({
@@ -35,7 +32,7 @@ const Table = ({inputData}) => {
             const columnName = inputData.table_headers[scoreIndex].name.toLowerCase();
             return { ...acc, [columnName]: score };
         }, {}),
-        is_AI: row.player_name.toLowerCase().includes('bot'),
+        is_AI: row.is_ai,
     }));
     
 
@@ -53,6 +50,15 @@ const Table = ({inputData}) => {
         ],
       };
 
+      const filteredRows =
+      selectedSwitcherValue === 'all'
+        ? rows
+        : selectedSwitcherValue === 'AI Platforms'
+        ? rows.filter((row) => row.is_AI)
+        : selectedSwitcherValue === 'Humans'
+        ? rows.filter((row) => !row.is_AI)
+        : rows;
+
 
     return(
         <div className='Container'>
@@ -61,7 +67,7 @@ const Table = ({inputData}) => {
             </div>
             <div className='Table'>
             <DataGrid
-                rows={rows}
+                rows={filteredRows}
                 columns={columns}
                 initialState={{
                     pagination: {
