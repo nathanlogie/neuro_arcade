@@ -2,7 +2,7 @@ import styles from '../styles/GameCard.module.css'
 import {Link, useLocation} from "react-router-dom";
 import {motion} from "framer-motion"
 
-export function GameCard ({key, game, linkPrefix=''}) {
+export function GameCard ({key, game, linkPrefix}) {
     // let loc = useLocation();
     // let s = loc.toString().split('/');
     // s.pop();

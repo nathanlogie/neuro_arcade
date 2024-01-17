@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Switcher from './Switcher'
+import TableSwitcher from './TableSwitcher'
 import { DataGrid } from '@mui/x-data-grid';
 
 
@@ -54,12 +54,22 @@ export function Table({inputData}) {
 
 
     return(
-        <div className='Container'>
-            <div className="Switcher">
-                    <Switcher data={switcher_labels} onSwitcherChange={handleSwitcherChange}/>
+        <div className={'TableContainer'}>
+            <div className={'TableSwitcher'}>
+                    <TableSwitcher
+                        sx={{
+                            color: "#FFFFFF"
+                        }}
+                        data={switcher_labels}
+                        onSwitcherChange={handleSwitcherChange}
+                    />
             </div>
-            <div className='Table'>
+            <div className={'Table'}>
             <DataGrid
+                sx={{
+                    color: '#FFFFFF',
+                    fill: '#FFFFFF'
+                }}
                 rows={rows}
                 columns={columns}
                 initialState={{

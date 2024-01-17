@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import Switcher from './Switcher'
+import TableSwitcher from './TableSwitcher'
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, ReferenceLine } from 'recharts';
 
 
@@ -19,9 +19,9 @@ export function Graph({inputData}) {
         setSelectedSwitcherValue(selectedValue);
     };
     return (
-        <div className="Container">
+        <div className="Container" style={{padding: '0 3em 3em 3em'}}>
             <div className="Switcher">
-                <Switcher data={inputData} onSwitcherChange={handleSwitcherChange}/>
+                <TableSwitcher data={inputData} onSwitcherChange={handleSwitcherChange}/>
             </div>
             <div className="Graph">
                 <LineChart

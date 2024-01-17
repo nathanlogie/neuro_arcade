@@ -11,12 +11,14 @@ export function AllGames() {
         <div>
             <Background/>
             <Banner size={'small'}/>
-            <div className={styles.Side}>
-                {/* search bar + tags here */}
-            </div>
-            <div className={styles.Content}>
-                <h1>Games:</h1>
-                <GameGrid query={query} linkPrefix={''}/>
+            <div className={styles.MainBlock}>
+                <div className={styles.Side}>
+                    {/* search bar + tags here */}
+                </div>
+                <div className={styles.Content}>
+                    <h1>All Games</h1>
+                    <GameGrid query={query} linkPrefix={''} id={'AppGrid'}/>
+                </div>
             </div>
         </div>
     );

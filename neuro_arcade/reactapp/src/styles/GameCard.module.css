@@ -4,10 +4,14 @@
     width: max-content;
     margin: 1.25em;
     padding-bottom: 3em;
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1.5em;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     & img {
-        padding: 0.5em;
-        width: 5em;
-        height: 5em;
+        padding-bottom: 0.5em;
+        width: 7em;
+        height: 7em;
         border-radius: 1.5em;
         object-fit: contain;
     }

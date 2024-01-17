@@ -47,7 +47,7 @@ export function HomePage() {
             >
                 <div className={styles.Content}>
                     <h1>Featured games</h1>
-                    <GameGrid query={'?query=&tags=featured&num=10'} linkPrefix={'all_games/'}/>
+                    <GameGrid query={'?query=&tags=featured&num=8'} num={8} linkPrefix={'all_games/'}/>
                     <Button
                         id={'MoreGames'}
                         name={'more games'}
