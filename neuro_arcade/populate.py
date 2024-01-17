@@ -743,7 +743,7 @@ def add_game(data: Dict) -> Game:
     game.save()
 
     # adding some random scores to this game
-    for _ in range(random.randint(2, 4)):
+    for _ in range(random.randint(6, 12)):
         add_random_score(game, Player.objects.all())
 
     return game

@@ -67,7 +67,7 @@ ROOT_URLCONF = 'neuro_arcade.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [DJANGO_TEMPLATE_DIR, REACT_BUILD_DIR],
+        'DIRS': [REACT_BUILD_DIR],  # used to have DJANGO_TEMPLATE_DIR
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -1,14 +1,47 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import {createRoot} from 'react-dom/client';
+import './styles/index.css';
+import {HomePage} from "./app/HomePage";
+import {AboutPage} from './app/AboutPage';
+import reportWebVitals from './app/reportWebVitals';
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {AddContent} from "./app/AddContent";
+import {AllGames} from "./app/AllGames";
+import {GameView} from "./app/GameView";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+import {AnimatePresence} from 'framer-motion'
+
+
+const router = createBrowserRouter([
+    {
+        path: '',
+        element: <HomePage />
+    },
+    {
+        path: "about",
+        element: <AboutPage />
+    },
+    {
+        path: "add_content",
+        element: (
+            <AddContent />
+        ),
+    },
+    {
+        path: 'all_games/:game_slug',
+        element: <GameView />
+    },
+    {
+        path: "all_games",
+        element: <AllGames />
+    },
+]);
+
+
+createRoot(document.getElementById('root')).render(
+    <AnimatePresence>
+        <RouterProvider router={router}/>
+    </AnimatePresence>
 );
 
 // If you want to start measuring performance in your app, pass a function

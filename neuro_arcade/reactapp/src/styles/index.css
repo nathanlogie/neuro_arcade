@@ -1,0 +1,25 @@
+@font-face {
+  font-family: 'Exo_2';
+  src: url('../static/fonts/Exo_2/Exo2-VariableFont_wght.ttf') format('truetype');
+}
+
+body {
+  font-family: 'Exo_2', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #190A28;
+  color: #FFFFFF;
+  position: relative;
+  text-align: center;
+  min-height: 100vh;
+  height: 100%;
+  overflow: auto;
+  margin: 0;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

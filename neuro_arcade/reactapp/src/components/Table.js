@@ -1,11 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Switcher from './Switcher'
+import TableSwitcher from './TableSwitcher'
 import { DataGrid } from '@mui/x-data-grid';
 
 
-
-const Table = ({inputData}) => {
+export function Table({inputData}) {
 
     const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState("All");
 
@@ -61,12 +60,22 @@ const Table = ({inputData}) => {
 
 
     return(
-        <div className='Container'>
-            <div className="Switcher">
-                    <Switcher data={switcher_labels} onSwitcherChange={handleSwitcherChange}/>
+        <div className={'TableContainer'}>
+            <div className={'TableSwitcher'}>
+                    <TableSwitcher
+                        sx={{
+                            color: "#FFFFFF"
+                        }}
+                        data={switcher_labels}
+                        onSwitcherChange={handleSwitcherChange}
+                    />
             </div>
-            <div className='Table'>
+            <div className={'Table'}>
             <DataGrid
+                sx={{
+                    color: '#FFFFFF',
+                    fill: '#FFFFFF'
+                }}
                 rows={filteredRows}
                 columns={columns}
                 initialState={{
@@ -88,5 +97,3 @@ const Table = ({inputData}) => {
 Table.propTypes = {
     inputData: PropTypes.object.isRequired,
 }
-
-export default Table

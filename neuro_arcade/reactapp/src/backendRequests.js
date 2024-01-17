@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from "axios";
 /**
  * This file contains functions that request or upload data from/to the backend
  */
@@ -12,16 +12,15 @@ const axios = require('axios');
  *
  * @throws Error when the request is rejected.
  */
-export function requestGame(gameName) {
-    let url = '/games/' + gameName + '/data/'
-    axios.get(url)
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => {
-            console.log(error);
-            throw error;
-        })
+export async function requestGame(gameName) {
+    const url = '/games/' + gameName + '/data/'
+    try {
+        let response = await axios.get(url);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
 }
 
 /**
@@ -29,16 +28,15 @@ export function requestGame(gameName) {
  *
  * @throws Error when the request is rejected.
  */
-export function requestGameTags() {
+export async function requestGameTags() {
     const url = '/tags/';
-    axios.get(url)
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => {
-            console.log(error);
-            throw error;
-        })
+    try {
+        let response = await axios.get(url);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
 }
 
 /**
@@ -46,16 +44,15 @@ export function requestGameTags() {
  *
  * @param query instance of Reacts URLSearchParams, which you should get from useSearchParams()
  */
-export function requestGamesSorted(query) {
-    const url = '/tags/';
-    axios.get(url)
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => {
-            console.log(error);
-            throw error;
-        })
+export async function requestGamesSorted(query) {
+    const url = '/get_games/' + query;
+    try {
+        let response = await axios.get(url);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
 }
 
 /**
@@ -69,7 +66,7 @@ export function requestGamesSorted(query) {
  * @throws Error when the request is rejected.
  */
 export function postGameScore(gameName, scoreData) {
-    let url = '/games/' + gameName + '/data/'
+    const url = '/games/' + gameName + '/data/'
     axios.post(url, scoreData)
         .then(function (response) {
             console.log(response);

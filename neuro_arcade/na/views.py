@@ -38,7 +38,7 @@ def get_game_dict(game_slug: str):
     return dictionary
 
 
-def get_game_list(query, wanted_tags=None, num=10):
+def get_game_list(query, wanted_tags=None, num=None):
     """
     Gets a list of games.
 
@@ -53,7 +53,8 @@ def get_game_list(query, wanted_tags=None, num=10):
         if game.matches_search(query, wanted_tags)
     ]
     # taking only the first N games
-    games = games[:num]
+    if num is not None:
+        games = games[:num]
     return games
 
 
@@ -83,10 +84,9 @@ def get_games_sorted(request: Request) -> Response:
     query = request.GET.get('query')
     wanted_tag_slugs = request.GET.getlist('tags')
     wanted_tags = GameTag.objects.filter(slug__in=wanted_tag_slugs)
-
     num = request.GET.get('num')
-    if num is None:
-        num = 10
+    if num is not None:
+        num = int(num)
 
     game_list = get_game_list(query, wanted_tags, num)
 

@@ -1,0 +1,82 @@
+.MainBlock {
+    margin: 3em 3em 0;
+    width: calc(100% - 6em);
+    height: calc(100% - 3em);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 2em;
+    padding-bottom: 3em;
+    .Content {
+        width: max-content;
+        & h1 {
+            position: relative;
+            text-align: left;
+            padding: 1em;
+            margin: 0;
+        }
+        .ContentBlock {
+            position: relative;
+            width: 50em;
+            overflow: auto;
+            & img {
+                float: left;
+                width: 10rem;
+                height: 10rem;
+                object-fit: contain;
+                border-radius: 2em;
+                margin: 1.5em;
+            }
+            & p {
+                width: 100%;
+                text-align: left;
+                line-height: 2em;
+            }
+        }
+    }
+    .Side {
+        width: 32.5em;
+    }
+}
+.MobileBannerBuffer {
+    display: none;
+    height: 7em;
+}
+.MoreGames {
+    margin-left: 0;
+}
+
+@media (max-width: 75em) {
+    .MainBlock {
+        display: block;
+        width: calc(100% - 2em);
+        margin: 1em;
+        .Content {
+            float: none;
+            width: 100%;
+            padding: 0 0 2em;
+        }
+        & h1 {
+            font-size: 1.5em;
+        }
+        .Side {
+            width: 100%;
+        }
+    }
+    .MobileBannerBuffer {
+        display: block;
+    }
+}
+
+@media (min-width: 100em) {
+    .MainBlock {
+        justify-content: space-evenly;
+        .Content {
+            float: none;
+        }
+        .Side {
+            width: 40em;
+        }
+    }
+}
