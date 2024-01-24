@@ -314,7 +314,7 @@ def about(request):
     return render(request, 'about.html', data)
 
 
-@login_required
+
 def edit_about(request):
     context_dict = {"missing_field": False}
     try:
