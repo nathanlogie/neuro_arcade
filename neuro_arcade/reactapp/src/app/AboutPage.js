@@ -9,8 +9,10 @@ export function AboutPage() {
         <div>
             <Background />
             <Banner size={'big'} button_left={{
-                link: '',
-                orientation: 'left'
+                name: 'edit about',
+                link: 'edit_about',
+                orientation: 'left',
+                direction: 'left'
             }} button_right={{
                 name: 'home',
                 link: '/',
@@ -18,8 +20,10 @@ export function AboutPage() {
                 direction: 'right'
             }} />
             <NavBar button_left={{
-                link: '',
-                orientation: 'left'
+                name: 'edit about',
+                link: 'edit_about',
+                orientation: 'left',
+                direction: 'left'
             }} button_right={{
                 name: 'home',
                 link: '/',
