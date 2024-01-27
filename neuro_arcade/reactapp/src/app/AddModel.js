@@ -5,13 +5,13 @@ import {NavBar} from "../components/NavBar";
 import {MobileBanner} from "../components/Banner";
 import {Background} from "../components/Background";
 
-export function AddContent() {
+export function AddModel() {
     return (
         <div>
             <Background />
             <Banner size={'big'} button_left={{
-                name: 'home',
-                link: '/',
+                name: 'add content',
+                link: '/add_content',
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{
@@ -33,8 +33,7 @@ export function AddContent() {
             <div className={styles.MainBlock}>
                 <div className={styles.Content}>
                     <div className={styles.ContentBlock}>
-                        <Link to='/add_game'> Add game </Link>
-                        <Link to='/add_model'> Add model </Link>
+                        <h1>Add model</h1>
                     </div>
                 </div>
             </div>
