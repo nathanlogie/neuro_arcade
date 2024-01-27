@@ -3,14 +3,15 @@ import {Banner, MobileBanner} from "../components/Banner";
 import {NavBar} from "../components/NavBar";
 import styles from "../styles/App.module.css";
 import {motion} from "framer-motion"
+import { EditAbout } from "./EditAbout"
 
-export function AboutPage() {
+export function AboutPage( ) {
     return (
         <div>
             <Background />
             <Banner size={'big'} button_left={{
                 name: 'edit about',
-                link: 'edit_about',
+                link: '/edit_about',
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{
@@ -21,7 +22,7 @@ export function AboutPage() {
             }} />
             <NavBar button_left={{
                 name: 'edit about',
-                link: 'edit_about',
+                link: '/edit_about',
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{

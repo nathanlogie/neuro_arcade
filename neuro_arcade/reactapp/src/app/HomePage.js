@@ -9,6 +9,7 @@ import {Table} from "../components/Table";
 import {motion} from "framer-motion"
 
 export function HomePage() {
+
     return (
         <div>
             <Background />
