@@ -3,19 +3,37 @@ import {Banner, MobileBanner} from "../components/Banner";
 import {NavBar} from "../components/NavBar";
 import styles from "../styles/App.module.css";
 import {motion} from "framer-motion"
-import { useState } from 'react'
-import initialAboutData from "../static/about.json"
+import {useEffect, useState} from "react";
+import {getAboutData} from "../backendRequests";
 
 
 // const [aboutData, updateAboutData] = useState(initialAboutData)
 export function AboutPage( ) {
 
-    console.log("Description = " + initialAboutData.description)
+    const [aboutData, updateAboutData] = useState()
 
-    let publications = initialAboutData.publications.map( function(publication){
+    useEffect(() => {
+        getAboutData()
+            .then(data => {
+                updateAboutData(data)
+            })
+    }, [])
+
+
+    if (!aboutData){
+        return (
+            <div>
+                Loading...
+            </div>
+        )
+    }
+
+    let publications = aboutData["publications"].map( function(publication){
         return (<li key={publication.id}><a href = {publication.link}>{publication.title} - {publication.author}</a></li>)
     })
-    console.log("Publications:" + publications[0])
+
+    // aboutData.image = "/" + aboutData.image
+
     return (
         <div>
             <Background />
@@ -52,9 +70,9 @@ export function AboutPage( ) {
                 <div className={styles.Content}>
                     <h1>About</h1>
                     <div className={styles.ContentBlock}>
-                        <img src={ initialAboutData.image }  alt={'image'} // TODO add query for image here
-                        />
-                        {initialAboutData.description}
+                        {/*<img src={ aboutData.image }  alt={'image'} // TODO add query for image here*/}
+                        {/*/>*/}
+                        {aboutData.description}
                         <h2>Publications</h2>
                         <ul>
                             { publications }

@@ -1,8 +1,18 @@
 // import {Editor} from "primereact/editor";
+// import {postDescription} from "../backendRequests";
 //
-// const TextEditor = ({onSave}) => {
+// const DescriptionForm = ({toggleDisplay}) => {
 //
+//     let [data, setData] = useState()
 //
+//     const update = () => {
+//
+//     }
+//     const onSave = (e) => {
+//         e.preventDefault()
+//         toggleDisplay(false)
+//         postDescription()
+//     }
 //
 //     return (
 //         <>
@@ -15,5 +25,5 @@
 //                 <button onClick={onSave}>Save</button>
 //         </>
 //     )
+//
 // }
-// export default TextEditor

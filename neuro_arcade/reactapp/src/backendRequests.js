@@ -76,3 +76,27 @@ export function postGameScore(gameName, scoreData) {
             throw error;
         });
 }
+
+/**
+ * Requests about data
+ */
+export async function getAboutData(){
+
+    try {
+        let response = await axios.get('/about/')
+        return response.data
+    }
+    catch (err){
+        console.log(err)
+        throw err
+    }
+
+}
+
+
+/**
+ * Posts description to json file
+ */
+export async function postDescription(description){
+
+}
