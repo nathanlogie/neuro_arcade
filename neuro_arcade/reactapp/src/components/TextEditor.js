@@ -1,26 +1,28 @@
-import {Editor} from "primereact/editor";
-import { useFormik } from 'formik';
-import aboutJsonData from "../static/about.json";
-import { useState } from 'react';
-
-
-const TextEditor = ({f}) => {
-
-    //todo pass text into saveinput correctly
-    const saveInput = () => {
-        f.values.description = this.value;
-    }
-
-    return (
-        <div>
-            <Editor
-                name="description"
-                value={f.values.description}
-                onTextChange={ saveInput }
-                style={{ height: '320px' }}
-            />
-        </div>
-    )
-}
-
-export default TextEditor;
+// import {Editor} from "primereact/editor";
+// import aboutData, { updateAboutData } from "../app/AboutPage.js"
+//
+//
+// const TextEditor = () => {
+//
+//     //todo pass text into saveinput correctly
+//     const handleUpdate = () => {
+//         updateAboutData({
+//             ...aboutData,
+//             description: this.value
+//         })
+//     }
+//
+//     return (
+//         <div>
+//             <Editor
+//                 name="description"
+//                 value={f.values.description}
+//                 onTextChange={ handleUpdate }
+//                 style={{ height: '320px' }}
+//             />
+//             <button id = "save" onClick={editDescription}>Save</button>
+//         </div>
+//     )
+// }
+//
+// export default TextEditor;
