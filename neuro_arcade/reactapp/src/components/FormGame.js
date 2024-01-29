@@ -66,17 +66,23 @@ export const Form = () => {
                     const acceptedFormats = ['.json'];
                     const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
                     if(!acceptedFormats.includes(fileExtension)){
-                        return "Error: Invalid file type provided"
+                        return 'Error: Invalid file type provided'
                     }
                     return true;
                 }
             })} type={"file"}/>
+            {errors.scoreTypes && (
+                <div className={"text-red-500"}>{errors.scoreTypes.message}</div>
+            )}
             <br/> <br/>
 
             <input {...register("playLink", {
                 required: "A Play link must be provided",
                 // pattern: "-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)",
             })} type={"url"} placeholder={"Play Link"}/>
+            {errors.scoreTypes && (
+                <div className={"text-red-500"}>{errors.scoreTypes.message}</div>
+            )}
             <br/> <br/>
 
             <input {...register("evaluationScript", {
