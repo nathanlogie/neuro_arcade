@@ -35,7 +35,8 @@ SECRET_KEY = 'django-insecure-4#($c-j6(9ujy#i&&gj)&umiojdi_-aa8u3x2$!qqh%xj(e@@k
 DEBUG = True
 
 ALLOWED_HOSTS = ["sh08.pythonanywhere.com",
-                 "127.0.0.1"]
+                 "127.0.0.1", "localhost"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://localhost:3000", "http://locahost:8000", "https://localhost:8000"]
 
 
 # Application definition
@@ -50,9 +51,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'na',
     'reactapp',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

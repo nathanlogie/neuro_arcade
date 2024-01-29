@@ -8,7 +8,6 @@ import {getAboutData} from "../backendRequests";
 import Description from "../components/Description"
 
 
-// const [aboutData, updateAboutData] = useState(initialAboutData)
 export function AboutPage( ) {
 
     const [aboutData, updateAboutData] = useState()
@@ -32,8 +31,6 @@ export function AboutPage( ) {
     let publications = aboutData["publications"].map( function(publication){
         return (<li key={publication.id}><a href = {publication.link}>{publication.title} - {publication.author}</a></li>)
     })
-
-    // aboutData.image = "/" + aboutData.image
 
     return (
         <div>
@@ -78,11 +75,22 @@ export function AboutPage( ) {
                         <ul>
                             { publications }
                         </ul>
+
                     </div>
                 </div>
                 <div className={styles.Side}></div>
+                <NavBar button_left={{
+                    link: '',
+                    orientation: 'left'
+                }} button_right={{
+                    name: 'home',
+                    link: '/',
+                    orientation: 'right',
+                    direction: 'right'
+                }}
+                />
+                <div className={styles.MobileBannerBuffer}/>
             </motion.div>
-            <div className={styles.MobileBannerBuffer} />
         </div>
     );
 }
