@@ -98,23 +98,32 @@ export async function getAboutData(){
  * Posts description to json file
  */
 export function postDescription(description){
-    const url = 'description'
+    const url = 'edit_about'
 
     console.log("Description to post: " + description)
     console.log("POSTING...")
 
-    axios.post(url, {description: description})
+    axios.post(url, {value: description, field: "description"})
         .then(function (response) {
             console.log(response);
         })
         .catch(function (error) {
             console.error(error);
         });
-    //
-    // try {
-    //     let response = await axios.post(url, description);
-    //     return response.data;
-    // } catch (error) {
-    //     console.error(error);
-    // }
+
+}
+
+/**
+ * Posts publications to json file
+ */
+export function postPublications(publications){
+    const url = 'edit_about'
+
+    axios.post(url, {publications: publications, field: "publications"})
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
 }

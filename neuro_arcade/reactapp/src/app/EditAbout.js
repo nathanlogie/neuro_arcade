@@ -7,6 +7,7 @@ import {NavBar} from "../components/NavBar";
 import styles from "../styles/App.module.css";
 import {motion} from "framer-motion"
 import Description from "../components/Description"
+import PublicationForm from "../components/PublicationsForm"
 
 // todo: find good json file editor
 // todo: error handling
@@ -118,6 +119,8 @@ export function EditAbout() {
                         <button id = "edit" onClick= {editDescription}>
                             {displayTextEdit ? "Cancel": "Edit"}
                         </button>
+
+                        <p><PublicationForm publications={aboutData.publications}/></p>
                     </div>
                 </div>
             </motion.div>
