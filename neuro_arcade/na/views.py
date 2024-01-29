@@ -151,6 +151,41 @@ def post_game(request: Request) -> Response:
     pass
 
 
+@api_view(['GET'])
+def get_about_data(request: Request) -> Response:
+
+    try:
+        with open('../media/about.json', "r") as f:
+            about = json.load(f)
+
+    except FileNotFoundError:
+        with open('../static/about.json', "r") as f:
+            about = json.load(f)
+
+    # print("\n\n\n " + about + " \n\n\n")
+    return Response(about)
+
+
+@api_view(['POST'])
+def update_description(request) -> Response:
+    filePath = "../media/about.json"
+
+    try:
+        with open(filePath, 'r') as f:
+            data = json.load(f)
+
+        updated_description = request.data.get('description')
+        print("\n\nUPDATED: " + updated_description, "\n\n")
+        data["description"] = updated_description
+
+        with open(filePath, 'w') as f:
+            json.dump(data, f)
+
+        return Response(status=200)
+    except Exception as e:
+        print(e)
+        return Response(status=400)
+
 # -----------------
 #   PAGE VIEWS
 # -----------------

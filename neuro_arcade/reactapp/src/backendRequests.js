@@ -97,6 +97,24 @@ export async function getAboutData(){
 /**
  * Posts description to json file
  */
-export async function postDescription(description){
+export function postDescription(description){
+    const url = 'description'
 
+    console.log("Description to post: " + description)
+    console.log("POSTING...")
+
+    axios.post(url, {description: description})
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+    //
+    // try {
+    //     let response = await axios.post(url, description);
+    //     return response.data;
+    // } catch (error) {
+    //     console.error(error);
+    // }
 }

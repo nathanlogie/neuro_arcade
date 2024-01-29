@@ -5,6 +5,7 @@ import styles from "../styles/App.module.css";
 import {motion} from "framer-motion"
 import {useEffect, useState} from "react";
 import {getAboutData} from "../backendRequests";
+import Description from "../components/Description"
 
 
 // const [aboutData, updateAboutData] = useState(initialAboutData)
@@ -72,7 +73,7 @@ export function AboutPage( ) {
                     <div className={styles.ContentBlock}>
                         {/*<img src={ aboutData.image }  alt={'image'} // TODO add query for image here*/}
                         {/*/>*/}
-                        {aboutData.description}
+                        <Description description= {aboutData.description} />
                         <h2>Publications</h2>
                         <ul>
                             { publications }
