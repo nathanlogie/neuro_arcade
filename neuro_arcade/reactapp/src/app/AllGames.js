@@ -5,9 +5,6 @@ import {GameGrid} from "../components/GameGrid";
 import {useState} from "react";
 
 export function AllGames() {
-    // query for the fetch request sent to the server
-    // should only be changed when necessary
-    let [query, setQuery] = useState('');
     // name query for sorting the already fetched games
     // can be changed freely, as it only affect data displayed on the client
     let [nameQuery, setNameQuery] = useState('');
@@ -29,7 +26,7 @@ export function AllGames() {
                 </div>
                 <div className={styles.Content} id={styles['AllGames']}>
                     <h1>All Games</h1>
-                    <GameGrid query={'?query=' + query} nameQuery={nameQuery} linkPrefix={''} id={'AppGrid'}/>
+                    <GameGrid query={''} nameQuery={nameQuery} linkPrefix={''} id={'AppGrid'}/>
                 </div>
             </div>
         </div>
