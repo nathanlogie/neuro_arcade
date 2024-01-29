@@ -3,12 +3,11 @@ import {GameCard} from "./GameCard";
 import {requestGamesSorted} from "../backendRequests";
 import {useEffect, useState} from "react";
 
-export function GameGrid({query, num, linkPrefix, id}) {
+export function GameGrid({query, nameQuery='', num, linkPrefix, id}) {
     let [isLoading, setLoading] = useState(true);
-    let [games, setGames] = useState({});
+    let [games, setGames] = useState([]);
 
     // If query has changed, fetch games from server
-    // TODO: consider filtering on client side
     useEffect(() => {
         requestGamesSorted(query)
             .then(g => {
@@ -27,13 +26,14 @@ export function GameGrid({query, num, linkPrefix, id}) {
     } else {
         return (
             <div className={styles.GameGrid} id={styles[id]}>
-                {games.map((game, index) => (
-                    <GameCard
-                        key={index}
-                        game={game}
-                        linkPrefix={linkPrefix}
-                    />
-                ))}
+                {games.filter((game) => game.name.includes(nameQuery))
+                    .map((game, index) => {
+                        return <GameCard
+                            key={index}
+                            game={game}
+                            linkPrefix={linkPrefix}
+                        />
+                })}
             </div>
         );
     }
