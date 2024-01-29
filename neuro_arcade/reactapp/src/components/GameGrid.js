@@ -3,6 +3,18 @@ import {GameCard} from "./GameCard";
 import {requestGamesSorted} from "../backendRequests";
 import {useEffect, useState} from "react";
 
+/*
+    Checks if a game matches a text query
+    A query is considered matching if the text is present in the name
+    or description of a game, ignoring case
+    TODO: this should probably be made more advanced
+*/
+function searchFilter(game, query)
+{
+    var text = game.name.toLowerCase() + game.description.toLowerCase();
+    return text.includes(query.toLowerCase());
+}
+
 export function GameGrid({query, nameQuery='', num, linkPrefix, id}) {
     let [isLoading, setLoading] = useState(true);
     let [games, setGames] = useState([]);
@@ -26,7 +38,7 @@ export function GameGrid({query, nameQuery='', num, linkPrefix, id}) {
     } else {
         return (
             <div className={styles.GameGrid} id={styles[id]}>
-                {games.filter((game) => game.name.includes(nameQuery))
+                {games.filter((game) => searchFilter(game, nameQuery))
                     .map((game, index) => {
                         return <GameCard
                             key={index}
