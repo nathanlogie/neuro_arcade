@@ -16,6 +16,7 @@ import { EditAbout } from "./app/EditAbout";
 import {AnimatePresence} from 'framer-motion'
 import {DevSupport} from "@react-buddy/ide-toolbox";
 import {ComponentPreviews, useInitial} from "./dev";
+import {AddGame} from "./app/AddGame";
 
 
 const router = createBrowserRouter([
@@ -56,7 +57,11 @@ const router = createBrowserRouter([
         path: "all_games",
         element: <AllGames/>
     },
-    ]);
+    {
+        path: "add_game",
+        element: <AddGame/>
+    }
+]);
 
 
 createRoot(document.getElementById('root')).render(
