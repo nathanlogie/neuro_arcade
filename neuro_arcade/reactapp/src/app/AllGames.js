@@ -4,6 +4,7 @@ import styles from "../styles/App.module.css"
 import {GameGrid} from "../components/GameGrid";
 import {TagFilter} from "../components/TagFilter";
 import {useState} from "react";
+import {Button} from "../components/Button";
 
 export function AllGames() {
     // name query for sorting the already fetched games
@@ -33,6 +34,13 @@ export function AllGames() {
                     <h1>All Games</h1>
                     <GameGrid query={''} nameQuery={nameQuery} tagQuery={selectedTags} linkPrefix={''} id={'AppGrid'}/>
                 </div>
+                <Button
+                    id={'AddGames'}
+                    name={'Add a game'}
+                    link={'AddGame'}
+                    orientation={'right'}
+                    direction={'down'}
+                />
             </div>
         </div>
     );
