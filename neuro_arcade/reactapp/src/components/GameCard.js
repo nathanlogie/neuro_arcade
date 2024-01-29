@@ -17,7 +17,7 @@ export function GameCard ({key, game, linkPrefix}) {
             whileTap={{scale: 0.95}}
         >
             <Link className={styles.GameCard} to={link}>
-                <img src={game.icon || '/media/game_icons/example.png'} alt='game icon'/>
+                <img src={game.icon || 'http://localhost:8000/media/game_icons/example.png'} alt='game icon'/>
                 <p>
                     {game.name || 'Game Name'}
                 </p>

@@ -2,12 +2,12 @@
     position: relative;
     float: left;
     width: max-content;
-    margin: 1.25em;
     padding-bottom: 3em;
     backdrop-filter: blur(20px);
     background: rgba(255, 255, 255, 0.1);
     border-radius: 1.5em;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    margin: 1em;
     & img {
         padding-bottom: 0.5em;
         width: 7em;
@@ -25,6 +25,13 @@
         margin: 0;
         text-decoration: none;
         color: #FFFFFF;
+    }
+}
+
+@media (max-width: 75em) {
+    .GameCard {
+        scale: 85%;
+        margin: 0;
     }
 }
 

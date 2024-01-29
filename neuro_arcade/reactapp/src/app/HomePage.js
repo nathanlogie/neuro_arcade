@@ -23,18 +23,6 @@ export function HomePage() {
                 orientation: 'right',
                 direction: 'right'
             }} />
-            <NavBar button_left={{
-                name: 'about',
-                link: 'about',
-                orientation: 'left',
-                direction: 'left'
-            }} button_right={{
-                name: 'add content',
-                link: 'add_content',
-                orientation: 'right',
-                direction: 'right'
-            }}
-            />
             <MobileBanner size={'big'} />
             <motion.div
                 className={styles.MainBlock}
@@ -57,10 +45,21 @@ export function HomePage() {
                     />
                 </div>
                 <div className={styles.Side}>
-
                 </div>
+                <NavBar button_left={{
+                    name: 'about',
+                    link: 'about',
+                    orientation: 'left',
+                    direction: 'left'
+                }} button_right={{
+                    name: 'add content',
+                    link: 'add_content',
+                    orientation: 'right',
+                    direction: 'right'
+                }}
+                />
+                <div className={styles.MobileBannerBuffer}/>
             </motion.div>
-            <div className={styles.MobileBannerBuffer} />
         </div>
     );
 }

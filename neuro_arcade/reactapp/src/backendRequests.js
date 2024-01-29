@@ -1,4 +1,5 @@
 import axios from "axios";
+const API_ROOT = "http://localhost:8000"
 /**
  * This file contains functions that request or upload data from/to the backend
  */
@@ -13,7 +14,7 @@ import axios from "axios";
  * @throws Error when the request is rejected.
  */
 export async function requestGame(gameName) {
-    const url = '/games/' + gameName + '/data/'
+    const url = API_ROOT + '/games/' + gameName + '/data/'
     try {
         let response = await axios.get(url);
         return response.data;
@@ -29,7 +30,7 @@ export async function requestGame(gameName) {
  * @throws Error when the request is rejected.
  */
 export async function requestGameTags() {
-    const url = '/tags/';
+    const url = API_ROOT + '/tags/';
     try {
         let response = await axios.get(url);
         return response.data;
@@ -45,7 +46,7 @@ export async function requestGameTags() {
  * @param query instance of Reacts URLSearchParams, which you should get from useSearchParams()
  */
 export async function requestGamesSorted(query) {
-    const url = '/get_games/' + query;
+    const url = API_ROOT + '/get_games/' + query;
     try {
         let response = await axios.get(url);
         return response.data;
@@ -66,7 +67,7 @@ export async function requestGamesSorted(query) {
  * @throws Error when the request is rejected.
  */
 export function postGameScore(gameName, scoreData) {
-    const url = '/games/' + gameName + '/data/'
+    const url = API_ROOT + '/games/' + gameName + '/data/'
     axios.post(url, scoreData)
         .then(function (response) {
             console.log(response);
