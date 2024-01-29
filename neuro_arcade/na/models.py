@@ -28,6 +28,13 @@ class GameTag(models.Model):
         self.slug = slugify(self.name)
         super(GameTag, self).save(*args, **kwargs)
 
+    def serialize(self):
+        return {
+            'name': self.name,
+            'slug': self.slug,
+            'description': self.description
+        }
+
     def __str__(self):
         return self.name
 

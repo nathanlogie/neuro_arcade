@@ -82,7 +82,7 @@ def get_tags(request: Request) -> Response:
     """
     Retrieves the GameTags
     """
-    return Response(GameTag.objects.all())
+    return Response([tag.serialize() for tag in GameTag.objects.all()])
 
 
 @api_view(['GET'])
