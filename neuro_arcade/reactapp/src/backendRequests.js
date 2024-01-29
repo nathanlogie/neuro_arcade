@@ -17,7 +17,6 @@ export async function requestGame(gameName) {
     const url = API_ROOT + '/games/' + gameName + '/data/'
     try {
         let response = await axios.get(url);
-        console.log(response.data)
         return response.data;
     } catch (error) {
         console.log(error);
