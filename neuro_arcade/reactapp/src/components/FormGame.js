@@ -61,8 +61,15 @@ export const Form = () => {
             <br/> <br/>
 
             <input {...register("scoreTypes", {
-                required: "Score types must be uploaded"
-                // validate: (value) => value.includes(".json")
+                required: "Score types must be uploaded",
+                validate: (value) => {
+                    const acceptedFormats = ['.json'];
+                    const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
+                    if(!acceptedFormats.includes(fileExtension)){
+                        return "Error: Invalid file type provided"
+                    }
+                    return true;
+                }
             })} type={"file"}/>
             <br/> <br/>
 
@@ -73,7 +80,15 @@ export const Form = () => {
             <br/> <br/>
 
             <input {...register("evaluationScript", {
-                required: "An Evaluation Script must be uploaded"
+                required: "An Evaluation Script must be uploaded",
+                validate: (value) => {
+                    const acceptedFormats = ['.py'];
+                    const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
+                    if(!acceptedFormats.includes(fileExtension)){
+                        return "Error: Invalid file type provided"
+                    }
+                    return true;
+                }
             })} type={"file"}/>
 
             <br/> <br/>
