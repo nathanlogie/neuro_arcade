@@ -9,6 +9,8 @@ export function AllGames() {
     // name query for sorting the already fetched games
     // can be changed freely, as it only affect data displayed on the client
     let [nameQuery, setNameQuery] = useState('');
+    let [selectedTags, setSelectedTags] = useState([]);
+
     return (
         <div>
             <Background/>
@@ -22,7 +24,7 @@ export function AllGames() {
 
                     <input onChange={e => setNameQuery(e.target.value)} placeholder="Search..." />
 
-                    <TagFilter />
+                    <TagFilter onTagChange={setSelectedTags} />
 
                     {/* (see above) */}
                     </div></div>

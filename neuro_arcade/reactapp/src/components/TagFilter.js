@@ -1,7 +1,7 @@
 import {requestGameTags} from "../backendRequests";
 import {useEffect, useState} from "react";
 
-export function TagFilter({}) {
+export function TagFilter({onTagChange}) {
     let [isLoading, setLoading] = useState(true);
     let [tags, setTags] = useState([]);
     let [ticks, setTicks] = useState([]);
@@ -20,6 +20,11 @@ export function TagFilter({}) {
         var newTicks = ticks.slice();
         newTicks[index] = !newTicks[index];
         setTicks(newTicks);
+
+        onTagChange(
+            tags.filter((tag, index) => newTicks[index])
+                .map((tag) => tag.slug)
+        );
     }
 
     // Display waiting message while waiting on server, then show tags
