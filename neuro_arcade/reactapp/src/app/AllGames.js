@@ -34,13 +34,6 @@ export function AllGames() {
                     <h1>All Games</h1>
                     <GameGrid query={''} nameQuery={nameQuery} tagQuery={selectedTags} linkPrefix={''} id={'AppGrid'}/>
                 </div>
-                <Button
-                    id={'AddGames'}
-                    name={'Add a game'}
-                    link={'AddGame'}
-                    orientation={'right'}
-                    direction={'down'}
-                />
             </div>
         </div>
     );

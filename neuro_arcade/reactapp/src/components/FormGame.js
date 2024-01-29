@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React from "react";
 import {useForm} from "react-hook-form";
 import {Button} from "./Button";
 
@@ -6,7 +6,7 @@ import {Button} from "./Button";
 
 let MAX_NAME_LENGTH = 64
 let MAX_DESCRIPTION_LENGTH = 1024
-const Form = () => {
+export const Form = () => {
     const {
         register,
         handleSubmit,
@@ -65,9 +65,9 @@ const Form = () => {
                 required:true
             })} type={"file"} />
 
-            <button disabled={isSubmitting} type={"submit"}>
+            <Button disabled={isSubmitting} type={"submit"}>
                 {isSubmitting ? "Submitting form..." : "Submit!"}
-            </button>
+            </Button>
 
             {errors.root && (
                 <div className={"text-red-500"}>{errors.root.message}</div>
@@ -75,5 +75,3 @@ const Form = () => {
         </form>
     );
 };
-
-export default Form;

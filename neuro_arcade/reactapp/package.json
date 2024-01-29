@@ -32,7 +32,8 @@
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
     "web-vitals": "^2.1.4",
-    "write-json-file": "^5.0.0"
+    "write-json-file": "^5.0.0",
+    "@react-buddy/ide-toolbox": "^2.4.0"
   },
   "scripts": {
     "start": "react-scripts start",

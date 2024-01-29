@@ -14,12 +14,14 @@ import {GameView} from "./app/GameView";
 import { EditAbout } from "./app/EditAbout";
 
 import {AnimatePresence} from 'framer-motion'
+import {DevSupport} from "@react-buddy/ide-toolbox";
+import {ComponentPreviews, useInitial} from "./dev";
 
 
 const router = createBrowserRouter([
     {
         path: '',
-        element: <HomePage />
+        element: <HomePage/>
     },
     {
         path: "about",
@@ -35,7 +37,7 @@ const router = createBrowserRouter([
     {
         path: "add_content",
         element: (
-            <AddContent />
+            <AddContent/>
         ),
     },
     {
@@ -48,18 +50,22 @@ const router = createBrowserRouter([
     },
     {
         path: 'all_games/:game_slug',
-        element: <GameView />
+        element: <GameView/>
     },
     {
         path: "all_games",
-        element: <AllGames />
+        element: <AllGames/>
     },
     ]);
 
 
 createRoot(document.getElementById('root')).render(
     <AnimatePresence>
-        <RouterProvider router={router}/>
+        <DevSupport ComponentPreviews={ComponentPreviews}
+                    useInitialHook={useInitial}
+        >
+            <RouterProvider router={router}/>
+        </DevSupport>
     </AnimatePresence>
 );
 
