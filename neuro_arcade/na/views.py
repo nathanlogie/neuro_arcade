@@ -167,16 +167,27 @@ def get_about_data(request: Request) -> Response:
 
 
 @api_view(['POST'])
-def update_description(request) -> Response:
+def update_about_json(request) -> Response:
     filePath = "../media/about.json"
 
     try:
         with open(filePath, 'r') as f:
             data = json.load(f)
 
-        updated_description = request.data.get('description')
-        print("\n\nUPDATED: " + updated_description, "\n\n")
-        data["description"] = updated_description
+        field = request.data.get('field')
+        value = request.data.get('value')
+        if field == "description":
+            data["description"] = value
+        elif field == "publications":
+            data["publications"] = []
+            for p in value:
+                data["publications"].append(
+                    {
+                        'title': p['title'],
+                        'author': p['author'],
+                        'link': p['link']
+                    }
+                )
 
         with open(filePath, 'w') as f:
             json.dump(data, f)
@@ -185,6 +196,7 @@ def update_description(request) -> Response:
     except Exception as e:
         print(e)
         return Response(status=400)
+
 
 # -----------------
 #   PAGE VIEWS
