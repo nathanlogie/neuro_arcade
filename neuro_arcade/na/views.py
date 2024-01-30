@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.forms import BaseFormSet, formset_factory
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.defaultfilters import slugify
 from django.urls import reverse
 
 from rest_framework.decorators import api_view, permission_classes
@@ -159,9 +160,21 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def post_game(request: Request) -> Response:
-    # get the user with:
-    # user = request.user
-    pass
+    Game.objects.create(
+        name=request.data.get('name'),
+        slug=slugify(request.data.get('name')),
+        description=request.data.get('description'),
+        owner=User.objects.get_or_create(
+            username="admin123",
+            email="admin1234@gmail.com",
+            password="adminning"
+        ),
+        icon=request.data.get('icon'),
+        tags=GameTag.objects.get_or_create('tags'),
+        score_type=request.data.get('score_type'),
+        play_link=request.data.get('playLink'),
+        evaluation_script=request.data.get('evaluation_script')
+    )
 
 
 @api_view(['GET'])

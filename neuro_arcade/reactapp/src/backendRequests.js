@@ -1,4 +1,5 @@
 import axios from "axios";
+
 const API_ROOT = "http://localhost:8000"
 /**
  * This file contains functions that request or upload data from/to the backend
@@ -221,4 +222,16 @@ export async function login(userName, email, password) {
  */
 export function logout() {
     sessionStorage.removeItem("auth_token");
+}
+
+export async function postGame(data) {
+    const url = API_ROOT + '/games' + '/data/'
+    return await axios.post(url, data)
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+            throw error;
+        });
 }
