@@ -155,11 +155,13 @@ def post_game(request: Request) -> Response:
 def get_about_data(request: Request) -> Response:
 
     try:
-        with open('../media/about.json', "r") as f:
+        with open('media/about.json', "r") as f:
+            print("\n\nRETRIEVING ABOUT FROM MEDIA\n\n")
             about = json.load(f)
 
     except FileNotFoundError:
-        with open('../static/about.json', "r") as f:
+        with open('static/about.json', "r") as f:
+            print("\n\nRETRIEVING ABOUT FROM STATIC\n\n")
             about = json.load(f)
 
     # print("\n\n\n " + about + " \n\n\n")
@@ -168,7 +170,7 @@ def get_about_data(request: Request) -> Response:
 
 @api_view(['POST'])
 def update_about_json(request) -> Response:
-    filePath = "../media/about.json"
+    filePath = "media/about.json"
 
     try:
         with open(filePath, 'r') as f:
@@ -180,6 +182,9 @@ def update_about_json(request) -> Response:
             data["description"] = value
         elif field == "publications":
             data["publications"] = []
+
+
+
             for p in value:
                 data["publications"].append(
                     {
@@ -194,7 +199,7 @@ def update_about_json(request) -> Response:
 
         return Response(status=200)
     except Exception as e:
-        print(e)
+        print("ERROR OCCURRED: ", e)
         return Response(status=400)
 
 
