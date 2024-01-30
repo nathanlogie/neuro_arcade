@@ -70,8 +70,9 @@ export function AboutPage( ) {
                 <div className={styles.Content}>
                     <h1>About</h1>
                     <div className={styles.ContentBlock}>
-                        {/*<img src={ aboutData.image }  alt={'image'} // TODO add query for image here*/}
-                        {/*/>*/}
+
+                        <img src={ aboutData.image }  alt={'image'} />
+
                         <Description description= {aboutData.description} />
                         <h2>Publications</h2>
                         <ul>

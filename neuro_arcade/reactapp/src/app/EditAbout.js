@@ -6,23 +6,13 @@ import {Banner, MobileBanner} from "../components/Banner";
 import {NavBar} from "../components/NavBar";
 import styles from "../styles/App.module.css";
 import {motion} from "framer-motion"
-import Description from "../components/Description"
 import PublicationForm from "../components/PublicationsForm"
+import ImageForm from "../components/ImageForm";
 
-// todo: find good json file editor
 // todo: error handling
 export function EditAbout() {
 
-    const [displayTextEdit, setDisplayTextEdit] = useState(false)
     const [aboutData, updateAboutData] = useState()
-
-    const editDescription = (e) => {
-
-        e.preventDefault()
-
-        setDisplayTextEdit(!displayTextEdit);
-
-    }
 
     useEffect(() => {
         getAboutData()
@@ -43,22 +33,8 @@ export function EditAbout() {
         <>
 
             <Background />
-            <Banner size={'big'} button_left={{
-                name: '',
-                link: '',
-            }} button_right={{
-                name: '',
-                link: '',
-            }} />
-            <NavBar button_left={{
-                name: '',
-                link: '',
-            }} button_right={{
-                name: '',
-                link: '',
-            }}
-            />
-            <MobileBanner size={'big'} />
+            <Banner size={'small'} />
+            <MobileBanner size={'small'} />
             <motion.div
                 className={styles.MainBlock}
                 initial={{opacity: 0, x: -100}}
@@ -66,14 +42,10 @@ export function EditAbout() {
                 exit={{opacity: 0, x: -100}}
             >
                 <div className={styles.Content}>
-                    <h1>Edit About</h1>
                     <div className={styles.ContentBlock}>
-                        {displayTextEdit ? <DescriptionForm description ={aboutData.description} toggleDisplay={setDisplayTextEdit} />: <Description description={aboutData.description} /> }
-                        <button id = "edit" onClick= {editDescription}>
-                            {displayTextEdit ? "Cancel": "Edit"}
-                        </button>
-
+                        <DescriptionForm description={aboutData.description} />
                         <PublicationForm publications={aboutData.publications}/>
+                        <ImageForm image ={aboutData.image} />
                     </div>
                 </div>
             </motion.div>

@@ -128,3 +128,18 @@ export function postPublications(publications){
             console.error("ERROR OCCURRED DURING POST: \n" + error);
         });
 }
+
+/**
+ * Posts Image to json file (for about page data)
+ */
+export function postImage(imageURL) {
+    const url = API_ROOT + '/edit_about'
+
+    axios.post(url, { value: imageURL, field: "image"})
+        .then(function(response){
+            console.log("RESPONSE TO IMAGE POST:\n" + response)
+        })
+        .catch(function(error){
+            console.error("ERROR OCCURRED DURING IMAGE POST:\n" + error)
+        })
+}

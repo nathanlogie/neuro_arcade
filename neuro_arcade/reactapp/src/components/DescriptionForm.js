@@ -1,31 +1,55 @@
 import {Editor} from "primereact/editor";
 import {postDescription} from "../backendRequests";
 import {useState} from "react";
+import Description from "./Description";
 
-const DescriptionForm = ({description, toggleDisplay}) => {
 
+const DescriptionForm = ({description}) => {
+
+    const [displayTextEdit, setDisplayTextEdit] = useState(false)
+    // const [descriptionToDisplay, setDescriptionToDisplay] = useState(description)
     const [newDescription, setNewDescription] = useState(description)
     const update = (e) => {
         if (e.textValue !== ""){
             setNewDescription(e.htmlValue)
         }
     }
+
+    const editDescription = (e) => {
+
+        e.preventDefault()
+
+        setDisplayTextEdit(!displayTextEdit);
+
+    }
+
     const onSave = (e) => {
         e.preventDefault()
 
         postDescription(newDescription)
-        toggleDisplay(false)
+        setDisplayTextEdit(false)
     }
 
-    return (
-        <>
-            <Editor
+    const edit = () => {
+        return (
+            <>
+                <Editor
                 name="description"
                 value={newDescription}
                 style={{ height: '320px' }}
                 onTextChange= {update}
                 />
                 <button onClick={onSave}>Save</button>
+            </>
+        )
+    }
+
+    return (
+        <>
+            {displayTextEdit ? edit(): <Description description={newDescription} /> }
+            <button id = "edit" onClick= {editDescription}>
+                {displayTextEdit ? "Cancel": "Edit"}
+            </button>
         </>
     )
 

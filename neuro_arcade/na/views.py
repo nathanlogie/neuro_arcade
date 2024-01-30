@@ -156,12 +156,10 @@ def get_about_data(request: Request) -> Response:
 
     try:
         with open('media/about.json', "r") as f:
-            print("\n\nRETRIEVING ABOUT FROM MEDIA\n\n")
             about = json.load(f)
 
     except FileNotFoundError:
         with open('static/about.json', "r") as f:
-            print("\n\nRETRIEVING ABOUT FROM STATIC\n\n")
             about = json.load(f)
 
     # print("\n\n\n " + about + " \n\n\n")
@@ -183,8 +181,6 @@ def update_about_json(request) -> Response:
         elif field == "publications":
             data["publications"] = []
 
-
-
             for p in value:
                 data["publications"].append(
                     {
@@ -193,6 +189,9 @@ def update_about_json(request) -> Response:
                         'link': p['link']
                     }
                 )
+        else:
+            print("VALUE OF IMAGE: ", value)
+            data["image"] = value
 
         with open(filePath, 'w') as f:
             json.dump(data, f)
