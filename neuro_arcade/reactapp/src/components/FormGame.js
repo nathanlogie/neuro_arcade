@@ -46,8 +46,7 @@ export const Form = () => {
     const handleScores = (event) => {
         const file = event.target.files[0]
         if (file) {
-            const json = new JSON.stringify(file);
-            setScoreType(json)
+            setScoreType(file)
         } else {
             setScoreType(null)
         }
@@ -72,7 +71,7 @@ export const Form = () => {
 
         axios({
             method: "post",
-            url: "http://127.0.0.1:8000/api/games/createGame",
+            url: "http://127.0.0.1:8000/api/games/createGame/",
             data: formData,
             headers: { "Content-Type": "multipart/form-data"},
 
@@ -84,7 +83,8 @@ export const Form = () => {
                 setError("root", {message: "A game with that name already exists!"})
             }
             else{
-                setError("root", {message: "Something went wrong..."})
+                setError("root", {message: `Something went wrong... 
+ ${response.response.data}`})
 
             }
         });
