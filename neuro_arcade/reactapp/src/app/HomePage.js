@@ -6,9 +6,13 @@ import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {Background} from "../components/Background";
 import {Table} from "../components/Table";
+import {TagFilter} from "../components/TagFilter";
 import {motion} from "framer-motion"
+import {useState} from "react";
 
 export function HomePage() {
+    let [selectedTags, setSelectedTags] = useState([]);
+    let forcedTags = ['featured'];
 
     return (
         <div>
@@ -36,7 +40,16 @@ export function HomePage() {
             >
                 <div className={styles.Content}>
                     <h1>Featured games</h1>
-                    <GameGrid query={'?query=&tags=featured&num=8'} num={8} linkPrefix={'all_games/'}/>
+                    {/*
+                        The featured tag is always applied, so that's put in the query for server-side
+                        filtering
+                        TODO: GameGrid should probably abstract the query
+                        TODO: only the first 8 featured games will be requested, so when additional tags are applied
+                        there may be less than 8 games shown even if other valid ones exist. Either tag filtering should
+                        be done server-side (resulting in a request on every check/uncheck), or num filtering should be
+                        done locally
+                    */}
+                    <GameGrid query={'?tags=featured&num=8'} num={8} linkPrefix={'all_games/'} tagQuery={selectedTags}/>
                     <Button
                         id={'MoreGames'}
                         name={'more games'}
@@ -46,6 +59,7 @@ export function HomePage() {
                     />
                 </div>
                 <div className={styles.Side}>
+                    <TagFilter onTagChange={setSelectedTags} excluded={forcedTags}/>
                 </div>
                 <NavBar button_left={{
                     name: 'about',
