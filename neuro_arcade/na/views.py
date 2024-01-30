@@ -4,6 +4,7 @@ from typing import Type
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.forms import BaseFormSet, formset_factory
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -14,7 +15,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.request import Request
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 
 from na.forms import AboutForm, GameForm, ScoreTypeForm, PublicationFormSet
 from na.models import Game, GameTag, Player
@@ -497,9 +498,9 @@ class GameViewSet(viewsets.ModelViewSet):
                     data['owner'] = User.get_or_create(
                     name="admin123",
                     password="admin1234",
-                    email-"admin@admin.com")
-                    obj = Category.objects.create(**data)
-                    return Response(CategorySerializer(obj,context = {'request':request}).data)
+                    email="admin@admin.com")
+                    obj = Game.objects.create(**data)
+                    return Response(GameSerializer(obj,context = {'request':request}).data)
                 except IntegrityError as e:
                     return Response("Game already exists.", status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
