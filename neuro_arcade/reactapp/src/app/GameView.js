@@ -32,7 +32,7 @@ export function GameView() {
                 <Background />
                 <Banner size={'small'} />
                 <MobileBanner size={'small'} />
-                <div className={styles.MainBlock}>
+                <div className={styles.MainBlock} id={styles['small']}>
                     <div className={styles.Content}>
                         <h1>{gameData.game.name}</h1>
                         <div className={styles.ContentBlock}>

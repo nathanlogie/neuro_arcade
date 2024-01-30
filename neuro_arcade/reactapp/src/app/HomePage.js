@@ -26,9 +26,9 @@ export function HomePage() {
             <MobileBanner size={'big'} />
             <motion.div
                 className={styles.MainBlock}
+                id={styles['big']}
                 initial={{
                     opacity: 0
-
                 }}
                 animate={{opacity: 1}}
                 exit={{opacity: 0}}
