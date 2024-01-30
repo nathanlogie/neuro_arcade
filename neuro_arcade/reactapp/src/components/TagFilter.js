@@ -1,7 +1,7 @@
 import {requestGameTags} from "../backendRequests";
 import {useEffect, useState} from "react";
 
-export function TagFilter({onTagChange}) {
+export function TagFilter({onTagChange, excluded=[]}) {
     let [isLoading, setLoading] = useState(true);
     let [tags, setTags] = useState([]);
     let [ticks, setTicks] = useState([]);
@@ -10,7 +10,9 @@ export function TagFilter({onTagChange}) {
     useEffect(() => {
         requestGameTags()
             .then(tags => {
-                setTags(tags);
+                // TODO: exclude dynamically instead of at request to support
+                // param change
+                setTags(tags.filter((tag) => !excluded.includes(tag.slug)));
                 setTicks(new Array(tags.length).fill(false));
                 setLoading(false);
             })
