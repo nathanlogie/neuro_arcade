@@ -51,7 +51,9 @@ const TableSwitcher = ({data , onSwitcherChange}) => {
                                 'backdrop-filter': 'blur(20px)',
                                 backgroundColor: alignment === header.name ? 'rgba(255, 255, 255, 0.45)' : 'rgba(255, 255, 255, 0.2)',
                                 color: '#EEEEEE',
-                                fontSize: '0.75em'
+                                fontSize: '0.75em',
+                                fontFamily: 'inherit',
+                                fontWeight: '700'
                             }}>
                                 {header.name}
                         </ToggleButton>
