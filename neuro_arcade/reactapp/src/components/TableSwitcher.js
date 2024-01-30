@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-
+import styles from '../styles/TableGraph.module.css'
 
 const TableSwitcher = ({data , onSwitcherChange}) => {
 
@@ -23,20 +23,35 @@ const TableSwitcher = ({data , onSwitcherChange}) => {
                 exclusive
                 onChange={handleAlignment}
                 aria-label="Platform"
-                style={{ 
+                style={{
                     borderRadius: '40px',
                     overflow: 'hidden',
+                    right: '0'
                 }}
             >
 
-                {data.table_headers.map((header, index) => (   
+                {data.table_headers.map((header, index) => (
                     <div key={index}>
                         <ToggleButton 
                             value={header.name}
+                            id={styles[
+                                    (() => {
+                                       if (index === data.table_headers.length - 1) {
+                                           return "end";
+                                       } else if (index === 0) {
+                                           return "start";
+                                       } else {
+                                           return "";
+                                       }
+                                    })()
+                                ]}
                             style={{
-                                borderColor: 'transparent',
-                                backgroundColor: alignment === header.name ? 'gray' : 'transparent',
-                                color: '#FFFFFF'
+                                borderColor: alignment === header.name ? 'white' : 'transparent',
+                                borderWidth: '0.5em',
+                                'backdrop-filter': 'blur(20px)',
+                                backgroundColor: alignment === header.name ? 'rgba(255, 255, 255, 0.45)' : 'rgba(255, 255, 255, 0.2)',
+                                color: '#EEEEEE',
+                                fontSize: '0.75em'
                             }}>
                                 {header.name}
                         </ToggleButton>

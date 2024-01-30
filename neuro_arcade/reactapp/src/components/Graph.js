@@ -2,7 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types'
 import TableSwitcher from './TableSwitcher'
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, ReferenceLine } from 'recharts';
+import styles from '../styles/TableGraph.module.css'
+import {createTheme, ThemeProvider} from "@mui/material";
 
+const graph_theme = createTheme({
+  palette: {
+      mode: 'dark',
+  },
+});
 
 // inputData: the JSON data used to generate the graph
 // x-axis: the name of the score type to be displayed on the x-axis
@@ -19,11 +26,11 @@ export function Graph({inputData}) {
         setSelectedSwitcherValue(selectedValue);
     };
     return (
-        <div className="Container" style={{padding: '0 3em 3em 3em'}}>
-            <div className="Switcher">
+        <div className={styles.GraphContainer}>
+            <div className={styles.TabSwitcher}>
                 <TableSwitcher data={inputData} onSwitcherChange={handleSwitcherChange}/>
             </div>
-            <div className="Graph">
+            <ThemeProvider theme={graph_theme}>
                 <LineChart
                     width={700}
                     height={500}
@@ -34,7 +41,10 @@ export function Graph({inputData}) {
                         left: 20,
                         bottom: 120,
                     }}
-                    style={{ background: 'linear-gradient(270deg, rgba(217, 217, 217, 0.43) 0%, rgba(217, 217, 217, 0.00) 100%)' }}
+                    style={{
+                        background: 'linear-gradient(270deg, rgba(217, 217, 217, 0.43) 0%, rgba(217, 217, 217, 0.00) 100%)',
+                        stroke: '#FFFFFF'
+                    }}
                 >
                     <XAxis
                         dataKey="name"
@@ -44,11 +54,13 @@ export function Graph({inputData}) {
                         axisLine={{ stroke: 'transparent' }}
                         padding={{ left: 10 }}
                         tickLine={false}
+                        style={{fill: '#CCCCCC', fontSize: '0.9em'}}
                     />
                     <YAxis
                         label={{ value: "Score", angle: -90, position: 'insideLeft' }}
                         axisLine={{ stroke: '#FFFFFF' }}
                         domain={['auto', 'auto']}
+                        style={{stroke: '#CCCCCC', fontSize: '0.9em'}}
                     />
                     <ReferenceLine
                         y={0}
@@ -60,7 +72,7 @@ export function Graph({inputData}) {
                         dot={false}
                     />
                     </LineChart>
-                </div>
+            </ThemeProvider>
         </div>
     );
 }
@@ -68,5 +80,3 @@ export function Graph({inputData}) {
 Graph.propTypes = {
     inputData: PropTypes.object.isRequired,
 }
-
-export default Graph

@@ -44,7 +44,9 @@ export function GameView() {
                     <div className={styles.Side}>
                         <Table inputData={gameData}/>
                     </div>
-                    <Graph inputData={gameData}/>
+                    <div className={styles.GraphBlock}>
+                        <Graph inputData={gameData}/>
+                    </div>
                 </div>
             </div>
 

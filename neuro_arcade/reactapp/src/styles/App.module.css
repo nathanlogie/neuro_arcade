@@ -18,7 +18,7 @@
         }
         .ContentBlock {
             position: relative;
-            width: 50em;
+            width: 100%;
             overflow: auto;
             & img {
                 float: left;
@@ -40,6 +40,9 @@
     }
     .Side {
         width: 32.5em;
+    }
+    .GraphBlock {
+        width: 100%;
     }
 }
 .MobileBannerBuffer {
@@ -73,6 +76,12 @@
         }
         .Side {
             width: 100%;
+            overflow-x: scroll;
+            padding: 1.5em;
+        }
+        .GraphBlock {
+            overflow-x: scroll;
+            padding: 1.5em;
         }
     }
     .MobileBannerBuffer {

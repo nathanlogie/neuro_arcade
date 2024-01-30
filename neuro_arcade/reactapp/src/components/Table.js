@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import TableSwitcher from './TableSwitcher'
 import { DataGrid } from '@mui/x-data-grid';
+import styles from '../styles/TableGraph.module.css'
+import {createTheme, ThemeProvider} from "@mui/material";
 
 
 export function Table({inputData}) {
@@ -13,15 +15,15 @@ export function Table({inputData}) {
     }
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 90, hide: true },
+        // { field: 'id', headerName: 'ID', width: 90 },
         { field: 'player', headerName: ' ', width: 150 },
         ...inputData.table_headers.map(header => ({
             field: header.name.toLowerCase(),
             headerName: header.name,
             type: header.type === 'int' ? 'number' : 'float',
-            width: 150,
+            width: 100,
         })),
-        { field: 'is_AI', headerName: 'Is AI?', type: 'boolean', width: 120 },
+        { field: 'is_AI', headerName: 'Is AI?', type: 'boolean', width: 100 },
     ];
 
     const rows = inputData.rows.map((row, index) => ({
@@ -33,7 +35,7 @@ export function Table({inputData}) {
         }, {}),
         is_AI: row.is_ai,
     }));
-    
+
 
     const getRowStyle = (params) => {
         return {
@@ -43,9 +45,9 @@ export function Table({inputData}) {
 
     const switcher_labels = {
         table_headers: [
-          { name: 'AI Platforms' },
-          { name: 'all' },
-          { name: 'Humans' },
+            { name: 'AI Platforms' },
+            { name: 'all' },
+            { name: 'Humans' }
         ],
       };
 
@@ -58,37 +60,47 @@ export function Table({inputData}) {
         ? rows.filter((row) => !row.is_AI)
         : rows;
 
+        const table_theme = createTheme({
+          palette: {
+              mode: 'dark',
+          },
+        });
 
     return(
-        <div className={'TableContainer'}>
-            <div className={'TableSwitcher'}>
-                    <TableSwitcher
-                        sx={{
-                            color: "#FFFFFF"
-                        }}
-                        data={switcher_labels}
-                        onSwitcherChange={handleSwitcherChange}
-                    />
+        <div className={styles.TableContainer}>
+            <h2>Leaderboards</h2>
+            <div className={styles.TabSwitcher}>
+                <TableSwitcher
+                    data={switcher_labels}
+                    onSwitcherChange={handleSwitcherChange}
+                />
             </div>
             <div className={'Table'}>
-            <DataGrid
-                sx={{
-                    color: '#FFFFFF',
-                    fill: '#FFFFFF'
-                }}
-                rows={filteredRows}
-                columns={columns}
-                initialState={{
-                    pagination: {
-                        paginationModel: {
-                            pageSize: 5,
-                        },
-                    },
-                }}
-                pageSizeOptions={[5]}
-                disableRowSelectionOnClick
-                getRowStyle={getRowStyle}
-            />
+                <ThemeProvider theme={table_theme}>
+                    <DataGrid
+                        sx={{
+                            boxShadow: 2,
+                            border: 2,
+                            color: 'white',
+                            borderColor: 'rgba(0,0,0,0)',
+                            '& .MuiDataGrid-cell:hover': {
+                              color: 'white',
+                            },
+                        }}
+                        rows={filteredRows}
+                        columns={columns}
+                        initialState={{
+                            pagination: {
+                                paginationModel: {
+                                    pageSize: 5,
+                                },
+                            },
+                        }}
+                        pageSizeOptions={[5]}
+                        disableRowSelectionOnClick
+                        getRowStyle={getRowStyle}
+                    />
+                </ThemeProvider>
             </div>
         </div>
     )
