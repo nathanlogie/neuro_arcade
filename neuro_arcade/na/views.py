@@ -14,6 +14,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.request import Request
+from rest_framework import viewsets
 
 from na.forms import AboutForm, GameForm, ScoreTypeForm, PublicationFormSet
 from na.models import Game, GameTag, Player
@@ -21,6 +22,7 @@ from na.forms import UserForm
 
 from django.conf import settings
 
+from serialisers import GameSerializer
 import json
 
 
@@ -403,3 +405,101 @@ def deprecated_login(request: HttpRequest) -> HttpResponse:
 def deprecated_logout(request):
     auth.logout(request)
     return redirect(reverse('na:index'))
+
+
+def about(request):
+    try:
+        with open('media/about.json') as f:
+            data = json.load(f)
+    except FileNotFoundError:  # fallback to a static about.json
+        with open('static/about.json') as f:
+            data = json.load(f)
+
+    if data['image'] is None or not os.path.exists(data['image']):
+        data['image'] = '/static/images/happy-brain.jpg'
+    else:
+        data['image'] = '/media' + data['image']
+
+    return render(request, 'about.html', data)
+
+
+@login_required
+def edit_about(request):
+    context_dict = {"missing_field": False}
+    try:
+        with open('media/about.json') as f:
+            data = json.load(f)
+    except FileNotFoundError:  # fallback to a static about.json
+        with open('static/about.json') as f:
+            data = json.load(f)
+
+    if len(data['publications']) == 0:
+        PublicationFormSet.extra = 1
+    else:
+        PublicationFormSet.extra = 0
+
+    if request.method == 'POST':
+        about_form = AboutForm(request.POST, request.FILES,
+                               initial={'description': data['description'], 'image': data['image']})
+        publication_forms = PublicationFormSet(request.POST, initial=data['publications'])
+        if about_form.is_valid():
+            # todo: fix the publication form
+            description = request.POST.get('description')
+
+            if description:
+                data['description'] = description
+
+            if request.FILES.get('image'):
+                image = request.FILES['image']
+
+                with default_storage.open('images/' + image.name, 'wb+') as f:
+                    for chunk in image.chunks():
+                        f.write(chunk)
+
+                data['image'] = 'images/' + image.name
+
+            try:
+                data['publications'] = []
+                for publication in publication_forms:
+                    if publication.is_valid():
+                        title = publication.cleaned_data['title']
+                        author = publication.cleaned_data['author']
+                        link = publication.cleaned_data['link']
+                        data['publications'].append({'title': title, 'author': author, 'link': link})
+            except KeyError:
+                context_dict["missing_field"] = True
+                context_dict["aboutForm"] = about_form
+                context_dict["publicationForms"] = publication_forms
+                return render(request, 'edit_about.html', context_dict)
+
+            with open('media/about.json', 'w') as f:
+                json.dump(data, f)
+
+            return redirect(reverse('na:about'))
+        else:
+            context_dict["aboutForm"] = about_form
+            context_dict["publicationForms"] = publication_forms
+    else:
+        context_dict["aboutForm"] = AboutForm(initial=data)
+        context_dict["publicationForms"] = PublicationFormSet(initial=data['publications'])
+
+    return render(request, 'edit_about.html', context_dict)
+
+class GameViewSet(viewsets.ModelViewSet):
+    queryset = Game.objects.all()
+    serializer_class = GameSerializer
+
+    def createGame(self,request):
+            serializer = GameSerializer(data=request.data, context={'request': request})
+            if serializer.is_valid():
+                try:
+                    data = serializer.validated_data
+                    data['owner'] = User.get_or_create(
+                    name="admin123",
+                    password="admin1234",
+                    email-"admin@admin.com")
+                    obj = Category.objects.create(**data)
+                    return Response(CategorySerializer(obj,context = {'request':request}).data)
+                except IntegrityError as e:
+                    return Response("Game already exists.", status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
