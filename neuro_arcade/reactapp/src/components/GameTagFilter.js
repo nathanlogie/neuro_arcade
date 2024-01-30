@@ -1,7 +1,15 @@
 import {requestGameTags} from "../backendRequests";
 import {useEffect, useState} from "react";
 
-export function TagFilter({onTagChange, excluded=[]}) {
+/*
+    Displays a list of checkboxes for GameTags
+
+    onTagChange: callback for when a tag is checked/unchecked
+        Parameter is a list of the currently selected tag slugs
+    excluded: list of tag slugs to hide from display
+        Doesn't support being changed dynamically
+*/
+export function GameTagFilter({onTagChange, excluded=[]}) {
     let [isLoading, setLoading] = useState(true);
     let [tags, setTags] = useState([]);
     let [ticks, setTicks] = useState([]);
@@ -10,8 +18,6 @@ export function TagFilter({onTagChange, excluded=[]}) {
     useEffect(() => {
         requestGameTags()
             .then(tags => {
-                // TODO: exclude dynamically instead of at request to support
-                // param change
                 setTags(tags.filter((tag) => !excluded.includes(tag.slug)));
                 setTicks(new Array(tags.length).fill(false));
                 setLoading(false);

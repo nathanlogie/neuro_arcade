@@ -6,7 +6,7 @@ import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {Background} from "../components/Background";
 import {Table} from "../components/Table";
-import {TagFilter} from "../components/TagFilter";
+import {GameTagFilter} from "../components/GameTagFilter";
 import {motion} from "framer-motion"
 import {useState} from "react";
 
@@ -59,7 +59,7 @@ export function HomePage() {
                     />
                 </div>
                 <div className={styles.Side}>
-                    <TagFilter onTagChange={setSelectedTags} excluded={forcedTags}/>
+                    <GameTagFilter onTagChange={setSelectedTags} excluded={forcedTags}/>
                 </div>
                 <NavBar button_left={{
                     name: 'about',
