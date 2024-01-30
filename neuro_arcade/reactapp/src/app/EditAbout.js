@@ -39,53 +39,6 @@ export function EditAbout() {
         )
     }
 
-
-//
-//
-//     const TextEditor = () => {
-//
-//         //todo pass text into saveinput correctly
-//         return (
-//             <div>
-//                 <Editor
-//                     name="description"
-//                     value={aboutData.description}
-//                     onTextChange={(e) => {
-//                         tempText = e.textValue
-//                     }}
-//                     style={{height: '320px'}}
-//                 />
-//                 <button id="save" onClick={editDescription}>Save</button>
-//             </div>
-//         )
-//     }
-//
-//     // const editImage = () => {
-//     //     // todo edit image field, just upload image field, submit button: upload file to json file
-//     // }
-//     //
-//     // const addPublication = () => {
-//     //     // todo implement new dynamic field
-//     // }
-//     //
-//     // const displayPublications = () => {
-//     //
-//     //     let showPublications =[]
-//     //     about.publications.forEach(function (publication) {
-//     //         showPublications.push(
-//     //             `<li><a href={publication.link}>publication.title - publication.author</a></li>`
-//     //         )
-//     //     })
-//     //
-//     //     // todo add edit and delete button for each publication
-//     //
-//     //     return showPublications;
-//     //
-//     // }
-//
-
-
-
     return (
         <>
 
@@ -120,7 +73,7 @@ export function EditAbout() {
                             {displayTextEdit ? "Cancel": "Edit"}
                         </button>
 
-                        <p><PublicationForm publications={aboutData.publications}/></p>
+                        <PublicationForm publications={aboutData.publications}/>
                     </div>
                 </div>
             </motion.div>

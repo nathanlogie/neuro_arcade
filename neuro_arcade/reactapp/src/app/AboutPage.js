@@ -28,6 +28,7 @@ export function AboutPage( ) {
         )
     }
 
+    // todo correctly display publications when there is no link provided
     let publications = aboutData["publications"].map( function(publication){
         return (<li key={publication.id}><a href = {publication.link}>{publication.title} - {publication.author}</a></li>)
     })

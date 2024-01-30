@@ -84,7 +84,7 @@ export function postGameScore(gameName, scoreData) {
 export async function getAboutData(){
 
     try {
-        let response = await axios.get('/about/')
+        let response = await axios.get(API_ROOT + '/about/')
         return response.data
     }
     catch (err){
@@ -120,11 +120,11 @@ export function postDescription(description){
 export function postPublications(publications){
     const url = API_ROOT + '/edit_about'
 
-    axios.post(url, {publications: publications, field: "publications"})
+    axios.post(url, {value: publications, field: "publications"})
         .then(function (response) {
-            console.log(response);
+            console.log("RESPONSE TO POST: \n" + response);
         })
         .catch(function (error) {
-            console.error(error);
+            console.error("ERROR OCCURRED DURING POST: \n" + error);
         });
 }
