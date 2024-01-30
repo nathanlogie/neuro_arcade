@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from na.models import Game
 class GameSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Game

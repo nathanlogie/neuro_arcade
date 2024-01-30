@@ -23,7 +23,7 @@ from na.forms import UserForm
 
 from django.conf import settings
 
-from serialisers import GameSerializer
+from na.serialisers import GameSerializer
 import json
 
 
