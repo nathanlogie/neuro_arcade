@@ -29,7 +29,7 @@ export function EditAbout() {
             .then(data => {
                 updateAboutData(data)
             })
-    }, [displayTextEdit])
+    }, [])
 
     if (!aboutData) {
         return (

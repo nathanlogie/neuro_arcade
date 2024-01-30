@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {postPublications} from "../backendRequests";
 
-
 const PublicationsForm = ({publications}) => {
 
     const [publicationForms, setPublicationForms] = useState(publications)
@@ -42,12 +41,17 @@ const PublicationsForm = ({publications}) => {
         toggleEdit(!edit)
     }
 
+    const handleCancel = () => {
+        setPublicationForms(publicationsValue)
+        toggleEdit(!edit)
+    }
+
     const editButtons = () => {
         return (
             <>
                 <li><button onClick={addFormFields}>ADD NEW</button></li>
                 <li><button onClick={onSave}>SAVE</button></li>
-                <li><button onClick={ () => toggleEdit(!edit) }>CANCEL</button></li>
+                <li><button onClick={handleCancel}>CANCEL</button></li>
             </>
         )
     }
@@ -82,7 +86,7 @@ const PublicationsForm = ({publications}) => {
                         <li><input type ={"text"} value={p.title} placeholder={"Title..."} onChange={ (e) =>handleChange(i, "title", e.target.value)}/></li>
                         <li><input type ={"text"} value={p.author} placeholder={"Author..."} onChange={ (e) => handleChange(i, "author", e.target.value)}/></li>
                         <li><input type={"url"} value={p.link} placeholder={"Link..."} onChange={ (e) => handleChange(i, "link", e.target.value)}/></li>
-                        <button>DELETE</button>
+                        <button onClick={removePublication}>DELETE</button>
                     </div>
                 ) ) }
             </>
