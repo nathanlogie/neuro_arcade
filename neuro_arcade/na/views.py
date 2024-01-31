@@ -17,6 +17,7 @@ from na.models import Game, GameTag, Player
 from na.forms import UserForm
 
 from django.conf import settings
+from django.templatetags.static import static
 
 import json
 
