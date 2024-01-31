@@ -49,7 +49,7 @@ export function HomePage() {
                         be done server-side (resulting in a request on every check/uncheck), or num filtering should be
                         done locally
                     */}
-                    <GameGrid query={'?tags=featured&num=8'} num={8} linkPrefix={'all_games/'} tagQuery={selectedTags}/>
+                    <GameGrid num={8} linkPrefix={'all_games/'} tagQuery={selectedTags.concat(forcedTags)}/>
                     <Button
                         id={'MoreGames'}
                         name={'more games'}

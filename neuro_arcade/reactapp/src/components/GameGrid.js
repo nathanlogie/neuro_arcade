@@ -27,18 +27,18 @@ function searchFilter(game, nameQuery, tagQuery) {
     return nameQueryFilter(game, nameQuery) && tagQueryFilter(game, tagQuery);
 }
 
-export function GameGrid({query, nameQuery='', tagQuery=[], num, linkPrefix, id}) {
+export function GameGrid({nameQuery='', tagQuery=[], num=0, linkPrefix, id}) {
     let [isLoading, setLoading] = useState(true);
     let [games, setGames] = useState([]);
 
-    // If query has changed, fetch games from server
+    // Fetch games from server on initial load
     useEffect(() => {
-        requestGamesSorted(query)
+        requestGamesSorted()
             .then(g => {
                 setGames(g);
                 setLoading(false);
             })
-    }, [query]);
+    }, []);
 
     // Display waiting message while waiting on server, then show games
     if (isLoading) {
@@ -48,9 +48,16 @@ export function GameGrid({query, nameQuery='', tagQuery=[], num, linkPrefix, id}
             </div>
         )
     } else {
+        // Select subset of names to display
+        let shownGames = games.filter((game) => searchFilter(game, nameQuery, tagQuery));
+        if (num > 0) {
+            shownGames = shownGames.slice(0, num);
+        }
+
+        // Render a card for each selected game
         return (
             <div className={styles.GameGrid} id={styles[id]}>
-                {games.filter((game) => searchFilter(game, nameQuery, tagQuery))
+                {shownGames.filter((game) => searchFilter(game, nameQuery, tagQuery))
                     .map((game, index) => {
                         return <GameCard
                             key={index}
