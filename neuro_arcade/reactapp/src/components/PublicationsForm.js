@@ -30,12 +30,10 @@ const PublicationsForm = ({publications}) => {
 
         publications = []
         publicationForms.forEach( (p) => {
-            console.log("PUBLICATIONS: \nTitle: " + p.title + "\tAuthor: " + p.author + "\tLink: " + p.link )
             if (p.title!=="" && p.author!==""){
                 publications.push(p)
             }
         })
-        console.log(publications.length)
         setPublicationsValue(publications)
         postPublications(publications)
         toggleEdit(!edit)
@@ -58,8 +56,6 @@ const PublicationsForm = ({publications}) => {
 
     const HTMLpublications = () => {
 
-        console.log("THE NUM OF PUBLICATIONS:" + publications.length)
-
         return (
             <>
                 {publicationsValue.map((publication, i) => (
@@ -70,7 +66,6 @@ const PublicationsForm = ({publications}) => {
 
     }
 
-    // todo delete functionality
     const removePublication = (index) => {
         let newPublications = [...publicationForms]
         newPublications.splice(index, 1)

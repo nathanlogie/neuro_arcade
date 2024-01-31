@@ -80,6 +80,10 @@ export function postGameScore(gameName, scoreData) {
 
 /**
  * Requests about data
+ *
+ * @throws err when get is rejected
+ *
+ * @returns response if successful
  */
 export async function getAboutData(){
 
@@ -88,7 +92,7 @@ export async function getAboutData(){
         return response.data
     }
     catch (err){
-        console.log(err)
+        console.log("ERROR WHILE FETCHING ABOUT DATA: " + err)
         throw err
     }
 
@@ -97,49 +101,67 @@ export async function getAboutData(){
 
 /**
  * Posts description to json file
+ *
+ * @Param description - description to post
+ *
+ * @throws error when post is rejected
+ *
+ * @returns response when post is accepted
  */
 export function postDescription(description){
     const url = API_ROOT + '/edit_about'
 
-    console.log("Description to post: " + description)
-    console.log("POSTING...")
-
     axios.post(url, {value: description, field: "description"})
         .then(function (response) {
-            console.log(response);
+            return response.data
         })
         .catch(function (error) {
-            console.error(error);
+            console.error("ERROR OCCURRED DURING DESCRIPTION POST:\n" + error);
+            throw(error)
         });
 
 }
 
 /**
  * Posts publications to json file
+ *
+ * @Param publications - publications for about data
+ *
+ * @throws error when post is rejected
+ *
+ * @return response if successful
  */
 export function postPublications(publications){
     const url = API_ROOT + '/edit_about'
 
     axios.post(url, {value: publications, field: "publications"})
         .then(function (response) {
-            console.log("RESPONSE TO POST: \n" + response);
+            return response.data
         })
         .catch(function (error) {
-            console.error("ERROR OCCURRED DURING POST: \n" + error);
+            console.error("ERROR OCCURRED DURING PUBLICATIONS POST:\n" + error);
+            throw(error)
         });
 }
 
 /**
  * Posts Image to json file (for about page data)
+ *
+ * @Param imageURL - url of uploaded image
+ *
+ * @throws error when post is rejected
+ *
+ * @return response if successful
  */
 export function postImage(imageURL) {
     const url = API_ROOT + '/edit_about'
 
     axios.post(url, { value: imageURL, field: "image"})
         .then(function(response){
-            console.log("RESPONSE TO IMAGE POST:\n" + response)
+            return response.data
         })
         .catch(function(error){
             console.error("ERROR OCCURRED DURING IMAGE POST:\n" + error)
+            throw error
         })
 }

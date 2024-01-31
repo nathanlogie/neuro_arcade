@@ -25,5 +25,5 @@ urlpatterns = [
     path('tags', views.get_tags, name='get_tags'),
     path('get_games/', views.get_games_sorted, name='get_games'),
     path('about/', views.get_about_data, name='get_about_data'),
-    path('edit_about', views.update_about_json, name='update_about_json'),
+    path('edit_about', views.post_about_data, name='update_about_json'),
 ]

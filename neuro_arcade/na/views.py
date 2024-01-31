@@ -7,7 +7,6 @@ from django.forms import BaseFormSet, formset_factory
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.core.files.storage import default_storage
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -16,6 +15,8 @@ from rest_framework.request import Request
 from na.forms import AboutForm, GameForm, ScoreTypeForm, PublicationFormSet
 from na.models import Game, GameTag, Player
 from na.forms import UserForm
+
+from django.conf import settings
 
 import json
 
@@ -154,24 +155,36 @@ def post_game(request: Request) -> Response:
 @api_view(['GET'])
 def get_about_data(request: Request) -> Response:
 
+    """
+    Posts about data from json file
+    Posts from media/about.json
+    Uses static/about.json as a fallback
+    """
+
+    file = 'about.json'
     try:
-        with open('media/about.json', "r") as f:
+        with open(os.path.join(settings.MEDIA_ROOT, file), "r") as f:
             about = json.load(f)
 
     except FileNotFoundError:
-        with open('static/about.json', "r") as f:
+        with open(os.path.join(settings.STATICFILES_DIRS[0], file), "r") as f:
             about = json.load(f)
 
-    # print("\n\n\n " + about + " \n\n\n")
     return Response(about)
 
 
 @api_view(['POST'])
-def update_about_json(request) -> Response:
-    filePath = "media/about.json"
+def post_about_data(request) -> Response:
+
+    """
+    Retrieves About data from edit about form and posts it to media/about.json
+    Gets a field and value. Depending on the field, it handles the data appropriately
+    """
+
+    file_path = os.path.join(settings.MEDIA_ROOT, 'about.json')
 
     try:
-        with open(filePath, 'r') as f:
+        with open(file_path, 'r') as f:
             data = json.load(f)
 
         field = request.data.get('field')
@@ -190,10 +203,9 @@ def update_about_json(request) -> Response:
                     }
                 )
         else:
-            print("VALUE OF IMAGE: ", value)
             data["image"] = value
 
-        with open(filePath, 'w') as f:
+        with open(file_path, 'w') as f:
             json.dump(data, f)
 
         return Response(status=200)
@@ -347,82 +359,3 @@ def login(request: HttpRequest) -> HttpResponse:
 def logout(request):
     auth.logout(request)
     return redirect(reverse('na:index'))
-
-
-def about(request):
-    try:
-        with open('media/about.json') as f:
-            data = json.load(f)
-    except FileNotFoundError:  # fallback to a static about.json
-        with open('static/about.json') as f:
-            data = json.load(f)
-
-    if data['image'] is None or not os.path.exists(data['image']):
-        data['image'] = '/static/images/happy-brain.jpg'
-    else:
-        data['image'] = '/media' + data['image']
-
-    return render(request, 'about.html', data)
-
-
-
-def edit_about(request):
-    # context_dict = {"missing_field": False}
-    # try:
-    #     with open('media/about.json') as f:
-    #         data = json.load(f)
-    # except FileNotFoundError:  # fallback to a static about.json
-    #     with open('static/about.json') as f:
-    #         data = json.load(f)
-    #
-    # if len(data['publications']) == 0:
-    #     PublicationFormSet.extra = 1
-    # else:
-    #     PublicationFormSet.extra = 0
-    #
-    # if request.method == 'POST':
-    #     about_form = AboutForm(request.POST, request.FILES,
-    #                            initial={'description': data['description'], 'image': data['image']})
-    #     publication_forms = PublicationFormSet(request.POST, initial=data['publications'])
-    #     if about_form.is_valid():
-    #         # todo: fix the publication form
-    #         description = request.POST.get('description')
-    #
-    #         if description:
-    #             data['description'] = description
-    #
-    #         if request.FILES.get('image'):
-    #             image = request.FILES['image']
-    #
-    #             with default_storage.open('images/' + image.name, 'wb+') as f:
-    #                 for chunk in image.chunks():
-    #                     f.write(chunk)
-    #
-    #             data['image'] = 'images/' + image.name
-    #
-    #         try:
-    #             data['publications'] = []
-    #             for publication in publication_forms:
-    #                 if publication.is_valid():
-    #                     title = publication.cleaned_data['title']
-    #                     author = publication.cleaned_data['author']
-    #                     link = publication.cleaned_data['link']
-    #                     data['publications'].append({'title': title, 'author': author, 'link': link})
-    #         except KeyError:
-    #             context_dict["missing_field"] = True
-    #             context_dict["aboutForm"] = about_form
-    #             context_dict["publicationForms"] = publication_forms
-    #             return render(request, 'edit_about.html', context_dict)
-    #
-    #         with open('media/about.json', 'w') as f:
-    #             json.dump(data, f)
-    #
-    #         return redirect(reverse('na:about'))
-    #     else:
-    #         context_dict["aboutForm"] = about_form
-    #         context_dict["publicationForms"] = publication_forms
-    # else:
-    #     context_dict["aboutForm"] = AboutForm(initial=data)
-    #     context_dict["publicationForms"] = PublicationFormSet(initial=data['publications'])
-
-    return render(request, 'edit_about.html')

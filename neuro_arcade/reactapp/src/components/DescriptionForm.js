@@ -3,11 +3,9 @@ import {postDescription} from "../backendRequests";
 import {useState} from "react";
 import Description from "./Description";
 
-
 const DescriptionForm = ({description}) => {
 
     const [displayTextEdit, setDisplayTextEdit] = useState(false)
-    // const [descriptionToDisplay, setDescriptionToDisplay] = useState(description)
     const [newDescription, setNewDescription] = useState(description)
     const update = (e) => {
         if (e.textValue !== ""){
