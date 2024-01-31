@@ -73,32 +73,32 @@ export const Form = () => {
             method: "post",
             url: "http://127.0.0.1:8000/api/games/createGame/",
             data: formData,
-            headers: { "Content-Type": "multipart/form-data"},
+            headers: {"Content-Type": "multipart/form-data"},
 
-        }).then(function (response){
+        }).then(function (response) {
             console.log(response);
-        }).catch(function (response)
-        {
+        }).catch(function (response) {
             if (response.response.data.includes("exists")) {
                 setError("root", {message: "A game with that name already exists!"})
-            }
-            else{
-                setError("root", {message: `Something went wrong... 
- ${response.response.data}`})
+            } else {
+                setError("root", {
+                    message: `Something went wrong... 
+ ${response.response.data}`
+                })
 
             }
         });
 
-        try {
-            // const response = await fetch('/api/submit-data', {
-            //     method: 'POST',
-            //     body: JSON.stringify(data),
-            //     headers: {'Content-Type': 'application/json'},
-            // });
-            // const response = await postGame(data)
-        } catch (error) {
-            setError("root", {message: "Something went wrong..."})
-        }
+        // try {
+        //     // const response = await fetch('/api/submit-data', {
+        //     //     method: 'POST',
+        //     //     body: JSON.stringify(data),
+        //     //     headers: {'Content-Type': 'application/json'},
+        //     // });
+        //     // const response = await postGame(data)
+        // } catch (error) {
+        //     setError("root", {message: "Something went wrong..."})
+        // }
 
 
     };
@@ -125,7 +125,8 @@ export const Form = () => {
                     value: MAX_DESCRIPTION_LENGTH,
                     message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})`,
                 }
-            })} type={"text"} placeholder={"Game Description"} onChange={(event)=> setDescription(event.target.value)}/>
+            })} type={"text"} placeholder={"Game Description"}
+                   onChange={(event) => setDescription(event.target.value)}/>
             {errors.description && (
                 <div className={"text-red-500"}>{errors.description.message}</div>
             )}
@@ -138,7 +139,7 @@ export const Form = () => {
             <h3>Game Tags</h3>
             <input {...register("tags", {
                 required: false
-            })} type={"text"} placeholder={"Game Tags"} onChange={(event)=> setTags(event.target.value)}/>
+            })} type={"text"} placeholder={"Game Tags"} onChange={(event) => setTags(event.target.value)}/>
 
             <h3>Score Types</h3>
             <input {...register("scoreTypes", {
@@ -160,19 +161,15 @@ export const Form = () => {
             <h3>Play Link</h3>
             <input {...register("playLink", {
                 required: "A Play link must be provided",
-                // pattern: {
-                //     value: https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*),
-                //     message: "Invalid URL Provided"
-                // validate: (value) => {
-                //     let validateURL = new RegExp(
-                //         '[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)\n'
-                //     )
-                //     if (!validateURL.test(value)) {
-                //         return "Invalid URL Provided";
-                //      }
-                //     return true;
-                // }
-            })} type={"url"} placeholder={"Play Link"} onChange={(event)=> setPlayLink(event.target.value)}/>
+                validate: (value) =>{
+                    try{
+                        let url = new URL(value)
+                    } catch(error){
+                        return "Invalid URL Provided"
+                    }
+                    return true
+                }
+            })} type={"url"} placeholder={"Play Link"}/>
             {errors.playLink && (
                 <div className={"text-red-500"}>{errors.playLink.message}</div>
             )}
