@@ -38,6 +38,10 @@ ALLOWED_HOSTS = ["sh08.pythonanywhere.com",
                  "127.0.0.1", "localhost"]
 CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://localhost:3000", "http://locahost:8000", "https://localhost:8000"]
 
+# Allowed domains and ports you are making requests from
+# TODO: NOT SECURE FOR PRODUCTION!! DO REMOVE and find safe alternative
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+
 
 # Application definition
 
@@ -52,7 +56,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'na',
     'reactapp',
-    # 'corsheaders'  # why is this here? it's not in requirements.txt
+    'corsheaders'
 ]
 
 MIDDLEWARE = [

@@ -1,19 +1,21 @@
+import json
 import os
 
+from django.conf import settings
 from django.contrib.auth.models import User
+from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
-
+from django.views.decorators.csrf import csrf_exempt
+from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer
+from rest_framework import viewsets
+from rest_framework.authtoken import views as rest_views
+from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 from rest_framework.request import Request
-from rest_framework import viewsets
+from rest_framework.response import Response
 
 from na.models import Game, GameTag, Player
-from django.conf import settings
-
-from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer
-import json
 
 
 # ------------------
@@ -94,7 +96,6 @@ def get_games_sorted(request: Request) -> Response:
     return Response([game.serialize() for game in game_list])
 
 
-# TODO maybe you should be logged in for this request
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def post_game_score(request: Request, game_name_slug: str) -> Response:
@@ -211,6 +212,19 @@ def post_about_data(request) -> Response:
     except Exception as e:
         print("ERROR OCCURRED: ", e)
         return Response(status=400)
+
+
+@csrf_exempt  # TODO THIS IS UNSECURE; DO REMOVE
+def login(request: HttpRequest) -> Response:
+    if request.method == 'POST':
+        response = rest_views.obtain_auth_token(request)
+
+        # sending back if the user is admin or not
+        user_id = Token.objects.get(key=response.data['token']).user_id
+        user = User.objects.get(id=user_id)
+        response.data['is_admin'] = user.is_superuser
+
+        return response
 
 
 @api_view(['POST'])
