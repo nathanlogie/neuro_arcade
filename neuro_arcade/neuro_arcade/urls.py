@@ -17,11 +17,13 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 from django.contrib.staticfiles.urls import static
-from na.views import GameViewSet
+from na.views import GameViewSet, UserViewSet
 from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register(r'games', GameViewSet)
+router.register(r'users', UserViewSet)
+
 
 urlpatterns = [
     path('', include('na.urls')),

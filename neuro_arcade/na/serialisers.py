@@ -1,6 +1,13 @@
 from rest_framework import serializers
 from na.models import Game
+from django.contrib.auth.models import User
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['url', 'username']
+
 class GameSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Game
-        fields = ['name', 'description', 'icon', 'tags', 'score_type', 'play_link', 'evaluation_script']
+        fields = ['url','name', 'description','owner','icon', 'score_type']

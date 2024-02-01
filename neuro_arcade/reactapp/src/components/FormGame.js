@@ -53,53 +53,58 @@ export const Form = () => {
     }
 
     const onSubmit = (event) => {
-        const formData = new FormData();
-        formData.append("name", name);
-        formData.append("description", description);
-        formData.append("owner", "");
-        formData.append("playLink", playLink)
-        formData.append("tags", tags)
-        if (image) {
-            formData.append("icon", image)
-        }
-        if (evaluationScript) {
-            formData.append("evaluationScript", evaluationScript)
-        }
-        if (scoreType) {
-            formData.append("scoreType", scoreType)
-        }
+        // const formData = new FormData();
+        // formData.append("name", name);
+        // formData.append("description", description);
+        // formData.append("owner", "");
+        // formData.append("playLink", playLink)
+        // formData.append("tags", tags)
+        // if (image) {
+        //     formData.append("icon", image)
+        // }
+        // if (evaluationScript) {
+        //     formData.append("evaluationScript", evaluationScript)
+        // }
+        // if (scoreType) {
+        //     formData.append("scoreType", scoreType)
+        // }
 
-        axios({
+        const formData = new FormData(event.target);
+        const data = {
+            name: formData.get("name"),
+            description : formData.get("description"),
+            icon : formData.get("icon"),
+            tags : formData.get("tags"),
+            scoreTypes : formData.get("scoreTypes"),
+            playLink : formData.get("playLink"),
+            evaluationScript : formData.get("evaluationScript"),
+            owner: "http://127.0.0.1:8000/api/users/20/"}
+
+            console.log(formData)
+            axios({
             method: "post",
-            url: "http://127.0.0.1:8000/api/games/createGame/",
+            url: "http://127.0.0.1:8000/api/games/",
             data: formData,
-            headers: {"Content-Type": "multipart/form-data"},
+            headers: { "Content-Type": "multipart/form-data" },
+            // auth: { username: "testuser", password: "123" },
 
         }).then(function (response) {
             console.log(response);
         }).catch(function (response) {
-            if (response.response.data.includes("exists")) {
-                setError("root", {message: "A game with that name already exists!"})
-            } else {
-                setError("root", {
-                    message: `Something went wrong... 
- ${response.response.data}`
-                })
+            console.log(response)
+            if(!response){
+                setError("root", {message:"No response from server"});
 
             }
+            else{
+                if (response.response.data.includes("exists")) {
+                    setError("root", {message: "A game with that name already exists!"});
+                } else {
+                    setError("root", {
+                        message: `Something went wrong... ${response.response.data}`})
+                    }
+                }
         });
-
-        // try {
-        //     // const response = await fetch('/api/submit-data', {
-        //     //     method: 'POST',
-        //     //     body: JSON.stringify(data),
-        //     //     headers: {'Content-Type': 'application/json'},
-        //     // });
-        //     // const response = await postGame(data)
-        // } catch (error) {
-        //     setError("root", {message: "Something went wrong..."})
-        // }
-
 
     };
 
@@ -112,7 +117,9 @@ export const Form = () => {
                     value: MAX_NAME_LENGTH,
                     message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH})`,
                 }
-            })} type={"text"} placeholder={"Game Name"} onChange={(event) => setName(event.target.value)}/>
+            })} type={"text"} placeholder={"Game Name"}
+                   // onChange={(event) => setName(event.target.value)}
+            />
             {errors.name && (
                 <div className={"text-red-500"}>{errors.name.message}</div>
             )}
@@ -126,7 +133,8 @@ export const Form = () => {
                     message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})`,
                 }
             })} type={"text"} placeholder={"Game Description"}
-                   onChange={(event) => setDescription(event.target.value)}/>
+                   // onChange={(event) => setDescription(event.target.value)}
+            />
             {errors.description && (
                 <div className={"text-red-500"}>{errors.description.message}</div>
             )}
@@ -139,7 +147,9 @@ export const Form = () => {
             <h3>Game Tags</h3>
             <input {...register("tags", {
                 required: false
-            })} type={"text"} placeholder={"Game Tags"} onChange={(event) => setTags(event.target.value)}/>
+            })} type={"text"} placeholder={"Game Tags"}
+                   // onChange={(event) => setTags(event.target.value)}
+            />
 
             <h3>Score Types</h3>
             <input {...register("scoreTypes", {
@@ -153,7 +163,9 @@ export const Form = () => {
                     }
                     return true;
                 }
-            })} type={"file"} onChange={handleScores}/>
+            })} type={"file"}
+                   // onChange={handleScores}
+            />
             {errors.scoreTypes && (
                 <div className={"text-red-500"}>{errors.scoreTypes.message}</div>
             )}
@@ -185,7 +197,9 @@ export const Form = () => {
                     }
                     return true;
                 }
-            })} type={"file"} onChange={handleEvalScript}/>
+            })} type={"file"}
+                   // onChange={handleEvalScript}
+            />
             {errors.evaluationScript && (
                 <div className={"text-red-500"}>{errors.evaluationScript.message}</div>
             )}
