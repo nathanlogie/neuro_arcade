@@ -9,11 +9,14 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.core.files.storage import default_storage
+from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.request import Request
+from rest_framework.authtoken import views as rest_views
+from rest_framework.authtoken.models import Token
 
 from na.forms import AboutForm, GameForm, ScoreTypeForm, PublicationFormSet
 from na.models import Game, GameTag, Player
@@ -100,7 +103,6 @@ def get_games_sorted(request: Request) -> Response:
     return Response([game.serialize() for game in game_list])
 
 
-# TODO maybe you should be logged in for this request
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def post_game_score(request: Request, game_name_slug: str) -> Response:
@@ -161,6 +163,19 @@ def post_game(request: Request) -> Response:
     # get the user with:
     # user = request.user
     pass
+
+
+@csrf_exempt  # TODO THIS IS UNSECURE; DO REMOVE
+def login(request: HttpRequest) -> Response:
+    if request.method == 'POST':
+        response = rest_views.obtain_auth_token(request)
+
+        # sending back if the user is admin or not
+        user_id = Token.objects.get(key=response.data['token']).user_id
+        user = User.objects.get(id=user_id)
+        response.data['is_admin'] = user.is_superuser
+
+        return response
 
 
 @api_view(['POST'])

@@ -67,6 +67,7 @@ export async function requestGamesSorted(query) {
  * @throws Error when the request is rejected.
  */
 export function postGameScore(gameName, scoreData) {
+    //todo get this working with get_current_user()
     const url = API_ROOT + '/games/' + gameName + '/data/'
     axios.post(url, scoreData)
         .then(function (response) {
@@ -79,12 +80,43 @@ export function postGameScore(gameName, scoreData) {
 }
 
 /**
+ * Gets the current user associate with this session. Returns null if user is not logged in.
+ *
+ * @return {{} | null} user object {token, name, email} or null
+ */
+export function get_user() {
+    let user_str = localStorage.getItem("user");
+    if (!user_str) {
+        return null;
+    }
+    return JSON.parse(user_str);
+}
+
+/**
+ * Returns true if the user is logged in.
+ */
+export function is_logged_in() {
+    return get_user() != null
+}
+
+/**
+ * Returns true if the user is an admin.
+ */
+export function is_admin() {
+    let user = localStorage.getItem('user');
+    if (user) {
+        return user.is_admin;
+    }
+    return null
+}
+
+/**
  * Checks if a password is valid.
- * Todo: make this more thorough.
  *
  * @param {string} password - the password in plaintext
  */
 function passwordValidator(password) {
+    // Todo: make this more thorough.
     return password.length >= 8;
 }
 
@@ -141,8 +173,14 @@ export async function login(userName, email, password) {
     }
     try {
         let response = await axios.post(url, data);
-        // TODO: is it right to use sessionStorage here or would LocalStorage be better?
-        sessionStorage.setItem("auth_token", response.data.token);
+        let user_data = {
+            token: response.data.token,
+            name: userName,
+            email: email,
+            is_admin: response.data.is_admin === true
+        };
+        console.log(user_data)
+        localStorage.setItem("user", JSON.stringify(user_data))
         return response.data;
     } catch (error) {
         console.log(error);
@@ -154,5 +192,5 @@ export async function login(userName, email, password) {
  * Logs out the current user by deleting the auth_token.
  */
 export function logout() {
-    sessionStorage.removeItem("auth_token");
+    localStorage.removeItem("user");
 }
