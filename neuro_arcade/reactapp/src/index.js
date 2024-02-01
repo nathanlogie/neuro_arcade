@@ -6,6 +6,8 @@ import {AboutPage} from './app/AboutPage';
 import reportWebVitals from './app/reportWebVitals';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {AddContent} from "./app/AddContent";
+import {AddGame} from "./app/AddGame";
+import {AddModel} from "./app/AddModel";
 import {AllGames} from "./app/AllGames";
 import {GameView} from "./app/GameView";
 
@@ -35,6 +37,14 @@ const router = createBrowserRouter([
         element: (
             <AddContent />
         ),
+    },
+    {
+        path: "add_game",
+        element: <AddGame />
+    },
+    {
+        path: "add_model",
+        element: <AddModel />
     },
     {
         path: 'all_games/:game_slug',

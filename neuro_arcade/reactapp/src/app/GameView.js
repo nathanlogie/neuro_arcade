@@ -22,17 +22,22 @@ export function GameView() {
     }, []);
     if (isLoading) {
         return (
-            <div className={styles.MainBlock}>
-                Loading...
-            </div>
-        )
-    } else {
-        return (
-            <div>
+            <>
                 <Background />
                 <Banner size={'small'} />
                 <MobileBanner size={'small'} />
-                <div className={styles.MainBlock}>
+                <div className={styles.MainBlock} id={styles['small']}>
+                    Loading...
+                </div>
+            </>
+        )
+    } else {
+        return (
+            <>
+                <Background />
+                <Banner size={'small'} />
+                <MobileBanner size={'small'} />
+                <div className={styles.MainBlock} id={styles['small']}>
                     <div className={styles.Content}>
                         <h1>{gameData.game.name}</h1>
                         <div className={styles.ContentBlock}>
@@ -44,9 +49,11 @@ export function GameView() {
                     <div className={styles.Side}>
                         <Table inputData={gameData}/>
                     </div>
-                    <Graph inputData={gameData}/>
+                    <div className={styles.GraphBlock}>
+                        <Graph inputData={gameData}/>
+                    </div>
                 </div>
-            </div>
+            </>
 
         )
     }

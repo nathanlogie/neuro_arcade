@@ -3,12 +3,14 @@ from typing import Type
 
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.forms import BaseFormSet, formset_factory
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.request import Request
 
@@ -60,6 +62,11 @@ def get_game_list(query, wanted_tags=None, num=None):
     return games
 
 
+def validate_password(password):
+    # TODO improve password validation
+    return len(password) >= 8
+
+
 # ----------------
 #    API CALLS
 # ----------------
@@ -77,7 +84,7 @@ def get_tags(request: Request) -> Response:
     """
     Retrieves the GameTags
     """
-    return Response(GameTag.objects.all())
+    return Response([tag.serialize() for tag in GameTag.objects.all()])
 
 
 @api_view(['GET'])
@@ -97,6 +104,7 @@ def get_games_sorted(request: Request) -> Response:
 
 # TODO maybe you should be logged in for this request
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def post_game_score(request: Request, game_name_slug: str) -> Response:
     """
     Post Score for a game. The format for the body of the Post request is as follows:
@@ -107,8 +115,9 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
     Example: for a score type with a single header called 'Points' that has an int value,
     the request needs to look like: {'played':<player.id>, 'Points': <value>}
     """
+    # todo: this needs to be changed for the new authentication
     # checking that the Post request contains the player field
-    if request.data.get('player') is None:
+    if request.user.get('player') is None:
         return Response(status=400, data={'description': 'No player field was provided.'})
 
     game = get_object_or_404(Game, slug=game_name_slug)
@@ -149,7 +158,10 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def post_game(request: Request) -> Response:
+    # get the user with:
+    # user = request.user
     pass
 
 
@@ -212,6 +224,22 @@ def post_about_data(request) -> Response:
         print("ERROR OCCURRED: ", e)
         return Response(status=400)
 
+@api_view(['POST'])
+def sign_up(request: Request) -> Response:
+    username = request.data['username']
+    email = request.data['email']
+    password = request.data['password']
+    # input validation:
+    if username is None or email is None or password is None or not validate_password(password):
+        return Response(status=400, data='Invalid data.')
+
+    # creating a new User in the DB:
+    new_user = User.objects.create_user(username=username, email=email, password=password)
+
+    if new_user is not None:
+        return Response(status=200)  # sending a success response back
+    else:
+        return Response(status=400, data='Error creating new user.')
 
 # -----------------
 #   PAGE VIEWS
@@ -290,7 +318,7 @@ def model_add(request: HttpRequest) -> HttpResponse:
     return HttpResponse("Model add page")
 
 
-def sign_up(request: HttpRequest) -> HttpResponse:
+def deprecated_sign_up(request: HttpRequest) -> HttpResponse:
     # Check not already logged in
     if request.user.is_authenticated:
         return redirect(reverse('na:index'))
@@ -318,7 +346,7 @@ def sign_up(request: HttpRequest) -> HttpResponse:
     return render(request, 'sign_up.html', context=context_dict)
 
 
-def login(request: HttpRequest) -> HttpResponse:
+def deprecated_login(request: HttpRequest) -> HttpResponse:
     # Check not already logged in
     if request.user.is_authenticated:
         return redirect(reverse('na:index'))
@@ -355,6 +383,6 @@ def login(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
-def logout(request):
+def deprecated_logout(request):
     auth.logout(request)
     return redirect(reverse('na:index'))

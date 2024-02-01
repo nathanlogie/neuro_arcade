@@ -1,14 +1,11 @@
 .MainBlock {
     position: relative;
-    margin: 3em 3em 0;
-    width: calc(100% - 6em);
-    height: calc(100% - 3em);
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     flex-wrap: wrap;
     overflow-y: auto;
-    max-height: calc(100dvh - 9em);
     .Content {
         width: 40em;
         padding: 0 2em;
@@ -21,7 +18,7 @@
         }
         .ContentBlock {
             position: relative;
-            width: 50em;
+            width: 100%;
             overflow: auto;
             & img {
                 float: left;
@@ -44,11 +41,22 @@
     .Side {
         width: 32.5em;
     }
+    .GraphBlock {
+        width: 100%;
+    }
 }
 .MobileBannerBuffer {
     position: relative;
     display: none;
     height: 7em;
+}
+
+.MainBlock#big {
+    max-height: calc(100dvh - 13.5em);
+}
+
+.MainBlock#small {
+    max-height: calc(100dvh - 9em);
 }
 
 @media (max-width: 75em) {
@@ -68,6 +76,12 @@
         }
         .Side {
             width: 100%;
+            overflow-x: scroll;
+            padding: 1.5em;
+        }
+        .GraphBlock {
+            overflow-x: scroll;
+            padding: 1.5em;
         }
     }
     .MobileBannerBuffer {
