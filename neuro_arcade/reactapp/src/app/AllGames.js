@@ -16,7 +16,7 @@ export function AllGames() {
             <Background/>
             <Banner size={'small'}/>
             <MobileBanner size={'small'} />
-            <div className={styles.MainBlock}>
+            <div className={styles.MainBlock} id={styles['small']}>
                 <div className={styles.Side}>
                     {/* TODO: this almost definitely shouldn't be here, but the background
                     image gets interacted with instead of the search bar without it */}
