@@ -10,6 +10,8 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.defaultfilters import slugify
 from django.urls import reverse
+from django.core.files.storage import default_storage
+from packaging.tags import Tag
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -21,10 +23,9 @@ from rest_framework.decorators import action
 from na.forms import AboutForm, GameForm, ScoreTypeForm, PublicationFormSet
 from na.models import Game, GameTag, Player
 from na.forms import UserForm
-
 from django.conf import settings
 
-from na.serialisers import GameSerializer, UserSerializer
+from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer
 import json
 
 
@@ -492,9 +493,14 @@ def edit_about(request):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
+
+class GameTagViewSet(viewsets.ModelViewSet):
+    queryset = GameTag.objects.all()
+    serializer_class = GameTagSerializer
 
     # @action(detail=True, methods=['post'])
     # def createGame(self, request):

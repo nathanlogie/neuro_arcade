@@ -53,34 +53,25 @@ export const Form = () => {
     }
 
     const onSubmit = (event) => {
-        // const formData = new FormData();
-        // formData.append("name", name);
-        // formData.append("description", description);
-        // formData.append("owner", "");
-        // formData.append("playLink", playLink)
+
+
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("description", description);
+        formData.append("owner", "http://localhost:8000/api/users/2/");
+        formData.append("play_link", playLink);
         // formData.append("tags", tags)
-        // if (image) {
-        //     formData.append("icon", image)
-        // }
-        // if (evaluationScript) {
-        //     formData.append("evaluationScript", evaluationScript)
-        // }
-        // if (scoreType) {
-        //     formData.append("scoreType", scoreType)
-        // }
+        if (image) {
+            formData.append("icon", image)
+        }
+        if (evaluationScript) {
+            formData.append("evaluation_script", evaluationScript)
+        }
+        if (scoreType) {
+            formData.append("scoreType", scoreType)
+        }
 
-        const formData = new FormData(event.target);
-        const data = {
-            name: formData.get("name"),
-            description : formData.get("description"),
-            icon : formData.get("icon"),
-            tags : formData.get("tags"),
-            scoreTypes : formData.get("scoreTypes"),
-            playLink : formData.get("playLink"),
-            evaluationScript : formData.get("evaluationScript"),
-            owner: "http://127.0.0.1:8000/api/users/20/"}
 
-            console.log(formData)
             axios({
             method: "post",
             url: "http://127.0.0.1:8000/api/games/",
@@ -118,7 +109,7 @@ export const Form = () => {
                     message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH})`,
                 }
             })} type={"text"} placeholder={"Game Name"}
-                   // onChange={(event) => setName(event.target.value)}
+                   onChange={(event) => setName(event.target.value)}
             />
             {errors.name && (
                 <div className={"text-red-500"}>{errors.name.message}</div>
@@ -133,7 +124,7 @@ export const Form = () => {
                     message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})`,
                 }
             })} type={"text"} placeholder={"Game Description"}
-                   // onChange={(event) => setDescription(event.target.value)}
+                   onChange={(event) => setDescription(event.target.value)}
             />
             {errors.description && (
                 <div className={"text-red-500"}>{errors.description.message}</div>
@@ -148,7 +139,7 @@ export const Form = () => {
             <input {...register("tags", {
                 required: false
             })} type={"text"} placeholder={"Game Tags"}
-                   // onChange={(event) => setTags(event.target.value)}
+                   onChange={(event) => setTags(event.target.value)}
             />
 
             <h3>Score Types</h3>
@@ -164,7 +155,7 @@ export const Form = () => {
                     return true;
                 }
             })} type={"file"}
-                   // onChange={handleScores}
+                   onChange={handleScores}
             />
             {errors.scoreTypes && (
                 <div className={"text-red-500"}>{errors.scoreTypes.message}</div>
@@ -181,7 +172,7 @@ export const Form = () => {
                     }
                     return true
                 }
-            })} type={"url"} placeholder={"Play Link"}/>
+            })} type={"text"} placeholder={"Play Link"} onChange={(event) => setPlayLink(event.target.value)}/>
             {errors.playLink && (
                 <div className={"text-red-500"}>{errors.playLink.message}</div>
             )}
@@ -198,7 +189,7 @@ export const Form = () => {
                     return true;
                 }
             })} type={"file"}
-                   // onChange={handleEvalScript}
+                   onChange={handleEvalScript}
             />
             {errors.evaluationScript && (
                 <div className={"text-red-500"}>{errors.evaluationScript.message}</div>
