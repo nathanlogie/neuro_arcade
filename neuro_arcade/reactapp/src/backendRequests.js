@@ -179,8 +179,8 @@ export async function login(userName, email, password) {
             email: email,
             is_admin: response.data.is_admin === true
         };
-        console.log(user_data)
-        localStorage.setItem("user", JSON.stringify(user_data))
+        console.log(user_data);
+        localStorage.setItem("user", JSON.stringify(user_data));
         return response.data;
     } catch (error) {
         console.log(error);
