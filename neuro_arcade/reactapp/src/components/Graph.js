@@ -28,7 +28,7 @@ export function Graph({inputData}) {
     return (
         <div className={styles.GraphContainer}>
             <div className={styles.TabSwitcher}>
-                <TableSwitcher data={inputData} onSwitcherChange={handleSwitcherChange}/>
+                <TableSwitcher data={inputData} onSwitcherChange={handleSwitcherChange} switcherDefault={selectedSwitcherValue}/>
             </div>
             <ThemeProvider theme={graph_theme}>
                 <LineChart

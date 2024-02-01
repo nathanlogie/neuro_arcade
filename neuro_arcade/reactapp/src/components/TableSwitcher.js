@@ -4,9 +4,9 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import styles from '../styles/TableGraph.module.css'
 
-const TableSwitcher = ({data , onSwitcherChange}) => {
+const TableSwitcher = ({data, onSwitcherChange, switcherDefault}) => {
 
-    const [alignment, setAlignment] = React.useState('web');
+    const [alignment, setAlignment] = React.useState(switcherDefault);
 
     const handleAlignment = (event, newAlignment) => {
         if (newAlignment !== null) {
@@ -36,10 +36,12 @@ const TableSwitcher = ({data , onSwitcherChange}) => {
                             value={header.name}
                             id={styles[
                                     (() => {
-                                       if (index === data.table_headers.length - 1) {
-                                           return "end";
+                                       if (index === 0 && index === data.table_headers.length - 1) {
+                                           return "single";
                                        } else if (index === 0) {
                                            return "start";
+                                       } else if (index === data.table_headers.length - 1) {
+                                           return "end";
                                        } else {
                                            return "";
                                        }

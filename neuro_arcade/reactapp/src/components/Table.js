@@ -8,7 +8,7 @@ import {createTheme, ThemeProvider} from "@mui/material";
 
 export function Table({inputData}) {
 
-    const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState("All");
+    const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState('all');
 
     const handleSwitcherChange = (selectedValue) => {
         setSelectedSwitcherValue(selectedValue);
@@ -73,6 +73,7 @@ export function Table({inputData}) {
                 <TableSwitcher
                     data={switcher_labels}
                     onSwitcherChange={handleSwitcherChange}
+                    switcherDefault={selectedSwitcherValue}
                 />
             </div>
             <div className={'Table'}>

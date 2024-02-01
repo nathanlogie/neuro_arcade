@@ -22,13 +22,18 @@ export function GameView() {
     }, []);
     if (isLoading) {
         return (
-            <div className={styles.MainBlock}>
-                Loading...
-            </div>
+            <>
+                <Background />
+                <Banner size={'small'} />
+                <MobileBanner size={'small'} />
+                <div className={styles.MainBlock} id={styles['small']}>
+                    Loading...
+                </div>
+            </>
         )
     } else {
         return (
-            <div>
+            <>
                 <Background />
                 <Banner size={'small'} />
                 <MobileBanner size={'small'} />
@@ -48,7 +53,7 @@ export function GameView() {
                         <Graph inputData={gameData}/>
                     </div>
                 </div>
-            </div>
+            </>
 
         )
     }
