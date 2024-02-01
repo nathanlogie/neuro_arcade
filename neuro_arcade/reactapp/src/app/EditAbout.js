@@ -1,14 +1,12 @@
-import {useState, useRef, useEffect} from 'react';
-import DescriptionForm from "../components/DescriptionForm"
+import {useState, useEffect} from 'react';
+import {DescriptionForm} from "../components/DescriptionForm"
+import {PublicationsForm} from "../components/PublicationsForm"
 import {getAboutData} from "../backendRequests";
 import {Background} from "../components/Background";
 import {Banner, MobileBanner} from "../components/Banner";
 import styles from "../styles/App.module.css";
 import {motion} from "framer-motion"
-import PublicationForm from "../components/PublicationsForm"
-import ImageForm from "../components/ImageForm";
 
-// todo: error handling
 export function EditAbout() {
 
     const [aboutData, updateAboutData] = useState()
@@ -22,9 +20,9 @@ export function EditAbout() {
 
     if (!aboutData) {
         return (
-            <div>
+            <>
                 Loading...
-            </div>
+            </>
         )
     }
 
@@ -43,8 +41,7 @@ export function EditAbout() {
                 <div className={styles.Content}>
                     <div className={styles.ContentBlock}>
                         <DescriptionForm description={aboutData.description} />
-                        <PublicationForm publications={aboutData.publications}/>
-                        <ImageForm image ={aboutData.image} />
+                        <PublicationsForm publications={aboutData.publications}/>
                     </div>
                 </div>
             </motion.div>

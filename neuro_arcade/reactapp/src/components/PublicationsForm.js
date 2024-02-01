@@ -1,50 +1,55 @@
 import { useState } from "react";
 import {postPublications} from "../backendRequests";
+import { Message } from 'primereact/message';
 
-const PublicationsForm = ({publications}) => {
+export function PublicationsForm ({publications}) {
 
     const [publicationForms, setPublicationForms] = useState(publications)
     const [publicationsValue, setPublicationsValue] = useState(publications)
-    const [edit, toggleEdit] = useState(false)
+    const [editMode, setEditMode] = useState(false)
+    const [valid, setValid] = useState(true)
 
-    const handleChange = (i, field, newValue) => {
+    function handleChange (i, field, newValue) {
         const updated = [...publicationForms]
         updated[i][field] = newValue
         setPublicationForms(updated)
     }
 
-    const regularButtons = () => {
+    function regularButtons() {
         return (
             <>
-                <button onClick={ () => toggleEdit(!edit) }>EDIT</button>
+                <button onClick={ () => setEditMode(!editMode) }>EDIT</button>
             </>
         )
     }
 
-    let addFormFields = () => {
+    function addFormFields(){
         setPublicationForms([...publicationForms, {title:"", author:"", link: ""}])
     }
 
-    const onSave = (e) => {
+    function onSave(e) {
         e.preventDefault()
 
-        publications = []
-        publicationForms.forEach( (p) => {
-            if (p.title!=="" && p.author!==""){
-                publications.push(p)
-            }
-        })
-        setPublicationsValue(publications)
-        postPublications(publications)
-        toggleEdit(!edit)
+        const isValid = publicationForms.every(p => p.title !== "" && p.author !== "");
+
+        if (isValid){
+            setValid(true)
+            setPublicationsValue(publicationForms)
+            postPublications(publications)
+            setEditMode(!editMode)
+        }
+        else {
+            setValid(false)
+        }
+
     }
 
-    const handleCancel = () => {
+    function handleCancel() {
         setPublicationForms(publicationsValue)
-        toggleEdit(!edit)
+        setEditMode(!editMode)
     }
 
-    const editButtons = () => {
+    function editButtons() {
         return (
             <>
                 <li><button onClick={addFormFields}>ADD NEW</button></li>
@@ -54,50 +59,48 @@ const PublicationsForm = ({publications}) => {
         )
     }
 
-    const HTMLpublications = () => {
+    function displayPublications(){
 
         return (
             <>
                 {publicationsValue.map((publication, i) => (
                     <li key={i}>{ publication.link ? (<a href={publication.link}>{publication.title} - {publication.author}</a>) : (<>{publication.title} - {publication.author}</>)}</li>
-                ) ) }
+                ))}
             </>
         )
 
     }
 
-    const removePublication = (index) => {
+    function removePublication(index){
         let newPublications = [...publicationForms]
+
         newPublications.splice(index, 1)
         setPublicationForms(newPublications)
     }
 
-    const editPublications = () => {
+    function editPublications() {
 
         return (
             <>
                 { publicationForms.map( (p,i) => (
+
                     <div key={i}>
                         <li><input type ={"text"} value={p.title} placeholder={"Title..."} onChange={ (e) =>handleChange(i, "title", e.target.value)}/></li>
                         <li><input type ={"text"} value={p.author} placeholder={"Author..."} onChange={ (e) => handleChange(i, "author", e.target.value)}/></li>
                         <li><input type={"url"} value={p.link} placeholder={"Link..."} onChange={ (e) => handleChange(i, "link", e.target.value)}/></li>
-                        <button onClick={removePublication}>DELETE</button>
+                        <button onClick={() => removePublication(i)}>DELETE</button>
                     </div>
-                ) ) }
+                ))}
             </>
         )
-
     }
 
     return (
-        <div>
-
-            { edit ? editPublications() : HTMLpublications() }
-            { edit ? editButtons() : regularButtons() }
-
-        </div>
+        <>
+            { valid ? null : <Message style={{border: 'solid darkred', borderWidth: '1px', color: 'red'}} severity="error" text="Missing Fields" />}
+            { editMode ? editPublications() : displayPublications() }
+            { editMode ? editButtons() : regularButtons() }
+        </>
     )
 
 }
-
-export default PublicationsForm

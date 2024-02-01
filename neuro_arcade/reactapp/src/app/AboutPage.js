@@ -5,7 +5,7 @@ import styles from "../styles/App.module.css";
 import {motion} from "framer-motion"
 import {useEffect, useState} from "react";
 import {getAboutData} from "../backendRequests";
-import Description from "../components/Description"
+import {Description} from "../components/Description"
 
 
 export function AboutPage( ) {
@@ -68,10 +68,8 @@ export function AboutPage( ) {
                 exit={{opacity: 0, x: -100}}
             >
                 <div className={styles.Content}>
-                    <h1>About</h1>
-                    <div className={styles.ContentBlock}>
 
-                        <img src={ aboutData.image }  alt={'image'} />
+                    <div className={styles.ContentBlock}>
 
                         <Description description= {aboutData.description} />
                         <h2>Publications</h2>

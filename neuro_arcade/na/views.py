@@ -203,8 +203,6 @@ def post_about_data(request) -> Response:
                         'link': p['link']
                     }
                 )
-        else:
-            data["image"] = value
 
         with open(file_path, 'w') as f:
             json.dump(data, f)

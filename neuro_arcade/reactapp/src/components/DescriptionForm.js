@@ -1,19 +1,19 @@
 import {Editor} from "primereact/editor";
 import {postDescription} from "../backendRequests";
 import {useState} from "react";
-import Description from "./Description";
+import {Description} from "./Description";
 
-const DescriptionForm = ({description}) => {
+export function DescriptionForm ({description}) {
 
     const [displayTextEdit, setDisplayTextEdit] = useState(false)
     const [newDescription, setNewDescription] = useState(description)
-    const update = (e) => {
+    function update(e) {
         if (e.textValue !== ""){
             setNewDescription(e.htmlValue)
         }
     }
 
-    const editDescription = (e) => {
+    function editDescription(e) {
 
         e.preventDefault()
 
@@ -21,14 +21,14 @@ const DescriptionForm = ({description}) => {
 
     }
 
-    const onSave = (e) => {
+    function onSave(e) {
         e.preventDefault()
 
         postDescription(newDescription)
         setDisplayTextEdit(false)
     }
 
-    const edit = () => {
+    function edit() {
         return (
             <>
                 <Editor
@@ -52,5 +52,3 @@ const DescriptionForm = ({description}) => {
     )
 
 }
-
-export default DescriptionForm

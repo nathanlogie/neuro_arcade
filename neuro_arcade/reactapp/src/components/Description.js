@@ -1,8 +1,5 @@
-
-const Description = ({description}) => {
+export function Description ({description}) {
     return (
-        <div dangerouslySetInnerHTML={{__html: description}}></div>
+        <div dangerouslySetInnerHTML={{__html: description}} />
     )
 }
-
-export default Description
