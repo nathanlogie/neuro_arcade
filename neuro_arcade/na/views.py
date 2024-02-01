@@ -501,22 +501,3 @@ class GameViewSet(viewsets.ModelViewSet):
 class GameTagViewSet(viewsets.ModelViewSet):
     queryset = GameTag.objects.all()
     serializer_class = GameTagSerializer
-
-    # @action(detail=True, methods=['post'])
-    # def createGame(self, request):
-    #     serializer = GameSerializer(data=request.data, context={'request': request})
-    #     if serializer.is_valid():
-    #         try:
-    #             data = serializer.validated_data
-    #             data["tags"] = GameTag.objects.get_or_create(
-    #                 name="default", slug=slugify("default"),
-    #                 description="default"),
-    #             data['owner'] = User.objects.get_or_create(
-    #                 username="admin123",
-    #                 password="admin1234",
-    #                 email="admin@admin.com")
-    #             obj = Game.objects.create(**data)
-    #             return Response(GameSerializer(obj, context={'request': request}).data)
-    #         except IntegrityError as e:
-    #             return Response("Game already exists!", status=status.HTTP_400_BAD_REQUEST)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

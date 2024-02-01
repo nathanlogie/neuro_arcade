@@ -60,7 +60,7 @@ export const Form = () => {
         formData.append("description", description);
         formData.append("owner", "http://localhost:8000/api/users/2/");
         formData.append("play_link", playLink);
-        // formData.append("tags", tags)
+
         if (image) {
             formData.append("icon", image)
         }
@@ -77,7 +77,6 @@ export const Form = () => {
             url: "http://127.0.0.1:8000/api/games/",
             data: formData,
             headers: { "Content-Type": "multipart/form-data" },
-            // auth: { username: "testuser", password: "123" },
 
         }).then(function (response) {
             console.log(response);
@@ -88,7 +87,7 @@ export const Form = () => {
 
             }
             else{
-                if (response.response.data.includes("exists")) {
+                if (response.response.data.includes("IntegrityError")) {
                     setError("root", {message: "A game with that name already exists!"});
                 } else {
                     setError("root", {

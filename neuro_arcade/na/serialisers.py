@@ -1,4 +1,3 @@
-from packaging.tags import Tag
 from rest_framework import serializers
 from na.models import Game, GameTag
 from django.contrib.auth.models import User
