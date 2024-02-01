@@ -23,6 +23,6 @@ urlpatterns = [
     # api endpoints:
     path('games/<slug:game_name_slug>/data/', views.get_game, name='get_game'),
     path('games/<slug:game_name_slug>/add_score/', views.post_game_score, name='post_game_score'),
-    path('tags', views.get_tags, name='get_tags'),
+    path('tags/', views.get_tags, name='get_tags'),
     path('get_games/', views.get_games_sorted, name='get_games'),
 ]

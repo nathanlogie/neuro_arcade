@@ -28,6 +28,13 @@ class GameTag(models.Model):
         self.slug = slugify(self.name)
         super(GameTag, self).save(*args, **kwargs)
 
+    def serialize(self):
+        return {
+            'name': self.name,
+            'slug': self.slug,
+            'description': self.description
+        }
+
     def __str__(self):
         return self.name
 
@@ -111,7 +118,7 @@ class Game(models.Model):
             'description': str(self.description),
             # TODO make this give you a web URL, instead of a local filepath
             # 'icon': str(game.icon.path),
-            'tags': [tag.name for tag in self.tags.all()],
+            'tags': [tag.slug for tag in self.tags.all()],
             'score_type': self.score_type,
             'play_link': str(self.play_link),
         }

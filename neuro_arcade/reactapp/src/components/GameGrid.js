@@ -4,18 +4,30 @@ import {requestGamesSorted} from "../backendRequests";
 import {useEffect, useState} from "react";
 
 /*
-    Checks if a game matches a text query
-    A query is considered matching if the text is present in the name
-    or description of a game, ignoring case
+    Checks if a game's name or description contains a query string
+    The check is case insensitive
     TODO: this should probably be made more advanced
 */
-function searchFilter(game, query)
-{
+function nameQueryFilter(game, nameQuery) {
     var text = game.name.toLowerCase() + game.description.toLowerCase();
-    return text.includes(query.toLowerCase());
+    return text.includes(nameQuery.toLowerCase());
 }
 
-export function GameGrid({query, nameQuery='', num, linkPrefix, id}) {
+/*
+    Checks if a game is tagged with every tag in a query list
+*/
+function tagQueryFilter(game, tagQuery) {
+    return tagQuery.every((tag) => game.tags.includes(tag));
+}
+
+/*
+    Checks if a game should be displayed under a query
+*/
+function searchFilter(game, nameQuery, tagQuery) {
+    return nameQueryFilter(game, nameQuery) && tagQueryFilter(game, tagQuery);
+}
+
+export function GameGrid({query, nameQuery='', tagQuery=[], num, linkPrefix, id}) {
     let [isLoading, setLoading] = useState(true);
     let [games, setGames] = useState([]);
 
@@ -38,7 +50,7 @@ export function GameGrid({query, nameQuery='', num, linkPrefix, id}) {
     } else {
         return (
             <div className={styles.GameGrid} id={styles[id]}>
-                {games.filter((game) => searchFilter(game, nameQuery))
+                {games.filter((game) => searchFilter(game, nameQuery, tagQuery))
                     .map((game, index) => {
                         return <GameCard
                             key={index}
