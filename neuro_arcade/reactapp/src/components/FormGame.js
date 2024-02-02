@@ -8,7 +8,7 @@ let MAX_NAME_LENGTH = 64
 let MAX_DESCRIPTION_LENGTH = 1024
 let ACCEPTED_SCORE_FILE = ['json']
 let ACCEPTED_EVAL_SCRIPT = ['py']
-
+let ACCEPTED_IMAGE = ['png', 'jpg', 'jpeg']
 export const Form = () => {
     const {
         register,
@@ -132,7 +132,16 @@ export const Form = () => {
             <h3>Game Icon</h3>
             <input {...register("icon", {
                 required: false,
-            })} type={"image"} onChange={handleImage}/>
+                validate: (value) => {
+                    const acceptedFormats = ACCEPTED_IMAGE;
+                    const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
+                    if (!acceptedFormats.includes(fileExtension)) {
+                        return "Error: Invalid IMG"
+                    }
+                    return true;
+                }
+            })} type={"file"} onChange={handleImage}/>
+
 
             <h3>Game Tags</h3>
             <input {...register("tags", {
