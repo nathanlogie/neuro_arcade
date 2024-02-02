@@ -4,8 +4,10 @@ import {postGame} from "../backendRequests";
 import axios from 'axios'
 import {data} from "autoprefixer";
 
+//Should be synced with models.py
 let MAX_NAME_LENGTH = 64
 let MAX_DESCRIPTION_LENGTH = 1024
+
 let ACCEPTED_SCORE_FILE = ['json']
 let ACCEPTED_EVAL_SCRIPT = ['py']
 let ACCEPTED_IMAGE = ['png', 'jpg', 'jpeg']
@@ -58,6 +60,7 @@ export const Form = () => {
         const formData = new FormData();
         formData.append("name", name);
         formData.append("description", description);
+        //Temporary until authentication is fulfilled
         formData.append("owner", "http://localhost:8000/api/users/2/");
         formData.append("play_link", playLink);
 
@@ -156,7 +159,6 @@ export const Form = () => {
                 validate: (value) => {
                     const acceptedFormats = ACCEPTED_SCORE_FILE;
                     const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
-                    console.log(fileExtension);
                     if (!acceptedFormats.includes(fileExtension)) {
                         return `Error: Invalid file type provided ${fileExtension}`
                     }

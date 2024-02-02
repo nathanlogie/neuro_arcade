@@ -15,7 +15,6 @@ import { EditAbout } from "./app/EditAbout";
 
 import {AnimatePresence} from 'framer-motion'
 import {DevSupport} from "@react-buddy/ide-toolbox";
-import {ComponentPreviews, useInitial} from "./dev";
 import {AddGame} from "./app/AddGame";
 
 
@@ -66,11 +65,7 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
     <AnimatePresence>
-        <DevSupport ComponentPreviews={ComponentPreviews}
-                    useInitialHook={useInitial}
-        >
             <RouterProvider router={router}/>
-        </DevSupport>
     </AnimatePresence>
 );
 
