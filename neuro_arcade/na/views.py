@@ -201,6 +201,10 @@ def post_about_data(request) -> Response:
 
         field = request.data.get('field')
         value = request.data.get('value')
+
+        if not field:
+            return Response(status=400)
+
         if field == "description":
             data["description"] = value
         elif field == "publications":
@@ -222,6 +226,7 @@ def post_about_data(request) -> Response:
     except Exception as e:
         print("ERROR OCCURRED: ", e)
         return Response(status=400)
+
 
 @api_view(['POST'])
 def sign_up(request: Request) -> Response:

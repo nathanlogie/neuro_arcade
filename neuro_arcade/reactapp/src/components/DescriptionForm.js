@@ -8,9 +8,7 @@ export function DescriptionForm ({description}) {
     const [displayTextEdit, setDisplayTextEdit] = useState(false)
     const [newDescription, setNewDescription] = useState(description)
     function update(e) {
-        if (e.textValue !== ""){
-            setNewDescription(e.htmlValue)
-        }
+        setNewDescription(e.htmlValue)
     }
 
     function editDescription(e) {

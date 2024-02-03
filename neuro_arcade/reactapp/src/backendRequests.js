@@ -131,17 +131,17 @@ export function postDescription(description){
  *
  * @return response if successful
  */
-export function postPublications(publications){
+export async function postPublications(publications){
     const url = API_ROOT + '/edit_about'
 
-    axios.post(url, {value: publications, field: "publications"})
-        .then(function (response) {
-            return response.data
-        })
-        .catch(function (error) {
-            console.error("ERROR OCCURRED DURING PUBLICATIONS POST:\n" + error);
-            throw(error)
-        });
+    try {
+        const response = await axios.post(url, { value: publications, field: "publications" });
+        return response.data;
+    }
+    catch(error){
+        console.error("ERROR OCCURRED DURING PUBLICATIONS POST:\n" + error);
+        throw(error)
+    }
 }
 
 /**

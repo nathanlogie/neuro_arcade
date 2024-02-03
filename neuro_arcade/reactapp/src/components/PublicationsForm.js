@@ -4,15 +4,15 @@ import { Message } from 'primereact/message';
 
 export function PublicationsForm ({publications}) {
 
-    const [publicationForms, setPublicationForms] = useState(publications)
-    const [publicationsValue, setPublicationsValue] = useState(publications)
+    // dynamic publications = publications which are dynamically being changed, after every change
+    const [dynamicPublications, setDynamicPublications] = useState(publications)
     const [editMode, setEditMode] = useState(false)
     const [valid, setValid] = useState(true)
 
     function handleChange (i, field, newValue) {
-        const updated = [...publicationForms]
+        const updated = [...dynamicPublications]
         updated[i][field] = newValue
-        setPublicationForms(updated)
+        setDynamicPublications(updated)
     }
 
     function regularButtons() {
@@ -23,29 +23,30 @@ export function PublicationsForm ({publications}) {
         )
     }
 
-    function addFormFields(){
-        setPublicationForms([...publicationForms, {title:"", author:"", link: ""}])
+    function addFormFields(e){
+        e.preventDefault()
+        setDynamicPublications([...dynamicPublications, {title:"", author:"", link: ""}])
     }
 
-    function onSave(e) {
+    async function onSave(e) {
         e.preventDefault()
 
-        const isValid = publicationForms.every(p => p.title !== "" && p.author !== "");
+        const isValid = dynamicPublications.every(p => p.title !== "" && p.author !== "");
 
-        if (isValid){
+        if (isValid) {
             setValid(true)
-            setPublicationsValue(publicationForms)
-            postPublications(publications)
+            await postPublications(dynamicPublications)
             setEditMode(!editMode)
-        }
-        else {
+
+        } else {
             setValid(false)
         }
 
     }
 
-    function handleCancel() {
-        setPublicationForms(publicationsValue)
+    function handleCancel(e) {
+        e.preventDefault()
+        setDynamicPublications(publications)
         setEditMode(!editMode)
     }
 
@@ -63,7 +64,7 @@ export function PublicationsForm ({publications}) {
 
         return (
             <>
-                {publicationsValue.map((publication, i) => (
+                {dynamicPublications.map((publication, i) => (
                     <li key={i}>{ publication.link ? (<a href={publication.link}>{publication.title} - {publication.author}</a>) : (<>{publication.title} - {publication.author}</>)}</li>
                 ))}
             </>
@@ -72,17 +73,16 @@ export function PublicationsForm ({publications}) {
     }
 
     function removePublication(index){
-        let newPublications = [...publicationForms]
-
+        let newPublications = [...dynamicPublications]
         newPublications.splice(index, 1)
-        setPublicationForms(newPublications)
+        setDynamicPublications(newPublications)
     }
 
     function editPublications() {
 
         return (
             <>
-                { publicationForms.map( (p,i) => (
+                { dynamicPublications.map( (p,i) => (
 
                     <div key={i}>
                         <li><input type ={"text"} value={p.title} placeholder={"Title..."} onChange={ (e) =>handleChange(i, "title", e.target.value)}/></li>
