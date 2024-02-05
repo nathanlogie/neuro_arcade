@@ -1,8 +1,6 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
-import {postGame} from "../backendRequests";
 import axios from 'axios'
-import {data} from "autoprefixer";
 
 //Should be synced with models.py
 let MAX_NAME_LENGTH = 64
@@ -17,6 +15,7 @@ export const Form = () => {
         handleSubmit,
         formState: {errors, isSubmitting},
         setError,
+        reset,
     } = useForm();
 
     const [image, setImage] = useState(null)
@@ -83,6 +82,9 @@ export const Form = () => {
 
         }).then(function (response) {
             console.log(response);
+            reset(response);
+            setError("root", {message: "Form submitted successfully"});
+
         }).catch(function (response) {
             console.log(response)
             if(!response){
