@@ -2,7 +2,7 @@ import {Banner, MobileBanner} from "../components/Banner";
 import {Background} from "../components/Background";
 import styles from "../styles/App.module.css"
 import {GameGrid} from "../components/GameGrid";
-import {TagFilter} from "../components/TagFilter";
+import {GameTagFilter} from "../components/GameTagFilter";
 import {useState} from "react";
 import {Button} from "../components/Button";
 
@@ -25,14 +25,14 @@ export function AllGames() {
 
                     <input onChange={e => setNameQuery(e.target.value)} placeholder="Search..." />
 
-                    <TagFilter onTagChange={setSelectedTags} />
+                    <GameTagFilter onTagChange={setSelectedTags} />
 
                     {/* (see above) */}
                     </div></div>
                 </div>
                 <div className={styles.Content} id={styles['AllGames']}>
                     <h1>All Games</h1>
-                    <GameGrid query={''} nameQuery={nameQuery} tagQuery={selectedTags} linkPrefix={''} id={'AppGrid'}/>
+                    <GameGrid nameQuery={nameQuery} tagQuery={selectedTags} linkPrefix={''} id={'AppGrid'}/>
                 </div>
             </div>
         </div>

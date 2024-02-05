@@ -46,7 +46,7 @@ export async function requestGameTags() {
  *
  * @param query instance of Reacts URLSearchParams, which you should get from useSearchParams()
  */
-export async function requestGamesSorted(query) {
+export async function requestGamesSorted(query='') {
     const url = API_ROOT + '/get_games/' + query;
     try {
         let response = await axios.get(url);
