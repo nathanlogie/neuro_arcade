@@ -6,6 +6,7 @@ import {motion} from "framer-motion"
 import {useEffect, useState} from "react";
 import {getAboutData} from "../backendRequests";
 import {Description} from "../components/Description"
+import {Button} from "../components/Button";
 
 
 export function AboutPage( ) {
@@ -93,6 +94,7 @@ export function AboutPage( ) {
                 />
                 <div className={styles.MobileBannerBuffer}/>
             </motion.div>
+
         </div>
     );
 }
