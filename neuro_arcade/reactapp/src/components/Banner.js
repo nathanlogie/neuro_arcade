@@ -1,4 +1,4 @@
-import styles from '../styles/Banner.module.css';
+import styles from '../styles/components/Banner.module.css';
 import {Button} from "./Button";
 import {Logo} from "./Logo";
 import React from "react";

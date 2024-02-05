@@ -1,4 +1,4 @@
-import styles from '../styles/GameCard.module.css'
+import styles from '../styles/components/GameCard.module.css'
 import {Link, useLocation} from "react-router-dom";
 import {motion} from "framer-motion"
 

@@ -1,5 +1,6 @@
-import styles from "../styles/Background.module.css"
+import styles from "../styles/App.module.css"
 import background from "../static/images/background.png"
+
 export function Background() {
     return (
         <div>

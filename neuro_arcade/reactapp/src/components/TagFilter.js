@@ -1,5 +1,6 @@
 import {requestGameTags} from "../backendRequests";
 import {useEffect, useState} from "react";
+import styles from '../styles/components/TagFilter.module.css';
 
 export function TagFilter({onTagChange}) {
     let [isLoading, setLoading] = useState(true);
