@@ -4,6 +4,7 @@ import styles from "../styles/App.module.css"
 import {GameGrid} from "../components/GameGrid";
 import {TagFilter} from "../components/TagFilter";
 import {useState} from "react";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
 export function AllGames() {
     // name query for sorting the already fetched games
@@ -20,8 +21,13 @@ export function AllGames() {
                 <div className={styles.Side}>
                     {/* TODO: this almost definitely shouldn't be here, but the background
                     image gets interacted with instead of the search bar without it */}
-                    <input onChange={e => setNameQuery(e.target.value)} placeholder="Search..." />
-                    <TagFilter onTagChange={setSelectedTags} />
+                    <div className={styles.Search}>
+                        <input onChange={e => setNameQuery(e.target.value)} placeholder="search..."/>
+                        <div className={styles.SearchIcon}>
+                            <FaMagnifyingGlass />
+                        </div>
+                    </div>
+                    <TagFilter onTagChange={setSelectedTags}/>
                     {/* (see above) */}
                 </div>
                 <div className={styles.Content} id={styles['AllGames']}>
