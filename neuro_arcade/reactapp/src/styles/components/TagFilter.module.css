@@ -3,7 +3,7 @@
     background-color: rgba(3, 3, 3, 0.4);
     border-radius: 0.5em;
     backdrop-filter: blur(20px);
-    height: 20em;
+    height: 30em;
     & h2 {
         position: absolute;
         top: -1.5em;

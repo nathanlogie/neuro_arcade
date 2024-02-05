@@ -50,7 +50,7 @@ const Switcher = ({data, onSwitcherChange, switcherDefault}) => {
                                 borderColor: alignment === header.name ? 'white' : 'transparent',
                                 borderWidth: '0.5em',
                                 'backdrop-filter': 'blur(20px)',
-                                backgroundColor: alignment === header.name ? 'rgba(255, 255, 255, 0.45)' : 'rgba(255, 255, 255, 0.2)',
+                                backgroundColor: alignment === header.name ? 'rgba(255, 255, 255, 0.3)' : 'rgba(143,143,143,0.2)',
                                 color: '#EEEEEE',
                                 fontSize: '0.75em',
                                 fontFamily: 'inherit',

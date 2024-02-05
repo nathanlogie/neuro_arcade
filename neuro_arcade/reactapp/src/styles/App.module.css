@@ -147,28 +147,27 @@
         bottom: 10%;
         right: 0;
         box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-        cursor: pointer;
     }
     & input {
         position: absolute;
         font-size: 1.25rem;
         font-style: normal;
         font-weight: 400;
-        width: max-content;
-        border-radius: 0.75em;
-        box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-        bottom: calc(10% + 0.5rem);
-        margin-right: 1.5rem;
-        padding: 0.75em 1em 0.5em;
+        width: calc(100% - 2em);
         left: 0;
+        border-radius: 2em;
+        box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+        bottom: calc(7.5% + 0.5rem);
+        padding: 0.75em 1em;
         border: none;
         outline: none;
         background-color: rgba(255, 255, 255, 0.4);
         backdrop-filter: blur(5px);
-        color: #f3f3f3;
+        color: #ffffff;
+        font-family: inherit;
     }
     & input::placeholder {
-        color: #CCCCCC;
+        color: #f1f1f1;
     }
 }
 
