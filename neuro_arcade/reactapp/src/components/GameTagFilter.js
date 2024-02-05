@@ -1,6 +1,6 @@
 import {requestGameTags} from "../backendRequests";
 import {useEffect, useState} from "react";
-import styles from '../styles/components/TagFilter.module.css';
+import styles from '../styles/components/GameTagFilter.module.css';
 
 /*
     Displays a list of checkboxes for GameTags
