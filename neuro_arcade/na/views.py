@@ -161,25 +161,29 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
     return Response(status=200)
 
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def post_game(request: Request) -> Response:
-    Game.objects.create(
-        name=request.data.get('name'),
-        slug=slugify(request.data.get('name')),
-        description=request.data.get('description'),
-        # TODO get the current user here from the auth token
-        owner=User.objects.get_or_create(
-            username="admin123",
-            email="admin1234@gmail.com",
-            password="adminning"
-        ),
-        icon=request.data.get('icon'),
-        tags=GameTag.objects.get_or_create('tags'),
-        score_type=request.data.get('score_type'),
-        play_link=request.data.get('playLink'),
-        evaluation_script=request.data.get('evaluation_script')
-    )
+
+
+# This is a deprecated version of the post game that isn't used, was an initial attempt to send to backend
+
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def deprecated_post_game(request: Request) -> Response:
+#     Game.objects.create(
+#         name=request.data.get('name'),
+#         slug=slugify(request.data.get('name')),
+#         description=request.data.get('description'),
+#         # TODO get the current user here from the auth token
+#         owner=User.objects.get_or_create(
+#             username="admin123",
+#             email="admin1234@gmail.com",
+#             password="adminning"
+#         ),
+#         icon=request.data.get('icon'),
+#         tags=GameTag.objects.get_or_create('tags'),
+#         score_type=request.data.get('score_type'),
+#         play_link=request.data.get('playLink'),
+#         evaluation_script=request.data.get('evaluation_script')
+#     )
 
 
 @api_view(['GET'])
