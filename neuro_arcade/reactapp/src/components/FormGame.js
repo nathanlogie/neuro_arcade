@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import axios from 'axios'
+import {data} from "autoprefixer";
 
 //Should be synced with models.py
 let MAX_NAME_LENGTH = 64
@@ -82,7 +83,7 @@ export const Form = () => {
 
         }).then(function (response) {
             console.log(response);
-            reset(response);
+            reset();
             setError("root", {message: "Form submitted successfully"});
 
         }).catch(function (response) {
