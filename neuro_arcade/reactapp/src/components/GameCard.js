@@ -1,8 +1,17 @@
 import styles from '../styles/GameCard.module.css'
 import {Link, useLocation} from "react-router-dom";
 import {motion} from "framer-motion"
+import {Game} from "../backendRequests";
 
-export function GameCard ({key, game, linkPrefix}) {
+/**
+ * Component for rendering a card with a game's name and icon
+ * Can be clicked to visit the game's view page
+ * @param {Object} props
+ * @param {Game} props.game - game data to render
+ * @param {string} props.linkPrefix - base url to append the game's slug to
+ * @returns 
+ */
+export function GameCard ({game, linkPrefix}) {
     // let loc = useLocation();
     // let s = loc.toString().split('/');
     // s.pop();
