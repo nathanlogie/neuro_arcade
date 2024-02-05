@@ -1,0 +1,105 @@
+.MainBlock {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    .Content {
+        width: 40em;
+        padding: 0 2em;
+        & h1 {
+            position: relative;
+            text-align: left;
+            margin: 0;
+            padding-bottom: 1em;
+            padding-top: 1em;
+        }
+        .ContentBlock {
+            position: relative;
+            width: 100%;
+            overflow: auto;
+            & img {
+                float: left;
+                width: 10rem;
+                height: 10rem;
+                object-fit: contain;
+                border-radius: 2em;
+                margin: 1.5em;
+            }
+            & p {
+                width: 100%;
+                text-align: left;
+                line-height: 2em;
+            }
+        }
+    }
+    #AllGames {
+        width: 70em;
+    }
+    .Side {
+        width: 32.5em;
+    }
+    .GraphBlock {
+        width: 100%;
+    }
+}
+.MobileBannerBuffer {
+    position: relative;
+    display: none;
+    height: 7em;
+}
+
+.MainBlock#big {
+    max-height: calc(100dvh - 13.5em);
+}
+
+.MainBlock#small {
+    max-height: calc(100dvh - 9em);
+}
+
+@media (max-width: 75em) {
+    .MainBlock {
+        position: relative;
+        margin: 0;
+        width: 100dvw;
+        height: auto;
+        max-height: calc(100dvh - 14.5em);
+        .Content {
+            width: 100%;
+            padding: 2em;
+            margin: 0;
+        }
+        & h1 {
+            font-size: 1.5em;
+        }
+        .Side {
+            width: 100%;
+            overflow-x: scroll;
+            padding: 1.5em;
+        }
+        .GraphBlock {
+            overflow-x: scroll;
+            padding: 1.5em;
+        }
+    }
+    .MobileBannerBuffer {
+        display: block;
+    }
+}
+
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(214, 222, 225, 0.44);
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}

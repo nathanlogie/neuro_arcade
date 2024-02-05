@@ -10,11 +10,20 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+MEDIA_DIR = os.path.join(BASE_DIR, 'media')
+DJANGO_TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
+# React paths:
+REACT_DIR = os.path.join(BASE_DIR, 'reactapp')
+REACT_BUILD_DIR = os.path.join(REACT_DIR, 'build')
+REACT_STATIC_DIR = os.path.join(REACT_BUILD_DIR, 'static')
+REACT_MEDIA_ROOT = os.path.join(REACT_STATIC_DIR, 'media')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -25,7 +34,9 @@ SECRET_KEY = 'django-insecure-4#($c-j6(9ujy#i&&gj)&umiojdi_-aa8u3x2$!qqh%xj(e@@k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["sh08.pythonanywhere.com",
+                 "127.0.0.1", "localhost"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://localhost:3000", "http://locahost:8000", "https://localhost:8000"]
 
 
 # Application definition
@@ -37,9 +48,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'na',
+    'reactapp',
+    # 'corsheaders'  # why is this here? it's not in requirements.txt
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,7 +71,7 @@ ROOT_URLCONF = 'neuro_arcade.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [REACT_BUILD_DIR],  # used to have DJANGO_TEMPLATE_DIR
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -62,6 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -114,12 +132,25 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# Static files (CSS, JavaScript, images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [STATIC_DIR, REACT_STATIC_DIR]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_ROOT = MEDIA_DIR
+MEDIA_URL = '/media/'
+
+LOGIN_URL = 'na:login'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}

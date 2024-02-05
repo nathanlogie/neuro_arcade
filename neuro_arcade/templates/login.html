@@ -1,0 +1,22 @@
+{% extends "base_large_banner.html" %}
+{% load static %}
+
+{% block header_block %}
+    {{ block.super }}
+{% endblock %}
+
+{% block body_block %}
+
+<h1>Login</h1>
+
+<form id="login_form" method="post" action="{{ submit_url }}" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <p>Username: <input type="text" name="username" value="" size="50" /></p>
+
+    <p>Password: <input type="password" name="password" value="" size="50" /></p>
+
+    <input type="submit" name="submit" value="Login" />
+</form>
+
+{% endblock %}

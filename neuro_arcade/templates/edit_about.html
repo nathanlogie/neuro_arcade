@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block script_block %}
+    <script src="{% static 'js/na/add_publication.js' %}"></script>
+{% endblock %}
+
+{% block body_block %}
+
+<h1>Edit About</h1>
+
+<form id="aboutForm" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>Description: {{ aboutForm.description }}</p>
+    <p>Upload Image: {{ aboutForm.image }}</p>
+
+</form>
+
+<form id = "publicationForms" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ publicationForms.management_form }}
+
+    <h3>Publications</h3>
+    {% if missing_field %}
+    <p><strong>Fields indicated with * are required.</strong></p>
+    {% else %}
+        <p>Fields indicated with * are required.</p>
+    {% endif %}
+    <div id="publication_form">
+        {% for p in publicationForms %}
+            <div class="publication_form-container">
+                <p>Title*: {{ p.title }}</p>
+                <p>Author*: {{ p.author }}</p>
+                <p>Link*: {{ p.link }}</p>
+            </div>
+
+        {% endfor %}
+    </div>
+
+
+</form>
+
+<button type="button" onclick="submitForms()">Submit</button>
+
+<script>
+    function submitForms() {
+        document.getElementById("aboutForm").submit();
+        document.getElementById("publicationForms").submit();
+    }
+
+</script>
+
+<a href="{% url 'na:about' %}">Back to About Page</a>
+
+{% endblock %}

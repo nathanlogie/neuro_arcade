@@ -1,4 +1,5 @@
-Django==4.2.6
-Pillow==10.1.0
+Django==4.2.9
+Pillow==10.2.0
 pytz==2023.3.post1
 djangorestframework==3.14.0
+django-cors-headers==4.3.1

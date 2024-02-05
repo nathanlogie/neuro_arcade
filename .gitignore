@@ -1,6 +1,9 @@
 build
 .idea
 
+# MacOS #
+.DS_store
+
 # Django #
 *.log
 *.pot
@@ -138,3 +141,4 @@ GitHub.sublime-settings
 !.vscode/launch.json
 !.vscode/extensions.json
 .history
+/neuro_arcade/static/images/logo.aseprite

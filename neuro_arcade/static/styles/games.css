@@ -1,0 +1,172 @@
+#taskHeader {
+    display: flex;
+    width: 200px;
+    height: 120px;
+    flex-direction: column;
+    flex-shrink: inherit;
+    justify-content: center;
+    color: #FFFFFF;
+    /* Just a generic font while I try to see how to get the one he wants */
+    font-family: AppleGothic, sans-serif;
+    font-size: 40px;
+    font-weight: normal;
+    text-align: center;
+    line-height: normal;
+}
+
+#searchBar {
+    width: 100%;
+    height: 100%;
+    color: white;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.30);
+    backdrop-filter: blur(10px);
+    outline: 0;
+    border: 0;
+    padding-left: 2em;
+    font-size: 18px;
+    margin: 0;
+    z-index: -100;
+}
+
+#searchBar::placeholder {
+    color: white;
+}
+
+.searchBlock {
+    position: relative;
+    padding-bottom: 10%;
+    flex: 1;
+    width: 85.3%;
+    height: 12.1%;
+}
+
+.filtersBlock {
+    position: relative;
+    flex: 2;
+    margin-top: 4.2%
+}
+
+#searchButton {
+    position: absolute;
+    height: 50px;
+    left: 95%;
+    top: -0.5em;
+    width: 50px;
+    z-index: 1;
+    align-content: center;
+    background-color: #D14081;
+    border-radius: 50%;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    border: 5px;
+    font-family: "Font Awesome 5 Free", serif;
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+}
+
+
+#leftBlocking {
+    display: flex;
+    flex-direction: row;
+    float: left;
+    width: 30.9%;
+    margin-left: 6.18%;
+    margin-right: 2.28%;
+    margin-top: 3.16%;
+
+}
+
+#rightDiv {
+    width: 54.6%;
+    text-align: left;
+    display: inline-block;
+    float: right;
+    position: absolute;
+    margin-top: 3.16%;
+    margin-right: 6.45%;
+}
+
+.gameImage {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+}
+
+.headerBlocks {
+    text-align: left;
+    justify-content: left;
+    color: #FFFFFF;
+    font-family: "Font Awesome 5 Free", serif;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    display: flex;
+    position: relative;
+    left: 5%
+}
+
+.menu-container {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+
+.game_card {
+    flex: none;
+    display: inline-block;
+    flex-direction: row;
+    width: 12.7%;
+    height: auto;
+    margin-right: 3.5%;
+}
+
+.cardImage {
+    border-radius: 5%;
+    width: 100%;
+    height: 100%;
+}
+
+#cardItem {
+    /*background: #D14081;*/
+    text-align: center;
+    margin-bottom: 5%;
+    width: 20%;
+    height: 21.9%;
+    font-size: inherit;
+}
+
+
+#gameTitle {
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 75%;
+}
+
+.filtersBlock input {
+    z-index: 1000;
+
+}
+
+.filtersBlock label {
+    float: right;
+    color: #FFF;
+    font-family: "Font Awesome 5 Free", serif;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    display: inline-block;
+    z-index: 1000;
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+
+}
+
+.filtersBlock input {
+    display: inline-block;
+    float: left;
+}
