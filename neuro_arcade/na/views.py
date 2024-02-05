@@ -169,6 +169,7 @@ def post_game(request: Request) -> Response:
         name=request.data.get('name'),
         slug=slugify(request.data.get('name')),
         description=request.data.get('description'),
+        # TODO get the current user here from the auth token
         owner=User.objects.get_or_create(
             username="admin123",
             email="admin1234@gmail.com",
