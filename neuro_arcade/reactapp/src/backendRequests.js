@@ -287,8 +287,8 @@ export async function signupNewUser(userName, email, password) {
 }
 
 /**
- * Sends a login requests. The authentication token associated with the login is stored in sessionStorage.
- * To get it do `sessionStorage.getItem("auth_token")`
+ * Sends a login requests. The user data associated is stored on local storage, and it can be acquired
+ * by doing `localStorage.getItem("user")`.
  *
  * @param {string} userName - name of the user
  * @param {string} email - email address of the user
