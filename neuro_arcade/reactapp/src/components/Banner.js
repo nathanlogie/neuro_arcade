@@ -3,8 +3,22 @@ import {Button} from "./Button";
 import {Logo} from "./Logo";
 import React from "react";
 import {motion} from "framer-motion"
+import Switcher from "./Switcher";
 
-export function Banner({size, button_left, button_right}) {
+export function Banner({size, button_left, button_right, state}) {
+
+    const switcher_labels = {table_headers: [
+            { name: 'Games' },
+            { name: 'Players' }
+        ],
+    };
+
+    const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(state);
+
+    const handleSwitcherChange = (selectedValue) => {
+        setSelectedSwitcherValue(selectedValue);
+    }
+
     if (size === 'big') {
         return (
             <div
@@ -44,7 +58,20 @@ export function Banner({size, button_left, button_right}) {
                     animate={{opacity: 1}}
                     exit={{opacity: 0}}
                 >
+                    <Button
+                        name={'back'}
+                        link={'/'}
+                        direction={'up'}
+                        orientation={'left'}
+                    />
                     <Logo size={size}/>
+                    <div className={styles.TabSwitcher}>
+                        <Switcher
+                            data={switcher_labels}
+                            onSwitcherChange={handleSwitcherChange}
+                            switcherDefault={selectedSwitcherValue}
+                        />
+                    </div>
                 </motion.div>
             </div>
         );
@@ -52,13 +79,13 @@ export function Banner({size, button_left, button_right}) {
 }
 
 export function MobileBanner({size}) {
-        return (
-            <div
-                className={styles.MobileBanner}
-                id={styles[size]}
-            >
-                <motion.div
-                    className={styles.AnimationContainer}
+    return (
+        <div
+            className={styles.MobileBanner}
+            id={styles[size]}
+        >
+            <motion.div
+                className={styles.AnimationContainer}
                     initial={{opacity: 0}}
                     animate={{opacity: 1}}
                     exit={{opacity: 0}}

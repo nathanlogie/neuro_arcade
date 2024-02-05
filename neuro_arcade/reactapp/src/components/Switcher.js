@@ -1,10 +1,9 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import styles from '../styles/TableGraph.module.css'
+import styles from '../styles/App.module.css'
 
-const TableSwitcher = ({data, onSwitcherChange, switcherDefault}) => {
+const Switcher = ({data, onSwitcherChange, switcherDefault}) => {
 
     const [alignment, setAlignment] = React.useState(switcherDefault);
 
@@ -16,7 +15,7 @@ const TableSwitcher = ({data, onSwitcherChange, switcherDefault}) => {
     };
 
     return(
-        <div className={'switcher'}>
+        <>
             <ToggleButtonGroup
                 color="primary"
                 value={alignment}
@@ -62,13 +61,8 @@ const TableSwitcher = ({data, onSwitcherChange, switcherDefault}) => {
                     </div>
                 ))}
             </ToggleButtonGroup>
-        </div>
+        </>
     )
 }
 
-TableSwitcher.propTypes = {
-    inputData: PropTypes.object.isRequired,
-    onSwitcherChange: PropTypes.func.isRequired,
-}
-
-export default TableSwitcher
+export default Switcher

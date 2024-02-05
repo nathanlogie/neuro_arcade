@@ -14,7 +14,7 @@ export function AllGames() {
     return (
         <div>
             <Background/>
-            <Banner size={'small'}/>
+            <Banner size={'small'} state={'Games'} />
             <MobileBanner size={'small'} />
             <div className={styles.MainBlock} id={styles['small']}>
                 <div className={styles.Side}>

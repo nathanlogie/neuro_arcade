@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import TableSwitcher from './TableSwitcher'
+import Switcher from './Switcher'
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, ReferenceLine } from 'recharts';
 import styles from '../styles/TableGraph.module.css'
 import {createTheme, ThemeProvider} from "@mui/material";
@@ -28,7 +28,7 @@ export function Graph({inputData}) {
     return (
         <div className={styles.GraphContainer}>
             <div className={styles.TabSwitcher}>
-                <TableSwitcher data={inputData} onSwitcherChange={handleSwitcherChange} switcherDefault={selectedSwitcherValue}/>
+                <Switcher data={inputData} onSwitcherChange={handleSwitcherChange} switcherDefault={selectedSwitcherValue}/>
             </div>
             <ThemeProvider theme={graph_theme}>
                 <LineChart

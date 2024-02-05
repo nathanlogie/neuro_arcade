@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import TableSwitcher from './TableSwitcher'
+import Switcher from './Switcher'
 import { DataGrid } from '@mui/x-data-grid';
 import styles from '../styles/TableGraph.module.css'
 import {createTheme, ThemeProvider} from "@mui/material";
@@ -70,7 +70,7 @@ export function Table({inputData}) {
         <div className={styles.TableContainer}>
             <h2>Leaderboards</h2>
             <div className={styles.TabSwitcher}>
-                <TableSwitcher
+                <Switcher
                     data={switcher_labels}
                     onSwitcherChange={handleSwitcherChange}
                     switcherDefault={selectedSwitcherValue}
