@@ -79,6 +79,72 @@ export function postGameScore(gameName, scoreData) {
 }
 
 /**
+ * Requests about data
+ *
+ * @throws err when get is rejected
+ *
+ * @returns response if successful
+ */
+export async function getAboutData(){
+
+    try {
+        let response = await axios.get(API_ROOT + '/about/')
+        return response.data
+    }
+    catch (err){
+        console.log("ERROR WHILE FETCHING ABOUT DATA: " + err)
+        throw err
+    }
+
+}
+
+
+/**
+ * Posts description to json file
+ *
+ * @Param description - description to post
+ *
+ * @throws error when post is rejected
+ *
+ * @returns response when post is accepted
+ */
+export function postDescription(description){
+    const url = API_ROOT + '/edit_about'
+
+    axios.post(url, {value: description, field: "description"})
+        .then(function (response) {
+            return response.data
+        })
+        .catch(function (error) {
+            console.error("ERROR OCCURRED DURING DESCRIPTION POST:\n" + error);
+            throw(error)
+        });
+
+}
+
+/**
+ * Posts publications to json file
+ *
+ * @Param publications - publications for about data
+ *
+ * @throws error when post is rejected
+ *
+ * @return response if successful
+ */
+export async function postPublications(publications){
+    const url = API_ROOT + '/edit_about'
+
+    try {
+        const response = await axios.post(url, { value: publications, field: "publications" });
+        return response.data;
+    }
+    catch(error){
+        console.error("ERROR OCCURRED DURING PUBLICATIONS POST:\n" + error);
+        throw(error)
+    }
+}
+
+/**
  * Checks if a password is valid.
  * Todo: make this more thorough.
  *
