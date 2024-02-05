@@ -11,7 +11,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.defaultfilters import slugify
 from django.urls import reverse
 from django.core.files.storage import default_storage
-from packaging.tags import Tag
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
