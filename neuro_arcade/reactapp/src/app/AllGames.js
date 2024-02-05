@@ -32,7 +32,7 @@ export function AllGames() {
                 </div>
                 <div className={styles.Content} id={styles['AllGames']}>
                     <h1>All Games</h1>
-                    <GameGrid query={''} nameQuery={nameQuery} tagQuery={selectedTags} linkPrefix={''} id={'AppGrid'}/>
+                    <GameGrid nameQuery={nameQuery} tagQuery={selectedTags} linkPrefix={''} id={'AppGrid'}/>
                 </div>
             </div>
         </div>

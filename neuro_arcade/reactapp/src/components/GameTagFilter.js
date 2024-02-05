@@ -2,7 +2,15 @@ import {requestGameTags} from "../backendRequests";
 import {useEffect, useState} from "react";
 import styles from '../styles/components/TagFilter.module.css';
 
-export function TagFilter({onTagChange}) {
+/*
+    Displays a list of checkboxes for GameTags
+
+    onTagChange: callback for when a tag is checked/unchecked
+        Parameter is a list of the currently selected tag slugs
+    excluded: list of tag slugs to hide from display
+        Doesn't support being changed dynamically
+*/
+export function GameTagFilter({onTagChange, excluded=[]}) {
     let [isLoading, setLoading] = useState(true);
     let [tags, setTags] = useState([]);
     let [ticks, setTicks] = useState([]);
@@ -11,7 +19,7 @@ export function TagFilter({onTagChange}) {
     useEffect(() => {
         requestGameTags()
             .then(tags => {
-                setTags(tags);
+                setTags(tags.filter((tag) => !excluded.includes(tag.slug)));
                 setTicks(new Array(tags.length).fill(false));
                 setLoading(false);
             })

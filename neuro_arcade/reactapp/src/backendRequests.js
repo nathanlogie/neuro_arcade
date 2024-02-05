@@ -1,4 +1,5 @@
 import axios from "axios";
+
 const API_ROOT = "http://localhost:8000"
 /**
  * This file contains functions that request or upload data from/to the backend
@@ -45,7 +46,7 @@ export async function requestGameTags() {
  *
  * @param query instance of Reacts URLSearchParams, which you should get from useSearchParams()
  */
-export async function requestGamesSorted(query) {
+export async function requestGamesSorted(query='') {
     const url = API_ROOT + '/get_games/' + query;
     try {
         let response = await axios.get(url);
@@ -76,6 +77,72 @@ export function postGameScore(gameName, scoreData) {
             console.log(error);
             throw error;
         });
+}
+
+/**
+ * Requests about data
+ *
+ * @throws err when get is rejected
+ *
+ * @returns response if successful
+ */
+export async function getAboutData(){
+
+    try {
+        let response = await axios.get(API_ROOT + '/about/')
+        return response.data
+    }
+    catch (err){
+        console.log("ERROR WHILE FETCHING ABOUT DATA: " + err)
+        throw err
+    }
+
+}
+
+
+/**
+ * Posts description to json file
+ *
+ * @Param description - description to post
+ *
+ * @throws error when post is rejected
+ *
+ * @returns response when post is accepted
+ */
+export function postDescription(description){
+    const url = API_ROOT + '/edit_about'
+
+    axios.post(url, {value: description, field: "description"})
+        .then(function (response) {
+            return response.data
+        })
+        .catch(function (error) {
+            console.error("ERROR OCCURRED DURING DESCRIPTION POST:\n" + error);
+            throw(error)
+        });
+
+}
+
+/**
+ * Posts publications to json file
+ *
+ * @Param publications - publications for about data
+ *
+ * @throws error when post is rejected
+ *
+ * @return response if successful
+ */
+export async function postPublications(publications){
+    const url = API_ROOT + '/edit_about'
+
+    try {
+        const response = await axios.post(url, { value: publications, field: "publications" });
+        return response.data;
+    }
+    catch(error){
+        console.error("ERROR OCCURRED DURING PUBLICATIONS POST:\n" + error);
+        throw(error)
+    }
 }
 
 /**
@@ -155,4 +222,16 @@ export async function login(userName, email, password) {
  */
 export function logout() {
     sessionStorage.removeItem("auth_token");
+}
+
+export async function postGame(data) {
+    const url = API_ROOT + '/games' + '/data/'
+    return await axios.post(url, data)
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+            throw error;
+        });
 }

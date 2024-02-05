@@ -4,9 +4,11 @@ from typing import Type
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.forms import BaseFormSet, formset_factory
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.defaultfilters import slugify
 from django.urls import reverse
 from django.core.files.storage import default_storage
 
@@ -14,11 +16,15 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.request import Request
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
 
 from na.forms import AboutForm, GameForm, ScoreTypeForm, PublicationFormSet
 from na.models import Game, GameTag, Player
 from na.forms import UserForm
+from django.conf import settings
 
+from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer
 import json
 
 
@@ -158,9 +164,86 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def post_game(request: Request) -> Response:
-    # get the user with:
-    # user = request.user
-    pass
+    Game.objects.create(
+        name=request.data.get('name'),
+        slug=slugify(request.data.get('name')),
+        description=request.data.get('description'),
+        # TODO get the current user here from the auth token
+        owner=User.objects.get_or_create(
+            username="admin123",
+            email="admin1234@gmail.com",
+            password="adminning"
+        ),
+        icon=request.data.get('icon'),
+        tags=GameTag.objects.get_or_create('tags'),
+        score_type=request.data.get('score_type'),
+        play_link=request.data.get('playLink'),
+        evaluation_script=request.data.get('evaluation_script')
+    )
+
+
+@api_view(['GET'])
+def get_about_data(request: Request) -> Response:
+
+    """
+    Posts about data from json file
+    Posts from media/about.json
+    Uses static/about.json as a fallback
+    """
+
+    file = 'about.json'
+    try:
+        with open(os.path.join(settings.MEDIA_ROOT, file), "r") as f:
+            about = json.load(f)
+
+    except FileNotFoundError:
+        with open(os.path.join(settings.STATICFILES_DIRS[0], file), "r") as f:
+            about = json.load(f)
+
+    return Response(about)
+
+
+@api_view(['POST'])
+def post_about_data(request) -> Response:
+
+    """
+    Retrieves About data from edit about form and posts it to media/about.json
+    Gets a field and value. Depending on the field, it handles the data appropriately
+    """
+
+    file_path = os.path.join(settings.MEDIA_ROOT, 'about.json')
+
+    try:
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+
+        field = request.data.get('field')
+        value = request.data.get('value')
+
+        if not field:
+            return Response(status=400)
+
+        if field == "description":
+            data["description"] = value
+        elif field == "publications":
+            data["publications"] = []
+
+            for p in value:
+                data["publications"].append(
+                    {
+                        'title': p['title'],
+                        'author': p['author'],
+                        'link': p['link']
+                    }
+                )
+
+        with open(file_path, 'w') as f:
+            json.dump(data, f)
+
+        return Response(status=200)
+    except Exception as e:
+        print("ERROR OCCURRED: ", e)
+        return Response(status=400)
 
 
 @api_view(['POST'])
@@ -404,3 +487,17 @@ def edit_about(request):
         context_dict["publicationForms"] = PublicationFormSet(initial=data['publications'])
 
     return render(request, 'edit_about.html', context_dict)
+
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class GameViewSet(viewsets.ModelViewSet):
+    queryset = Game.objects.all()
+    serializer_class = GameSerializer
+
+class GameTagViewSet(viewsets.ModelViewSet):
+    queryset = GameTag.objects.all()
+    serializer_class = GameTagSerializer
