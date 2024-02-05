@@ -17,6 +17,12 @@ export function Banner({size, button_left, button_right, state}) {
 
     const handleSwitcherChange = (selectedValue) => {
         setSelectedSwitcherValue(selectedValue);
+            if (selectedValue === 'Games') {
+                window.location.href = '/all_games';
+            }
+            if (selectedValue === 'AI Platforms') {
+                window.location.href = '/'; // TODO Add AI Platforms page
+            }
     }
 
     if (size === 'big') {
