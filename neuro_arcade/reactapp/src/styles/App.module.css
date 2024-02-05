@@ -37,9 +37,14 @@
     }
     #AllGames {
         width: 70em;
+        padding: 2em 0;
     }
     .Side {
         width: 32.5em;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-wrap: wrap;
     }
     .GraphBlock {
         width: 100%;

@@ -31,24 +31,26 @@ export function TagFilter({onTagChange}) {
     // Display waiting message while waiting on server, then show tags
     if (isLoading) {
         return (
-            <div>
+            <>
                 Loading...
-            </div>
+            </>
         )
     } else {
         return (
-            <div>
-                {tags.map((tag, index) => {
-                    return <label key={index}>
-                        <input
-                            type='checkbox'
-                            checked={ticks[index]}
-                            onChange={(e) => toggleTick(index)}
-                        />
-
-                        {tag.name}
-                    </label>
-                })}
+            <div className={styles.FilterTable}>
+                <h2>filters</h2>
+                <div className={styles.Tags}>
+                    {tags.map((tag, index) => {
+                        return <label key={index}>
+                            {tag.name}
+                            <input
+                                type='checkbox'
+                                checked={ticks[index]}
+                                onChange={(e) => toggleTick(index)}
+                            />
+                        </label>
+                    })}
+                </div>
             </div>
         );
     }

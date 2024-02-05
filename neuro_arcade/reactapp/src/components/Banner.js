@@ -66,7 +66,7 @@ export function Banner({size, button_left, button_right, state}) {
                 >
                     <Button
                         name={'back'}
-                        link={'/'}
+                        link={'../'}
                         direction={'up'}
                         orientation={'left'}
                     />
