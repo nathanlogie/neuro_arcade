@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from na.models import Game, GameTag, Player
+from na.models import Game, GameTag, Player, PlayerTag
 from django.contrib.auth.models import User
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
