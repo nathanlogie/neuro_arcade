@@ -14,7 +14,7 @@ export const ModelForm = () => {
     } = useForm()
 
     const [name, setName] = useState("")
-    const [AIStatus, setAIStatus] = useState(false)
+    const [AIStatus, setAIStatus] = useState("")
     const [description, setDescription] = useState("")
     const [tags, setTags] = useState("")
 
@@ -32,7 +32,7 @@ export const ModelForm = () => {
                     message: `Maximum name length has been exceeded (${MAX_NAME_LENGTH})`
                 }
             })}
-                type={"text"} placeholder={"Name!"}
+                   type={"text"} placeholder={"Name!"}
             />
             {errors.name && (
                 <div className={"errorMessage"}>{errors.name.message}</div>
@@ -46,7 +46,7 @@ export const ModelForm = () => {
                     message: "Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})"
                 }
             })}
-            type={"text"} placeholder={"Description"}
+                   type={"text"} placeholder={"Description"}
             />
             {errors.description && (
                 <div className={"errorMessage"}>{errors.description.message}</div>
@@ -62,6 +62,12 @@ export const ModelForm = () => {
             {errors.isAI && (
                 <div className={"errorMessage"}>{errors.isAI.message}</div>
             )}
+
+            <h3> Player Tags </h3>
+            <input {...register("tags", {
+                required: false
+            })} type={"text"} placeholder={"Game Tags"}
+            />
 
 
         </form>
