@@ -2,8 +2,10 @@ import {useForm} from "react-hook-form";
 import React, {useState} from "react";
 import axios from "axios";
 
+//Should be synced up to models
 let MAX_NAME_LENGTH = 64
 let MAX_DESCRIPTION_LENGTH = 1024
+
 export const ModelForm = () => {
     const {
         register,
@@ -18,7 +20,7 @@ export const ModelForm = () => {
     const [description, setDescription] = useState("")
     const [tags, setTags] = useState("")
 
-    const onSubmit = (event) =>  {
+    const onSubmit = (event) => {
 
         const formData = new FormData();
         formData.append("name", name)
@@ -35,23 +37,23 @@ export const ModelForm = () => {
             method: "post",
             url: "http://127.0.0.1:8000/api/players/",
             data: formData,
-            headers: { "Content-Type": "multipart/form-data"},
-        }).then(function (response){
+            headers: {"Content-Type": "multipart/form-data"},
+        }).then(function (response) {
             console.log(response);
             reset()
             setError("root", {message: "Form Submitted Successfully"})
-        }).catch(function (response){
+        }).catch(function (response) {
             console.log(response)
-            if(!response){
-                setError("root", {message:"No response from server"});
+            if (!response) {
+                setError("root", {message: "No response from server"});
 
-            }
-            else{
+            } else {
                 if (response.response.data.includes("IntegrityError")) {
                     setError("root", {message: "A game with that name already exists!"});
                 } else {
                     setError("root", {
-                        message: `Something went wrong... ${response.response.data}`})
+                        message: `Something went wrong... ${response.response.data}`
+                    })
                 }
             }
         });
@@ -69,7 +71,7 @@ export const ModelForm = () => {
                 }
             })}
                    type={"text"} placeholder={"Name!"}
-                   onChange={(event)=>setName(event.target.value)}
+                   onChange={(event) => setName(event.target.value)}
             />
             {errors.name && (
                 <div className={"errorMessage"}>{errors.name.message}</div>
@@ -84,7 +86,7 @@ export const ModelForm = () => {
                 }
             })}
                    type={"text"} placeholder={"Description"}
-                   onChange={(event)=> setDescription(event.target.value)}
+                   onChange={(event) => setDescription(event.target.value)}
             />
             {errors.description && (
                 <div className={"errorMessage"}>{errors.description.message}</div>
@@ -94,7 +96,7 @@ export const ModelForm = () => {
             <select {...register("isAI", {
                 required: "This field is required"
             })}
-            onChange={(event)=> setAIStatus(event.target.value)}>
+                    onChange={(event) => setAIStatus(event.target.value)}>
                 <option value={"true"}>True</option>
                 <option value={"false"}>False</option>
             </select>
@@ -107,7 +109,7 @@ export const ModelForm = () => {
                 required: false
             })}
                    type={"text"} placeholder={"Game Tags"}
-                   onChange={(event)=> setTags(event.target.value)}
+                   onChange={(event) => setTags(event.target.value)}
             />
 
             <br/>
