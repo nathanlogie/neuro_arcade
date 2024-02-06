@@ -20,11 +20,11 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 
 from na.forms import AboutForm, GameForm, ScoreTypeForm, PublicationFormSet
-from na.models import Game, GameTag, Player
+from na.models import Game, GameTag, Player, PlayerTag
 from na.forms import UserForm
 from django.conf import settings
 
-from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer
+from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
 import json
 
 
@@ -501,6 +501,10 @@ class GameViewSet(viewsets.ModelViewSet):
 class GameTagViewSet(viewsets.ModelViewSet):
     queryset = GameTag.objects.all()
     serializer_class = GameTagSerializer
+
+class PlayerTagViewSet(viewsets.ModelViewSet):
+    queryset = PlayerTag.objects.all()
+    serializer_class = PlayerTagSerializer
 
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = Player.objects.all()

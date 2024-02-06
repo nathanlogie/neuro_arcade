@@ -17,6 +17,11 @@ class GameTagSerializer(serializers.HyperlinkedModelSerializer):
         model = GameTag
         fields = ['url', 'name', 'description']
 
+class PlayerTagSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = PlayerTag
+        fields = ['url', 'name', 'description']
+
 class PlayerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Player
