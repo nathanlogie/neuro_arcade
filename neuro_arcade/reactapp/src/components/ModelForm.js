@@ -52,6 +52,17 @@ export const ModelForm = () => {
                 <div className={"errorMessage"}>{errors.description.message}</div>
             )}
 
+            <h3> IS AI? </h3>
+            <select {...register("isAI", {
+                required: "This field is required"
+            })}>
+                <option value={"true"}>True</option>
+                <option value={"false"}>False</option>
+            </select>
+            {errors.isAI && (
+                <div className={"errorMessage"}>{errors.isAI.message}</div>
+            )}
+
 
         </form>
     )
