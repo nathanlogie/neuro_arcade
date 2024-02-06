@@ -2,7 +2,8 @@ import {useForm} from "react-hook-form";
 import React, {useState} from "react";
 import axios from "axios";
 
-let MAXNAMELENGTH = 64
+let MAX_NAME_LENGTH = 64
+let MAX_DESCRIPTION_LENGTH = 1024
 export const ModelForm = () => {
     const {
         register,
@@ -27,14 +28,28 @@ export const ModelForm = () => {
             <input {...register("name", {
                 required: "Name is required",
                 maxLength: {
-                    value: MAXNAMELENGTH,
-                    message: `Maximum name length has been exceeded (${MAXNAMELENGTH})`
+                    value: MAX_NAME_LENGTH,
+                    message: `Maximum name length has been exceeded (${MAX_NAME_LENGTH})`
                 }
             })}
                 type={"text"} placeholder={"Name!"}
             />
             {errors.name && (
                 <div className={"errorMessage"}>{errors.name.message}</div>
+            )}
+
+            <h3>Description</h3>
+            <input {...register("description", {
+                required: false,
+                maxLength: {
+                    value: MAX_DESCRIPTION_LENGTH,
+                    message: "Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})"
+                }
+            })}
+            type={"text"} placeholder={"Description"}
+            />
+            {errors.description && (
+                <div className={"errorMessage"}>{errors.description.message}</div>
             )}
 
 
