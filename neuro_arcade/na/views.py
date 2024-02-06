@@ -24,7 +24,7 @@ from na.models import Game, GameTag, Player
 from na.forms import UserForm
 from django.conf import settings
 
-from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer
+from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer
 import json
 
 
@@ -501,3 +501,7 @@ class GameViewSet(viewsets.ModelViewSet):
 class GameTagViewSet(viewsets.ModelViewSet):
     queryset = GameTag.objects.all()
     serializer_class = GameTagSerializer
+
+class PlayerViewSet(viewsets.ModelViewSet):
+    queryset = Player.objects.all()
+    serializer_class = PlayerSerializer
