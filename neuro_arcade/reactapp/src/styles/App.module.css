@@ -9,12 +9,31 @@
     .Content {
         width: 80em;
         padding: 0 2em;
-        & h1 {
-            position: relative;
-            text-align: left;
-            margin: 0;
-            padding-bottom: 1em;
-            padding-top: 1em;
+        display: flex;
+        flex-wrap: wrap;
+        .Title {
+            display: flex;
+            & h1 {
+                position: relative;
+                text-align: left;
+                margin: 0;
+                width: max-content;
+                padding: 1em 0.5em 1em 0;
+            }
+            .FilterButton {
+                width: 2em;
+                height: 2em;
+                border-radius: 100px;
+                background-color: rgba(255, 255, 255, 0.2);
+                backdrop-filter: blur(5px);
+                color: #ffffff;
+                font-size: 1em;
+                font-weight: 900;
+                line-height: 2.5em;
+                box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+                margin: auto 0;
+                cursor: pointer;
+            }
         }
         .ContentBlock {
             position: relative;
@@ -34,6 +53,9 @@
                 line-height: 2em;
             }
         }
+    }
+    .Content#small {
+        width: 40em;
     }
     #AllGames {
         width: 70em;

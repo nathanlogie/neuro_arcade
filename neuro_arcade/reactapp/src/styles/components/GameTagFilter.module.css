@@ -39,3 +39,16 @@
         min-width: 2em;
     }
 }
+
+#home {
+    position: absolute;
+    z-index: 1;
+    margin-top: 6em;
+    background-color: rgba(3, 3, 3, 0.6);
+    & h2 {
+        display: none;
+    }
+    .Tags {
+        margin: 1em;
+    }
+}

@@ -5,14 +5,16 @@ import {NavBar} from "../components/NavBar";
 import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {Background} from "../components/Background";
-import {Table} from "../components/Table";
 import {GameTagFilter} from "../components/GameTagFilter";
 import {motion} from "framer-motion"
 import {useState} from "react";
+import { IoFilter } from "react-icons/io5";
 
 export function HomePage() {
     let [selectedTags, setSelectedTags] = useState([]);
     let forcedTags = ['featured'];
+
+    const [show, setShow] = useState(false);
 
     return (
         <div>
@@ -38,8 +40,16 @@ export function HomePage() {
                 animate={{opacity: 1}}
                 exit={{opacity: 0}}
             >
-                <div className={styles.Content}>
-                    <h1>Featured games</h1>
+                <div className={styles.Content} id={styles['small']}>
+                    <div className={styles.Title}>
+                        <h1>Featured games</h1>
+                        <div className={styles.FilterButton} onClick={() => setShow(!show)}>
+                            <IoFilter />
+                        </div>
+                    </div>
+                    {show ?
+                        <GameTagFilter onTagChange={setSelectedTags} excluded={forcedTags} id={'home'} />
+                    : null}
                     {/*
                         The featured tag is always applied, so that's put in the query for server-side
                         filtering
@@ -59,7 +69,6 @@ export function HomePage() {
                     />
                 </div>
                 <div className={styles.Side}>
-                    <GameTagFilter onTagChange={setSelectedTags} excluded={forcedTags}/>
                 </div>
                 <NavBar button_left={{
                     name: 'about',
