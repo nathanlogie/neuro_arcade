@@ -7,8 +7,7 @@
     flex-wrap: wrap;
     overflow-y: auto;
     .Content {
-        width: 100%;
-        max-width: 70em;
+        width: 80em;
         padding: 0 2em;
         & h1 {
             position: relative;
@@ -90,6 +89,14 @@
     }
     .MobileBannerBuffer {
         display: block;
+    }
+}
+
+@media (max-width: 50em) {
+    .MainBlock {
+        .DataBlock {
+            display: block;
+        }
     }
 }
 
