@@ -27,8 +27,10 @@ export function Graph({inputData}) {
     };
     return (
         <div className={styles.GraphContainer}>
+            <h2>Trends</h2>
             <div className={styles.TabSwitcher}>
-                <Switcher data={inputData} onSwitcherChange={handleSwitcherChange} switcherDefault={selectedSwitcherValue}/>
+                <Switcher data={inputData} onSwitcherChange={handleSwitcherChange}
+                          switcherDefault={selectedSwitcherValue}/>
             </div>
             <ThemeProvider theme={graph_theme}>
                 <LineChart
@@ -50,15 +52,15 @@ export function Graph({inputData}) {
                         dataKey="name"
                         angle={290}
                         dy={40}
-                        label={{ value: "AI Platforms", position: 'bottom', offset: 90 }}
-                        axisLine={{ stroke: 'transparent' }}
-                        padding={{ left: 10 }}
+                        label={{value: "AI Platforms", position: 'bottom', offset: 90}}
+                        axisLine={{stroke: 'transparent'}}
+                        padding={{left: 10}}
                         tickLine={false}
                         style={{fill: '#CCCCCC', fontSize: '0.9em'}}
                     />
                     <YAxis
-                        label={{ value: "Score", angle: -90, position: 'insideLeft' }}
-                        axisLine={{ stroke: '#FFFFFF' }}
+                        label={{value: "Score", angle: -90, position: 'insideLeft'}}
+                        axisLine={{stroke: '#FFFFFF'}}
                         domain={['auto', 'auto']}
                         style={{stroke: '#CCCCCC', fontSize: '0.9em'}}
                     />
@@ -71,7 +73,7 @@ export function Graph({inputData}) {
                         stroke="white"
                         dot={false}
                     />
-                    </LineChart>
+                </LineChart>
             </ThemeProvider>
         </div>
     );

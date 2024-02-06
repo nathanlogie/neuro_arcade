@@ -46,10 +46,8 @@ export function GameView() {
                             <p>{gameData.game.description}</p>
                         </div>
                     </div>
-                    <div className={styles.Side}>
+                    <div className={styles.DataBlock}>
                         <Table inputData={gameData}/>
-                    </div>
-                    <div className={styles.GraphBlock}>
                         <Graph inputData={gameData}/>
                     </div>
                 </div>

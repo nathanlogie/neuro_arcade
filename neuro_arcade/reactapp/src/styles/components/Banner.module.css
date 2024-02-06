@@ -13,7 +13,7 @@
 .TabSwitcher {
     margin: 0 auto;
 }
-.TabSwitcher > * > * > *{
+.TabSwitcher > * > * > * {
     width: 15em;
 }
 

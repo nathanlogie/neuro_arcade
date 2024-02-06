@@ -7,7 +7,8 @@
     flex-wrap: wrap;
     overflow-y: auto;
     .Content {
-        width: 40em;
+        width: 100%;
+        max-width: 70em;
         padding: 0 2em;
         & h1 {
             position: relative;
@@ -46,8 +47,11 @@
         align-items: flex-start;
         flex-wrap: wrap;
     }
-    .GraphBlock {
+    .DataBlock {
         width: 100%;
+        padding: 2em;
+        display: flex;
+        overflow-x: auto;
     }
 }
 .MobileBannerBuffer {
@@ -81,11 +85,6 @@
         }
         .Side {
             width: 100%;
-            overflow-x: scroll;
-            padding: 1.5em;
-        }
-        .GraphBlock {
-            overflow-x: scroll;
             padding: 1.5em;
         }
     }

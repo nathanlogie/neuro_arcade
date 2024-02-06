@@ -87,13 +87,14 @@ export function Table({inputData}) {
                             '& .MuiDataGrid-cell:hover': {
                               color: 'white',
                             },
+                            height: '100%'
                         }}
                         rows={filteredRows}
                         columns={columns}
                         initialState={{
                             pagination: {
                                 paginationModel: {
-                                    pageSize: 5,
+                                    pageSize: 7,
                                 },
                             },
                         }}
