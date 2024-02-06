@@ -15,9 +15,10 @@ export function HomePage() {
     let forcedTags = ['featured'];
 
     const [show, setShow] = useState(false);
+    const [hover, setHover] = useState(false);
 
     return (
-        <div>
+        <div onClick={() => show && !hover ? setShow(false) : null}>
             <Background />
             <Banner size={'big'} button_left={{
                 name: 'about',
@@ -47,7 +48,10 @@ export function HomePage() {
                             <IoFilter />
                         </div>
                     </div>
-                    <GameTagFilter onTagChange={setSelectedTags} excluded={forcedTags} id={show ? 'home' : 'invisible'} />
+                    <GameTagFilter onTagChange={setSelectedTags} excluded={forcedTags} id={show ? 'home' : 'invisible'}
+                                   onMouseOver={() => setHover(true)}
+                                   onMouseOut={() => setHover(false)}
+                    />
                     {/*
                         The featured tag is always applied, so that's put in the query for server-side
                         filtering

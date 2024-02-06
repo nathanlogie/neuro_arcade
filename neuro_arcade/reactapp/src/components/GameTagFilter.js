@@ -10,7 +10,7 @@ import styles from '../styles/components/GameTagFilter.module.css';
     excluded: list of tag slugs to hide from display
         Doesn't support being changed dynamically
 */
-export function GameTagFilter({onTagChange, excluded=[], id}) {
+export function GameTagFilter({onTagChange, excluded=[], id, onMouseOver, onMouseOut}) {
     let [isLoading, setLoading] = useState(true);
     let [tags, setTags] = useState([]);
     let [ticks, setTicks] = useState([]);
@@ -45,7 +45,7 @@ export function GameTagFilter({onTagChange, excluded=[], id}) {
         )
     } else {
         return (
-            <div className={styles.FilterTable} id={styles[id]}>
+            <div className={styles.FilterTable} id={styles[id]} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
                 <h2>filters</h2>
                 <div className={styles.Tags}>
                     {tags.map((tag, index) => {
