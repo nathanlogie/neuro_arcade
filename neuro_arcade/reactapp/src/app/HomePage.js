@@ -47,9 +47,7 @@ export function HomePage() {
                             <IoFilter />
                         </div>
                     </div>
-                    {show ?
-                        <GameTagFilter onTagChange={setSelectedTags} excluded={forcedTags} id={'home'} />
-                    : null}
+                    <GameTagFilter onTagChange={setSelectedTags} excluded={forcedTags} id={show ? 'home' : 'invisible'} />
                     {/*
                         The featured tag is always applied, so that's put in the query for server-side
                         filtering
