@@ -33,6 +33,7 @@ export const ModelForm = () => {
                 }
             })}
                    type={"text"} placeholder={"Name!"}
+                   onChange={(event)=>setName(event.target.value)}
             />
             {errors.name && (
                 <div className={"errorMessage"}>{errors.name.message}</div>
@@ -47,6 +48,7 @@ export const ModelForm = () => {
                 }
             })}
                    type={"text"} placeholder={"Description"}
+                   onChange={(event)=> setDescription(event.target.value)}
             />
             {errors.description && (
                 <div className={"errorMessage"}>{errors.description.message}</div>
@@ -55,7 +57,8 @@ export const ModelForm = () => {
             <h3> IS AI? </h3>
             <select {...register("isAI", {
                 required: "This field is required"
-            })}>
+            })}
+            onChange={(event)=> setAIStatus(event.target.value)}>
                 <option value={"true"}>True</option>
                 <option value={"false"}>False</option>
             </select>
@@ -66,7 +69,9 @@ export const ModelForm = () => {
             <h3> Player Tags </h3>
             <input {...register("tags", {
                 required: false
-            })} type={"text"} placeholder={"Game Tags"}
+            })}
+                   type={"text"} placeholder={"Game Tags"}
+                   onChange={(event)=> setTags(event.target.value)}
             />
 
             <br/>
