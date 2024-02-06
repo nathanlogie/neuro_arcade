@@ -18,7 +18,43 @@ export const ModelForm = () => {
     const [description, setDescription] = useState("")
     const [tags, setTags] = useState("")
 
-    const onSubmit = (event) => void {
+    const onSubmit = (event) =>  {
+
+        const formData = new FormData();
+        formData.append("name", name)
+        formData.append("description", description)
+
+        //Again temporary until authentication is done
+        formData.append("user", "http://localhost:8000/api/users/2/")
+
+        //Converts the string value into an actual boolean value
+        let boolAI = (AIStatus === 'true');
+        formData.append("is_ai", boolAI)
+
+        axios({
+            method: "post",
+            url: "http://127.0.0.1:8000/api/players/",
+            data: formData,
+            headers: { "Content-Type": "multipart/form-data"},
+        }).then(function (response){
+            console.log(response);
+            reset()
+            setError("root", {message: "Form Submitted Successfully"})
+        }).catch(function (response){
+            console.log(response)
+            if(!response){
+                setError("root", {message:"No response from server"});
+
+            }
+            else{
+                if (response.response.data.includes("IntegrityError")) {
+                    setError("root", {message: "A game with that name already exists!"});
+                } else {
+                    setError("root", {
+                        message: `Something went wrong... ${response.response.data}`})
+                }
+            }
+        });
 
     }
 
