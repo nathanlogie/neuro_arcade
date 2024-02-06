@@ -69,7 +69,13 @@ export const ModelForm = () => {
             })} type={"text"} placeholder={"Game Tags"}
             />
 
-
+            <br/>
+            <button disabled={isSubmitting} type={"submit"}>
+                {isSubmitting ? "Submitting form..." : "Submit!"}
+            </button>
+            {errors.root && (
+                <div className={"errorMessage"}>{errors.root.message}</div>
+            )}
         </form>
     )
 };
