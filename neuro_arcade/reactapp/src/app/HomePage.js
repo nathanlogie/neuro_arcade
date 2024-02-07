@@ -9,6 +9,7 @@ import {GameTagFilter} from "../components/game/GameTagFilter";
 import {motion} from "framer-motion"
 import {useState} from "react";
 import { IoFilter } from "react-icons/io5";
+import {Link} from "react-router-dom";
 
 /**
  * @returns {JSX.Element} home page
@@ -57,6 +58,9 @@ export function HomePage() {
                                    onMouseOver={() => setHover(true)}
                                    onMouseOut={() => setHover(false)}
                     />
+                <div className={styles.Content}>
+                    <Link to={"sign_up"}>Sign Up</Link>
+                    <h1>Featured games</h1>
                     {/*
                         The featured tag is always applied, so that's put in the query for server-side
                         filtering
@@ -89,7 +93,8 @@ export function HomePage() {
                     direction: 'right'
                 }}
                 />
-                <div className={styles.MobileBannerBuffer}/>
+                </div>
+                <div className={styles.MobileBannerBuffer} />
             </motion.div>
         </div>
     );
