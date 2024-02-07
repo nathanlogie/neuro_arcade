@@ -1,13 +1,20 @@
 import {requestGameTags} from "../backendRequests";
 import {useEffect, useState} from "react";
 
-/*
-    Displays a list of checkboxes for GameTags
+/**
+ * Prototype for GameTagFilter.onTagChange callback
+ * 
+ * @typedef {function} OnTagChange
+ * @param {string[]} activeTags - list of currently checked tags' slugs
+ */
 
-    onTagChange: callback for when a tag is checked/unchecked
-        Parameter is a list of the currently selected tag slugs
-    excluded: list of tag slugs to hide from display
-        Doesn't support being changed dynamically
+/**
+ * Displays a list of checkboxes for GameTags
+ * 
+ * @param {Object} props
+ * @param {OnTagChange} props.onTagChange - callback for when a tag is checked/unchecked
+ * @param {slugs[]} props.excluded - list of tag slugs to hide from display, currently
+ *                                   doesn't support being changed dynamically
 */
 export function GameTagFilter({onTagChange, excluded=[]}) {
     let [isLoading, setLoading] = useState(true);

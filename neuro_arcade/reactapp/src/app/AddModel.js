@@ -5,6 +5,9 @@ import {NavBar} from "../components/NavBar";
 import {MobileBanner} from "../components/Banner";
 import {Background} from "../components/Background";
 
+/**
+ * Component for rendering the Add Model page
+ */
 export function AddModel() {
     return (
         <div>
