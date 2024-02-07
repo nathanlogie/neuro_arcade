@@ -16,7 +16,7 @@ export function ModelForm(){
     } = useForm()
 
     const [name, setName] = useState("")
-    const [AIStatus, setAIStatus] = useState("")
+    const [aiStatus, setAiStatus] = useState("")
     const [description, setDescription] = useState("")
     const [tags, setTags] = useState("")
 
@@ -30,8 +30,8 @@ export function ModelForm(){
         formData.append("user", "http://localhost:8000/api/users/2/")
 
         //Converts the string value into an actual boolean value
-        let boolAI = (AIStatus === 'true');
-        formData.append("is_ai", boolAI)
+        let boolAi = (aiStatus === 'true');
+        formData.append("is_ai", boolAi)
 
         axios({
             //I will move a lot of this stuff to backend requests to centralize it in a future merge request
@@ -97,7 +97,7 @@ export function ModelForm(){
             <select {...register("isAI", {
                 required: "This field is required"
             })}
-                    onChange={(event) => setAIStatus(event.target.value)}>
+                    onChange={(event) => setAiStatus(event.target.value)}>
                 <option value={"true"}>True</option>
                 <option value={"false"}>False</option>
             </select>
