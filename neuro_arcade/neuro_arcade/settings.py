@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
+from corsheaders.defaults import default_headers
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -36,11 +37,30 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["sh08.pythonanywhere.com",
                  "127.0.0.1", "localhost"]
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://localhost:3000", "http://locahost:8000", "https://localhost:8000"]
+# If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
+# TODO: REMOVE IN PRODUCTION: NOT SECURE!!
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_PRIVATE_NETWORK = True  # idk what this does
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://localhost:3000",
+    "http://locahost:8000",
+    "https://localhost:8000"
+]
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    'http://localhost:3030/*.',
+]
+CORS_ALLOW_HEADERS = (
+    *default_headers,
+    'Authentication'
+)
+
+# CSRF_COOKIE_SECURE = True
 
 # Allowed domains and ports you are making requests from
 # TODO: NOT SECURE FOR PRODUCTION!! DO REMOVE and find safe alternative
-CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", "http://localhost:8000"]
 
 
 # Application definition
@@ -157,4 +177,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
+}
+
+JWT_AUTH = {
+    # Authorization:Token xxx
+    'JWT_AUTH_HEADER_PREFIX': 'Token',
 }

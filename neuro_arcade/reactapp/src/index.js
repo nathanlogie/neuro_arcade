@@ -10,6 +10,7 @@ import {AllGames} from "./app/AllGames";
 import {GameView} from "./app/GameView";
 
 import {AnimatePresence} from 'framer-motion'
+import {AuthTest} from "./app/AuthTest";
 
 
 const router = createBrowserRouter([
@@ -35,6 +36,12 @@ const router = createBrowserRouter([
         path: "all_games",
         element: <AllGames />
     },
+    // This is here for testing purposes
+    // TODO: remove this when the login/signup pages have been made
+    {
+        path: "auth_test",
+        element: <AuthTest />
+    }
 ]);
 
 
