@@ -9,6 +9,7 @@ import {Table} from "../components/Table";
 import {GameTagFilter} from "../components/GameTagFilter";
 import {motion} from "framer-motion"
 import {useState} from "react";
+import {Link} from "react-router-dom";
 
 export function HomePage() {
     let [selectedTags, setSelectedTags] = useState([]);
@@ -39,6 +40,7 @@ export function HomePage() {
                 exit={{opacity: 0}}
             >
                 <div className={styles.Content}>
+                    <Link to={"sign_up"}>Sign Up</Link>
                     <h1>Featured games</h1>
                     {/*
                         The featured tag is always applied, so that's put in the query for server-side

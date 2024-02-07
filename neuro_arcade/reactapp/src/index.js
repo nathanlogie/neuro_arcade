@@ -10,7 +10,7 @@ import {AddGame} from "./app/AddGame";
 import {AddModel} from "./app/AddModel";
 import {AllGames} from "./app/AllGames";
 import {GameView} from "./app/GameView";
-
+import {SignUp} from "./app/SignUp";
 import { EditAbout } from "./app/EditAbout";
 
 import {AnimatePresence} from 'framer-motion'
@@ -58,6 +58,10 @@ const router = createBrowserRouter([
     {
         path: "add_game",
         element: <AddGame/>
+    },
+    {
+        path: "sign_up",
+        element: <SignUp/>
     }
 ]);
 
