@@ -34,6 +34,7 @@ export const ModelForm = () => {
         formData.append("is_ai", boolAI)
 
         axios({
+            //I will move a lot of this stuff to backend requests to centralize it in a future merge request
             method: "post",
             url: "http://127.0.0.1:8000/api/players/",
             data: formData,
