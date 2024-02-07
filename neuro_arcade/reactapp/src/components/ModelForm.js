@@ -6,7 +6,7 @@ import axios from "axios";
 let MAX_NAME_LENGTH = 64
 let MAX_DESCRIPTION_LENGTH = 1024
 
-export const ModelForm = () => {
+export function ModelForm(){
     const {
         register,
         handleSubmit,

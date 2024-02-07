@@ -11,7 +11,7 @@ let MAX_DESCRIPTION_LENGTH = 1024
 let ACCEPTED_SCORE_FILE = ['json']
 let ACCEPTED_EVAL_SCRIPT = ['py']
 let ACCEPTED_IMAGE = ['png', 'jpg', 'jpeg']
-export const Form = () => {
+export function Form(){
     const {
         register,
         handleSubmit,
