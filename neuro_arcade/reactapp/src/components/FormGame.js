@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
-import {postGame} from "../backendRequests";
 import axios from 'axios'
 import {data} from "autoprefixer";
 
@@ -17,6 +16,7 @@ export function Form(){
         handleSubmit,
         formState: {errors, isSubmitting},
         setError,
+        reset,
     } = useForm();
 
     const [image, setImage] = useState(null)
@@ -83,6 +83,9 @@ export function Form(){
 
         }).then(function (response) {
             console.log(response);
+            reset();
+            setError("root", {message: "Form submitted successfully"});
+
         }).catch(function (response) {
             console.log(response)
             if(!response){
