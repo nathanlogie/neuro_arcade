@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const API_ROOT = "http://localhost:8000"
+
 /**
  * This file contains functions that request or upload data from/to the backend
  */
@@ -128,19 +129,33 @@ export async function requestGamesSorted(query='') {
  * @param {string} gameName - name of the game.
  * @param {{}} scoreData - scores to upload to the server. Also needs to have a player field (TODO: type hint)
  *
- * @throws Error when the request is rejected.
+ * @throws Error when the request is rejected or when the user is not logged in.
  */
-export function postGameScore(gameName, scoreData) {
-    //todo get this working with get_current_user()
-    const url = API_ROOT + '/games/' + gameName + '/data/'
-    axios.post(url, scoreData)
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-            throw error;
-        });
+export async function postGameScore(gameName, scoreData) {
+    const url = API_ROOT + '/games/' + gameName + '/add_score/'
+    // checking if the user is logged in
+    if (!is_logged_in()) {
+        let e = new Error('User credentials not found (user not logged in)!')
+        console.log(e)
+        throw e;
+    }
+    const req = {
+        data: scoreData
+    }
+    const opt = {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${get_user().token}`,
+        },
+    }
+    try {
+        console.log(opt)
+        return await axios.post(url, req, opt)
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
 }
 
 /**
@@ -211,7 +226,7 @@ export async function postPublications(publications){
 /**
  * Gets the current user associate with this session. Returns null if user is not logged in.
  *
- * @return {{} | null} user object {token, name, email} or null
+ * @return {{token, name, email} | null} user object {token, name, email} or null
  */
 export function get_user() {
     let user_str = localStorage.getItem("user");
@@ -278,8 +293,7 @@ export async function signupNewUser(userName, email, password) {
         'password': password,
     }
     try {
-        let response = await axios.post(url, data);
-        return response.data;
+        return await axios.post(url, data);
     } catch (error) {
         console.log(error);
         throw error;
@@ -316,7 +330,7 @@ export async function login(userName, email, password) {
         };
         console.log(user_data);
         localStorage.setItem("user", JSON.stringify(user_data));
-        return response.data;
+        return response;
     } catch (error) {
         console.log(error);
         throw error;

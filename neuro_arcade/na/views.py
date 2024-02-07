@@ -98,6 +98,7 @@ def get_games_sorted(request: Request) -> Response:
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@csrf_exempt
 def post_game_score(request: Request, game_name_slug: str) -> Response:
     """
     Post Score for a game. The format for the body of the Post request is as follows:
@@ -235,6 +236,12 @@ def sign_up(request: Request) -> Response:
     # input validation:
     if username is None or email is None or password is None or not validate_password(password):
         return Response(status=400, data='Invalid data.')
+
+    if User.objects.filter(username=username).exists():
+        return Response(status=400, data='Username already taken.')
+
+    if User.objects.filter(email=email).exists():
+        return Response(status=400, data='Email already taken.')
 
     # creating a new User in the DB:
     new_user = User.objects.create_user(username=username, email=email, password=password)
