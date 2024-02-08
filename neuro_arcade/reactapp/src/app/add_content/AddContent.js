@@ -1,20 +1,21 @@
-import {Banner} from "../components/Banner";
+import {Banner} from "../../components/Banner";
 import {Link} from "react-router-dom";
-import styles from '../styles/App.module.css';
-import {NavBar} from "../components/NavBar";
-import {MobileBanner} from "../components/Banner";
-import {Background} from "../components/Background";
+import styles from '../../styles/App.module.css';
+import {NavBar} from "../../components/NavBar";
+import {MobileBanner} from "../../components/Banner";
+import {Background} from "../../components/Background";
+
 
 /**
- * Component for rendering the Add Model page
+ * Component for rendering the Add Content page
  */
-export function AddModel() {
+export function AddContent() {
     return (
         <div>
             <Background />
             <Banner size={'big'} button_left={{
-                name: 'add content',
-                link: '/add_content',
+                name: 'home',
+                link: '/',
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{
@@ -31,12 +32,13 @@ export function AddModel() {
                 direction: 'right'
             }}
             />
-            <MobileBanner size={'big'} />
+            <MobileBanner  />
 
             <div className={styles.MainBlock}>
                 <div className={styles.Content}>
                     <div className={styles.ContentBlock}>
-                        <h1>Add model</h1>
+                        <Link to='/add_game'> Add game </Link>
+                        <Link to='/add_model'> Add model </Link>
                     </div>
                 </div>
             </div>

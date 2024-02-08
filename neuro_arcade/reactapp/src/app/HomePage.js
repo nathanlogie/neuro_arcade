@@ -1,11 +1,11 @@
 import {Banner} from "../components/Banner";
-import {GameGrid} from "../components/GameGrid";
+import {GameGrid} from "../components/game/GameGrid";
 import styles from '../styles/App.module.css';
 import {NavBar} from "../components/NavBar";
 import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {Background} from "../components/Background";
-import {GameTagFilter} from "../components/GameTagFilter";
+import {GameTagFilter} from "../components/game/GameTagFilter";
 import {motion} from "framer-motion"
 import {useState} from "react";
 import { IoFilter } from "react-icons/io5";
@@ -31,22 +31,23 @@ export function HomePage() {
                 orientation: 'right',
                 direction: 'right'
             }} />
-            <MobileBanner size={'big'} />
+            <MobileBanner  />
             <motion.div
                 className={styles.MainBlock}
                 id={styles['big']}
-                initial={{
-                    opacity: 0
-                }}
+                initial={{opacity: 0}}
                 animate={{opacity: 1}}
                 exit={{opacity: 0}}
             >
                 <div className={styles.Content} id={styles['small']}>
                     <div className={styles.Title}>
                         <h1>Featured games</h1>
-                        <div className={styles.FilterButton} onClick={() => setShow(!show)}>
+                        <motion.div
+                            className={styles.FilterButton} onClick={() => setShow(!show)}
+                            whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}
+                        >
                             <IoFilter />
-                        </div>
+                        </motion.div>
                     </div>
                     <GameTagFilter onTagChange={setSelectedTags} excluded={forcedTags} id={show ? 'home' : 'invisible'}
                                    onMouseOver={() => setHover(true)}

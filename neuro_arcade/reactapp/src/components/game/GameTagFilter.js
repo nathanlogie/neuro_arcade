@@ -1,6 +1,6 @@
-import {requestGameTags} from "../backendRequests";
+import {requestGameTags} from "../../backendRequests";
 import {useEffect, useState} from "react";
-import styles from '../styles/components/GameTagFilter.module.css';
+import styles from '../../styles/components/GameTagFilter.module.css';
 
 /**
  * Prototype for GameTagFilter.onTagChange callback

@@ -1,8 +1,8 @@
 import {useLocation, useParams} from "react-router-dom";
 import {requestGame, requestGamesSorted} from "../backendRequests";
 import styles from "../styles/App.module.css";
-import {Table} from "../components/Table";
-import {Graph} from "../components/Graph";
+import {Table} from "../components/game/Table";
+import {Graph} from "../components/game/Graph";
 import {useEffect, useState} from "react";
 import {Banner, MobileBanner} from "../components/Banner";
 import {Background} from "../components/Background";
@@ -25,7 +25,7 @@ export function GameView() {
             <>
                 <Background />
                 <Banner size={'small'} state={'Games'} />
-                <MobileBanner size={'small'} />
+                <MobileBanner />
                 <div className={styles.MainBlock} id={styles['small']}>
                     Loading...
                 </div>
@@ -36,7 +36,7 @@ export function GameView() {
             <>
                 <Background />
                 <Banner size={'small'} state={'Games'} />
-                <MobileBanner size={'small'} />
+                <MobileBanner />
                 <div className={styles.MainBlock} id={styles['small']}>
                     <div className={styles.Content}>
                         <h1>{gameData.game.name}</h1>

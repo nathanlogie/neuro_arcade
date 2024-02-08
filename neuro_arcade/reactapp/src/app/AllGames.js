@@ -1,8 +1,8 @@
 import {Banner, MobileBanner} from "../components/Banner";
 import {Background} from "../components/Background";
 import styles from "../styles/App.module.css"
-import {GameGrid} from "../components/GameGrid";
-import {GameTagFilter} from "../components/GameTagFilter";
+import {GameGrid} from "../components/game/GameGrid";
+import {GameTagFilter} from "../components/game/GameTagFilter";
 import {useState} from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 
@@ -18,8 +18,8 @@ export function AllGames() {
     return (
         <div>
             <Background/>
-            <Banner size={'small'} state={'Games'} />
-            <MobileBanner size={'small'} />
+            <Banner state={'Games'} />
+            <MobileBanner  />
             <div className={styles.MainBlock} id={styles['small']}>
                 <div className={styles.Side}>
                     {/* TODO: this almost definitely shouldn't be here, but the background

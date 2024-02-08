@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {postPublications} from "../backendRequests";
+import {postPublications} from "../../backendRequests";
 import { Message } from 'primereact/message';
 
 export function PublicationsForm ({publications}) {

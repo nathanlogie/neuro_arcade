@@ -2,16 +2,16 @@ import React from 'react';
 import {createRoot} from 'react-dom/client';
 import './styles/index.css';
 import {HomePage} from "./app/HomePage";
-import {AboutPage} from './app/AboutPage';
+import {AboutPage} from './app/about/AboutPage';
 import reportWebVitals from './app/reportWebVitals';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {AddContent} from "./app/AddContent";
-import {AddGame} from "./app/AddGame";
-import {AddModel} from "./app/AddModel";
+import {AddContent} from "./app/add_content/AddContent";
+import {AddGame} from "./app/add_content/AddGame";
+import {AddModel} from "./app/add_content/AddModel";
 import {AllGames} from "./app/AllGames";
 import {GameView} from "./app/GameView";
 
-import { EditAbout } from "./app/EditAbout";
+import { EditAbout } from "./app/about/EditAbout";
 
 import {AnimatePresence} from 'framer-motion'
 import {DevSupport} from "@react-buddy/ide-toolbox";

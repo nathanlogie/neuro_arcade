@@ -1,7 +1,7 @@
-import styles from '../styles/components/GameCard.module.css'
+import styles from '../../styles/components/GameCard.module.css'
 import {Link, useLocation} from "react-router-dom";
 import {motion} from "framer-motion"
-import {Game} from "../backendRequests";
+import {Game} from "../../backendRequests";
 
 /**
  * Component for rendering a card with a game's name and icon

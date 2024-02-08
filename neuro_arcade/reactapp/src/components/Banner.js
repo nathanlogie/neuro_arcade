@@ -25,6 +25,29 @@ export function Banner({size, button_left, button_right, state}) {
             }
     }
 
+    const banner = [];
+    if (button_left) {
+        banner.push(
+            <Button
+                name={button_left.name}
+                link={button_left.link}
+                direction={button_left.direction}
+                orientation={button_left.orientation}
+            />
+        );
+    }
+    banner.push(<Logo size={size} />)
+    if (button_right) {
+        banner.push(
+            <Button
+                name={button_right.name}
+                link={button_right.link}
+                direction={button_right.direction}
+                orientation={button_right.orientation}
+            />
+        );
+    }
+
     if (size === 'big') {
         return (
             <div
@@ -37,19 +60,7 @@ export function Banner({size, button_left, button_right, state}) {
                     animate={{opacity: 1}}
                     exit={{opacity: 0}}
                 >
-                    <Button
-                        name={button_left.name}
-                        link={button_left.link}
-                        direction={button_left.direction}
-                        orientation={button_left.orientation}
-                    />
-                    <Logo size={size}/>
-                    <Button
-                        name={button_right.name}
-                        link={button_right.link}
-                        direction={button_right.direction}
-                        orientation={button_right.orientation}
-                    />
+                    {banner}
                 </motion.div>
             </div>
         );
@@ -84,11 +95,11 @@ export function Banner({size, button_left, button_right, state}) {
     }
 }
 
-export function MobileBanner({size}) {
+export function MobileBanner() {
     return (
         <div
             className={styles.MobileBanner}
-            id={styles[size]}
+            id={styles['small']}
         >
             <motion.div
                 className={styles.AnimationContainer}
@@ -96,7 +107,7 @@ export function MobileBanner({size}) {
                     animate={{opacity: 1}}
                     exit={{opacity: 0}}
                 >
-                    <Logo size={size}/>
+                    <Logo size={'small'}/>
                 </motion.div>
             </div>
         );

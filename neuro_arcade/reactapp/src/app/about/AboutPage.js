@@ -1,12 +1,12 @@
-import {Background} from "../components/Background";
-import {Banner, MobileBanner} from "../components/Banner";
-import {NavBar} from "../components/NavBar";
-import styles from "../styles/App.module.css";
+import {Background} from "../../components/Background";
+import {Banner, MobileBanner} from "../../components/Banner";
+import {NavBar} from "../../components/NavBar";
+import styles from "../../styles/App.module.css";
 import {motion} from "framer-motion"
 import {useEffect, useState} from "react";
-import {getAboutData} from "../backendRequests";
-import {Description} from "../components/Description"
-import {Button} from "../components/Button";
+import {getAboutData} from "../../backendRequests";
+import {Description} from "../../components/about/Description"
+import {Button} from "../../components/Button";
 
 
 export function AboutPage( ) {
@@ -61,7 +61,7 @@ export function AboutPage( ) {
                 direction: 'right'
             }}
             />
-            <MobileBanner size={'big'} />
+            <MobileBanner />
             <motion.div
                 className={styles.MainBlock}
                 id={styles['big']}

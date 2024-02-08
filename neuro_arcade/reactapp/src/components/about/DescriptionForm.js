@@ -1,5 +1,5 @@
 import {Editor} from "primereact/editor";
-import {postDescription} from "../backendRequests";
+import {postDescription} from "../../backendRequests";
 import {useState} from "react";
 import {Description} from "./Description";
 
