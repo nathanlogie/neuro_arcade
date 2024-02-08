@@ -17,13 +17,14 @@ const API_ROOT = "http://localhost:8000"
  */
 export async function requestGame(gameName) {
     const url = API_ROOT + '/games/' + gameName + '/data/'
-    try {
-        let response = await axios.get(url);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
+    return await axios.get(url)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        })
 }
 
 /**
@@ -33,13 +34,13 @@ export async function requestGame(gameName) {
  */
 export async function requestGameTags() {
     const url = API_ROOT + '/tags/';
-    try {
-        let response = await axios.get(url);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
+    return await axios.get(url)
+        .then((response) => {
+            return response.data;
+        }).catch((error) => {
+            console.log(error);
+            throw error;
+        })
 }
 
 /**
@@ -49,13 +50,12 @@ export async function requestGameTags() {
  */
 export async function requestGamesSorted(query) {
     const url = API_ROOT + '/get_games/' + query;
-    try {
-        let response = await axios.get(url);
+    return await axios.get(url).then((response) => {
         return response.data;
-    } catch (error) {
+    }).catch((error) => {
         console.log(error);
         throw error;
-    }
+    })
 }
 
 /**
@@ -64,11 +64,17 @@ export async function requestGamesSorted(query) {
  * for a Game with Points and Time Score headers.
  *
  * @param {string} gameName - name of the game.
- * @param {{}} scoreData - scores to upload to the server. Also needs to have a player field
+ * @param {string} playerName - name of the player (not user!) associated with the scores.
+ *  The player needs to be owned by the current user for the request to be successful.
+ * @param {{}} scoreData - scores to upload to the server.
+ *  For every score type header, the request needs to have a field called the same as the score header.
+ *
+ *  Example: for a score type with a two headers called 'Points' and 'Time'
+ *   the request needs to be: {'Points': <value>, 'Time': <value>}
  *
  * @throws Error when the request is rejected or when the user is not logged in.
  */
-export async function postGameScore(gameName, scoreData) {
+export async function postGameScore(gameName, playerName, scoreData) {
     const url = API_ROOT + '/games/' + gameName + '/add_score/'
     // checking if the user is logged in
     if (!is_logged_in()) {
@@ -76,29 +82,28 @@ export async function postGameScore(gameName, scoreData) {
         console.log(e)
         throw e;
     }
-    const req = {
+    // sending the request:
+    return await axios.post(url, {
         data: scoreData
-    }
-    const opt = {
+    }, {
         method: 'post',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Token ${get_user().token}`,
         },
-    }
-    try {
-        console.log(opt)
-        return await axios.post(url, req, opt)
-    } catch (error) {
+    }).then((response) => {
+        console.log("Sending of game scores successful!");
+        return response;
+    }).catch((error) => {
         console.log(error);
         throw error;
-    }
+    })
 }
 
 /**
  * Gets the current user associate with this session. Returns null if user is not logged in.
  *
- * @return {{token, name, email} | null} user object {token, name, email} or null
+ * @return {{token, name, email, is_admin} | null} user object {token, name, email, is_admin} or null
  */
 export function get_user() {
     let user_str = localStorage.getItem("user");
@@ -116,14 +121,15 @@ export function is_logged_in() {
 }
 
 /**
- * Returns true if the user is an admin.
+ * Returns true if the user is an admin and false if the user is not.
+ * Returns null if the user is not logged in.
  */
 export function is_admin() {
     let user = localStorage.getItem('user');
     if (user) {
         return user.is_admin;
     }
-    return null
+    return null;
 }
 
 /**
@@ -143,8 +149,9 @@ function passwordValidator(password) {
  * @param {string} email - email address of the user
  * @param {string} password - the password in plaintext
  *
- * @throws Error when the request is rejected. This can happen if the username
- *               is taken or invalid, or if the password is invalid.
+ * @throws Error when the request is rejected.
+ *  If the email or username was already taken the status will be 409.
+ *  An error can also be thrown if the password is invalid.
  */
 export async function signupNewUser(userName, email, password) {
     const url = API_ROOT + '/sign_up/';
@@ -155,17 +162,17 @@ export async function signupNewUser(userName, email, password) {
         throw new Error('Password is not valid!')
 
     // sending the request:
-    let data = {
+    return await axios.post(url, {
         'username': userName,
         'email': email,
         'password': password,
-    }
-    try {
-        return await axios.post(url, data);
-    } catch (error) {
+    }).then((response) => {
+        console.log("Signup successful!");
+        return response;
+    }).catch((error) => {
         console.log(error);
         throw error;
-    }
+    })
 }
 
 /**
@@ -181,31 +188,29 @@ export async function signupNewUser(userName, email, password) {
 export async function login(userName, email, password) {
     const url = API_ROOT + '/login/';
     // sending the request:
-    let data = {
+    return await axios.post(url, {
         'username': userName,
         'email': email,
         'password': password,
-    }
-    try {
-        let response = await axios.post(url, data);
+    }).then((response) => {
         let user_data = {
             token: response.data.token,
             name: userName,
             email: email,
             is_admin: response.data.is_admin === true
         };
-        console.log(user_data);
         localStorage.setItem("user", JSON.stringify(user_data));
         return response;
-    } catch (error) {
+    }).catch((error) => {
         console.log(error);
         throw error;
-    }
+    });
 }
 
 /**
  * Logs out the current user by deleting the auth_token.
  */
 export function logout() {
+    console.log("Logging out...");
     localStorage.removeItem("user");
 }
