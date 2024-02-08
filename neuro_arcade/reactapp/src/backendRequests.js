@@ -64,6 +64,17 @@ const API_ROOT = "http://localhost:8000"
  */
 
 /**
+ * Error thrown when a request that requires authentication
+ *  is called, but no user is currently logged in.
+ */
+class UserNotAuthenticatedError extends Error {
+    constructor() {
+        super("User not logged in!");
+        this.name = "UserNotAuthenticatedError";
+    }
+}
+
+/**
  * Requests the data associated with a game.
  *
  * @param {string} gameName - slug of the game name
@@ -122,6 +133,70 @@ export async function requestGamesSorted(query='') {
 }
 
 /**
+ * Creates a new player associated with the current user.
+ * Requires the user to be authenticated, will throw an error if not.
+ *
+ * @param {string} playerName
+ * @param {boolean} isAI
+ *
+ * @throws {Error | UserNotAuthenticatedError}
+ */
+export async function createNewPlayer(playerName, isAI) {
+    const url = API_ROOT + "/create_player/";
+
+    if (!is_logged_in())
+        throw UserNotAuthenticatedError()
+
+    return await axios.post(url, {
+        playerName: playerName,
+        isAI: isAI,
+    }, {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${get_user().token}`,
+        },
+    }).then((response) => {
+        console.log('Creation of player ' + playerName + ' successful!');
+        return response;
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    })
+}
+
+/**
+ * Deletes a player associated with the logged-in user.
+ * Requires the user to be authenticated, will throw an error if not.
+ *
+ * @param {string} playerName
+ *
+ * @throws {Error | UserNotAuthenticatedError}
+ */
+export async function deletePlayer(playerName) {
+    const url = API_ROOT + "/delete_player/";
+
+    if (!is_logged_in())
+        throw UserNotAuthenticatedError()
+
+    return await axios.post(url, {
+        playerName: playerName,
+    }, {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${get_user().token}`,
+        },
+    }).then((response) => {
+        console.log('Deletion of player ' + playerName + ' successful!');
+        return response;
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    })
+}
+
+/**
  * Posts a Score table row for a specific game.
  * Example scoreData: {"player":7,"Points":355,"Time":120}
  * for a Game with Points and Time Score headers.
@@ -135,16 +210,14 @@ export async function requestGamesSorted(query='') {
  *  Example: for a score type with a two headers called 'Points' and 'Time'
  *   the request needs to be: {'Points': <value>, 'Time': <value>}
  *
- * @throws Error when the request is rejected or when the user is not logged in.
+ * @throws {Error | UserNotAuthenticatedError} when the request is rejected or when the user is not logged in.
  */
 export async function postGameScore(gameName, playerName, scoreData) {
     const url = API_ROOT + '/games/' + gameName + '/add_score/'
     // checking if the user is logged in
-    if (!is_logged_in()) {
-        let e = new Error('User credentials not found (user not logged in)!')
-        console.log(e)
-        throw e;
-    }
+    if (!is_logged_in())
+        throw UserNotAuthenticatedError()
+
     // sending the request:
     return await axios.post(url, {
         data: scoreData
@@ -252,7 +325,7 @@ export function is_logged_in() {
  * Returns true if the user is an admin and false if the user is not.
  * Returns null if the user is not logged in.
  */
-export function is_admin() {
+export function userIsAdmin() {
     let user = localStorage.getItem('user');
     if (user) {
         return user.is_admin;

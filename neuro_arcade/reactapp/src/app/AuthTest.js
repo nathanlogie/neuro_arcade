@@ -1,7 +1,15 @@
 import {Background} from "../components/Background";
 import {MobileBanner} from "../components/Banner";
 import styles from "../styles/App.module.css";
-import {getWithAuth, login, logout, postGameScore, signupNewUser} from "../backendRequests";
+import {
+    createNewPlayer,
+    deletePlayer,
+    getWithAuth,
+    login,
+    logout,
+    postGameScore,
+    signupNewUser
+} from "../backendRequests";
 import {useState} from "react";
 import {motion} from "framer-motion"
 
@@ -50,7 +58,23 @@ export function AuthTest() {
                         logout
                     </button>
                     <button onClick={() =>
-                        postGameScore('words', {})
+                        createNewPlayer('newGuyPlayer', false)
+                            .then((r) => {
+                                setResponse(r);
+                            })
+                    }>
+                        create newGuyPlayer
+                    </button>
+                    <button onClick={() =>
+                        deletePlayer('newGuyPlayer')
+                            .then((r) => {
+                                setResponse(r);
+                            })
+                    }>
+                        delete newGuyPlayer
+                    </button>
+                    <button onClick={() =>
+                        postGameScore('words', 'newGuyPlayer', {})
                             .then((r) => {
                                 setResponse(r);
                                 setUserInfo(localStorage.getItem("user"));
