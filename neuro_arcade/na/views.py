@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.core.files.storage import default_storage
 from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ObjectDoesNotExist
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -160,6 +161,58 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@csrf_exempt
+def post_new_player(request: Request) -> Response:
+    """
+    Requests the creation of a new player.
+    The request should be of format: {playerName: str, isAI: bool}
+    """
+    # TODO add support for PlayerTags
+    print(request.data)
+    user = request.user
+    player_name = request.data['playerName']
+    is_AI = request.data['isAI']
+    if player_name is None or is_AI is None:
+        return Response(status=400, data='Invalid data; `playerName` and `isAI` must be provided!')
+
+    player, was_created = Player.objects.get_or_create(name=player_name, is_ai=is_AI, user=user)
+    if was_created:
+        return Response(status=201, data={
+            'msg': 'Player was successfully created!',
+            'playerID': player.id
+        })
+    else:
+        return Response(status=200, data={
+            'msg': 'Player already exists!',
+            'playerID': player.id,
+        })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@csrf_exempt
+def delete_player(request: Request) -> Response:
+    """
+    Requests the deletion of a player associated with the current user.
+    The request should be of format: {playerName: str}
+    """
+    user = request.user
+    player_name = request.data['playerName']
+    if player_name is None:
+        return Response(status=400, data='Invalid data; `playerName` must be provided!')
+
+    try:
+        player = Player.objects.get(name=player_name, user=user)
+    except ObjectDoesNotExist:
+        return Response(status=404, data='Player not found!')
+
+    player.delete()
+    return Response(status=200, data='Player successfully deleted!')
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@csrf_exempt
 def post_game(request: Request) -> Response:
     # get the user with:
     # user = request.user
@@ -189,10 +242,10 @@ def sign_up(request: Request) -> Response:
         return Response(status=400, data='Invalid data.')
 
     if User.objects.filter(username=username).exists():
-        return Response(status=400, data='Username already taken.')
+        return Response(status=409, data='Username already taken.')
 
     if User.objects.filter(email=email).exists():
-        return Response(status=400, data='Email already taken.')
+        return Response(status=409, data='Email already taken.')
 
     # creating a new User in the DB:
     new_user = User.objects.create_user(username=username, email=email, password=password)
@@ -201,6 +254,7 @@ def sign_up(request: Request) -> Response:
         return Response(status=200)  # sending a success response back
     else:
         return Response(status=400, data='Error creating new user.')
+
 
 # -----------------
 #   PAGE VIEWS

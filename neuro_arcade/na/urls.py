@@ -24,4 +24,6 @@ urlpatterns = [
     path('games/<slug:game_name_slug>/add_score/', views.post_game_score, name='post_game_score'),
     path('tags', views.get_tags, name='get_tags'),
     path('get_games/', views.get_games_sorted, name='get_games'),
+    path('create_player/', views.post_new_player, name='create_player'),
+    path('delete_player/', views.delete_player, name='delete_player'),
 ]
