@@ -6,6 +6,9 @@ import {GameTagFilter} from "../components/GameTagFilter";
 import {useState} from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 
+/**
+ * Component for rendering the All Games page
+ */
 export function AllGames() {
     // name query for sorting the already fetched games
     // can be changed freely, as it only affect data displayed on the client

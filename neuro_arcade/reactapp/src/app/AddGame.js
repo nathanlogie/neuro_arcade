@@ -4,6 +4,9 @@ import {Background} from "../components/Background";
 import {Banner, MobileBanner} from "../components/Banner";
 import {Table} from "../components/Table";
 
+/**
+ * Component for rendering the Add Game page
+ */
 export function AddGame() {
     return(
         <div>
