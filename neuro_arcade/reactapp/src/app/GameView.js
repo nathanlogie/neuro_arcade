@@ -1,5 +1,5 @@
-import {useLocation, useParams} from "react-router-dom";
-import {requestGame, requestGamesSorted} from "../backendRequests";
+import {useParams} from "react-router-dom";
+import {requestGame} from "../backendRequests";
 import styles from "../styles/App.module.css";
 import {Table} from "../components/game/Table";
 import {Graph} from "../components/game/Graph";
@@ -7,7 +7,11 @@ import {useEffect, useState} from "react";
 import {Banner, MobileBanner} from "../components/Banner";
 import {Background} from "../components/Background";
 
-
+/**
+ *
+ * @returns {JSX.Element} game view page
+ * @constructor builds game view page
+ */
 export function GameView() {
     // see: https://reactrouter.com/en/main/start/concepts#data-access
     let gameSlug = useParams().game_slug;

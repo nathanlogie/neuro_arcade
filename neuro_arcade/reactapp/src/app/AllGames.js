@@ -7,7 +7,8 @@ import {useState} from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 
 /**
- * Component for rendering the All Games page
+ * @returns {JSX.Element} all games page
+ * @constructor builds all games page
  */
 export function AllGames() {
     // name query for sorting the already fetched games

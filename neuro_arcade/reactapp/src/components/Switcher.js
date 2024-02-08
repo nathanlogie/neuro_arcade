@@ -3,7 +3,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import styles from '../styles/App.module.css'
 
-const Switcher = ({data, onSwitcherChange, switcherDefault}) => {
+export default function Switcher({data, onSwitcherChange, switcherDefault}) {
 
     const [alignment, setAlignment] = React.useState(switcherDefault);
 
@@ -64,5 +64,3 @@ const Switcher = ({data, onSwitcherChange, switcherDefault}) => {
         </>
     )
 }
-
-export default Switcher

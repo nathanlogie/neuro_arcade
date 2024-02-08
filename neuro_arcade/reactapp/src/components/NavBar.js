@@ -3,6 +3,12 @@ import styles from "../styles/components/NavBar.module.css";
 import {Logo} from "./Logo";
 import React from "react";
 
+/**
+ * @param button_left {JSX.Element} button parameters
+ * @param button_right {JSX.Element} button parameters
+ * @returns {JSX.Element} navigation bar for mobile
+ * @constructor builds navigation bar
+ */
 export function NavBar({button_left, button_right}) {
 
     const navbar = [];

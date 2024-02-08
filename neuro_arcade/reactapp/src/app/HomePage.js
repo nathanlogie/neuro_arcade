@@ -10,6 +10,10 @@ import {motion} from "framer-motion"
 import {useState} from "react";
 import { IoFilter } from "react-icons/io5";
 
+/**
+ * @returns {JSX.Element} home page
+ * @constructor builds home page
+ */
 export function HomePage() {
     let [selectedTags, setSelectedTags] = useState([]);
     let forcedTags = ['featured'];

@@ -5,6 +5,14 @@ import React from "react";
 import {motion} from "framer-motion"
 import Switcher from "./Switcher";
 
+/**
+ * @param size
+ * @param button_left {JSX.Element} button parameters
+ * @param button_right {JSX.Element} button parameters
+ * @param state switcher active state parameter
+ * @returns {JSX.Element} banner
+ * @constructor builds banner
+ */
 export function Banner({size, button_left, button_right, state}) {
 
     const switcher_labels = {table_headers: [
@@ -95,6 +103,10 @@ export function Banner({size, button_left, button_right, state}) {
     }
 }
 
+/**
+ * @returns {JSX.Element} mobile banner
+ * @constructor builds mobile banner
+ */
 export function MobileBanner() {
     return (
         <div

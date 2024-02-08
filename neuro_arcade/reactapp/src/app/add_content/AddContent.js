@@ -7,7 +7,8 @@ import {Background} from "../../components/Background";
 
 
 /**
- * Component for rendering the Add Content page
+ * @returns {JSX.Element} add content page
+ * @constructor builds add content page
  */
 export function AddContent() {
     return (

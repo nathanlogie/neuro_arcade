@@ -3,6 +3,11 @@ import {postDescription} from "../../backendRequests";
 import {useState} from "react";
 import {Description} from "./Description";
 
+/**
+ * @param description from backendRequests.js
+ * @returns {JSX.Element} edit about page description form
+ * @constructor builds the edit about page description form
+ */
 export function DescriptionForm ({description}) {
 
     const [displayTextEdit, setDisplayTextEdit] = useState(false)

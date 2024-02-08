@@ -8,6 +8,10 @@ import styles from "../../styles/App.module.css";
 import {motion} from "framer-motion"
 import {NavBar} from "../../components/NavBar";
 
+/**
+ * @returns {JSX.Element} edit about page
+ * @constructor builds edit about page
+ */
 export function EditAbout() {
 
     const [aboutData, updateAboutData] = useState()

@@ -6,10 +6,12 @@ import {motion} from "framer-motion"
 import {useEffect, useState} from "react";
 import {getAboutData} from "../../backendRequests";
 import {Description} from "../../components/about/Description"
-import {Button} from "../../components/Button";
 
-
-export function AboutPage( ) {
+/**
+ * @returns {JSX.Element} about page
+ * @constructor builds about page
+ */
+export function AboutPage() {
 
     const [aboutData, updateAboutData] = useState()
 

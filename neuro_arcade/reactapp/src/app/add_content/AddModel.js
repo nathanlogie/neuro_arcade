@@ -6,7 +6,9 @@ import {MobileBanner} from "../../components/Banner";
 import {Background} from "../../components/Background";
 
 /**
- * Component for rendering the Add Model page
+ *
+ * @returns {JSX.Element} add model page
+ * @constructor builds add model page
  */
 export function AddModel() {
     return (
