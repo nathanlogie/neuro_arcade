@@ -13,6 +13,7 @@ export function SignUp(){
     const [confirmPassword, setConfirmPassword] = useState("");
     const [isPasswordMatch, setIsPasswordMatch] = useState(true)
     const [success, setSuccess] = useState(false);
+    const [invalidResponse, setInvalidResponse] = useState("")
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -29,6 +30,7 @@ export function SignUp(){
             })
             .catch (function(error){
                 console.log("AN ERROR HAS OCCURRED: " + error)
+                setInvalidResponse(error.response.data)
             })
     }
 
@@ -43,6 +45,7 @@ export function SignUp(){
                     <h1>{success ? <Navigate to={'/'}/> : "Create an Account"}</h1>
                 </div>
                 <div className={styles.Content}>
+                    <p>{ invalidResponse }</p>
                     <form onSubmit={handleSubmit}>
 
                         <p>Username: <input type={"text"} value={username} placeholder={"Username..."} onChange={(e) => setUsername(e.target.value)}/></p>

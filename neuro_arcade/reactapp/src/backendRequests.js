@@ -371,8 +371,8 @@ export async function signupNewUser(userName, email, password) {
 
     // validating the password on client side:
     // Note: this doesn't mean that the password is not also going to be checked server side.
-    if (!passwordValidator(password))
-        throw new Error('Password is not valid!')
+    // if (!passwordValidator(password))
+    //     throw new Error('Password is not valid!')
 
     // sending the request:
     return await axios.post(url, {
@@ -383,7 +383,7 @@ export async function signupNewUser(userName, email, password) {
         console.log("Signup successful!");
         return response;
     }).catch((error) => {
-        console.log(error);
+        console.log("ERROR: " + error);
         throw error;
     })
 }

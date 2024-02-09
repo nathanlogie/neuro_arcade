@@ -325,8 +325,11 @@ def sign_up(request: Request) -> Response:
     email = request.data['email']
     password = request.data['password']
     # input validation:
-    if username is None or email is None or password is None or not validate_password(password):
-        return Response(status=400, data='Invalid data.')
+    if username is "" or email is "" or password is "":
+        return Response(status=400, data='Missing Fields.')
+
+    if not validate_password(password):
+        return Response(status=400, data='Invalid Password. Password must be at least 8 characters.')
 
     if User.objects.filter(username=username).exists():
         return Response(status=409, data='Username already taken.')
