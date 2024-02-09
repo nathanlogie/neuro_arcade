@@ -398,7 +398,7 @@ export async function signupNewUser(userName, email, password) {
  *
  * @throws Error login error
  *
- * @return {Object} resposne if successful
+ * @return {Object} response if successful
  */
 export async function login(userName, email, password) {
     const url = API_ROOT + '/login/';
@@ -417,7 +417,7 @@ export async function login(userName, email, password) {
         localStorage.setItem("user", JSON.stringify(user_data));
         return response;
     }).catch((error) => {
-        console.log(error);
+        console.log("Error in backendRequest/login: " + error.response.data);
         throw error;
     });
 }

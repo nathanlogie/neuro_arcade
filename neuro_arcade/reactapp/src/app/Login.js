@@ -11,6 +11,7 @@ export function Login(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [success, setSuccess] = useState(false);
+    const [invalidMessage, setInvalidMessage] = useState("")
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -21,6 +22,7 @@ export function Login(){
             })
             .catch (function(error){
                 console.log("AN ERROR HAS OCCURRED: " + error)
+                setInvalidMessage("Invalid Details.")
             })
     }
 
@@ -35,6 +37,7 @@ export function Login(){
                     <h1>{success ? <Navigate to={'/'}/> : "Login"}</h1>
                 </div>
                 <div className={styles.Content}>
+                    <p>{ invalidMessage }</p>
                     <form onSubmit={handleSubmit}>
 
                         <p>Username: <input type={"text"} value={username} placeholder={"Username..."} onChange={(e) => setUsername(e.target.value)}/></p>

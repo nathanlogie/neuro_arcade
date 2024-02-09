@@ -42,7 +42,7 @@ export function SignUp(){
             <div className={styles.MainBlock} id={styles['small']}>
 
                 <div className={styles.Title}>
-                    <h1>{success ? <Navigate to={'/'}/> : "Create an Account"}</h1>
+                    <h1>{success ? <Navigate to={'/login'}/> : "Create an Account"}</h1>
                 </div>
                 <div className={styles.Content}>
                     <p>{ invalidResponse }</p>

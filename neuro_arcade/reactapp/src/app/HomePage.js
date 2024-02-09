@@ -47,6 +47,7 @@ export function HomePage() {
                 <div className={styles.Content} id={styles['small']}>
                     <div className={styles.Title}>
                         <Link to='/sign_up'>Create an Account</Link>
+                        <Link to='/login'>Login</Link>
                         <h1>Featured games</h1>
                         <motion.div
                             className={styles.FilterButton} onClick={() => setShow(!show)}
