@@ -24,7 +24,6 @@ from rest_framework import viewsets
 from rest_framework.authtoken import views as rest_views
 from rest_framework.authtoken.models import Token
 
-from na.models import Game, GameTag, Player
 from django.conf import settings
 
 from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer
