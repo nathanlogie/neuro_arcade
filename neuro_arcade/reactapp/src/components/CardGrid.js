@@ -47,13 +47,13 @@ function searchFilter(subject, textQuery, tagQuery) {
  * Component to render a grid of subjects (as subjectCards)
  *
  * @param {Object} props
- * @param {string} props.nameQuery - string subject names/descriptions must contain
+ * @param {string} props.textQuery - string subject names/descriptions must contain
  * @param {string[]} props.tagQuery - slugs of tags which subjects must have applied
  * @param {number} props.num - max number of subjects to show
  * @param {string} props.linkPrefix - link prefix passed to Card
  * @param {string} props.id - element id for styling
  */
-export function CardGrid({nameQuery='', tagQuery=[], num=0, linkPrefix, id, type}) {
+export function CardGrid({textQuery='', tagQuery=[], num=0, linkPrefix, id, type}) {
     let [isLoading, setLoading] = useState(true);
     let [subjects, setSubjects] = useState([]);
 
@@ -79,7 +79,7 @@ export function CardGrid({nameQuery='', tagQuery=[], num=0, linkPrefix, id, type
         )
     } else {
         // Select subset of names to display
-        let shownCards = subjects.filter((subject) => searchFilter(subject, nameQuery, tagQuery));
+        let shownCards = subjects.filter((subject) => searchFilter(subject, textQuery, tagQuery));
         if (num > 0) {
             shownCards = shownCards.slice(0, num);
         }
@@ -87,7 +87,7 @@ export function CardGrid({nameQuery='', tagQuery=[], num=0, linkPrefix, id, type
         // Render a card for each selected subject
         return (
             <div className={styles.CardGrid} id={styles[id]}>
-                {shownCards.filter((subject) => searchFilter(subject, nameQuery, tagQuery))
+                {shownCards.filter((subject) => searchFilter(subject, textQuery, tagQuery))
                     .map((subject, index) => {
                         return <Card
                             key={index}

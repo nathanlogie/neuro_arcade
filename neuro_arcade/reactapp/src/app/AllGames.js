@@ -13,7 +13,7 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 export function AllGames() {
     // name query for sorting the already fetched games
     // can be changed freely, as it only affect data displayed on the client
-    let [nameQuery, setNameQuery] = useState('');
+    let [textQuery, setTextQuery] = useState('');
     let [selectedTags, setSelectedTags] = useState([]);
 
     return (
@@ -24,7 +24,7 @@ export function AllGames() {
             <div className={styles.MainBlock} id={styles['small']}>
                 <div className={styles.Side}>
                     <div className={styles.Search}>
-                        <input onChange={e => setNameQuery(e.target.value)} placeholder="search..."/>
+                        <input onChange={e => setTextQuery(e.target.value)} placeholder="search..."/>
                         <div className={styles.SearchIcon}>
                             <FaMagnifyingGlass />
                         </div>
@@ -33,7 +33,7 @@ export function AllGames() {
                 </div>
                 <div className={styles.Content} id={styles['AllGames']}>
                     <h1>All Games</h1>
-                    <CardGrid type={'game'} nameQuery={nameQuery} tagQuery={selectedTags} linkPrefix={''} id={'AppGrid'} />
+                    <CardGrid type={'game'} textQuery={textQuery} tagQuery={selectedTags} linkPrefix={''} id={'AppGrid'} />
                 </div>
             </div>
         </div>
