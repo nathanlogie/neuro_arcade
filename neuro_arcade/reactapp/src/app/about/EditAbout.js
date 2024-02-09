@@ -2,7 +2,6 @@ import {useState, useEffect} from 'react';
 import {DescriptionForm} from "../../components/about/DescriptionForm"
 import {PublicationsForm} from "../../components/about/PublicationsForm"
 import {getAboutData} from "../../backendRequests";
-import {Background} from "../../components/Background";
 import {Banner, MobileBanner} from "../../components/Banner";
 import styles from "../../styles/App.module.css";
 import {motion} from "framer-motion"

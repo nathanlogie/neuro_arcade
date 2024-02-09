@@ -4,7 +4,6 @@ import styles from '../styles/App.module.css';
 import {NavBar} from "../components/NavBar";
 import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
-import {Background} from "../components/Background";
 import {TagFilter} from "../components/TagFilter";
 import {motion} from "framer-motion"
 import {useState} from "react";

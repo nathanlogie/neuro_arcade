@@ -2,7 +2,6 @@ import {Banner} from "../../components/Banner";
 import styles from '../../styles/App.module.css';
 import {NavBar} from "../../components/NavBar";
 import {MobileBanner} from "../../components/Banner";
-import {Background} from "../../components/Background";
 import {ModelForm} from "../../components/add_content/ModelForm";
 import {motion} from "framer-motion";
 

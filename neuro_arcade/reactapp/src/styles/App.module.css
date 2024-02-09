@@ -53,6 +53,10 @@
                 line-height: 2em;
             }
         }
+        .Header {
+            z-index: 1;
+            left: 2em;
+        }
     }
     .Content#small {
         width: 40em;

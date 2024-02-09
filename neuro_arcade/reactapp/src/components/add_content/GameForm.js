@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
-import axios from 'axios'
+import axios from 'axios';
+import styles from '../../styles/components/Form.module.css';
 
 //Should be synced with models.py
 let MAX_NAME_LENGTH = 64
@@ -109,7 +110,7 @@ export function GameForm() {
     };
 
     return (
-        <form className="form" onSubmit={handleSubmit(onSubmit)}>
+        <form className={styles.Form} onSubmit={handleSubmit(onSubmit)}>
             <h3>Name</h3>
             <input {...register("name", {
                 required: "Name is required",

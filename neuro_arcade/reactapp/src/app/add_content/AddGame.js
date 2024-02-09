@@ -1,9 +1,9 @@
 import {GameForm} from "../../components/add_content/GameForm";
 import styles from "../../styles/App.module.css";
-import {Background} from "../../components/Background";
 import {Banner, MobileBanner} from "../../components/Banner";
 import {NavBar} from "../../components/NavBar";
 import {motion} from "framer-motion";
+import {IoFilter} from "react-icons/io5";
 
 /**
  * @returns {JSX.Element} add game page
@@ -39,8 +39,11 @@ export function AddGame() {
                 animate={{opacity: 1}}
                 exit={{opacity: 0}}
             >
-                <div className={styles.Content}>
-                    <GameForm />
+                <div className={styles.Content} id={styles['small']}>
+                    <div className={styles.Title}>
+                        <h1 className={styles.Header}>Add game</h1>
+                    </div>
+                    <GameForm/>
                 </div>
             </motion.div>
         </>
