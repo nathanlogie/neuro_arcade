@@ -412,7 +412,7 @@ export async function login(userName, email, password) {
             token: response.data.token,
             name: userName,
             email: email,
-            is_admin: response.data.is_admin === true
+            is_admin: response.data.is_admin
         };
         localStorage.setItem("user", JSON.stringify(user_data));
         return response;

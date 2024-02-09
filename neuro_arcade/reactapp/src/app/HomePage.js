@@ -10,6 +10,9 @@ import {motion} from "framer-motion"
 import {useState} from "react";
 import { IoFilter } from "react-icons/io5";
 import {Link} from "react-router-dom";
+import {logout} from "../backendRequests";
+import {userIsAdmin} from "../backendRequests";
+import {is_logged_in} from "../backendRequests";
 
 /**
  * @returns {JSX.Element} home page
@@ -21,13 +24,30 @@ export function HomePage() {
 
     const [show, setShow] = useState(false);
     const [hover, setHover] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(is_logged_in)
+
+    let aboutLink = '/about';
+    if (is_logged_in()){
+        if (userIsAdmin()){
+            aboutLink = '/edit_about';
+        }
+    }
+
+    function onLogout(e){
+        e.preventDefault();
+        logout();
+        setIsLoggedIn(false);
+    }
+
+
+
 
     return (
         <div onClick={() => show && !hover ? setShow(false) : null}>
             <Background />
             <Banner size={'big'} button_left={{
                 name: 'about',
-                link: 'about',
+                link: aboutLink,
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{
@@ -45,9 +65,13 @@ export function HomePage() {
                 exit={{opacity: 0}}
             >
                 <div className={styles.Content} id={styles['small']}>
+                    { isLoggedIn ? <button onClick={onLogout}>Logout</button> :
+                            <>
+                                <Link to='/sign_up'>Create an Account</Link>
+                                <Link to='/login'>Login</Link>
+                            </>
+                        }
                     <div className={styles.Title}>
-                        <Link to='/sign_up'>Create an Account</Link>
-                        <Link to='/login'>Login</Link>
                         <h1>Featured games</h1>
                         <motion.div
                             className={styles.FilterButton} onClick={() => setShow(!show)}
