@@ -2,12 +2,21 @@ import os
 
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.forms import BaseFormSet, formset_factory
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.core.files.storage import default_storage
+from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ObjectDoesNotExist
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework import viewsets
+from rest_framework.authtoken import views as rest_views
+from rest_framework.authtoken.models import Token
 
 from na.models import Game, GameTag, Player
 from django.conf import settings
@@ -94,26 +103,36 @@ def get_games_sorted(request: Request) -> Response:
     return Response([game.serialize() for game in game_list])
 
 
-# TODO maybe you should be logged in for this request
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@csrf_exempt
 def post_game_score(request: Request, game_name_slug: str) -> Response:
     """
     Post Score for a game. The format for the body of the Post request is as follows:
 
     For every score type header, the request needs to have a field called the same as the score header.
-    Additionally, the request needs to specify the id of the player responsible for the score.
+    Additionally, the request needs to specify the player responsible for the score by including either
+    the id ('PlayerID') or name ('PlayerName') of the player. Keep in mind that the player needs to be
+    associated with the current authenticated user, or the request will be refused.
 
-    Example: for a score type with a single header called 'Points' that has an int value,
-    the request needs to look like: {'played':<player.id>, 'Points': <value>}
+    Example: for a score type with a single header called 'Points' then the request needs to have
+    a field called 'Points' and a field either called 'PlayerID' or 'PlayerName'.
     """
-    # todo: this needs to be changed for the new authentication
-    # checking that the Post request contains the player field
-    if request.user.get('player') is None:
-        return Response(status=400, data={'description': 'No player field was provided.'})
+
+    # checking that the Post request contains a player field
+    # either 'PlayerID' or 'PlayerName'
+    playerID = request.data.get('PlayerID', None)
+    playerName = request.data.get('PlayerName', None)
+    if playerID is not None:
+        player = Player.objects.get(id=playerID, user=request.user)
+    elif playerName is not None:
+        player = Player.objects.get(name=playerName, user=request.user)
+    else:
+        return Response(status=400, data={
+            'description': 'No player field provided, or provided player is not associated with this your user.'
+        })
 
     game = get_object_or_404(Game, slug=game_name_slug)
-    player = get_object_or_404(Player, id=request.data.get('player'))
     added_score = {}
     # for score type header in game
     for header in game.score_type['headers']:
@@ -213,6 +232,78 @@ def post_about_data(request) -> Response:
         return Response(status=400)
 
 
+@permission_classes([IsAuthenticated])
+@csrf_exempt
+def post_new_player(request: Request) -> Response:
+    """
+    Requests the creation of a new player.
+    The request should be of format: {playerName: str, isAI: bool}
+    """
+    # TODO add support for PlayerTags
+    print(request.data)
+    user = request.user
+    player_name = request.data['playerName']
+    is_AI = request.data['isAI']
+    if player_name is None or is_AI is None:
+        return Response(status=400, data='Invalid data; `playerName` and `isAI` must be provided!')
+
+    player, was_created = Player.objects.get_or_create(name=player_name, is_ai=is_AI, user=user)
+    if was_created:
+        return Response(status=201, data={
+            'msg': 'Player was successfully created!',
+            'playerID': player.id
+        })
+    else:
+        return Response(status=200, data={
+            'msg': 'Player already exists!',
+            'playerID': player.id,
+        })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@csrf_exempt
+def delete_player(request: Request) -> Response:
+    """
+    Requests the deletion of a player associated with the current user.
+    The request should be of format: {playerName: str}
+    """
+    user = request.user
+    player_name = request.data['playerName']
+    if player_name is None:
+        return Response(status=400, data='Invalid data; `playerName` must be provided!')
+
+    try:
+        player = Player.objects.get(name=player_name, user=user)
+    except ObjectDoesNotExist:
+        return Response(status=404, data='Player not found!')
+
+    player.delete()
+    return Response(status=200, data='Player successfully deleted!')
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@csrf_exempt
+def post_game(request: Request) -> Response:
+    # get the user with:
+    # user = request.user
+    pass
+
+
+@csrf_exempt  # TODO THIS IS UNSECURE; DO REMOVE
+def login(request: HttpRequest) -> Response:
+    if request.method == 'POST':
+        response = rest_views.obtain_auth_token(request)
+
+        # sending back if the user is admin or not
+        user_id = Token.objects.get(key=response.data['token']).user_id
+        user = User.objects.get(id=user_id)
+        response.data['is_admin'] = user.is_superuser
+
+        return response
+
+
 @api_view(['POST'])
 def sign_up(request: Request) -> Response:
     username = request.data['username']
@@ -221,6 +312,12 @@ def sign_up(request: Request) -> Response:
     # input validation:
     if username is None or email is None or password is None or not validate_password(password):
         return Response(status=400, data='Invalid data.')
+
+    if User.objects.filter(username=username).exists():
+        return Response(status=409, data='Username already taken.')
+
+    if User.objects.filter(email=email).exists():
+        return Response(status=409, data='Email already taken.')
 
     # creating a new User in the DB:
     new_user = User.objects.create_user(username=username, email=email, password=password)
@@ -231,13 +328,22 @@ def sign_up(request: Request) -> Response:
         return Response(status=400, data='Error creating new user.')
 
 
+# -----------------
+#   PAGE VIEWS
+# -----------------
+def index(request: HttpRequest) -> HttpResponse:
+    return render(request, 'index.html')
+
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
+
 
 class GameTagViewSet(viewsets.ModelViewSet):
     queryset = GameTag.objects.all()
