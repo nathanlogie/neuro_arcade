@@ -6,8 +6,9 @@ import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {Background} from "../components/Background";
 import {TagFilter} from "../components/TagFilter";
+import {requestGameTag} from "../backendRequests";
 import {motion} from "framer-motion"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import { IoFilter } from "react-icons/io5";
 
 /**
@@ -16,10 +17,26 @@ import { IoFilter } from "react-icons/io5";
  */
 export function HomePage() {
     let [selectedTags, setSelectedTags] = useState([]);
-    let forcedTags = ['featured'];
+    let [forcedTags, setForcedTags] = useState([]);
+    let [loading, setLoading] = useState(true);
 
     const [show, setShow] = useState(false);
     const [hover, setHover] = useState(false);
+
+    // Fetch the ID of the featured game tag
+    useEffect(() => {
+        requestGameTag('featured')
+            .then((featured) => {
+                setForcedTags([featured.id])
+                setLoading(false);
+            })
+    }, [])
+
+    if (loading) {
+        return <>
+            Loading...
+        </>
+    }
 
     return (
         <div onClick={() => show && !hover ? setShow(false) : null}>

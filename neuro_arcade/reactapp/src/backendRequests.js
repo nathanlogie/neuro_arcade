@@ -131,6 +131,26 @@ export async function requestGame(gameName) {
 }
 
 /**
+ * Requests the data associated with a game tag.
+ *
+ * @param {string} slug - slug of the tag name
+ *
+ * @return {GameTag} response data
+ *
+ * @throws Error when the request is rejected.
+ */
+export async function requestGameTag(slug) {
+    const url = API_ROOT + '/game_tag/' + slug;
+    try {
+        let response = await axios.get(url);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+/**
  * Requests a list of all available GameTags.
  * 
  * @return {GameTag[]} response data
