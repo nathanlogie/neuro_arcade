@@ -46,6 +46,7 @@ export function HomePage() {
             >
                 <div className={styles.Content} id={styles['small']}>
                     <div className={styles.Title}>
+                        <Link to='/sign_up'>Create an Account</Link>
                         <h1>Featured games</h1>
                         <motion.div
                             className={styles.FilterButton} onClick={() => setShow(!show)}
@@ -59,9 +60,6 @@ export function HomePage() {
                                onMouseOut={() => setHover(false)}
                                type={'game'}
                     />
-                <div className={styles.Content}>
-                    <Link to={"sign_up"}>Sign Up</Link>
-                    <h1>Featured games</h1>
                     {/*
                         The featured tag is always applied, so that's put in the query for server-side
                         filtering
@@ -94,9 +92,9 @@ export function HomePage() {
                     direction: 'right'
                 }}
                 />
-                </div>
-                <div className={styles.MobileBannerBuffer} />
+                <div className={styles.MobileBannerBuffer}/>
             </motion.div>
         </div>
+
     );
 }

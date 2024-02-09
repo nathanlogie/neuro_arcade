@@ -10,10 +10,18 @@ export function SignUp(){
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [isPasswordMatch, setIsPasswordMatch] = useState(true)
     const [success, setSuccess] = useState(false);
 
     async function handleSubmit(e) {
         e.preventDefault();
+
+        if (password!==confirmPassword){
+            setIsPasswordMatch(false)
+            return;
+        }
+        setIsPasswordMatch(true)
 
         await signupNewUser(username, email, password)
             .then (function() {
@@ -27,20 +35,28 @@ export function SignUp(){
     return (
         <>
             <Background/>
-            <Banner size={'small'}/>
-            <MobileBanner size={'small'} />
+            <Banner size={'big'}/>
+            <MobileBanner size={'big'} />
             <div className={styles.MainBlock} id={styles['small']}>
 
-                <h1>{success ? <Navigate to={'/'}/> : "Create an Account"}</h1>
-                <form onSubmit={handleSubmit}>
+                <div className={styles.Title}>
+                    <h1>{success ? <Navigate to={'/'}/> : "Create an Account"}</h1>
+                </div>
+                <div className={styles.Content}>
+                    <form onSubmit={handleSubmit}>
 
-                    <label>Username: <input type={"text"} value={username} placeholder={"Username..."} onChange={(e) => setUsername(e.target.value)}/></label>
-                    <label>Email: <input type={"email"} value={email} placeholder={"Email..."} onChange={(e) => setEmail(e.target.value)}/></label>
-                    <label>Password: <input type={"password"} value={password} placeholder={"Password..."} onChange={(e) => setPassword(e.target.value)}/></label>
+                        <p>Username: <input type={"text"} value={username} placeholder={"Username..."} onChange={(e) => setUsername(e.target.value)}/></p>
+                        <p>Email: <input type={"email"} value={email} placeholder={"Email..."} onChange={(e) => setEmail(e.target.value)}/></p>
 
-                    <button type={"submit"}>CREATE ACCOUNT</button>
+                        { isPasswordMatch ? null : "Passwords don't match" }
+                        <p>Password: <input type={"password"} value={password} placeholder={"Password..."} onChange={(e) => setPassword(e.target.value)}/></p>
+                        <p>Confirm Password: <input type={"password"} value={confirmPassword} placeholder={"Confirm Password..."} onChange={(e) => setConfirmPassword(e.target.value)}/></p>
 
-                </form>
+                        <button type={"submit"}>CREATE ACCOUNT</button>
+
+                    </form>
+
+                </div>
 
             </div>
         </>
