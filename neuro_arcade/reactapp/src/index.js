@@ -12,9 +12,9 @@ import {AllGames} from "./app/AllGames";
 import {GameView} from "./app/GameView";
 import {EditAbout} from "./app/about/EditAbout";
 import {SignUp} from "./app/SignUp";
-import { EditAbout } from "./app/EditAbout";
 import {AnimatePresence} from 'framer-motion'
 import {AuthTest} from "./app/AuthTest";
+import {DevSupport} from "@react-buddy/ide-toolbox";
 
 const router = createBrowserRouter([
     {
@@ -50,6 +50,14 @@ const router = createBrowserRouter([
     {
         path: "all_games",
         element: <AllGames/>
+    },
+    {
+        path: "add_game",
+        element: <AddGame/>
+    },
+    {
+        path: "sign_up",
+        element: <SignUp/>
     },
     // This is here for testing purposes
     // TODO: remove this when the login/signup pages have been made

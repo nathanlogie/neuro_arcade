@@ -7,6 +7,25 @@ from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import get_object_or_404
+from django.forms import BaseFormSet, formset_factory
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.core.files.storage import default_storage
+from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ObjectDoesNotExist
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.request import Request
+from rest_framework import viewsets
+from rest_framework.authtoken import views as rest_views
+from rest_framework.authtoken.models import Token
+
+from na.models import Game, GameTag, Player
+from django.conf import settings
 
 from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer
 from rest_framework import viewsets
@@ -324,13 +343,22 @@ def sign_up(request: Request) -> Response:
         return Response(status=400, data='Error creating new user.')
 
 
+# -----------------
+#   PAGE VIEWS
+# -----------------
+def index(request: HttpRequest) -> HttpResponse:
+    return render(request, 'index.html')
+
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
+
 
 class GameTagViewSet(viewsets.ModelViewSet):
     queryset = GameTag.objects.all()
