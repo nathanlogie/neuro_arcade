@@ -149,6 +149,24 @@ export async function requestGameTags() {
 }
 
 /**
+ * Requests a list of all available PlayerTags.
+ * 
+ * @return {PlayerTag[]} response data
+ *
+ * @throws Error when the request is rejected.
+ */
+export async function requestPlayerTags() {
+    const url = API_ROOT + '/api/playerTag/';
+    try {
+        let response = await axios.get(url);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+/**
  * Requests a sorted list of games.
  *
  * @return {Game[]} response data

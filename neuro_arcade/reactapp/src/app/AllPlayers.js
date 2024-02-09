@@ -29,7 +29,7 @@ export function AllPlayers() {
                             <FaMagnifyingGlass />
                         </div>
                     </div>
-                    <TagFilter onTagChange={setSelectedTags} type={'game'} />
+                    <TagFilter onTagChange={setSelectedTags} type={'player'} />
                 </div>
                 <div className={styles.Content} id={styles['AllGames']}>
                     <h1>All Players</h1>

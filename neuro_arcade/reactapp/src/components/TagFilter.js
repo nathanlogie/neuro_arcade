@@ -1,4 +1,4 @@
-import {requestGameTags} from "../backendRequests";
+import {requestGameTags, requestPlayerTags} from "../backendRequests";
 import {useEffect, useState} from "react";
 import styles from '../styles/components/TagFilter.module.css';
 
@@ -36,18 +36,20 @@ export function TagFilter({onTagChange, excluded=[], id, onMouseOver, onMouseOut
     let [ticks, setTicks] = useState([]);
 
     // Fetch tags from server on initial run
+    var tagGetter;
     if (type === 'game') {
-        useEffect(() => {
-            requestGameTags()
-                .then(tags => {
-                    setTags(tags.filter((tag) => !excluded.includes(tag.id)));
-                    setTicks(new Array(tags.length).fill(false));
-                    setLoading(false);
-                })
-        }, []);
+        tagGetter = requestGameTags;
     } else {
-        // TODO request player tags
+        tagGetter = requestPlayerTags;
     }
+    useEffect(() => {
+        tagGetter()
+            .then(tags => {
+                setTags(tags.filter((tag) => !excluded.includes(tag.id)));
+                setTicks(new Array(tags.length).fill(false));
+                setLoading(false);
+            })
+    }, []);
 
 
     function toggleTick(index) {
