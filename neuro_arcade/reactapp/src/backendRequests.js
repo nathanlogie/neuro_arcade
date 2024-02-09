@@ -54,7 +54,7 @@ const API_ROOT = "http://localhost:8000"
  * @property {boolean} is_ai
  * @property {string} user
  * @property {string} description
- * @property {string[]} player_tags
+ * @property {string[]} tags
  */
 
 /**

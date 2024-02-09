@@ -376,56 +376,56 @@ players = [
         'is_ai': False,
         'user': 'sloth111',
         'description': 'human player that is owned by sloth111',
-        'player_tags': ["High Puzzle Performance", "Human Player", "High Reflex Performance"],
+        'tags': ["High Puzzle Performance", "Human Player", "High Reflex Performance"],
     },
     {
         'name': 'Leonard Garry',
         'is_ai': False,
         'user': 'fox789',
         'description': 'human player that is owned by fox789',
-        'player_tags': ["High Memory Performance", "Human Player", "High Timing Performance"],
+        'tags': ["High Memory Performance", "Human Player", "High Timing Performance"],
     },
     {
         'name': 'Shelly Giles',
         'is_ai': False,
         'user': 'rhino888',
         'description': 'human player that is owned by rhino888',
-        'player_tags': ["High Problem Solving Performance", "Human Player", "High Strategic Performance"],
+        'tags': ["High Problem Solving Performance", "Human Player", "High Strategic Performance"],
     },
     {
         'name': 'Billy Bennett',
         'is_ai': False,
         'user': 'bear234',
         'description': 'human player that is owned by bear234',
-        'player_tags': ["High Problem Pattern Recognition Performance", "Human Player", "High Judgement Performance"],
+        'tags': ["High Problem Pattern Recognition Performance", "Human Player", "High Judgement Performance"],
     },
     {
         'name': 'Zebra Bot',
         'is_ai': True,
         'user': 'zebra777',
         'description': 'AI player that is owned by zebra777',
-        'player_tags': ["High Puzzle Performance", "AI", "High Reflex Performance"],
+        'tags': ["High Puzzle Performance", "AI", "High Reflex Performance"],
     },
     {
         'name': 'Monkey Bot',
         'is_ai': True,
         'user': 'monkey555',
         'description': 'AI player that is owned by monkey555',
-        'player_tags': ["High Memory Performance", "AI", "High Timing Performance"],
+        'tags': ["High Memory Performance", "AI", "High Timing Performance"],
     },
     {
         'name': 'Tiger Bot',
         'is_ai': True,
         'user': 'tiger321',
         'description': 'AI player that is owned by tiger321',
-        'player_tags': ["High Problem Solving Performance", "Human Player", "High Strategic Performance"],
+        'tags': ["High Problem Solving Performance", "Human Player", "High Strategic Performance"],
     },
     {
         'name': 'Elephant Bot',
         'is_ai': True,
         'user': 'elephant456',
         'description': 'AI player that is owned by elephant456',
-        'player_tags': ["High Problem Pattern Recognition Performance", "Human Player", "High Judgement Performance"],
+        'tags': ["High Problem Pattern Recognition Performance", "Human Player", "High Judgement Performance"],
     },
 ]
 
@@ -765,14 +765,14 @@ def add_player(data: Dict):
     player.user = User.objects.get(username=data['user'])
     player.description = data['description']
 
-    for tag_name in data.get('player_tags', []):
+    for tag_name in data.get('tags', []):
         try:
             tag = PlayerTag.objects.get(name=tag_name)
         except PlayerTag.DoesNotExist:
             # Create the tag if it doesn't exist
             tag = add_player_tag({'name': tag_name, 'description': 'Default description'})
 
-        player.player_tags.add(tag)
+        player.tags.add(tag)
 
     player.save()
 

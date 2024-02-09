@@ -169,7 +169,7 @@ class Player(models.Model):
     is_ai = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     description = models.TextField(max_length=MAX_PLAYER_DESCRIPTION_LENGTH, default='')
-    player_tags = models.ManyToManyField(PlayerTag, blank=True)
+    tags = models.ManyToManyField(PlayerTag, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)

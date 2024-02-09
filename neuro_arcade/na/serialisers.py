@@ -25,4 +25,4 @@ class PlayerTagSerializer(serializers.HyperlinkedModelSerializer):
 class PlayerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Player
-        fields = ['url', 'name', 'slug', 'is_ai', 'user', 'description', 'player_tags']
+        fields = ['url', 'name', 'slug', 'is_ai', 'user', 'description', 'tags']
