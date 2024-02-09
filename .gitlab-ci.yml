@@ -1,4 +1,4 @@
-image: python:latest
+image: python:latest, npm:latest
 
 stages:          # List of stages for jobs, and their order of execution
   - build
