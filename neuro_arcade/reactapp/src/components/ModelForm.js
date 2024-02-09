@@ -1,5 +1,5 @@
-import { useForm } from 'react-hook-form';
-import React, { useState } from 'react';
+import {useForm} from 'react-hook-form';
+import React, {useState} from 'react';
 import axios from 'axios';
 
 //Should be synced up to models
@@ -10,7 +10,7 @@ export function ModelForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: {errors, isSubmitting},
     setError,
     reset
   } = useForm();
@@ -40,20 +40,20 @@ export function ModelForm() {
       method: 'post',
       url: 'http://127.0.0.1:8000/api/players/',
       data: formData,
-      headers: { 'Content-Type': 'multipart/form-data' }
+      headers: {'Content-Type': 'multipart/form-data'}
     })
       .then(function (response) {
         console.log(response);
         reset();
-        setError('root', { message: 'Form Submitted Successfully' });
+        setError('root', {message: 'Form Submitted Successfully'});
       })
       .catch(function (response) {
         console.log(response);
         if (!response) {
-          setError('root', { message: 'No response from server' });
+          setError('root', {message: 'No response from server'});
         } else {
           if (response.response.data.includes('IntegrityError')) {
-            setError('root', { message: 'A game with that name already exists!' });
+            setError('root', {message: 'A game with that name already exists!'});
           } else {
             setError('root', {
               message: `Something went wrong... ${response.response.data}`

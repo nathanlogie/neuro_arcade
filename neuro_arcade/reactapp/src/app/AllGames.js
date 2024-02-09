@@ -1,10 +1,10 @@
-import { Banner, MobileBanner } from '../components/Banner';
-import { Background } from '../components/Background';
+import {Banner, MobileBanner} from '../components/Banner';
+import {Background} from '../components/Background';
 import styles from '../styles/App.module.css';
-import { GameGrid } from '../components/game/GameGrid';
-import { GameTagFilter } from '../components/game/GameTagFilter';
-import React, { useState } from 'react';
-import { FaMagnifyingGlass } from 'react-icons/fa6';
+import {GameGrid} from '../components/game/GameGrid';
+import {GameTagFilter} from '../components/game/GameTagFilter';
+import React, {useState} from 'react';
+import {FaMagnifyingGlass} from 'react-icons/fa6';
 
 /**
  * @returns {JSX.Element} all games page

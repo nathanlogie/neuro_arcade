@@ -1,6 +1,6 @@
 {
   "arrowParens": "always",
-  "bracketSpacing": true,
+  "bracketSpacing": false,
   "embeddedLanguageFormatting": "auto",
   "htmlWhitespaceSensitivity": "css",
   "insertPragma": false,

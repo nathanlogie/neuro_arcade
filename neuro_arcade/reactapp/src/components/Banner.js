@@ -1,9 +1,9 @@
 import styles from '../styles/components/Banner.module.css';
-import { Button } from './Button';
-import { Logo } from './Logo';
+import {Button} from './Button';
+import {Logo} from './Logo';
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Switcher } from './Switcher';
+import {motion} from 'framer-motion';
+import {Switcher} from './Switcher';
 
 /**
  * @param size
@@ -13,8 +13,8 @@ import { Switcher } from './Switcher';
  * @returns {JSX.Element} banner
  * @constructor builds banner
  */
-export function Banner({ size, button_left, button_right, state }) {
-  const switcher_labels = { table_headers: [{ name: 'Games' }, { name: 'Players' }] };
+export function Banner({size, button_left, button_right, state}) {
+  const switcher_labels = {table_headers: [{name: 'Games'}, {name: 'Players'}]};
 
   const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(state);
 
@@ -44,7 +44,7 @@ export function Banner({ size, button_left, button_right, state }) {
   if (size === 'big') {
     return (
       <div className={styles.Banner} id={styles[size]}>
-        <motion.div className={styles.AnimationContainer} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+        <motion.div className={styles.AnimationContainer} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
           {banner}
         </motion.div>
       </div>
@@ -52,7 +52,7 @@ export function Banner({ size, button_left, button_right, state }) {
   } else {
     return (
       <div className={styles.Banner} id={styles['small']}>
-        <motion.div className={styles.AnimationContainer} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+        <motion.div className={styles.AnimationContainer} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
           <Button name={'back'} link={'../'} direction={'up'} orientation={'left'} />
           <Logo size={size} />
           <div className={styles.TabSwitcher}>
@@ -71,7 +71,7 @@ export function Banner({ size, button_left, button_right, state }) {
 export function MobileBanner() {
   return (
     <div className={styles.MobileBanner} id={styles['small']}>
-      <motion.div className={styles.AnimationContainer} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <motion.div className={styles.AnimationContainer} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
         <Logo size={'small'} />
       </motion.div>
     </div>

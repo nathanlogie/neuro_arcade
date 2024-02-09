@@ -1,14 +1,14 @@
-import { Banner } from '../components/Banner';
-import { GameGrid } from '../components/game/GameGrid';
+import {Banner} from '../components/Banner';
+import {GameGrid} from '../components/game/GameGrid';
 import styles from '../styles/App.module.css';
-import { NavBar } from '../components/NavBar';
-import { MobileBanner } from '../components/Banner';
-import { Button } from '../components/Button';
-import { Background } from '../components/Background';
-import { GameTagFilter } from '../components/game/GameTagFilter';
-import { motion } from 'framer-motion';
-import React, { useState } from 'react';
-import { IoFilter } from 'react-icons/io5';
+import {NavBar} from '../components/NavBar';
+import {MobileBanner} from '../components/Banner';
+import {Button} from '../components/Button';
+import {Background} from '../components/Background';
+import {GameTagFilter} from '../components/game/GameTagFilter';
+import {motion} from 'framer-motion';
+import React, {useState} from 'react';
+import {IoFilter} from 'react-icons/io5';
 
 /**
  * @returns {JSX.Element} home page
@@ -40,16 +40,11 @@ export function HomePage() {
         }}
       />
       <MobileBanner />
-      <motion.div className={styles.MainBlock} id={styles['big']} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <motion.div className={styles.MainBlock} id={styles['big']} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
         <div className={styles.Content} id={styles['small']}>
           <div className={styles.Title}>
             <h1>Featured games</h1>
-            <motion.div
-              className={styles.FilterButton}
-              onClick={() => setShow(!show)}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
+            <motion.div className={styles.FilterButton} onClick={() => setShow(!show)} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
               <IoFilter />
             </motion.div>
           </div>

@@ -1,11 +1,11 @@
-import { useParams } from 'react-router-dom';
-import { requestGame } from '../backendRequests';
+import {useParams} from 'react-router-dom';
+import {requestGame} from '../backendRequests';
 import styles from '../styles/App.module.css';
-import { Table } from '../components/game/Table';
-import { Graph } from '../components/game/Graph';
-import React, { useEffect, useState } from 'react';
-import { Banner, MobileBanner } from '../components/Banner';
-import { Background } from '../components/Background';
+import {Table} from '../components/game/Table';
+import {Graph} from '../components/game/Graph';
+import React, {useEffect, useState} from 'react';
+import {Banner, MobileBanner} from '../components/Banner';
+import {Background} from '../components/Background';
 
 /**
  *
