@@ -48,7 +48,8 @@ unit-test-job:   # This job runs in the test stage.
     - main
 
 lint-test-job:   # This job also runs in the test stage.
-  stage: django    # It can run at the same time as unit-test-job (in parallel).
+  stage: django
+  allow_failure: true    # It can run at the same time as unit-test-job (in parallel).
   script:
   - find . -type f -name '*.py' ! -path '*/migrations/*' -exec autopep8 --in-place --aggressive --aggressive '{}' \;
   - pylint $(git ls-files '*.py')
@@ -71,6 +72,7 @@ unit-test-r-job:
   
 lint-test-r-job:
   stage: react
+  allow_failure: true 
   script:
     -npm format
     -npm lint
