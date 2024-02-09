@@ -227,6 +227,7 @@ def post_about_data(request) -> Response:
         return Response(status=400)
 
 
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 @csrf_exempt
 def post_new_player(request: Request) -> Response:

@@ -251,7 +251,6 @@ export async function postGameScore(gameName, playerIdentification, scoreData) {
  * @returns {AboutData} response if successful
  */
 export async function getAboutData(){
-
     try {
         let response = await axios.get(API_ROOT + '/about/')
         return response.data
@@ -260,7 +259,6 @@ export async function getAboutData(){
         console.log("ERROR WHILE FETCHING ABOUT DATA: " + err)
         throw err
     }
-
 }
 
 /**
@@ -283,7 +281,6 @@ export function postDescription(description){
             console.error("ERROR OCCURRED DURING DESCRIPTION POST:\n" + error);
             throw(error)
         });
-
 }
 
 /**

@@ -18,7 +18,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
-DJANGO_TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
+# DJANGO_TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
 # React paths:
 REACT_DIR = os.path.join(BASE_DIR, 'reactapp')
