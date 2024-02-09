@@ -363,7 +363,11 @@ function passwordValidator(password) {
  *  If the email or username was already taken the status will be 409.
  *  An error can also be thrown if the password is invalid.
  *
- *  @return {Object} response if successful
+ * @return {Object} response if successful
+ *
+ * @throws Error when the request is rejected.
+ *  If the email or username was already taken the status will be 409.
+ *  An error can also be thrown if the password is invalid.
  */
 export async function signupNewUser(userName, email, password) {
     const url = API_ROOT + '/sign_up/';
