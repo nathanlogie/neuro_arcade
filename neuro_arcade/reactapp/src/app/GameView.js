@@ -1,13 +1,17 @@
-import {useLocation, useParams} from "react-router-dom";
-import {requestGame, requestGamesSorted} from "../backendRequests";
+import {useParams} from "react-router-dom";
+import {requestGame} from "../backendRequests";
 import styles from "../styles/App.module.css";
-import {Table} from "../components/Table";
-import {Graph} from "../components/Graph";
+import {Table} from "../components/game/Table";
+import {Graph} from "../components/game/Graph";
 import {useEffect, useState} from "react";
 import {Banner, MobileBanner} from "../components/Banner";
 import {Background} from "../components/Background";
 
-
+/**
+ *
+ * @returns {JSX.Element} game view page
+ * @constructor builds game view page
+ */
 export function GameView() {
     // see: https://reactrouter.com/en/main/start/concepts#data-access
     let gameSlug = useParams().game_slug;
@@ -24,8 +28,8 @@ export function GameView() {
         return (
             <>
                 <Background />
-                <Banner size={'small'} />
-                <MobileBanner size={'small'} />
+                <Banner size={'small'} state={'Games'} />
+                <MobileBanner />
                 <div className={styles.MainBlock} id={styles['small']}>
                     Loading...
                 </div>
@@ -35,8 +39,8 @@ export function GameView() {
         return (
             <>
                 <Background />
-                <Banner size={'small'} />
-                <MobileBanner size={'small'} />
+                <Banner size={'small'} state={'Games'} />
+                <MobileBanner />
                 <div className={styles.MainBlock} id={styles['small']}>
                     <div className={styles.Content}>
                         <h1>{gameData.game.name}</h1>
@@ -46,10 +50,8 @@ export function GameView() {
                             <p>{gameData.game.description}</p>
                         </div>
                     </div>
-                    <div className={styles.Side}>
+                    <div className={styles.DataBlock}>
                         <Table inputData={gameData}/>
-                    </div>
-                    <div className={styles.GraphBlock}>
                         <Graph inputData={gameData}/>
                     </div>
                 </div>

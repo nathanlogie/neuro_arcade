@@ -1,15 +1,24 @@
-import {Banner} from "../components/Banner";
+import {Banner} from "../../components/Banner";
 import {Link} from "react-router-dom";
 import styles from '../styles/App.module.css';
 import {NavBar} from "../components/NavBar";
 import {MobileBanner} from "../components/Banner";
 import {Background} from "../components/Background";
 import {ModelForm} from "../components/ModelForm";
+import styles from '../../styles/App.module.css';
+import {NavBar} from "../../components/NavBar";
+import {MobileBanner} from "../../components/Banner";
+import {Background} from "../../components/Background";
 
+/**
+ *
+ * @returns {JSX.Element} add model page
+ * @constructor builds add model page
+ */
 export function AddModel() {
     return (
         <div>
-            <Background/>
+            <Background />
             <Banner size={'big'} button_left={{
                 name: 'add content',
                 link: '/add_content',
@@ -18,7 +27,7 @@ export function AddModel() {
             }} button_right={{
                 link: '',
                 orientation: 'right'
-            }}/>
+            }} />
             <NavBar button_left={{
                 name: 'home',
                 link: 'home',
@@ -29,18 +38,17 @@ export function AddModel() {
                 direction: 'right'
             }}
             />
-            <MobileBanner size={'big'}/>
+            <MobileBanner />
 
             <div className={styles.MainBlock}>
                 <div className={styles.Content}>
                     <div className={styles.ContentBlock}>
                         <h1>Add model</h1>
-                        <ModelForm></ModelForm>
+                        <ModelForm />
                     </div>
                 </div>
             </div>
-
-            <div className={styles.MobileBannerBuffer}/>
+            <div className={styles.MobileBannerBuffer} />
         </div>
     );
 }

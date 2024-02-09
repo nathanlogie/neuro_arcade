@@ -1,21 +1,28 @@
 import {Banner} from "../components/Banner";
-import {GameGrid} from "../components/GameGrid";
+import {GameGrid} from "../components/game/GameGrid";
 import styles from '../styles/App.module.css';
 import {NavBar} from "../components/NavBar";
 import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {Background} from "../components/Background";
-import {Table} from "../components/Table";
-import {GameTagFilter} from "../components/GameTagFilter";
+import {GameTagFilter} from "../components/game/GameTagFilter";
 import {motion} from "framer-motion"
 import {useState} from "react";
+import { IoFilter } from "react-icons/io5";
 
+/**
+ * @returns {JSX.Element} home page
+ * @constructor builds home page
+ */
 export function HomePage() {
     let [selectedTags, setSelectedTags] = useState([]);
     let forcedTags = ['featured'];
 
+    const [show, setShow] = useState(false);
+    const [hover, setHover] = useState(false);
+
     return (
-        <div>
+        <div onClick={() => show && !hover ? setShow(false) : null}>
             <Background />
             <Banner size={'big'} button_left={{
                 name: 'about',
@@ -28,18 +35,28 @@ export function HomePage() {
                 orientation: 'right',
                 direction: 'right'
             }} />
-            <MobileBanner size={'big'} />
+            <MobileBanner  />
             <motion.div
                 className={styles.MainBlock}
                 id={styles['big']}
-                initial={{
-                    opacity: 0
-                }}
+                initial={{opacity: 0}}
                 animate={{opacity: 1}}
                 exit={{opacity: 0}}
             >
-                <div className={styles.Content}>
-                    <h1>Featured games</h1>
+                <div className={styles.Content} id={styles['small']}>
+                    <div className={styles.Title}>
+                        <h1>Featured games</h1>
+                        <motion.div
+                            className={styles.FilterButton} onClick={() => setShow(!show)}
+                            whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}
+                        >
+                            <IoFilter />
+                        </motion.div>
+                    </div>
+                    <GameTagFilter onTagChange={setSelectedTags} excluded={forcedTags} id={show ? 'home' : 'invisible'}
+                                   onMouseOver={() => setHover(true)}
+                                   onMouseOut={() => setHover(false)}
+                    />
                     {/*
                         The featured tag is always applied, so that's put in the query for server-side
                         filtering
@@ -59,7 +76,6 @@ export function HomePage() {
                     />
                 </div>
                 <div className={styles.Side}>
-                    <GameTagFilter onTagChange={setSelectedTags} excluded={forcedTags}/>
                 </div>
                 <NavBar button_left={{
                     name: 'about',

@@ -1,7 +1,12 @@
 import { useState } from "react";
-import {postPublications} from "../backendRequests";
+import {postPublications} from "../../backendRequests";
 import { Message } from 'primereact/message';
 
+/**
+ * @param publications from backendRequests.js
+ * @returns {JSX.Element} edit about page publications table
+ * @constructor builds the edit about page publications table
+ */
 export function PublicationsForm ({publications}) {
 
     // dynamic publications = publications which are dynamically being changed, after every change

@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import axios from 'axios'
-import {data} from "autoprefixer";
 
 //Should be synced with models.py
 let MAX_NAME_LENGTH = 64
@@ -10,7 +9,12 @@ let MAX_DESCRIPTION_LENGTH = 1024
 let ACCEPTED_SCORE_FILE = ['json']
 let ACCEPTED_EVAL_SCRIPT = ['py']
 let ACCEPTED_IMAGE = ['png', 'jpg', 'jpeg']
-export function Form(){
+
+/**
+ * @returns {JSX.Element} add new game form
+ * @constructor builds add new game form
+ */
+export function FormGame() {
     const {
         register,
         handleSubmit,
@@ -218,4 +222,4 @@ export function Form(){
             )}
         </form>
     );
-};
+}

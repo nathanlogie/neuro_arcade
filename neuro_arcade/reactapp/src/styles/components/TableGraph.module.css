@@ -16,7 +16,7 @@
 
 .TableContainer {
     padding: 2em;
-    margin: 3em auto auto;
+    margin: 2em 2em 2em auto;
     width: 28.5em;
     .TabSwitcher {
         right: 0;
@@ -26,9 +26,8 @@
 
 .GraphContainer {
     padding: 2em 0;
-    margin: 2em auto;
+    margin: 2em auto 2em 2em;
     width: 43.75em;
-
     .TabSwitcher {
         top: 0.5em;
         width: 100%;
@@ -36,14 +35,9 @@
     }
 }
 
-#start {
-    border-radius: 40px 0 0 40px;
-}
-
-#end {
-    border-radius: 0 40px 40px 0;
-}
-
-#single {
-    display: none;
+@media (max-width: 50em) {
+    .TableContainer, .GraphContainer {
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
