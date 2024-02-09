@@ -8,11 +8,15 @@ from django.template.defaultfilters import slugify
 MAX_SCORE_VALUE_SIZE = 256
 
 # functions for setting default fields:
+
+
 def default_score_type():
     return {"headers": []}
 
+
 def default_score():
     return []
+
 
 class GameTag(models.Model):
     """Category for a game. """
@@ -73,7 +77,9 @@ class Game(models.Model):
         self.slug = slugify(self.name)
         super(Game, self).save(*args, **kwargs)
 
-    def matches_search(self, query: Optional[str], tags: Optional[Iterable[GameTag]]) -> bool:
+    def matches_search(self,
+                       query: Optional[str],
+                       tags: Optional[Iterable[GameTag]]) -> bool:
         accept = True
 
         # Check tags
@@ -107,7 +113,9 @@ class Game(models.Model):
             return headers, scores
 
         except TypeError:  # this can happen if score_type is not populated
-            print("[WARN] Something went wrong when trying to get the scores for ", self)
+            print(
+                "[WARN] Something went wrong when trying to get the scores for ",
+                self)
             print("[WARN]  This might happen if score_type is not populated.")
             return None, None
 
@@ -163,7 +171,8 @@ class Player(models.Model):
     slug = models.SlugField(unique=True, null=True)
     is_ai = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    description = models.TextField(max_length=MAX_PLAYER_DESCRIPTION_LENGTH, default='')
+    description = models.TextField(
+        max_length=MAX_PLAYER_DESCRIPTION_LENGTH, default='')
     player_tags = models.ManyToManyField(PlayerTag, blank=True)
 
     def save(self, *args, **kwargs):

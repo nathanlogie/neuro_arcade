@@ -110,7 +110,9 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
     # todo: this needs to be changed for the new authentication
     # checking that the Post request contains the player field
     if request.user.get('player') is None:
-        return Response(status=400, data={'description': 'No player field was provided.'})
+        return Response(
+            status=400, data={
+                'description': 'No player field was provided.'})
 
     game = get_object_or_404(Game, slug=game_name_slug)
     player = get_object_or_404(Player, id=request.data.get('player'))
@@ -123,11 +125,13 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
             value = float(score)
             # Checking that it is above the min:
             if header['min'] is not None and value < header['min']:
-                msg = 'Score field ' + header['name'] + ' is invalid: value is bellow the allowed minimum.'
+                msg = 'Score field ' + \
+                    header['name'] + ' is invalid: value is bellow the allowed minimum.'
                 return Response(status=400, data={'description': msg})
             # Checking that it is below the max:
             if header['max'] is not None and value > header['max']:
-                msg = 'Score field ' + header['name'] + ' is invalid: value is above the allowed maximum.'
+                msg = 'Score field ' + \
+                    header['name'] + ' is invalid: value is above the allowed maximum.'
                 return Response(status=400, data={'description': msg})
 
             # TODO use validation script here
@@ -135,10 +139,14 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
             # Value is valid, so it will be added to the database
             added_score[header['name']] = score
         else:
-            return Response(status=400, data={'description': 'Score field ' + header['name'] + ' not present'})
+            return Response(
+                status=400, data={
+                    'description': 'Score field ' + header['name'] + ' not present'})
 
     if len(added_score.keys()) == 0:
-        return Response(status=400, data={'description': 'No relevant score fields were provided.'})
+        return Response(
+            status=400, data={
+                'description': 'No relevant score fields were provided.'})
 
     game.score_set.create(
         player_id=player.id,
@@ -151,7 +159,6 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
 
 @api_view(['GET'])
 def get_about_data(request: Request) -> Response:
-
     """
     Posts about data from json file
     Posts from media/about.json
@@ -172,7 +179,6 @@ def get_about_data(request: Request) -> Response:
 
 @api_view(['POST'])
 def post_about_data(request) -> Response:
-
     """
     Retrieves About data from edit about form and posts it to media/about.json
     Gets a field and value. Depending on the field, it handles the data appropriately
@@ -219,11 +225,13 @@ def sign_up(request: Request) -> Response:
     email = request.data['email']
     password = request.data['password']
     # input validation:
-    if username is None or email is None or password is None or not validate_password(password):
+    if username is None or email is None or password is None or not validate_password(
+            password):
         return Response(status=400, data='Invalid data.')
 
     # creating a new User in the DB:
-    new_user = User.objects.create_user(username=username, email=email, password=password)
+    new_user = User.objects.create_user(
+        username=username, email=email, password=password)
 
     if new_user is not None:
         return Response(status=200)  # sending a success response back
@@ -235,17 +243,21 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
+
 
 class GameTagViewSet(viewsets.ModelViewSet):
     queryset = GameTag.objects.all()
     serializer_class = GameTagSerializer
 
+
 class PlayerTagViewSet(viewsets.ModelViewSet):
     queryset = PlayerTag.objects.all()
     serializer_class = PlayerTagSerializer
+
 
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = Player.objects.all()
