@@ -1,5 +1,10 @@
 import {Banner} from "../../components/Banner";
 import {Link} from "react-router-dom";
+import styles from '../styles/App.module.css';
+import {NavBar} from "../components/NavBar";
+import {MobileBanner} from "../components/Banner";
+import {Background} from "../components/Background";
+import {ModelForm} from "../components/ModelForm";
 import styles from '../../styles/App.module.css';
 import {NavBar} from "../../components/NavBar";
 import {MobileBanner} from "../../components/Banner";
@@ -33,16 +38,16 @@ export function AddModel() {
                 direction: 'right'
             }}
             />
-            <MobileBanner  />
+            <MobileBanner />
 
             <div className={styles.MainBlock}>
                 <div className={styles.Content}>
                     <div className={styles.ContentBlock}>
                         <h1>Add model</h1>
+                        <ModelForm />
                     </div>
                 </div>
             </div>
-
             <div className={styles.MobileBannerBuffer} />
         </div>
     );

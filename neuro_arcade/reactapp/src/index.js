@@ -54,6 +54,10 @@ const router = createBrowserRouter([
     {
         path: "add_game",
         element: <AddGame/>
+    },
+    {
+        path: "add_model",
+        element: <AddModel/>
     }
 ]);
 
