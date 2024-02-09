@@ -5,7 +5,6 @@ from django.urls import reverse
 
 # The ide will shout at you to remove the na from the import but don't
 # The na allows it to run in terminal and in the pipeline
-from na.models import Game, GameTag, PlayerTag, Player, Score
 import populate
 
 # Create your tests here.

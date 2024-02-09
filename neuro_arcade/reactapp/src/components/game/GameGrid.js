@@ -1,6 +1,6 @@
 import styles from '../../styles/components/GameGrid.module.css'
 import {GameCard} from "./GameCard";
-import {Game, requestGamesSorted} from "../../backendRequests";
+import {requestGamesSorted} from "../../backendRequests";
 import {useEffect, useState} from "react";
 
 /**
@@ -8,7 +8,7 @@ import {useEffect, useState} from "react";
  * The check is case insensitive
  * TODO: this should probably be made more advanced
  *
- * @param {Game} game - the game data to test 
+ * @param {Object} game - the game data to test
  * @param {string} textQuery - the string to search for
  *
  * @returns {boolean} true if the filter is passed
@@ -21,7 +21,7 @@ function textQueryFilter(game, textQuery) {
 /**
  * Checks if a game is tagged with every tag in a query list
  * 
- * @param {Game} game - the game data to test
+ * @param {Object} game - the game data to test
  * @param {string[]} tagQuery - the list of required tag slugs
  * 
  * @returns {boolean} true if the filter is passed
@@ -33,7 +33,7 @@ function tagQueryFilter(game, tagQuery) {
 /**
  * Checks if a game should be displayed under a query
  * 
- * @param {Game} game - the game data to test
+ * @param {Object} game - the game data to test
  * @param {string} textQuery - string to search name/description for
  * @param {string[]} tagQuery - required tag slugs
  * 

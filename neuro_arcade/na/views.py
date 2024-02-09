@@ -23,10 +23,8 @@ from rest_framework.request import Request
 from rest_framework import viewsets
 from rest_framework.authtoken import views as rest_views
 from rest_framework.authtoken.models import Token
-
 from django.conf import settings
 
-from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer
 from rest_framework import viewsets
 from rest_framework.authtoken import views as rest_views
 from rest_framework.authtoken.models import Token
@@ -35,7 +33,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from na.models import Game, GameTag, Player
+from na.models import Game, GameTag, Player, PlayerTag
+from django.conf import settings
+
+from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
 
 
 # ------------------
@@ -362,3 +363,11 @@ class GameViewSet(viewsets.ModelViewSet):
 class GameTagViewSet(viewsets.ModelViewSet):
     queryset = GameTag.objects.all()
     serializer_class = GameTagSerializer
+
+class PlayerTagViewSet(viewsets.ModelViewSet):
+    queryset = PlayerTag.objects.all()
+    serializer_class = PlayerTagSerializer
+
+class PlayerViewSet(viewsets.ModelViewSet):
+    queryset = Player.objects.all()
+    serializer_class = PlayerSerializer

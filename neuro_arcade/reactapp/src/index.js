@@ -72,6 +72,10 @@ const router = createBrowserRouter([
     {
         path: "sign_up",
         element: <SignUp/>
+    },
+    {
+        path: "add_model",
+        element: <AddModel/>
     }
 ]);
 
