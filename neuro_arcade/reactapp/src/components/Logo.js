@@ -1,13 +1,13 @@
 import styles from '../styles/components/Logo.module.css';
 import logo from '../static/images/logo.png';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import React from 'react';
 /**
  * @param size for logo size
  * @returns {JSX.Element} logo
  * @constructor builds logo
  */
-export function Logo({ size }) {
+export function Logo({size}) {
   return (
     <Link className={styles.Logo} id={styles[size]} to={'/'}>
       <img src={logo} alt='Neuro Arcade' />

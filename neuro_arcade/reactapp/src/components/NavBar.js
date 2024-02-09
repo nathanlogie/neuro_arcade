@@ -1,4 +1,4 @@
-import { Button } from './Button';
+import {Button} from './Button';
 import styles from '../styles/components/NavBar.module.css';
 import React from 'react';
 
@@ -8,7 +8,7 @@ import React from 'react';
  * @returns {JSX.Element} navigation bar for mobile
  * @constructor builds navigation bar
  */
-export function NavBar({ button_left, button_right }) {
+export function NavBar({button_left, button_right}) {
   const navbar = [];
   if (button_left) {
     navbar.push(
