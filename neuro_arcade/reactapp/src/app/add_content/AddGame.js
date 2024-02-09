@@ -11,8 +11,7 @@ import {motion} from "framer-motion";
  */
 export function AddGame() {
     return(
-        <div>
-            <Background/>
+        <>
             <Banner size={'big'} button_left={{
                 name: 'add content',
                 link: '/add_content',
@@ -44,7 +43,7 @@ export function AddGame() {
                     <GameForm />
                 </div>
             </motion.div>
-        </div>
+        </>
     )
 
 }

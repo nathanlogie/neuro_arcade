@@ -23,7 +23,6 @@ export function HomePage() {
 
     return (
         <div onClick={() => show && !hover ? setShow(false) : null}>
-            <Background />
             <Banner size={'big'} button_left={{
                 name: 'about',
                 link: 'about',

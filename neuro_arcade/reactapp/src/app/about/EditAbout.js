@@ -33,8 +33,6 @@ export function EditAbout() {
 
     return (
         <>
-
-            <Background />
             <Banner size={'big'} button_right={{
                 name: 'about',
                 link: '/about',

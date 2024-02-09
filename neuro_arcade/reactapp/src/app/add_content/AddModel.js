@@ -14,7 +14,6 @@ import {motion} from "framer-motion";
 export function AddModel() {
     return (
         <div>
-            <Background />
             <Banner size={'big'} button_left={{
                 name: 'add content',
                 link: '/add_content',

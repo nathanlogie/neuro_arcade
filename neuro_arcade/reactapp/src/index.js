@@ -12,6 +12,7 @@ import {AllGames} from "./app/AllGames";
 import {GameView} from "./app/GameView";
 import { EditAbout } from "./app/about/EditAbout";
 import {AnimatePresence} from 'framer-motion'
+import {Background} from "./components/Background";
 
 const router = createBrowserRouter([
     {
@@ -63,9 +64,12 @@ const router = createBrowserRouter([
 
 
 createRoot(document.getElementById('root')).render(
-    <AnimatePresence>
+    <>
+        <Background />
+        <AnimatePresence>
             <RouterProvider router={router}/>
-    </AnimatePresence>
+        </AnimatePresence>
+    </>
 );
 
 // If you want to start measuring performance in your app, pass a function

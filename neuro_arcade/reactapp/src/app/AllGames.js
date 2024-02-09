@@ -17,9 +17,8 @@ export function AllGames() {
     let [selectedTags, setSelectedTags] = useState([]);
 
     return (
-        <div>
-            <Background/>
-            <Banner state={'Games'} />
+        <>
+            <Banner size={'small'} state={'Games'} />
             <MobileBanner  />
             <div className={styles.MainBlock} id={styles['small']}>
                 <div className={styles.Side}>
@@ -39,6 +38,6 @@ export function AllGames() {
                     <CardGrid type={'game'} nameQuery={nameQuery} tagQuery={selectedTags} linkPrefix={''} id={'AppGrid'} />
                 </div>
             </div>
-        </div>
+        </>
     );
 }

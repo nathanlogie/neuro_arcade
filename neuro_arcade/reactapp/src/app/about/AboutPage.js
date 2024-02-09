@@ -38,8 +38,7 @@ export function AboutPage() {
     })
 
     return (
-        <div>
-            <Background />
+        <>
             <Banner size={'big'} button_left={{
                 name: 'edit about',
                 link: '/edit_about',
@@ -97,6 +96,6 @@ export function AboutPage() {
                 <div className={styles.MobileBannerBuffer}/>
             </motion.div>
 
-        </div>
+        </>
     );
 }

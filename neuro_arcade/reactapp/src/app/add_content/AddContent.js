@@ -14,8 +14,7 @@ import {motion} from "framer-motion";
  */
 export function AddContent() {
     return (
-        <div>
-            <Background />
+        <>
             <Banner size={'big'} button_left={{
                 name: 'home',
                 link: '/',
@@ -51,6 +50,6 @@ export function AddContent() {
             </motion.div>
 
             <div className={styles.MobileBannerBuffer} />
-        </div>
+        </>
     );
 }

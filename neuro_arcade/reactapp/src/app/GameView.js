@@ -27,7 +27,6 @@ export function GameView() {
     if (isLoading) {
         return (
             <>
-                <Background />
                 <Banner size={'small'} state={'Games'} />
                 <MobileBanner />
                 <div className={styles.MainBlock} id={styles['small']}>
@@ -38,7 +37,6 @@ export function GameView() {
     } else {
         return (
             <>
-                <Background />
                 <Banner size={'small'} state={'Games'} />
                 <MobileBanner />
                 <div className={styles.MainBlock} id={styles['small']}>
