@@ -23,8 +23,6 @@ export function AllGames() {
             <MobileBanner  />
             <div className={styles.MainBlock} id={styles['small']}>
                 <div className={styles.Side}>
-                    {/* TODO: this almost definitely shouldn't be here, but the background
-                    image gets interacted with instead of the search bar without it */}
                     <div className={styles.Search}>
                         <input onChange={e => setNameQuery(e.target.value)} placeholder="search..."/>
                         <div className={styles.SearchIcon}>
@@ -32,7 +30,6 @@ export function AllGames() {
                         </div>
                     </div>
                     <TagFilter onTagChange={setSelectedTags} type={'game'} />
-                    {/* (see above) */}
                 </div>
                 <div className={styles.Content} id={styles['AllGames']}>
                     <h1>All Games</h1>
