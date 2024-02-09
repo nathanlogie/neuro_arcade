@@ -1,9 +1,9 @@
-import {requestGameTags} from "../../backendRequests";
+import {requestGameTags} from "../backendRequests";
 import {useEffect, useState} from "react";
-import styles from '../../styles/components/GameTagFilter.module.css';
+import styles from '../styles/components/TagFilter.module.css';
 
 /**
- * Prototype for GameTagFilter.onTagChange callback
+ * Prototype for TagFilter.onTagChange callback
  * 
  * @typedef {function} OnTagChange
  * @param {string[]} activeTags - list of currently checked tags' slugs
@@ -17,20 +17,25 @@ import styles from '../../styles/components/GameTagFilter.module.css';
  * @param {string[]} props.excluded - list of tag slugs to hide from display, currently
  *                                   doesn't support being changed dynamically
 */
-export function GameTagFilter({onTagChange, excluded=[], id, onMouseOver, onMouseOut}) {
+export function TagFilter({onTagChange, excluded=[], id, onMouseOver, onMouseOut, type}) {
     let [isLoading, setLoading] = useState(true);
     let [tags, setTags] = useState([]);
     let [ticks, setTicks] = useState([]);
 
     // Fetch tags from server on initial run
-    useEffect(() => {
-        requestGameTags()
-            .then(tags => {
-                setTags(tags.filter((tag) => !excluded.includes(tag.slug)));
-                setTicks(new Array(tags.length).fill(false));
-                setLoading(false);
-            })
-    }, []);
+    if (type === 'game') {
+        useEffect(() => {
+            requestGameTags()
+                .then(tags => {
+                    setTags(tags.filter((tag) => !excluded.includes(tag.slug)));
+                    setTicks(new Array(tags.length).fill(false));
+                    setLoading(false);
+                })
+        }, []);
+    } else {
+        // TODO request player tags
+    }
+
 
     function toggleTick(index) {
         var newTicks = ticks.slice();

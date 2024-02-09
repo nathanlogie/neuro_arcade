@@ -1,8 +1,8 @@
 import {Banner, MobileBanner} from "../components/Banner";
 import {Background} from "../components/Background";
 import styles from "../styles/App.module.css"
-import {GameGrid} from "../components/game/GameGrid";
-import {GameTagFilter} from "../components/game/GameTagFilter";
+import {CardGrid} from "../components/CardGrid";
+import {TagFilter} from "../components/TagFilter";
 import {useState} from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 
@@ -19,7 +19,7 @@ export function AllGames() {
     return (
         <div>
             <Background/>
-            <Banner state={'Games'} />
+            <Banner size={'small'} state={'Games'} />
             <MobileBanner  />
             <div className={styles.MainBlock} id={styles['small']}>
                 <div className={styles.Side}>
@@ -31,12 +31,12 @@ export function AllGames() {
                             <FaMagnifyingGlass />
                         </div>
                     </div>
-                    <GameTagFilter onTagChange={setSelectedTags}/>
+                    <TagFilter onTagChange={setSelectedTags} type={'game'} />
                     {/* (see above) */}
                 </div>
                 <div className={styles.Content} id={styles['AllGames']}>
                     <h1>All Games</h1>
-                    <GameGrid nameQuery={nameQuery} tagQuery={selectedTags} linkPrefix={''} id={'AppGrid'}/>
+                    <CardGrid type={'game'} nameQuery={nameQuery} tagQuery={selectedTags} linkPrefix={''} id={'AppGrid'} />
                 </div>
             </div>
         </div>

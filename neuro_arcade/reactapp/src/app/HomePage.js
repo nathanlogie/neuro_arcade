@@ -1,11 +1,11 @@
 import {Banner} from "../components/Banner";
-import {GameGrid} from "../components/game/GameGrid";
+import {CardGrid} from "../components/CardGrid";
 import styles from '../styles/App.module.css';
 import {NavBar} from "../components/NavBar";
 import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {Background} from "../components/Background";
-import {GameTagFilter} from "../components/game/GameTagFilter";
+import {TagFilter} from "../components/TagFilter";
 import {motion} from "framer-motion"
 import {useState} from "react";
 import { IoFilter } from "react-icons/io5";
@@ -54,9 +54,10 @@ export function HomePage() {
                             <IoFilter />
                         </motion.div>
                     </div>
-                    <GameTagFilter onTagChange={setSelectedTags} excluded={forcedTags} id={show ? 'home' : 'invisible'}
-                                   onMouseOver={() => setHover(true)}
-                                   onMouseOut={() => setHover(false)}
+                    <TagFilter onTagChange={setSelectedTags} excluded={forcedTags} id={show ? 'home' : 'invisible'}
+                               onMouseOver={() => setHover(true)}
+                               onMouseOut={() => setHover(false)}
+                               type={'game'}
                     />
                 <div className={styles.Content}>
                     <Link to={"sign_up"}>Sign Up</Link>
@@ -64,13 +65,13 @@ export function HomePage() {
                     {/*
                         The featured tag is always applied, so that's put in the query for server-side
                         filtering
-                        TODO: GameGrid should probably abstract the query
+                        TODO: CardGrid should probably abstract the query
                         TODO: only the first 8 featured games will be requested, so when additional tags are applied
                         there may be less than 8 games shown even if other valid ones exist. Either tag filtering should
                         be done server-side (resulting in a request on every check/uncheck), or num filtering should be
                         done locally
                     */}
-                    <GameGrid num={8} linkPrefix={'all_games/'} tagQuery={selectedTags.concat(forcedTags)}/>
+                    <CardGrid type={'game'} num={8} linkPrefix={'all_games/'} tagQuery={selectedTags.concat(forcedTags)}/>
                     <Button
                         id={'MoreGames'}
                         name={'more games'}
