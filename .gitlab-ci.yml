@@ -19,9 +19,7 @@ before_script:
   # - update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11.5
   - python -m venv venv
   - source venv/bin/activate
-  - ls
   - pip install -r requirements.txt
-  - sudo apt
 
 
 build-job:       # This job runs in the build stage, which runs first. It sets up the virtual environment in order to run the tests
