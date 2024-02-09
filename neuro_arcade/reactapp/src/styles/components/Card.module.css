@@ -1,4 +1,4 @@
-.GameCard {
+.Card {
     position: relative;
     float: left;
     width: max-content;
@@ -30,14 +30,14 @@
 }
 
 @media (max-width: 75em) {
-    .GameCard {
+    .Card {
         scale: 85%;
         margin: 0;
     }
 }
 
 @media (max-width: 50em) {
-    .GameCard {
+    .Card {
         scale: 75%;
     }
 }
