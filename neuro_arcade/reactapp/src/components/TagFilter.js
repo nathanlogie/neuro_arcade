@@ -3,10 +3,23 @@ import {useEffect, useState} from "react";
 import styles from '../styles/components/TagFilter.module.css';
 
 /**
+ * Primary key of a FilterTag
+ * @typedef {number} FilterTagId
+ */
+
+/**
+ * Interface for objects displayable in a TagFilter
+ *
+ * @typedef {Object} FilterTag
+ * @property {FilterTagId} id
+ * @property {string} name
+ */
+
+/**
  * Prototype for TagFilter.onTagChange callback
  * 
  * @typedef {function} OnTagChange
- * @param {string[]} activeTags - list of currently checked tags' slugs
+ * @param {FilterTagId[]} activeTags - list of currently checked tags' ids
  */
 
 /**
@@ -14,8 +27,8 @@ import styles from '../styles/components/TagFilter.module.css';
  * 
  * @param {Object} props
  * @param {OnTagChange} props.onTagChange - callback for when a tag is checked/unchecked
- * @param {string[]} props.excluded - list of tag slugs to hide from display, currently
- *                                   doesn't support being changed dynamically
+ * @param {FilterTagId[]} props.excluded - list of tag ids to hide from display, currently
+ *                                         doesn't support being changed dynamically
 */
 export function TagFilter({onTagChange, excluded=[], id, onMouseOver, onMouseOut, type}) {
     let [isLoading, setLoading] = useState(true);
@@ -27,7 +40,7 @@ export function TagFilter({onTagChange, excluded=[], id, onMouseOver, onMouseOut
         useEffect(() => {
             requestGameTags()
                 .then(tags => {
-                    setTags(tags.filter((tag) => !excluded.includes(tag.slug)));
+                    setTags(tags.filter((tag) => !excluded.includes(tag.id)));
                     setTicks(new Array(tags.length).fill(false));
                     setLoading(false);
                 })
@@ -44,7 +57,7 @@ export function TagFilter({onTagChange, excluded=[], id, onMouseOver, onMouseOut
 
         onTagChange(
             tags.filter((tag, index) => newTicks[index])
-                .map((tag) => tag.slug)
+                .map((tag) => tag.id)
         );
     }
 

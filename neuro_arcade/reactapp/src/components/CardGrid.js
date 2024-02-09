@@ -1,6 +1,6 @@
 import styles from '../styles/components/CardGrid.module.css'
 import {Card} from "./Card";
-import {requestGamesSorted, requestPlayers} from "../backendRequests";
+import {requestGames, requestPlayers} from "../backendRequests";
 import {useEffect, useState} from "react";
 
 /**
@@ -81,7 +81,7 @@ export function CardGrid({textQuery='', tagQuery=[], num=0, linkPrefix, id, type
     // Fetch subjects from server on initial load
     if (type === 'game') {
         useEffect(() => {
-            requestGamesSorted()
+            requestGames()
                 .then(g => {
                     setSubjects(g);
                     setLoading(false);

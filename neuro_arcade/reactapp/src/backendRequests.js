@@ -25,36 +25,72 @@ const API_ROOT = "http://localhost:8000"
  */
 
 /**
+ * Game auto primary key
+ * @typedef {number} GameKey
+ */
+
+/**
+ * GameTag auto primary key
+ * @typedef {number} GameTagKey
+ */
+
+/**
  * Game API response
  * Corresponds to na.models.Game
  * @typedef {Object} Game
+ * @property {GameKey} id
  * @property {string} name
  * @property {string} slug
  * @property {string} description
- * @property {string[]} tags - slugs of the tags for this game
+ * @property {any} owner - TODO
+ * @property {any} icon - TODO
+ * @property {GameTagKey[]} tags
  * @property {ScoreType} score_type
  * @property {string} play_link
+ * @property {any} evaluation_script
  */
 
 /**
  * Game tag API response
  * Corresponds to na.models.GameTag
  * @typedef {Object} GameTag
+ * @property {GameTagKey} id
  * @property {string} name
  * @property {string} slug
  * @property {string} description
  */
 
 /**
+ * PlayerTag auto primary key
+ * @typedef {number} PlayerTagKey
+ */
+
+/**
+ * PlayerTag API response
+ * Corresponds to na.models.PlayerTag
+ * @typedef {Object} PlayerTag
+ * @property {PlayerTagKey} id
+ * @property {string} name
+ * @property {string} slug
+ * @property {string} description
+ */
+
+/**
+ * Player auto primary key
+ * @typedef {number} PlayerKey
+ */
+
+/**
  * Player API response
  * Corresponds to na.models.Player
  * @typedef {Object} Player
+ * @property {PlayerKey} id
  * @property {string} name
  * @property {string} slug
  * @property {boolean} is_ai
  * @property {string} user
  * @property {string} description
- * @property {string[]} tags
+ * @property {PlayerTagKey[]} tags
  */
 
 /**
@@ -102,7 +138,7 @@ export async function requestGame(gameName) {
  * @throws Error when the request is rejected.
  */
 export async function requestGameTags() {
-    const url = API_ROOT + '/tags/';
+    const url = API_ROOT + '/api/gameTag/';
     try {
         let response = await axios.get(url);
         return response.data;
@@ -115,14 +151,12 @@ export async function requestGameTags() {
 /**
  * Requests a sorted list of games.
  *
- * @param query {URLSearchParams} instance of Reacts URLSearchParams, which you should get from useSearchParams()
- * 
  * @return {Game[]} response data
  * 
  * @throws Error when request is rejected
  */
-export async function requestGamesSorted(query='') {
-    const url = API_ROOT + '/get_games/' + query;
+export async function requestGames() {
+    const url = API_ROOT + '/api/games/';
     try {
         let response = await axios.get(url);
         return response.data;
