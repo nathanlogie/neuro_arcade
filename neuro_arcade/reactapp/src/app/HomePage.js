@@ -7,7 +7,7 @@ import { Button } from '../components/Button';
 import { Background } from '../components/Background';
 import { GameTagFilter } from '../components/game/GameTagFilter';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { IoFilter } from 'react-icons/io5';
 
 /**

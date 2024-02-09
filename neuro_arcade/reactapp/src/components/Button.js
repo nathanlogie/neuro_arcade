@@ -5,6 +5,7 @@ import { FaArrowDown } from 'react-icons/fa6';
 import styles from '../styles/components/Button.module.css';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import React from 'react';
 
 /**
  * @param id for button positioning

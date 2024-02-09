@@ -3,7 +3,7 @@ import { Background } from '../components/Background';
 import styles from '../styles/App.module.css';
 import { GameGrid } from '../components/game/GameGrid';
 import { GameTagFilter } from '../components/game/GameTagFilter';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { FaMagnifyingGlass } from 'react-icons/fa6';
 
 /**

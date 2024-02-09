@@ -1,5 +1,6 @@
 import styles from '../styles/App.module.css';
 import overlay from '../static/images/backgroundOverlay.png';
+import React from 'react';
 
 /**
  * @returns {JSX.Element} background
