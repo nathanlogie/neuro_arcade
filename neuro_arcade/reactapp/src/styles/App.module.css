@@ -73,6 +73,8 @@
         padding: 2em;
         display: flex;
         overflow-x: auto;
+        justify-content: center;
+        gap: 2em;
     }
 }
 .MobileBannerBuffer {
