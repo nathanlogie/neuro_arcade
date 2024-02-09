@@ -1,11 +1,10 @@
 import {Button} from "./Button";
 import styles from "../styles/components/NavBar.module.css";
-import {Logo} from "./Logo";
 import React from "react";
 
 /**
- * @param button_left {JSX.Element} button parameters
- * @param button_right {JSX.Element} button parameters
+ * @param button_left button parameters
+ * @param button_right button parameters
  * @returns {JSX.Element} navigation bar for mobile
  * @constructor builds navigation bar
  */

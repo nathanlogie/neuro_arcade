@@ -14,7 +14,7 @@ import styles from '../../styles/components/GameTagFilter.module.css';
  * 
  * @param {Object} props
  * @param {OnTagChange} props.onTagChange - callback for when a tag is checked/unchecked
- * @param {slugs[]} props.excluded - list of tag slugs to hide from display, currently
+ * @param {string[]} props.excluded - list of tag slugs to hide from display, currently
  *                                   doesn't support being changed dynamically
 */
 export function GameTagFilter({onTagChange, excluded=[], id, onMouseOver, onMouseOut}) {
