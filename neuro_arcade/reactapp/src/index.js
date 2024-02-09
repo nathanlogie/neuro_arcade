@@ -12,6 +12,7 @@ import {AllGames} from "./app/AllGames";
 import {GameView} from "./app/GameView";
 import {EditAbout} from "./app/about/EditAbout";
 import {SignUp} from "./app/SignUp";
+import {Login} from "./app/Login";
 import {AnimatePresence} from 'framer-motion'
 import {AuthTest} from "./app/AuthTest";
 import {DevSupport} from "@react-buddy/ide-toolbox";
@@ -59,19 +60,20 @@ const router = createBrowserRouter([
         path: "sign_up",
         element: <SignUp/>
     },
+    {
+        path: "login",
+        element: <Login/>
+    },
+
     // This is here for testing purposes
     // TODO: remove this when the login/signup pages have been made
-    {
-        path: "auth_test",
-        element: <AuthTest />
-    },
+    // {
+    //     path: "auth_test",
+    //     element: <AuthTest />
+    // },
     {
         path: "add_game",
         element: <AddGame/>
-    },
-    {
-        path: "sign_up",
-        element: <SignUp/>
     },
     {
         path: "add_model",
