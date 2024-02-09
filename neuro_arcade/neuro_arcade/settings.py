@@ -62,6 +62,8 @@ CORS_ALLOW_HEADERS = (
 # TODO: NOT SECURE FOR PRODUCTION!! DO REMOVE and find safe alternative
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", "http://localhost:8000"]
 
+# This might be necessary:
+USE_X_FORWARDED_PORT = True
 
 # Application definition
 
