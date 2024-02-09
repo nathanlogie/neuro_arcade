@@ -51,7 +51,7 @@ lint-test-job:   # This job also runs in the test stage.
   stage: django
   allow_failure: true    # It can run at the same time as unit-test-job (in parallel).
   script:
-  - find . -type f -name '*.py' ! -path '*/migrations/*' -exec autopep8 --in-place --aggressive --aggressive '{}' \;
+  # - find . -type f -name '*.py' ! -path '*/migrations/*' -exec autopep8 --in-place --aggressive --aggressive '{}' \;
   - pylint $(git ls-files '*.py')
 
 react-creation:
