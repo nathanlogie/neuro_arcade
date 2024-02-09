@@ -143,7 +143,12 @@ class PlayerTag(models.Model):
     MAX_DESCRIPTION_LENGTH = 1024
 
     name = models.CharField(max_length=MAX_NAME_LENGTH)
+    slug = models.SlugField(unique=True)
     description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(PlayerTag, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
