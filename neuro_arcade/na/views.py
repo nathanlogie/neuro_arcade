@@ -231,6 +231,32 @@ def sign_up(request: Request) -> Response:
         return Response(status=400, data='Error creating new user.')
 
 
+@api_view(['GET'])
+def get_game_tag(request: Request, name_slug: str) -> Response:
+    """
+    Looks a game tag up by slug
+
+    TODO: feels like there should be a higher level way to do this?
+    """
+
+    tag = get_object_or_404(GameTag, slug=name_slug)
+
+    return Response(status=200, data=GameTagSerializer(tag, context={'request': request}).data)
+
+
+@api_view(['GET'])
+def get_player_tag(request: Request, name_slug: str) -> Response:
+    """
+    Looks a player tag up by slug
+
+    TODO: feels like there should be a higher level way to do this?
+    """
+
+    tag = get_object_or_404(PlayerTag, slug=name_slug)
+
+    return Response(status=200, data=PlayerTagSerializer(tag, context={'request': request}).data)
+
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer

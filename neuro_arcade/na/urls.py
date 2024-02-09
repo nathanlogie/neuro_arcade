@@ -13,6 +13,8 @@ urlpatterns = [
     path('games/<slug:game_name_slug>/add_score/', views.post_game_score, name='post_game_score'),
     path('tags/', views.get_tags, name='get_tags'),
     path('get_games/', views.get_games_sorted, name='get_games'),
+    path('game_tag/<slug:name_slug>/', views.get_game_tag, name='get_game_tag'),
+    path('player_tag/<slug:name_slug>/', views.get_player_tag, name='get_player_tag'),
     path('about/', views.get_about_data, name='get_about_data'),
     path('edit_about', views.post_about_data, name='update_about_json'),
 ]
