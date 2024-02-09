@@ -14,7 +14,7 @@ let ACCEPTED_IMAGE = ['png', 'jpg', 'jpeg']
  * @returns {JSX.Element} add new game form
  * @constructor builds add new game form
  */
-export function FormGame() {
+export function GameForm() {
     const {
         register,
         handleSubmit,

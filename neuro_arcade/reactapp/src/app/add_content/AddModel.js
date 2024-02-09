@@ -3,7 +3,8 @@ import styles from '../../styles/App.module.css';
 import {NavBar} from "../../components/NavBar";
 import {MobileBanner} from "../../components/Banner";
 import {Background} from "../../components/Background";
-import {ModelForm} from "../../components/ModelForm";
+import {ModelForm} from "../../components/add_content/ModelForm";
+import {motion} from "framer-motion";
 
 /**
  *
@@ -35,14 +36,13 @@ export function AddModel() {
             />
             <MobileBanner />
 
-            <div className={styles.MainBlock}>
+            <motion.div className={styles.MainBlock}>
                 <div className={styles.Content}>
                     <div className={styles.ContentBlock}>
-                        <h1>Add model</h1>
                         <ModelForm />
                     </div>
                 </div>
-            </div>
+            </motion.div>
             <div className={styles.MobileBannerBuffer} />
         </div>
     );

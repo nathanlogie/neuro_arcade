@@ -11,6 +11,7 @@
         padding: 0 2em;
         display: flex;
         flex-wrap: wrap;
+        justify-content: center;
         .Title {
             display: flex;
             & h1 {

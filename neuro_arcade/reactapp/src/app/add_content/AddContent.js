@@ -6,6 +6,7 @@ import {Background} from "../../components/Background";
 import {Card} from '../../components/Card';
 import { FaGamepad } from "react-icons/fa6";
 import { TbBoxModel } from "react-icons/tb";
+import {motion} from "framer-motion";
 
 /**
  * @returns {JSX.Element} add content page
@@ -36,12 +37,18 @@ export function AddContent() {
             />
             <MobileBanner  />
 
-            <div className={styles.MainBlock}>
+            <motion.div
+                className={styles.MainBlock}
+                id={styles['big']}
+                initial={{opacity: 0, x: 100}}
+                animate={{opacity: 1, x: 0}}
+                exit={{opacity: 0, x: 100}}
+            >
                 <div className={styles.DataBlock}>
                     <Card link={'/add_game'} text={'New Game'} icon={<FaGamepad />} />
                     <Card link={'/add_model'} text={'New Model'} icon={<TbBoxModel />} />
                 </div>
-            </div>
+            </motion.div>
 
             <div className={styles.MobileBannerBuffer} />
         </div>
