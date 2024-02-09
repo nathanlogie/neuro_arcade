@@ -4,6 +4,7 @@ stages:          # List of stages for jobs, and their order of execution
   - build
   - serverFix
   - django
+  - reactCreation
   - react
 
 variables:
@@ -49,7 +50,32 @@ unit-test-job:   # This job runs in the test stage.
 lint-test-job:   # This job also runs in the test stage.
   stage: django    # It can run at the same time as unit-test-job (in parallel).
   script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 10
-    - echo "No lint issues found."
+  - find . -type f -name '*.py' ! -path '*/migrations/*' -exec autopep8 --in-place --aggressive --aggressive '{}' \;
+  - pylint $(git ls-files '*.py')
+
+react-creation:
+  stage: reactCreation
+  script:
+    - cd neuro_arcade
+    - cd reactapp
+    - npm install
+    - npm run build
+
+
+
+unit-test-r-job:
+  stage: react
+  script:
+    - npm test
+    - npm test--coverage
+  
+lint-test-r-job:
+  stage: react
+  script:
+    -npm format
+    -npm lint
+    
+
+
+
 
