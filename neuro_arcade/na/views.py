@@ -9,9 +9,7 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework import viewsets
 
-from na.forms import AboutForm, GameForm, ScoreTypeForm, PublicationFormSet
 from na.models import Game, GameTag, Player, PlayerTag
-from na.forms import UserForm
 from django.conf import settings
 
 from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
