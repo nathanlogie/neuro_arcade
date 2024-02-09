@@ -1,6 +1,6 @@
 import styles from '../styles/components/CardGrid.module.css'
 import {Card} from "./Card";
-import {requestGamesSorted} from "../backendRequests";
+import {requestGamesSorted, requestPlayers} from "../backendRequests";
 import {useEffect, useState} from "react";
 
 /**
@@ -52,6 +52,8 @@ function searchFilter(subject, textQuery, tagQuery) {
  * @param {number} props.num - max number of subjects to show
  * @param {string} props.linkPrefix - link prefix passed to Card
  * @param {string} props.id - element id for styling
+ * @param {string} props.type - type of card to display, 'game' or 'player',
+ *                              does not support changing dynamically
  */
 export function CardGrid({textQuery='', tagQuery=[], num=0, linkPrefix, id, type}) {
     let [isLoading, setLoading] = useState(true);
@@ -66,8 +68,17 @@ export function CardGrid({textQuery='', tagQuery=[], num=0, linkPrefix, id, type
                     setLoading(false);
                 })
         }, []);
-    } else {
-        // TODO request players/models
+    } else if (type == 'player') {
+        useEffect(() => {
+            requestPlayers()
+                .then(p => {
+                    setSubjects(p);
+                    setLoading(false);
+                })
+        }, []);
+    }
+    else {
+        throw "Invalid CardGrid type";
     }
 
     // Display waiting message while waiting on server, then show subjects

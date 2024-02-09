@@ -46,6 +46,18 @@ const API_ROOT = "http://localhost:8000"
  */
 
 /**
+ * Player API response
+ * Corresponds to na.models.Player
+ * @typedef {Object} Player
+ * @property {string} name
+ * @property {string} slug
+ * @property {boolean} is_ai
+ * @property {string} user
+ * @property {string} description
+ * @property {string[]} player_tags
+ */
+
+/**
  * About page data publication API input/response
  * Corresponds to the publications field of about.json
  * @typedef {Object} AboutDataPublication
@@ -111,6 +123,24 @@ export async function requestGameTags() {
  */
 export async function requestGamesSorted(query='') {
     const url = API_ROOT + '/get_games/' + query;
+    try {
+        let response = await axios.get(url);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+/**
+ * Requests a list of players.
+ *
+ * @return {Player[]} response data
+ * 
+ * @throws Error when request is rejected
+ */
+export async function requestPlayers() {
+    const url = API_ROOT + '/api/players/';
     try {
         let response = await axios.get(url);
         return response.data;

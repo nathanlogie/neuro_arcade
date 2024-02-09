@@ -33,7 +33,7 @@ export function AllPlayers() {
                 </div>
                 <div className={styles.Content} id={styles['AllGames']}>
                     <h1>All Players</h1>
-                    <CardGrid type={'game'} textQuery={textQuery} tagQuery={selectedTags} linkPrefix={''} id={'AppGrid'} />
+                    <CardGrid type={'player'} textQuery={textQuery} tagQuery={selectedTags} linkPrefix={''} id={'AppGrid'} />
                 </div>
             </div>
         </div>
