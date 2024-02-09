@@ -202,7 +202,7 @@ export async function deletePlayer(playerName) {
  * for a Game with Points and Time Score headers.
  *
  * @param {string} gameName - name of the game.
- * @param {string} playerName - name of the player (not user!) associated with the scores.
+ * @param {string | int} playerIdentification identifies the player; can either be their name or ID
  *  The player needs to be owned by the current user for the request to be successful.
  * @param {{}} scoreData - scores to upload to the server.
  *  For every score type header, the request needs to have a field called the same as the score header.
@@ -212,16 +212,23 @@ export async function deletePlayer(playerName) {
  *
  * @throws {Error | UserNotAuthenticatedError} when the request is rejected or when the user is not logged in.
  */
-export async function postGameScore(gameName, playerName, scoreData) {
+export async function postGameScore(gameName, playerIdentification, scoreData) {
     const url = API_ROOT + '/games/' + gameName + '/add_score/'
     // checking if the user is logged in
     if (!is_logged_in())
         throw UserNotAuthenticatedError()
-
+    // request data
+    let data = scoreData;
+    if (typeof playerIdentification === 'string' || playerIdentification instanceof String) {
+        data.PlayerName = playerIdentification;
+    } else if (Number.isInteger(playerIdentification)) {
+        data.PlayerID = playerIdentification;
+    } else {
+        console.log(typeof playerIdentification)
+        throw Error("playerIdentification needs to be either an int or a string!")
+    }
     // sending the request:
-    return await axios.post(url, {
-        data: scoreData
-    }, {
+    return await axios.post(url, data, {
         method: 'post',
         headers: {
             'Content-Type': 'application/json',

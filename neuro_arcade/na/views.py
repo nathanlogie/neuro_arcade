@@ -106,18 +106,28 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
     Post Score for a game. The format for the body of the Post request is as follows:
 
     For every score type header, the request needs to have a field called the same as the score header.
-    Additionally, the request needs to specify the id of the player responsible for the score.
+    Additionally, the request needs to specify the player responsible for the score by including either
+    the id ('PlayerID') or name ('PlayerName') of the player. Keep in mind that the player needs to be
+    associated with the current authenticated user, or the request will be refused.
 
-    Example: for a score type with a single header called 'Points' that has an int value,
-    the request needs to look like: {'played':<player.id>, 'Points': <value>}
+    Example: for a score type with a single header called 'Points' then the request needs to have
+    a field called 'Points' and a field either called 'PlayerID' or 'PlayerName'.
     """
-    # todo: this needs to be changed for the new authentication
-    # checking that the Post request contains the player field
-    if request.user.get('player') is None:
-        return Response(status=400, data={'description': 'No player field was provided.'})
+
+    # checking that the Post request contains a player field
+    # either 'PlayerID' or 'PlayerName'
+    playerID = request.data.get('PlayerID', None)
+    playerName = request.data.get('PlayerName', None)
+    if playerID is not None:
+        player = Player.objects.get(id=playerID, user=request.user)
+    elif playerName is not None:
+        player = Player.objects.get(name=playerName, user=request.user)
+    else:
+        return Response(status=400, data={
+            'description': 'No player field provided, or provided player is not associated with this your user.'
+        })
 
     game = get_object_or_404(Game, slug=game_name_slug)
-    player = get_object_or_404(Player, id=request.data.get('player'))
     added_score = {}
     # for score type header in game
     for header in game.score_type['headers']:

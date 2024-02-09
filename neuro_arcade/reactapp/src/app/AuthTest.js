@@ -74,7 +74,7 @@ export function AuthTest() {
                         delete newGuyPlayer
                     </button>
                     <button onClick={() =>
-                        postGameScore('words', 'newGuyPlayer', {})
+                        postGameScore('words', 'newGuyPlayer', {Points: 20})
                             .then((r) => {
                                 setResponse(r);
                                 setUserInfo(localStorage.getItem("user"));
