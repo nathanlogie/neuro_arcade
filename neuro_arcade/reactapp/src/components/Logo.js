@@ -1,7 +1,7 @@
 import styles from '../styles/components/Logo.module.css';
 import logo from '../static/images/logo.png';
 import { Link } from 'react-router-dom';
-
+import React from 'react';
 /**
  * @param size for logo size
  * @returns {JSX.Element} logo
