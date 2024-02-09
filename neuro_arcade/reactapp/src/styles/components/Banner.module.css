@@ -10,6 +10,13 @@
     display: none;
 }
 
+.TabSwitcher {
+    margin: 0 auto;
+}
+.TabSwitcher > * > * > * {
+    width: 15em;
+}
+
 @media (max-width: 50em) {
     .Banner {
         display: none;

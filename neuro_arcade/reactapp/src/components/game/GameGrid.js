@@ -1,6 +1,6 @@
-import styles from '../styles/GameGrid.module.css'
+import styles from '../../styles/components/GameGrid.module.css'
 import {GameCard} from "./GameCard";
-import {Game, requestGamesSorted} from "../backendRequests";
+import {Game, requestGamesSorted} from "../../backendRequests";
 import {useEffect, useState} from "react";
 
 /**

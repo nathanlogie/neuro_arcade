@@ -1,13 +1,14 @@
-import {Banner} from "../components/Banner";
+import {Banner} from "../../components/Banner";
 import {Link} from "react-router-dom";
-import styles from '../styles/App.module.css';
-import {NavBar} from "../components/NavBar";
-import {MobileBanner} from "../components/Banner";
-import {Background} from "../components/Background";
+import styles from '../../styles/App.module.css';
+import {NavBar} from "../../components/NavBar";
+import {MobileBanner} from "../../components/Banner";
+import {Background} from "../../components/Background";
 
 
 /**
- * Component for rendering the Add Content page
+ * @returns {JSX.Element} add content page
+ * @constructor builds add content page
  */
 export function AddContent() {
     return (
@@ -32,7 +33,7 @@ export function AddContent() {
                 direction: 'right'
             }}
             />
-            <MobileBanner size={'big'} />
+            <MobileBanner  />
 
             <div className={styles.MainBlock}>
                 <div className={styles.Content}>

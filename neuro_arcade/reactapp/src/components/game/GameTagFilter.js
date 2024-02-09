@@ -1,5 +1,6 @@
-import {requestGameTags} from "../backendRequests";
+import {requestGameTags} from "../../backendRequests";
 import {useEffect, useState} from "react";
+import styles from '../../styles/components/GameTagFilter.module.css';
 
 /**
  * Prototype for GameTagFilter.onTagChange callback
@@ -16,7 +17,7 @@ import {useEffect, useState} from "react";
  * @param {slugs[]} props.excluded - list of tag slugs to hide from display, currently
  *                                   doesn't support being changed dynamically
 */
-export function GameTagFilter({onTagChange, excluded=[]}) {
+export function GameTagFilter({onTagChange, excluded=[], id, onMouseOver, onMouseOut}) {
     let [isLoading, setLoading] = useState(true);
     let [tags, setTags] = useState([]);
     let [ticks, setTicks] = useState([]);
@@ -45,24 +46,26 @@ export function GameTagFilter({onTagChange, excluded=[]}) {
     // Display waiting message while waiting on server, then show tags
     if (isLoading) {
         return (
-            <div>
+            <>
                 Loading...
-            </div>
+            </>
         )
     } else {
         return (
-            <div>
-                {tags.map((tag, index) => {
-                    return <label key={index}>
-                        <input
-                            type='checkbox'
-                            checked={ticks[index]}
-                            onChange={(e) => toggleTick(index)}
-                        />
-
-                        {tag.name}
-                    </label>
-                })}
+            <div className={styles.FilterTable} id={styles[id]} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
+                <h2>filters</h2>
+                <div className={styles.Tags}>
+                    {tags.map((tag, index) => {
+                        return <label key={index}>
+                            {tag.name}
+                            <input
+                                type='checkbox'
+                                checked={ticks[index]}
+                                onChange={(e) => toggleTick(index)}
+                            />
+                        </label>
+                    })}
+                </div>
             </div>
         );
     }
