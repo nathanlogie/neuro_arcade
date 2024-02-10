@@ -67,8 +67,6 @@ function searchFilter(subject, textQuery, tagQuery) {
  * @param {number} props.num - max number of subjects to show
  * @param {string} props.linkPrefix - link prefix passed to Card
  * @param {string} props.id - element id for styling
- * @param {string} props.type - type of card to display, 'game' or 'player',
- *                              does not support changing dynamically
  */
 export function CardGrid({subjects, textQuery='', tagQuery=[], num=0, linkPrefix, id}) {
     // Select subset of names to display
