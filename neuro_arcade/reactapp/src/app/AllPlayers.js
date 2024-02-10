@@ -3,6 +3,7 @@ import {Background} from "../components/Background";
 import styles from "../styles/App.module.css"
 import {CardGrid} from "../components/CardGrid";
 import {TagFilter} from "../components/TagFilter";
+import {RadioList} from "../components/RadioList";
 import {requestPlayerTags} from "../backendRequests";
 import {useEffect, useState} from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
@@ -18,6 +19,9 @@ export function AllPlayers() {
     let [tags, setTags] = useState([]);
     let [selectedTags, setSelectedTags] = useState([]);
     let [loading, setLoading] = useState(true);
+
+    let modes = ["All", "Human", "AI Model"];
+    let [mode, setMode] = useState([]);
 
     useEffect(() => {
         requestPlayerTags()
@@ -46,10 +50,13 @@ export function AllPlayers() {
                             <FaMagnifyingGlass />
                         </div>
                     </div>
+
                     <TagFilter
                         tags={tags.map((tag) => tag.name)}
                         onTagChange={setSelectedTags}
                     />
+
+                    <RadioList name='mode' options={modes} onChange={(i) => setMode(i)} />
                 </div>
                 <div className={styles.Content} id={styles['AllGames']}>
                     <h1>All Players</h1>
