@@ -332,7 +332,7 @@ export function is_logged_in() {
 export function userIsAdmin() {
     let user = localStorage.getItem('user');
     if (user) {
-        return user.is_admin;
+        return JSON.parse(user).is_admin;
     }
     return null;
 }
@@ -414,6 +414,7 @@ export async function login(userName, email, password) {
             email: email,
             is_admin: response.data.is_admin
         };
+        console.log("IN LOGIN BACKEND: " + response.data.is_admin)
         localStorage.setItem("user", JSON.stringify(user_data));
         return response;
     }).catch((error) => {
