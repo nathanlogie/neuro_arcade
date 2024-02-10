@@ -5,8 +5,9 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.exceptions import ObjectDoesNotExist
+from django.middleware.csrf import get_token
 
 from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer
 from rest_framework import viewsets
@@ -67,6 +68,22 @@ def validate_password(password):
 #    API CALLS
 # ----------------
 @api_view(['GET'])
+def csrf(request: Request) -> Response:
+    """
+    Sends a CSRF token.
+    """
+    return Response({'csrfToken': get_token(request)})
+
+
+@api_view(['POST'])
+def ping(request: Request) -> Response:
+    """
+    Ping! Always responds with a 200 OK.
+    """
+    return Response(status=200)
+
+
+@api_view(['GET'])
 def get_game(request: Request, game_name_slug: str) -> Response:
     """
     Retrieve Game Information
@@ -100,7 +117,6 @@ def get_games_sorted(request: Request) -> Response:
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-@csrf_exempt
 def post_game_score(request: Request, game_name_slug: str) -> Response:
     """
     Post Score for a game. The format for the body of the Post request is as follows:
@@ -229,14 +245,12 @@ def post_about_data(request) -> Response:
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-@csrf_exempt
 def post_new_player(request: Request) -> Response:
     """
     Requests the creation of a new player.
     The request should be of format: {playerName: str, isAI: bool}
     """
     # TODO add support for PlayerTags
-    print(request.data)
     user = request.user
     player_name = request.data['playerName']
     is_AI = request.data['isAI']
@@ -258,7 +272,6 @@ def post_new_player(request: Request) -> Response:
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-@csrf_exempt
 def delete_player(request: Request) -> Response:
     """
     Requests the deletion of a player associated with the current user.
@@ -280,14 +293,12 @@ def delete_player(request: Request) -> Response:
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-@csrf_exempt
 def post_game(request: Request) -> Response:
     # get the user with:
     # user = request.user
     pass
 
 
-@csrf_exempt  # TODO THIS IS UNSECURE; DO REMOVE
 def login(request: HttpRequest) -> Response:
     if request.method == 'POST':
         response = rest_views.obtain_auth_token(request)

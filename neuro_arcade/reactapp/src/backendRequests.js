@@ -67,11 +67,69 @@ const API_ROOT = "http://localhost:8000"
  * Error thrown when a request that requires authentication
  *  is called, but no user is currently logged in.
  */
-class UserNotAuthenticatedError extends Error {
+export class UserNotAuthenticatedError extends Error {
     constructor() {
         super("User not logged in!");
         this.name = "UserNotAuthenticatedError";
     }
+}
+
+/**
+ * CSRF token used for security things.
+ *
+ * Should only be accessed by the getCSRFToken() function.
+ */
+let _csrfToken = null;
+
+/**
+ * Gets you the CSRF, which is usually cached.
+ * If not cached, it will make a request at <API_ROOT>/csrf/ to get it.
+ */
+async function getCSRFToken() {
+    if (_csrfToken == null) {
+        // token needs to be requested
+        const url = API_ROOT + '/csrf/';
+        await axios.get(url, {credentials: 'include'})
+            .then((response) => {
+                _csrfToken = response.data.csrfToken;
+            })
+    }
+    return _csrfToken;
+}
+
+/**
+ * Returns request headers that can be used for a request to the sever.
+ * Set authenticated to true to send the authentication token as well.
+ *
+ * @param {string} method HTTP method (so like GET, POST etc.)
+ * @param {boolean} authenticated
+ *
+ * @return Axios Request Config
+ */
+async function getHeaders(method, authenticated=false) {
+    let config = {
+        credentials: 'include',
+        method: method,
+        mode: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }
+    if (authenticated) {
+        config.headers.Authorization = `Token ${get_user().token}`;
+    }
+    // if (method.toUpperCase() === 'POST') {
+    //     config.headers['X-CSRFToken'] = await getCSRFToken();
+    // }
+    return config;
+}
+
+/**
+ * Pings the API. Should always return 200 OK, unless the POST headers are wrong.
+ */
+export async function ping() {
+    const url = API_ROOT + '/ping/';
+    return await axios.post(url, {}, await getHeaders('POST'));
 }
 
 /**
@@ -147,16 +205,10 @@ export async function createNewPlayer(playerName, isAI) {
     if (!is_logged_in())
         throw UserNotAuthenticatedError()
 
-    return await axios.post(url, {
-        playerName: playerName,
-        isAI: isAI,
-    }, {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${get_user().token}`,
-        },
-    }).then((response) => {
+    return await axios.post(url,
+        { playerName: playerName, isAI: isAI },
+        await getHeaders('POST', true)
+    ).then((response) => {
         console.log('Creation of player ' + playerName + ' successful!');
         return response;
     }).catch((error) => {
@@ -177,17 +229,10 @@ export async function deletePlayer(playerName) {
     const url = API_ROOT + "/delete_player/";
 
     if (!is_logged_in())
-        throw UserNotAuthenticatedError()
+        throw new UserNotAuthenticatedError()
 
-    return await axios.post(url, {
-        playerName: playerName,
-    }, {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${get_user().token}`,
-        },
-    }).then((response) => {
+    return await axios.post(url, { playerName: playerName }, await getHeaders('POST', true))
+        .then((response) => {
         console.log('Deletion of player ' + playerName + ' successful!');
         return response;
     }).catch((error) => {
@@ -228,13 +273,8 @@ export async function postGameScore(gameName, playerIdentification, scoreData) {
         throw Error("playerIdentification needs to be either an int or a string!")
     }
     // sending the request:
-    return await axios.post(url, data, {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${get_user().token}`,
-        },
-    }).then((response) => {
+    return await axios.post(url, data, await getHeaders('POST', true))
+        .then((response) => {
         console.log("Sending of game scores successful!");
         return response;
     }).catch((error) => {
@@ -270,10 +310,10 @@ export async function getAboutData(){
  *
  * @returns {Object} response when post is accepted
  */
-export function postDescription(description){
+export async function postDescription(description){
     const url = API_ROOT + '/edit_about'
 
-    axios.post(url, {value: description, field: "description"})
+    axios.post(url, {value: description, field: "description"}, await getHeaders('POST', true))
         .then(function (response) {
             return response.data
         })
@@ -296,7 +336,7 @@ export async function postPublications(publications){
     const url = API_ROOT + '/edit_about'
 
     try {
-        const response = await axios.post(url, { value: publications, field: "publications" });
+        const response = await axios.post(url, { value: publications, field: "publications" }, await getHeaders('POST', true));
         return response.data;
     }
     catch(error){
@@ -407,15 +447,16 @@ export async function login(userName, email, password) {
         'username': userName,
         'email': email,
         'password': password,
-    }).then((response) => {
-        let user_data = {
-            token: response.data.token,
-            name: userName,
-            email: email,
-            is_admin: response.data.is_admin === true
-        };
-        localStorage.setItem("user", JSON.stringify(user_data));
-        return response;
+    }, await getHeaders('POST'))
+        .then((response) => {
+            let user_data = {
+                token: response.data.token,
+                name: userName,
+                email: email,
+                is_admin: response.data.is_admin === true
+            };
+            localStorage.setItem("user", JSON.stringify(user_data));
+            return response;
     }).catch((error) => {
         console.log(error);
         throw error;

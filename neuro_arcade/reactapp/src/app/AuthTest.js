@@ -4,7 +4,7 @@ import styles from "../styles/App.module.css";
 import {
     createNewPlayer,
     deletePlayer,
-    getWithAuth,
+    ping,
     login,
     logout,
     postGameScore,
@@ -58,19 +58,11 @@ export function AuthTest() {
                         logout
                     </button>
                     <button onClick={() =>
-                        createNewPlayer('newGuyPlayer', false)
-                            .then((r) => {
-                                setResponse(r);
-                            })
+                        createNewPlayer('newGuyPlayer', false).then((r) => setResponse(r))
                     }>
                         create newGuyPlayer
                     </button>
-                    <button onClick={() =>
-                        deletePlayer('newGuyPlayer')
-                            .then((r) => {
-                                setResponse(r);
-                            })
-                    }>
+                    <button onClick={() => deletePlayer('newGuyPlayer').then((r) => setResponse(r))}>
                         delete newGuyPlayer
                     </button>
                     <button onClick={() =>
@@ -81,6 +73,9 @@ export function AuthTest() {
                             })
                     }>
                         postGameScore
+                    </button>
+                    <button onClick={() => ping().then((r) => setResponse(r))}>
+                        ping!
                     </button>
                     <h2>CURRENT USER:</h2>
                     {userInfo}
