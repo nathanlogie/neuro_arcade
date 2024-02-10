@@ -1,6 +1,9 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import axios from 'axios';
+import { FaImage } from "react-icons/fa6";
+import { LuFileJson } from "react-icons/lu";
+import { FaPython } from "react-icons/fa6";
 
 //Should be synced with models.py
 let MAX_NAME_LENGTH = 64
@@ -165,62 +168,82 @@ export function GameForm() {
             <span>
                 <div>
                     <h3>Game Icon</h3>
-                    <input {...register("icon", {
-                        required: false,
-                        validate: (value) => {
-                            const acceptedFormats = ACCEPTED_IMAGE;
-                            const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
-                            if (!acceptedFormats.includes(fileExtension)) {
-                                return "Error: Invalid IMG"
+                    <div>
+                        <label htmlFor={'icon'}>
+                            <div>
+                                <FaImage />
+                            </div>
+                        </label>
+                        <input id={'icon'} {...register("icon", {
+                            required: false,
+                            validate: (value) => {
+                                const acceptedFormats = ACCEPTED_IMAGE;
+                                const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
+                                if (!acceptedFormats.includes(fileExtension)) {
+                                    return "Error: Invalid IMG"
+                                }
+                                return true;
                             }
-                            return true;
-                        }
-                    })} type={"file"} onChange={handleImage}/>
+                        })} type={"file"} onChange={handleImage}/>
+                    </div>
                 </div>
                 <div>
                     <h3>Score Types</h3>
-                    <label htmlFor='score'>Select Image</label>
-                    <input id={'score'} {...register("scoreTypes", {
-                        required: "Score types must be uploaded",
-                        validate: (value) => {
-                            const acceptedFormats = ACCEPTED_SCORE_FILE;
-                            const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
-                            if (!acceptedFormats.includes(fileExtension)) {
-                                return `Error: Invalid file type provided ${fileExtension}`
+                    <div>
+                        <label htmlFor={'score'}>
+                            <div>
+                                <LuFileJson />
+                            </div>
+                        </label>
+                        <input id={'score'} {...register("scoreTypes", {
+                            required: "Score types must be uploaded",
+                            validate: (value) => {
+                                const acceptedFormats = ACCEPTED_SCORE_FILE;
+                                const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
+                                if (!acceptedFormats.includes(fileExtension)) {
+                                    return `Error: Invalid file type provided ${fileExtension}`
+                                }
+                                return true;
                             }
-                            return true;
-                        }
-                    })} type={"file"}
-                           onChange={handleScores}
-                    />
-                    {errors.scoreTypes && (
-                        <div className={"text-red-500"}>{errors.scoreTypes.message}</div>
-                    )}
+                        })} type={"file"}
+                               onChange={handleScores}
+                        />
+                        {errors.scoreTypes && (
+                            <div className={"text-red-500"}>{errors.scoreTypes.message}</div>
+                        )}
+                    </div>
                 </div>
                 <div>
                     <h3>Evaluation Script</h3>
-                    <input {...register("evaluationScript", {
-                        required: "An Evaluation Script must be uploaded",
-                        validate: (value) => {
-                            const acceptedFormats = ACCEPTED_EVAL_SCRIPT;
-                            const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
-                            if (!acceptedFormats.includes(fileExtension)) {
-                                return "Error: Invalid file type provided"
+                    <div>
+                        <label htmlFor={'script'}>
+                            <div>
+                                <FaPython />
+                            </div>
+                        </label>
+                        <input id={'script'} {...register("evaluationScript", {
+                            required: "An Evaluation Script must be uploaded",
+                            validate: (value) => {
+                                const acceptedFormats = ACCEPTED_EVAL_SCRIPT;
+                                const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
+                                if (!acceptedFormats.includes(fileExtension)) {
+                                    return "Error: Invalid file type provided"
+                                }
+                                return true;
                             }
-                            return true;
-                        }
-                    })} type={"file"}
-                           onChange={handleEvalScript}
-                    />
-                    {errors.evaluationScript && (
-                        <div className={"text-red-500"}>{errors.evaluationScript.message}</div>
-                    )}
+                        })} type={"file"}
+                               onChange={handleEvalScript}
+                        />
+                        {errors.evaluationScript && (
+                            <div className={"text-red-500"}>{errors.evaluationScript.message}</div>
+                        )}
+                    </div>
                 </div>
             </span>
 
 
             <button disabled={isSubmitting} type={"submit"}>
-                {isSubmitting ? "Submitting form..." : "Submit!"}
+                {isSubmitting ? "Submitting form..." : "add new game"}
             </button>
             {errors.root && (
                 <div className={"text-red-500"}>{errors.root.message}</div>
