@@ -39,14 +39,8 @@ export function AddContent() {
             <div className={styles.MainBlock}>
                 <div className={styles.Content}>
                     <div className={styles.ContentBlock}>
-                        {
-                            is_logged_in() ?
-                                <>
-                                    <Link to='/add_game'> Add game </Link>
-                                    <Link to='/add_model'> Add model </Link>
-                                </>
-                            : null
-                        }
+                        <Link to='/add_game'> Add game </Link>
+                        <Link to='/add_model'> Add model </Link>
                     </div>
                 </div>
             </div>

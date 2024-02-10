@@ -27,10 +27,12 @@ export function HomePage() {
     const [isLoggedIn, setIsLoggedIn] = useState(is_logged_in)
 
     let aboutLink = '/about';
+    let addContent = ['', ''];
     if (is_logged_in()){
         if (userIsAdmin()){
             aboutLink = '/edit_about';
         }
+        addContent = ['add content', 'add_content'];
     }
 
     function onLogout(e){
@@ -51,8 +53,8 @@ export function HomePage() {
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{
-                name: 'add content',
-                link: 'add_content',
+                name: addContent[0],
+                link: addContent[1],
                 orientation: 'right',
                 direction: 'right'
             }} />
