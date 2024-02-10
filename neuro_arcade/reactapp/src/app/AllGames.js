@@ -1,5 +1,4 @@
 import {Banner, MobileBanner} from "../components/Banner";
-import {Background} from "../components/Background";
 import styles from "../styles/App.module.css"
 import {CardGrid} from "../components/CardGrid";
 import {TagFilter} from "../components/TagFilter";
