@@ -3,23 +3,10 @@ import {useEffect, useState} from "react";
 import styles from '../styles/components/TagFilter.module.css';
 
 /**
- * Primary key of a FilterTag
- * @typedef {number} FilterTagId
- */
-
-/**
- * Interface for objects displayable in a TagFilter
- *
- * @typedef {Object} FilterTag
- * @property {FilterTagId} id
- * @property {string} name
- */
-
-/**
  * Prototype for TagFilter.onTagChange callback
  * 
  * @typedef {function} OnTagChange
- * @param {FilterTagId[]} activeTags - list of currently checked tags' ids
+ * @param {boolean[]} ticks - whether each index is checked or not
  */
 
 /**
@@ -27,66 +14,44 @@ import styles from '../styles/components/TagFilter.module.css';
  * 
  * @param {Object} props
  * @param {OnTagChange} props.onTagChange - callback for when a tag is checked/unchecked
- * @param {FilterTagId[]} props.excluded - list of tag ids to hide from display, currently
- *                                         doesn't support being changed dynamically
+ * @param {string[]} props.tags - list of tag names
 */
-export function TagFilter({onTagChange, excluded=[], id, onMouseOver, onMouseOut, type}) {
-    let [isLoading, setLoading] = useState(true);
-    let [tags, setTags] = useState([]);
+export function TagFilter({onTagChange, tags, id, onMouseOver, onMouseOut}) {
     let [ticks, setTicks] = useState([]);
 
-    // Fetch tags from server on initial run
-    var tagGetter;
-    if (type === 'game') {
-        tagGetter = requestGameTags;
-    } else {
-        tagGetter = requestPlayerTags;
-    }
+    // Untick all tags initially
     useEffect(() => {
-        tagGetter()
-            .then(tags => {
-                setTags(tags.filter((tag) => !excluded.includes(tag.id)));
-                setTicks(new Array(tags.length).fill(false));
-                setLoading(false);
-            })
-    }, []);
+        var newTicks = tags.map(() => false);
+        setTicks(newTicks);
+        onTagChange(newTicks);
+    }, [...tags]);
 
-
+    // Update tick array on checkbox click
     function toggleTick(index) {
+        // Avoid mutating old list
         var newTicks = ticks.slice();
         newTicks[index] = !newTicks[index];
         setTicks(newTicks);
 
-        onTagChange(
-            tags.filter((tag, index) => newTicks[index])
-                .map((tag) => tag.id)
-        );
+        // Notify parent of new selected tags
+        onTagChange(newTicks);
     }
 
-    // Display waiting message while waiting on server, then show tags
-    if (isLoading) {
-        return (
-            <>
-                Loading...
-            </>
-        )
-    } else {
-        return (
-            <div className={styles.FilterTable} id={styles[id]} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
-                <h2>filters</h2>
-                <div className={styles.Tags}>
-                    {tags.map((tag, index) => {
-                        return <label key={index}>
-                            {tag.name}
-                            <input
-                                type='checkbox'
-                                checked={ticks[index]}
-                                onChange={(e) => toggleTick(index)}
-                            />
-                        </label>
-                    })}
-                </div>
+    return (
+        <div className={styles.FilterTable} id={styles[id]} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
+            <h2>filters</h2>
+            <div className={styles.Tags}>
+                {tags.map((tag, index) => {
+                    return <label key={index}>
+                        {tag}
+                        <input
+                            type='checkbox'
+                            checked={ticks[index]}
+                            onChange={(e) => toggleTick(index)}
+                        />
+                    </label>
+                })}
             </div>
-        );
-    }
+        </div>
+    );
 }

@@ -3,7 +3,8 @@ import {Background} from "../components/Background";
 import styles from "../styles/App.module.css"
 import {CardGrid} from "../components/CardGrid";
 import {TagFilter} from "../components/TagFilter";
-import {useState} from "react";
+import {requestGameTags} from "../backendRequests";
+import {useEffect, useState} from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 
 /**
@@ -14,7 +15,23 @@ export function AllGames() {
     // name query for sorting the already fetched games
     // can be changed freely, as it only affect data displayed on the client
     let [textQuery, setTextQuery] = useState('');
+    let [tags, setTags] = useState([]);
     let [selectedTags, setSelectedTags] = useState([]);
+    let [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        requestGameTags()
+            .then((tags) => {
+                setTags(tags);
+                setLoading(false);
+            })
+    }, [])
+
+    if (loading) {
+        return <>
+            Loading...
+        </>
+    }
 
     return (
         <div>
@@ -29,11 +46,20 @@ export function AllGames() {
                             <FaMagnifyingGlass />
                         </div>
                     </div>
-                    <TagFilter onTagChange={setSelectedTags} type={'game'} />
+                    <TagFilter
+                        tags={tags.map((tag) => tag.name)}
+                        onTagChange={setSelectedTags}
+                    />
                 </div>
                 <div className={styles.Content} id={styles['AllGames']}>
                     <h1>All Games</h1>
-                    <CardGrid type={'game'} textQuery={textQuery} tagQuery={selectedTags} linkPrefix={''} id={'AppGrid'} />
+                    <CardGrid
+                        type={'game'}
+                        textQuery={textQuery}
+                        tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)}
+                        linkPrefix={''}
+                        id={'AppGrid'}
+                    />
                 </div>
             </div>
         </div>
