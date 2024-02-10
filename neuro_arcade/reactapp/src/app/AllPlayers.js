@@ -1,7 +1,7 @@
 import {Banner, MobileBanner} from "../components/Banner";
 import {Background} from "../components/Background";
 import styles from "../styles/App.module.css"
-import {PlayerGrid} from "../components/PlayerGrid";
+import {PlayerGrid, PlayerGridMode} from "../components/PlayerGrid";
 import {TagFilter} from "../components/TagFilter";
 import {RadioList} from "../components/RadioList";
 import {requestPlayerTags} from "../backendRequests";
@@ -20,8 +20,8 @@ export function AllPlayers() {
     let [selectedTags, setSelectedTags] = useState([]);
     let [loading, setLoading] = useState(true);
 
-    let modes = ["All", "Human", "AI Model"];
-    let [mode, setMode] = useState([]);
+    let modes = [PlayerGridMode.ALL, PlayerGridMode.HUMAN, PlayerGridMode.AI];
+    let [modeIdx, setModeIdx] = useState(0);
 
     useEffect(() => {
         requestPlayerTags()
@@ -56,11 +56,14 @@ export function AllPlayers() {
                         onTagChange={setSelectedTags}
                     />
 
-                    <RadioList name='mode' options={modes} onChange={(i) => setMode(i)} />
+                    <div>
+                        <RadioList name='mode' options={modes} onChange={(i) => setModeIdx(i)} />
+                    </div>
                 </div>
                 <div className={styles.Content} id={styles['AllGames']}>
                     <h1>All Players</h1>
                     <PlayerGrid
+                        mode={modes[modeIdx]}
                         textQuery={textQuery}
                         tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)}
                         id={'AppGrid'}
