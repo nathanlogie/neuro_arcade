@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import axios from 'axios';
-import styles from '../../styles/components/Form.module.css';
 
 //Should be synced with models.py
 let MAX_NAME_LENGTH = 64
@@ -110,7 +109,7 @@ export function GameForm() {
     };
 
     return (
-        <form className={styles.Form} onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <h3>Name</h3>
             <input {...register("name", {
                 required: "Name is required",
@@ -140,44 +139,12 @@ export function GameForm() {
                 <div className={"text-red-500"}>{errors.description.message}</div>
             )}
 
-            <h3>Game Icon</h3>
-            <input {...register("icon", {
-                required: false,
-                validate: (value) => {
-                    const acceptedFormats = ACCEPTED_IMAGE;
-                    const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
-                    if (!acceptedFormats.includes(fileExtension)) {
-                        return "Error: Invalid IMG"
-                    }
-                    return true;
-                }
-            })} type={"file"} onChange={handleImage}/>
-
-
             <h3>Game Tags</h3>
             <input {...register("tags", {
                 required: false
             })} type={"text"} placeholder={"Game Tags"}
                    onChange={(event) => setTags(event.target.value)}
             />
-
-            <h3>Score Types</h3>
-            <input {...register("scoreTypes", {
-                required: "Score types must be uploaded",
-                validate: (value) => {
-                    const acceptedFormats = ACCEPTED_SCORE_FILE;
-                    const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
-                    if (!acceptedFormats.includes(fileExtension)) {
-                        return `Error: Invalid file type provided ${fileExtension}`
-                    }
-                    return true;
-                }
-            })} type={"file"}
-                   onChange={handleScores}
-            />
-            {errors.scoreTypes && (
-                <div className={"text-red-500"}>{errors.scoreTypes.message}</div>
-            )}
 
             <h3>Play Link</h3>
             <input {...register("playLink", {
@@ -195,26 +162,63 @@ export function GameForm() {
                 <div className={"text-red-500"}>{errors.playLink.message}</div>
             )}
 
-            <h3>Evaluation Script</h3>
-            <input {...register("evaluationScript", {
-                required: "An Evaluation Script must be uploaded",
-                validate: (value) => {
-                    const acceptedFormats = ACCEPTED_EVAL_SCRIPT;
-                    const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
-                    if (!acceptedFormats.includes(fileExtension)) {
-                        return "Error: Invalid file type provided"
-                    }
-                    return true;
-                }
-            })} type={"file"}
-                   onChange={handleEvalScript}
-            />
-            {errors.evaluationScript && (
-                <div className={"text-red-500"}>{errors.evaluationScript.message}</div>
-            )}
+            <span>
+                <div>
+                    <h3>Game Icon</h3>
+                    <input {...register("icon", {
+                        required: false,
+                        validate: (value) => {
+                            const acceptedFormats = ACCEPTED_IMAGE;
+                            const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
+                            if (!acceptedFormats.includes(fileExtension)) {
+                                return "Error: Invalid IMG"
+                            }
+                            return true;
+                        }
+                    })} type={"file"} onChange={handleImage}/>
+                </div>
+                <div>
+                    <h3>Score Types</h3>
+                    <label htmlFor='score'>Select Image</label>
+                    <input id={'score'} {...register("scoreTypes", {
+                        required: "Score types must be uploaded",
+                        validate: (value) => {
+                            const acceptedFormats = ACCEPTED_SCORE_FILE;
+                            const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
+                            if (!acceptedFormats.includes(fileExtension)) {
+                                return `Error: Invalid file type provided ${fileExtension}`
+                            }
+                            return true;
+                        }
+                    })} type={"file"}
+                           onChange={handleScores}
+                    />
+                    {errors.scoreTypes && (
+                        <div className={"text-red-500"}>{errors.scoreTypes.message}</div>
+                    )}
+                </div>
+                <div>
+                    <h3>Evaluation Script</h3>
+                    <input {...register("evaluationScript", {
+                        required: "An Evaluation Script must be uploaded",
+                        validate: (value) => {
+                            const acceptedFormats = ACCEPTED_EVAL_SCRIPT;
+                            const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
+                            if (!acceptedFormats.includes(fileExtension)) {
+                                return "Error: Invalid file type provided"
+                            }
+                            return true;
+                        }
+                    })} type={"file"}
+                           onChange={handleEvalScript}
+                    />
+                    {errors.evaluationScript && (
+                        <div className={"text-red-500"}>{errors.evaluationScript.message}</div>
+                    )}
+                </div>
+            </span>
 
 
-            <br/>
             <button disabled={isSubmitting} type={"submit"}>
                 {isSubmitting ? "Submitting form..." : "Submit!"}
             </button>

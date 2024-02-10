@@ -39,10 +39,8 @@ export function AddGame() {
                 animate={{opacity: 1}}
                 exit={{opacity: 0}}
             >
-                <div className={styles.Content} id={styles['small']}>
-                    <div className={styles.Title}>
-                        <h1 className={styles.Header}>Add game</h1>
-                    </div>
+                <div className={styles.Form}>
+                    <h1 className={styles.Header}>Add game</h1>
                     <GameForm/>
                 </div>
             </motion.div>

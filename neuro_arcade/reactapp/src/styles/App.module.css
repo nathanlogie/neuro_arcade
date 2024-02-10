@@ -80,6 +80,61 @@
         justify-content: center;
         gap: 2em;
     }
+    .Form {
+        margin: 3em;
+        width: 30em;
+        position: relative;
+        background-color: rgba(3, 3, 3, 0.4);
+        border-radius: 2em;
+        padding: 3em 3em;
+        backdrop-filter: blur(20px);
+        & h1 {
+            position: absolute;
+            top: -1.4em;
+        }
+        & form {
+            display: flex;
+            flex-direction: column;
+            & h3 {
+                text-align: left;
+                font-weight: 600;
+                color: #DDDDDD;
+            }
+            & input {
+                height: 3em;
+                margin-bottom: 1.5em;
+                border-radius: 0.5em;
+                border: none;
+                outline: none;
+                padding: 0 2em;
+                background-color: rgba(255, 255, 255, 0.2);
+                color: #FFFFFF;
+                font-family: inherit;
+            }
+            & input::placeholder {
+                color: #CCCCCC;
+            }
+            & span {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                margin-bottom: 2em;
+                & h3 {
+                    text-align: center;
+                }
+                & input {
+                    width: 15em;
+                    height: 5em;
+                    padding: 0;
+                    margin-bottom:20px;
+                    cursor: pointer;
+                }
+                & input[type="file"]::file-selector-button {
+                    display: none;
+                }
+            }
+        }
+    }
 }
 .MobileBannerBuffer {
     position: relative;
