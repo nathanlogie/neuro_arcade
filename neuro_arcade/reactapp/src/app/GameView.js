@@ -25,8 +25,6 @@ export function GameView() {
                 setLoading(false);
             })
     }, []);
-
-    console.log("HELLO");
     if (isLoading) {
         return (
             <>
