@@ -17,9 +17,9 @@ import styles from '../styles/components/TagFilter.module.css';
  * @param {string[]} props.tags - list of tag names
 */
 export function TagFilter({onTagChange, tags, id, onMouseOver, onMouseOut}) {
-    let [ticks, setTicks] = useState([]);
+    let [ticks, setTicks] = useState(tags.map(() => false));
 
-    // Untick all tags initially
+    // Untick all tags on tag list modificationi
     useEffect(() => {
         var newTicks = tags.map(() => false);
         setTicks(newTicks);
