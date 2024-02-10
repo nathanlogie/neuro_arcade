@@ -1,5 +1,5 @@
 import styles from '../styles/components/CardGrid.module.css'
-import {requestPlayers} from "../backendRequests";
+import {PlayerTagKey, requestPlayers} from "../backendRequests";
 import {CardGrid} from './CardGrid';
 import {useEffect, useState} from "react";
 
@@ -21,9 +21,9 @@ export const PlayerGridMode = {
  *
  * @param {Object} props
  * @param {PlayerGridMode} props.mode - types of players to show
- * @param {string} props.textQuery - string subject names/descriptions must contain
- * @param {SubjectTag[]} props.tagQuery - tags which subjects must have applied
- * @param {number} props.num - max number of subjects to show
+ * @param {string} props.textQuery - string player names/descriptions must contain
+ * @param {PlayerTagKey[]} props.tagQuery - tags which players must have applied
+ * @param {number} props.num - max number of players to show
  * @param {string} props.id - element id for styling
  */
 export function PlayerGrid({mode=PlayerGridMode.ALL, textQuery='', tagQuery=[], num=0, id}) {
@@ -39,7 +39,7 @@ export function PlayerGrid({mode=PlayerGridMode.ALL, textQuery='', tagQuery=[], 
             })
     }, []);
 
-    // Display waiting message while waiting on server, then show subjects
+    // Display waiting message while waiting on server, then show players
     if (isLoading) {
         return (
             <div className={styles.CardGrid}>
@@ -47,7 +47,7 @@ export function PlayerGrid({mode=PlayerGridMode.ALL, textQuery='', tagQuery=[], 
             </div>
         )
     } else {
-        // Filter subjects by mode
+        // Filter players by mode
         let displayed = players.filter((player) => (
             (mode == PlayerGridMode.ALL)
             || (mode == PlayerGridMode.AI && player.is_ai)

@@ -1,5 +1,5 @@
 import styles from '../styles/components/CardGrid.module.css'
-import {requestGames} from "../backendRequests";
+import {GameTagKey, requestGames} from "../backendRequests";
 import {CardGrid} from './CardGrid';
 import {useEffect, useState} from "react";
 
@@ -8,7 +8,7 @@ import {useEffect, useState} from "react";
  *
  * @param {Object} props
  * @param {string} props.textQuery - string game names/descriptions must contain
- * @param {SubjectTag[]} props.tagQuery - tags which games must have applied
+ * @param {GameTagKey[]} props.tagQuery - tags which games must have applied
  * @param {number} props.num - max number of games to show
  * @param {string} props.id - element id for styling
  */
@@ -25,7 +25,7 @@ export function GameGrid({textQuery='', tagQuery=[], num=0, id}) {
             })
     }, []);
 
-    // Display waiting message while waiting on server, then show subjects
+    // Display waiting message while waiting on server, then show games
     if (isLoading) {
         return (
             <div className={styles.CardGrid}>
