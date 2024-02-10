@@ -1,7 +1,7 @@
 import {Banner, MobileBanner} from "../components/Banner";
 import {Background} from "../components/Background";
 import styles from "../styles/App.module.css"
-import {CardGrid} from "../components/CardGrid";
+import {PlayerGrid} from "../components/PlayerGrid";
 import {TagFilter} from "../components/TagFilter";
 import {RadioList} from "../components/RadioList";
 import {requestPlayerTags} from "../backendRequests";
@@ -60,11 +60,9 @@ export function AllPlayers() {
                 </div>
                 <div className={styles.Content} id={styles['AllGames']}>
                     <h1>All Players</h1>
-                    <CardGrid
-                        type={'player'}
+                    <PlayerGrid
                         textQuery={textQuery}
                         tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)}
-                        linkPrefix={''}
                         id={'AppGrid'}
                     />
                 </div>

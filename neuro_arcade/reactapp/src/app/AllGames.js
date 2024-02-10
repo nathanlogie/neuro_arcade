@@ -1,7 +1,7 @@
 import {Banner, MobileBanner} from "../components/Banner";
 import {Background} from "../components/Background";
 import styles from "../styles/App.module.css"
-import {CardGrid} from "../components/CardGrid";
+import {GameGrid} from "../components/GameGrid";
 import {TagFilter} from "../components/TagFilter";
 import {requestGameTags} from "../backendRequests";
 import {useEffect, useState} from "react";
@@ -53,11 +53,9 @@ export function AllGames() {
                 </div>
                 <div className={styles.Content} id={styles['AllGames']}>
                     <h1>All Games</h1>
-                    <CardGrid
-                        type={'game'}
+                    <GameGrid
                         textQuery={textQuery}
                         tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)}
-                        linkPrefix={''}
                         id={'AppGrid'}
                     />
                 </div>

@@ -1,5 +1,5 @@
 import {Banner} from "../components/Banner";
-import {CardGrid} from "../components/CardGrid";
+import {GameGrid} from "../components/GameGrid";
 import styles from '../styles/App.module.css';
 import {NavBar} from "../components/NavBar";
 import {MobileBanner} from "../components/Banner";
@@ -88,10 +88,8 @@ export function HomePage() {
                         be done server-side (resulting in a request on every check/uncheck), or num filtering should be
                         done locally
                     */}
-                    <CardGrid
-                        type={'game'}
+                    <GameGrid
                         num={8}
-                        linkPrefix={'all_games/'}
                         tagQuery={
                             tags.filter((tag, i) => selectedTags[i])
                                 .concat(forcedTags)
