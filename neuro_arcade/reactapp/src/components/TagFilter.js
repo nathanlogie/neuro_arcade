@@ -10,7 +10,7 @@ import styles from '../styles/components/TagFilter.module.css';
  */
 
 /**
- * Displays a list of checkboxes for GameTags
+ * Displays a list of checkboxes for tag strings
  * 
  * @param {Object} props
  * @param {OnTagChange} props.onTagChange - callback for when a tag is checked/unchecked
