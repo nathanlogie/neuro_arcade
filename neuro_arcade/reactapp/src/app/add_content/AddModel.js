@@ -1,0 +1,49 @@
+import {Banner} from "../../components/Banner";
+import styles from '../../styles/App.module.css';
+import {NavBar} from "../../components/NavBar";
+import {MobileBanner} from "../../components/Banner";
+import {Background} from "../../components/Background";
+import {ModelForm} from "../../components/ModelForm";
+
+/**
+ *
+ * @returns {JSX.Element} add model page
+ * @constructor builds add model page
+ */
+export function AddModel() {
+    return (
+        <div>
+            <Background />
+            <Banner size={'big'} button_left={{
+                name: 'add content',
+                link: '/add_content',
+                orientation: 'left',
+                direction: 'left'
+            }} button_right={{
+                link: '',
+                orientation: 'right'
+            }} />
+            <NavBar button_left={{
+                name: 'home',
+                link: 'home',
+                orientation: 'left',
+                direction: 'left'
+            }} button_right={{
+                link: '...',
+                direction: 'right'
+            }}
+            />
+            <MobileBanner />
+
+            <div className={styles.MainBlock}>
+                <div className={styles.Content}>
+                    <div className={styles.ContentBlock}>
+                        <h1>Add model</h1>
+                        <ModelForm />
+                    </div>
+                </div>
+            </div>
+            <div className={styles.MobileBannerBuffer} />
+        </div>
+    );
+}

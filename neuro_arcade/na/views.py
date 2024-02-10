@@ -1,22 +1,18 @@
 import os
-from typing import Type
 
-from django.contrib import auth
-from django.contrib.auth.decorators import login_required
-from django.forms import BaseFormSet, formset_factory
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
-from django.core.files.storage import default_storage
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.request import Request
+from rest_framework import viewsets
 
-from na.forms import AboutForm, GameForm, ScoreTypeForm, PublicationFormSet
-from na.models import Game, GameTag, Player
-from na.forms import UserForm
+from na.models import Game, GameTag, Player, PlayerTag
+from django.conf import settings
 
+from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
 import json
 
 
@@ -58,6 +54,11 @@ def get_game_list(query, wanted_tags=None, num=None):
     return games
 
 
+def validate_password(password):
+    # TODO improve password validation
+    return len(password) >= 8
+
+
 # ----------------
 #    API CALLS
 # ----------------
@@ -75,7 +76,7 @@ def get_tags(request: Request) -> Response:
     """
     Retrieves the GameTags
     """
-    return Response(GameTag.objects.all())
+    return Response([tag.serialize() for tag in GameTag.objects.all()])
 
 
 @api_view(['GET'])
@@ -95,6 +96,7 @@ def get_games_sorted(request: Request) -> Response:
 
 # TODO maybe you should be logged in for this request
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def post_game_score(request: Request, game_name_slug: str) -> Response:
     """
     Post Score for a game. The format for the body of the Post request is as follows:
@@ -105,8 +107,9 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
     Example: for a score type with a single header called 'Points' that has an int value,
     the request needs to look like: {'played':<player.id>, 'Points': <value>}
     """
+    # todo: this needs to be changed for the new authentication
     # checking that the Post request contains the player field
-    if request.data.get('player') is None:
+    if request.user.get('player') is None:
         return Response(status=400, data={'description': 'No player field was provided.'})
 
     game = get_object_or_404(Game, slug=game_name_slug)
@@ -146,232 +149,104 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
     return Response(status=200)
 
 
+@api_view(['GET'])
+def get_about_data(request: Request) -> Response:
+
+    """
+    Posts about data from json file
+    Posts from media/about.json
+    Uses static/about.json as a fallback
+    """
+
+    file = 'about.json'
+    try:
+        with open(os.path.join(settings.MEDIA_ROOT, file), "r") as f:
+            about = json.load(f)
+
+    except FileNotFoundError:
+        with open(os.path.join(settings.STATICFILES_DIRS[0], file), "r") as f:
+            about = json.load(f)
+
+    return Response(about)
+
+
 @api_view(['POST'])
-def post_game(request: Request) -> Response:
-    pass
+def post_about_data(request) -> Response:
 
+    """
+    Retrieves About data from edit about form and posts it to media/about.json
+    Gets a field and value. Depending on the field, it handles the data appropriately
+    """
 
-# -----------------
-#   PAGE VIEWS
-# -----------------
-def index(request: HttpRequest) -> HttpResponse:
-    return render(request, 'index.html')
+    file_path = os.path.join(settings.MEDIA_ROOT, 'about.json')
 
-
-def game_search(request: HttpRequest) -> HttpResponse:
-    # Process GET parameters
-    query = request.GET.get('query')
-    wanted_tag_slugs = request.GET.getlist('tags')
-    wanted_tags = GameTag.objects.filter(slug__in=wanted_tag_slugs)
-
-    context_dir = {
-        'games': get_game_list(query, wanted_tags),
-        'tags': GameTag.objects.all()
-    }
-
-    return render(request, 'games.html', context_dir)
-
-
-def game_view(request: HttpRequest, game_name_slug: str) -> HttpResponse:
-    return render(request, 'game_view.html', get_game_dict(game_name_slug))
-
-
-def game_data_add(request: HttpRequest, game_name_slug: str) -> HttpResponse:
-    game = get_object_or_404(Game, slug=game_name_slug)
-    return HttpResponse("Game data add page for " + game.name + ".")
-
-
-@login_required
-def content_add(request: HttpRequest) -> HttpResponse:
-    return render(request, 'add_content.html')
-
-
-@login_required
-def game_add(request: HttpRequest) -> HttpResponse:
-    ScoreTypeFormset: Type[BaseFormSet] = formset_factory(ScoreTypeForm, extra=1)
-
-    # Check if submitting or loading
-    if request.method == 'POST':
-        # Validate submission
-        game_form = GameForm(request.POST, request.FILES)
-        scoretype_formset = ScoreTypeFormset(request.POST)
-        if game_form.is_valid() and scoretype_formset.is_valid():
-            # Update database
-            game: Game = game_form.save(commit=False)
-            game.owner = request.user
-            game.score_type["headers"] = scoretype_formset.cleaned_data
-            game.save()
-            game_form.save_m2m()
-
-            # Send user to the new game's page
-            return redirect(reverse('na:game_view', args=[game.slug]))
-    else:
-        # Setup empty form
-        game_form = GameForm()
-        scoretype_formset = ScoreTypeFormset()
-
-    context_dict = {
-        'game_form': game_form,
-        'scoretype_formset': scoretype_formset,
-    }
-
-    return render(request, 'add_game.html', context=context_dict)
-
-
-def player_view(request: HttpRequest, player_name_slug: str) -> HttpResponse:
-    player = get_object_or_404(Player, slug=player_name_slug)
-    return HttpResponse("Player view page")
-
-
-@login_required
-def model_add(request: HttpRequest) -> HttpResponse:
-    return HttpResponse("Model add page")
-
-
-def sign_up(request: HttpRequest) -> HttpResponse:
-    # Check not already logged in
-    if request.user.is_authenticated:
-        return redirect(reverse('na:index'))
-
-    # Check if submitting or loading
-    if request.method == 'POST':
-        # Validate submission
-        user_form = UserForm(request.POST)
-        if user_form.is_valid():
-            # Update database
-            user = user_form.save()
-            user.set_password(user.password)
-            user.save()
-
-            # Send user to login page
-            return redirect(reverse('na:login'))
-    else:
-        # Setup empty form
-        user_form = UserForm()
-
-    context_dict = {
-        'user_form': user_form
-    }
-
-    return render(request, 'sign_up.html', context=context_dict)
-
-
-def login(request: HttpRequest) -> HttpResponse:
-    # Check not already logged in
-    if request.user.is_authenticated:
-        return redirect(reverse('na:index'))
-
-    # Check if submitting or loading
-    if request.method == 'POST':
-        # Validate submission
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        # Try to find user
-        user = auth.authenticate(username=username, password=password)
-        if user:
-            # TODO: check is_active
-            auth.login(request, user)
-
-            # Send user to next page if requested, fallback to index
-            dest = request.GET.get('next', '')
-            if dest == '':
-                dest = reverse('na:index')
-            return redirect(dest)
-        else:
-            error = "Invalid login details."
-    else:
-        # Setup empty form
-        error = None
-
-    context_dict = {
-        'error': error,
-        'submit_url': request.get_full_path(),
-    }
-
-    return render(request, 'login.html', context=context_dict)
-
-
-@login_required
-def logout(request):
-    auth.logout(request)
-    return redirect(reverse('na:index'))
-
-
-def about(request):
     try:
-        with open('media/about.json') as f:
-            data = json.load(f)
-    except FileNotFoundError:  # fallback to a static about.json
-        with open('static/about.json') as f:
+        with open(file_path, 'r') as f:
             data = json.load(f)
 
-    if data['image'] is None or not os.path.exists(data['image']):
-        data['image'] = '/static/images/happy-brain.jpg'
+        field = request.data.get('field')
+        value = request.data.get('value')
+
+        if not field:
+            return Response(status=400)
+
+        if field == "description":
+            data["description"] = value
+        elif field == "publications":
+            data["publications"] = []
+
+            for p in value:
+                data["publications"].append(
+                    {
+                        'title': p['title'],
+                        'author': p['author'],
+                        'link': p['link']
+                    }
+                )
+
+        with open(file_path, 'w') as f:
+            json.dump(data, f)
+
+        return Response(status=200)
+    except Exception as e:
+        print("ERROR OCCURRED: ", e)
+        return Response(status=400)
+
+
+@api_view(['POST'])
+def sign_up(request: Request) -> Response:
+    username = request.data['username']
+    email = request.data['email']
+    password = request.data['password']
+    # input validation:
+    if username is None or email is None or password is None or not validate_password(password):
+        return Response(status=400, data='Invalid data.')
+
+    # creating a new User in the DB:
+    new_user = User.objects.create_user(username=username, email=email, password=password)
+
+    if new_user is not None:
+        return Response(status=200)  # sending a success response back
     else:
-        data['image'] = '/media' + data['image']
-
-    return render(request, 'about.html', data)
+        return Response(status=400, data='Error creating new user.')
 
 
-@login_required
-def edit_about(request):
-    context_dict = {"missing_field": False}
-    try:
-        with open('media/about.json') as f:
-            data = json.load(f)
-    except FileNotFoundError:  # fallback to a static about.json
-        with open('static/about.json') as f:
-            data = json.load(f)
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-    if len(data['publications']) == 0:
-        PublicationFormSet.extra = 1
-    else:
-        PublicationFormSet.extra = 0
+class GameViewSet(viewsets.ModelViewSet):
+    queryset = Game.objects.all()
+    serializer_class = GameSerializer
 
-    if request.method == 'POST':
-        about_form = AboutForm(request.POST, request.FILES,
-                               initial={'description': data['description'], 'image': data['image']})
-        publication_forms = PublicationFormSet(request.POST, initial=data['publications'])
-        if about_form.is_valid():
-            # todo: fix the publication form
-            description = request.POST.get('description')
+class GameTagViewSet(viewsets.ModelViewSet):
+    queryset = GameTag.objects.all()
+    serializer_class = GameTagSerializer
 
-            if description:
-                data['description'] = description
+class PlayerTagViewSet(viewsets.ModelViewSet):
+    queryset = PlayerTag.objects.all()
+    serializer_class = PlayerTagSerializer
 
-            if request.FILES.get('image'):
-                image = request.FILES['image']
-
-                with default_storage.open('images/' + image.name, 'wb+') as f:
-                    for chunk in image.chunks():
-                        f.write(chunk)
-
-                data['image'] = 'images/' + image.name
-
-            try:
-                data['publications'] = []
-                for publication in publication_forms:
-                    if publication.is_valid():
-                        title = publication.cleaned_data['title']
-                        author = publication.cleaned_data['author']
-                        link = publication.cleaned_data['link']
-                        data['publications'].append({'title': title, 'author': author, 'link': link})
-            except KeyError:
-                context_dict["missing_field"] = True
-                context_dict["aboutForm"] = about_form
-                context_dict["publicationForms"] = publication_forms
-                return render(request, 'edit_about.html', context_dict)
-
-            with open('media/about.json', 'w') as f:
-                json.dump(data, f)
-
-            return redirect(reverse('na:about'))
-        else:
-            context_dict["aboutForm"] = about_form
-            context_dict["publicationForms"] = publication_forms
-    else:
-        context_dict["aboutForm"] = AboutForm(initial=data)
-        context_dict["publicationForms"] = PublicationFormSet(initial=data['publications'])
-
-    return render(request, 'edit_about.html', context_dict)
+class PlayerViewSet(viewsets.ModelViewSet):
+    queryset = Player.objects.all()
+    serializer_class = PlayerSerializer

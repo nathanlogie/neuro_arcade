@@ -1,0 +1,43 @@
+.TableContainer, .GraphContainer {
+    position: relative;
+    background-color: rgba(3, 3, 3, 0.4);
+    border-radius: 0.5em;
+    backdrop-filter: blur(20px);
+    .TabSwitcher {
+        position: absolute;
+    }
+    h2 {
+        position: absolute;
+        top: -1.5em;
+        left: 1em;
+        font-size: 1.75em;
+    }
+}
+
+.TableContainer {
+    padding: 2em;
+    margin: 2em 2em 2em auto;
+    width: 28.5em;
+    .TabSwitcher {
+        right: 0;
+        top: -2em;
+    }
+}
+
+.GraphContainer {
+    padding: 2em 0;
+    margin: 2em auto 2em 2em;
+    width: 43.75em;
+    .TabSwitcher {
+        top: 0.5em;
+        width: 100%;
+        z-index: 2;
+    }
+}
+
+@media (max-width: 50em) {
+    .TableContainer, .GraphContainer {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

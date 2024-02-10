@@ -17,6 +17,8 @@
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
 
 
+image: python:latest
+
 stages:          # List of stages for jobs, and their order of execution
   - build
   - serverFix
@@ -29,31 +31,34 @@ variables:
   MYSQL_USER: $MYSQL_USER
   MYSQL_PASSWORD: $MYSQL_PASS
 
+before_script:
+  # - apt-get install -y python 3.11.5
+  # - update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11.5
+  - python -m venv venv
+  - source venv/bin/activate
+  - ls
+  - pip install -r requirements.txt
+
 
 build-job:       # This job runs in the build stage, which runs first. It sets up the virtual environment in order to run the tests
   stage: build
   script:
     - echo "Compiling the code..."
-    - apt-get install -y python3.11.5
-    - update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11.5
-    - python3 -m venv venv
-    - source venv/bin/activate
-    - pip install -r requirements.txt
     - echo "Compile complete."
 
 server-job:
   stage: serverFix
   script:
-    - python3 manage.py makemigrations
-    - python3 manage.py migrate
-    - python3 manage.py check
+    - python neuro_arcade/manage.py makemigrations
+    - python neuro_arcade/manage.py migrate
+    - python neuro_arcade/manage.py check
 
 
 unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
   script:
     - echo "Running unit tests... This will take about 60 seconds."
-    - python3 manage.py test
+    - python neuro_arcade/manage.py test
     - echo "Code coverage is 90%"
   only:
     - branches

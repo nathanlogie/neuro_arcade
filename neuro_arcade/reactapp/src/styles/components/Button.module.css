@@ -1,0 +1,81 @@
+.Button {
+    position: relative;
+    width: 14em;
+    height: 5em;
+    margin: 0 auto;
+}
+.ButtonBlock {
+    text-decoration: none;
+    position: absolute;
+    color: #FFFFFF;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 400;
+    width: max-content;
+    border-radius: 0.75em;
+    background: #D14081;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    bottom: calc(10% + 0.75rem);
+}
+.Arrow {
+    position: absolute;
+    z-index: 1;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 100px;
+    background-color: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(5px);
+    color: #41584C;
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 4.5rem;
+    bottom: 10%;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+.ButtonBlock#left {
+    margin-left: 1.5rem;
+    padding: 0.5rem 1rem 0.5rem 3rem;
+    left: 10%;
+}
+.ButtonBlock#right {
+    margin-right: 1.5rem;
+    padding: 0.5rem 3rem 0.5rem 1rem;
+    right: 10%;
+}
+.Arrow#left {
+    left: 10%;
+}
+.Arrow#right {
+    right: 10%;
+}
+#MoreGames {
+    margin: 0 0 1em auto;
+}
+
+@media (max-width: 50em) {
+    .Button {
+        scale: 85%;
+    }
+}
+
+@media (max-width: 20em) {
+    .Button {
+        scale: 75%;
+        .ButtonBlock#left {
+            left: 10%;
+            bottom: 4em;
+        }
+        .Arrow#left {
+            left: 10%;
+            bottom: 2em;
+        }
+        .ButtonBlock#right {
+            bottom: 0.5em;
+            right: 10%;
+        }
+        .Arrow#right {
+            bottom: 0;
+            right: 10%;
+        }
+    }
+}

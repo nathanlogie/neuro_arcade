@@ -2,45 +2,69 @@ import React from 'react';
 import {createRoot} from 'react-dom/client';
 import './styles/index.css';
 import {HomePage} from "./app/HomePage";
-import {AboutPage} from './app/AboutPage';
+import {AboutPage} from './app/about/AboutPage';
 import reportWebVitals from './app/reportWebVitals';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {AddContent} from "./app/AddContent";
+import {AddContent} from "./app/add_content/AddContent";
+import {AddGame} from "./app/add_content/AddGame";
+import {AddModel} from "./app/add_content/AddModel";
 import {AllGames} from "./app/AllGames";
 import {GameView} from "./app/GameView";
-
+import { EditAbout } from "./app/about/EditAbout";
 import {AnimatePresence} from 'framer-motion'
-
 
 const router = createBrowserRouter([
     {
         path: '',
-        element: <HomePage />
+        element: <HomePage/>
     },
     {
         path: "about",
-        element: <AboutPage />
+        element: <AboutPage />,
+
+    },
+    {
+
+        path: "edit_about",
+        element: <EditAbout />
+
     },
     {
         path: "add_content",
         element: (
-            <AddContent />
+            <AddContent/>
         ),
     },
     {
+        path: "add_game",
+        element: <AddGame />
+    },
+    {
+        path: "add_model",
+        element: <AddModel />
+    },
+    {
         path: 'all_games/:game_slug',
-        element: <GameView />
+        element: <GameView/>
     },
     {
         path: "all_games",
-        element: <AllGames />
+        element: <AllGames/>
     },
+    {
+        path: "add_game",
+        element: <AddGame/>
+    },
+    {
+        path: "add_model",
+        element: <AddModel/>
+    }
 ]);
 
 
 createRoot(document.getElementById('root')).render(
     <AnimatePresence>
-        <RouterProvider router={router}/>
+            <RouterProvider router={router}/>
     </AnimatePresence>
 );
 

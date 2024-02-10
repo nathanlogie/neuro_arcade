@@ -1,14 +1,19 @@
-import styles from "../styles/Background.module.css"
-import background from "../static/images/background.png"
+import styles from "../styles/App.module.css"
+import overlay from "../static/images/backgroundOverlay.png"
+
+/**
+ * @returns {JSX.Element} background
+ * @constructor builds background
+ */
 export function Background() {
     return (
-        <div>
+        <>
             <img
-                src={background}
+                src={overlay}
                 id={styles['hexagon']}
                 alt={''}
             />
             <div className={styles.Gradient} />
-        </div>
+        </>
     );
 }

@@ -1,23 +1,42 @@
-import {Banner} from "../components/Banner";
+import {Banner, MobileBanner} from "../components/Banner";
 import {Background} from "../components/Background";
 import styles from "../styles/App.module.css"
-import {GameGrid} from "../components/GameGrid";
+import {CardGrid} from "../components/CardGrid";
+import {TagFilter} from "../components/TagFilter";
 import {useState} from "react";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
+/**
+ * @returns {JSX.Element} all games page
+ * @constructor builds all games page
+ */
 export function AllGames() {
-    let [query, setQuery] = useState('');
-    //todo add a search bar
+    // name query for sorting the already fetched games
+    // can be changed freely, as it only affect data displayed on the client
+    let [nameQuery, setNameQuery] = useState('');
+    let [selectedTags, setSelectedTags] = useState([]);
+
     return (
         <div>
             <Background/>
-            <Banner size={'small'}/>
-            <div className={styles.MainBlock}>
+            <Banner size={'small'} state={'Games'} />
+            <MobileBanner  />
+            <div className={styles.MainBlock} id={styles['small']}>
                 <div className={styles.Side}>
-                    {/* search bar + tags here */}
+                    {/* TODO: this almost definitely shouldn't be here, but the background
+                    image gets interacted with instead of the search bar without it */}
+                    <div className={styles.Search}>
+                        <input onChange={e => setNameQuery(e.target.value)} placeholder="search..."/>
+                        <div className={styles.SearchIcon}>
+                            <FaMagnifyingGlass />
+                        </div>
+                    </div>
+                    <TagFilter onTagChange={setSelectedTags} type={'game'} />
+                    {/* (see above) */}
                 </div>
-                <div className={styles.Content}>
+                <div className={styles.Content} id={styles['AllGames']}>
                     <h1>All Games</h1>
-                    <GameGrid query={query} linkPrefix={''} id={'AppGrid'}/>
+                    <CardGrid type={'game'} nameQuery={nameQuery} tagQuery={selectedTags} linkPrefix={''} id={'AppGrid'} />
                 </div>
             </div>
         </div>

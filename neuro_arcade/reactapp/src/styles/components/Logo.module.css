@@ -1,0 +1,63 @@
+@font-face {
+  font-family: 'MuseoModerno Regular';
+  src: url('../../static/fonts/MuseoModerno/MuseoModerno-VariableFont_wght.ttf') format('truetype');
+}
+
+.Logo {
+    position: relative;
+    margin: 0.5em auto;
+    & img {
+        padding-top: 1em;
+        min-width: 60%;
+    }
+    #title_1, #title_2 {
+        text-align: center;
+        text-shadow: 0 4px 4px #D14081;
+        font-family: MuseoModerno Regular, sans-serif;
+        font-size: 2.5em;
+        font-style: normal;
+        font-weight: 900;
+        line-height: normal;
+        height: 15%;
+        width: 47%;
+        bottom: 10%;
+    }
+    #title_1 {
+        position: absolute;
+        left: 0;
+        color: #E7FFF2;
+        -webkit-text-stroke: 3px #D14081;
+    }
+    #title_2 {
+        position: absolute;
+        right: 0;
+        color: #41584C;
+        -webkit-text-stroke: 2px #79FFB7;
+        padding-right: 0.2em;
+    }
+}
+
+.Logo#big {
+    width: 17em;
+    height: 12.5em;
+}
+
+.Logo#small {
+    width: 10.88em;
+    height: 8em;
+    #title_1, #title_2 {
+        font-size: 1.6em;
+    }
+    #title_1 {
+        -webkit-text-stroke: 2px #D14081;
+    }
+    #title_2 {
+        -webkit-text-stroke: 1px #79FFB7;
+    }
+}
+
+@media (max-width: 50em) {
+    .Logo {
+        scale: 80%;
+    }
+}

@@ -1,24 +1,43 @@
 .MainBlock {
-    margin: 3em 3em 0;
-    width: calc(100% - 6em);
-    height: calc(100% - 3em);
+    position: relative;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     flex-wrap: wrap;
-    gap: 2em;
-    padding-bottom: 3em;
+    overflow-y: auto;
     .Content {
-        width: max-content;
-        & h1 {
-            position: relative;
-            text-align: left;
-            padding: 1em;
-            margin: 0;
+        width: 80em;
+        padding: 0 2em;
+        display: flex;
+        flex-wrap: wrap;
+        .Title {
+            display: flex;
+            & h1 {
+                position: relative;
+                text-align: left;
+                margin: 0;
+                width: max-content;
+                padding: 1em 0.5em 1em 0;
+            }
+            .FilterButton {
+                width: 2em;
+                height: 2em;
+                border-radius: 100px;
+                background-color: rgba(255, 255, 255, 0.2);
+                backdrop-filter: blur(5px);
+                color: #ffffff;
+                font-size: 1em;
+                font-weight: 900;
+                line-height: 2.5em;
+                box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+                margin: auto 0;
+                cursor: pointer;
+            }
         }
         .ContentBlock {
             position: relative;
-            width: 50em;
+            width: 100%;
             overflow: auto;
             & img {
                 float: left;
@@ -35,33 +54,59 @@
             }
         }
     }
+    .Content#small {
+        width: 40em;
+    }
+    #AllGames {
+        width: 70em;
+        padding: 2em 0;
+    }
     .Side {
         width: 32.5em;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+    .DataBlock {
+        width: 100%;
+        padding: 2em;
+        display: flex;
+        overflow-x: auto;
     }
 }
 .MobileBannerBuffer {
+    position: relative;
     display: none;
     height: 7em;
 }
-.MoreGames {
-    margin-left: 0;
+
+.MainBlock#big {
+    max-height: calc(100dvh - 13.5em);
+}
+
+.MainBlock#small {
+    max-height: calc(100dvh - 9em);
 }
 
 @media (max-width: 75em) {
     .MainBlock {
-        display: block;
-        width: calc(100% - 2em);
-        margin: 1em;
+        position: relative;
+        margin: 0;
+        width: 100dvw;
+        height: auto;
+        max-height: calc(100dvh - 14.5em);
         .Content {
-            float: none;
             width: 100%;
-            padding: 0 0 2em;
+            padding: 2em;
+            margin: 0;
         }
         & h1 {
             font-size: 1.5em;
         }
         .Side {
             width: 100%;
+            padding: 1.5em;
         }
     }
     .MobileBannerBuffer {
@@ -69,14 +114,102 @@
     }
 }
 
-@media (min-width: 100em) {
+@media (max-width: 50em) {
     .MainBlock {
-        justify-content: space-evenly;
-        .Content {
-            float: none;
-        }
-        .Side {
-            width: 40em;
+        .DataBlock {
+            display: block;
         }
     }
+}
+
+#start {
+    border-radius: 40px 0 0 40px;
+}
+
+#end {
+    border-radius: 0 40px 40px 0;
+}
+
+#single {
+    display: none;
+}
+
+#hexagon {
+    position: absolute;
+    object-fit: cover;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.Gradient {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(253, 253, 255, 0.20) 0%, rgba(0, 0, 0, 0.65) 88.48%);
+}
+
+@media (max-width: 20em) {
+    #hexagon {
+        visibility: hidden;
+    }
+    .Gradient {
+        visibility: hidden;
+    }
+}
+
+.Search {
+    position: relative;
+    margin: 3em 0;
+    height: 5em;
+    width: 20em;
+    .SearchIcon {
+        position: absolute;
+        z-index: 1;
+        width: 4rem;
+        height: 4rem;
+        background-color: #D14081;
+        border-radius: 100px;
+        font-size: 2rem;
+        font-weight: 900;
+        line-height: 4.5rem;
+        bottom: 10%;
+        right: 0;
+        box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    }
+    & input {
+        position: absolute;
+        font-size: 1.25rem;
+        font-style: normal;
+        font-weight: 400;
+        width: calc(100% - 2em);
+        left: 0;
+        border-radius: 2em;
+        box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+        bottom: calc(7.5% + 0.5rem);
+        padding: 0.75em 1em;
+        border: none;
+        outline: none;
+        background-color: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(5px);
+        color: #ffffff;
+        font-family: inherit;
+    }
+    & input::placeholder {
+        color: #f1f1f1;
+    }
+}
+
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(214, 222, 225, 0.44);
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
 }
