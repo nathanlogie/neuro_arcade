@@ -4,6 +4,7 @@ import axios from 'axios';
 import { FaImage } from "react-icons/fa6";
 import { LuFileJson } from "react-icons/lu";
 import { FaPython } from "react-icons/fa6";
+import { FaPlus } from "react-icons/fa6";
 
 //Should be synced with models.py
 let MAX_NAME_LENGTH = 64
@@ -244,6 +245,9 @@ export function GameForm() {
 
             <button disabled={isSubmitting} type={"submit"}>
                 {isSubmitting ? "Submitting form..." : "add new game"}
+                <div>
+                    <FaPlus />
+                </div>
             </button>
             {errors.root && (
                 <div className={"text-red-500"}>{errors.root.message}</div>
