@@ -28,6 +28,16 @@ The project can currently only be run locally. To run it git clone the project l
 3. python populate.py
 4. python manage.py runserver
 
+## Testing
+
+### Backend
+
+The backend tests are implemented through django. They can be accessed by running `python manage.py test` in `neuro_arcade/`
+
+### Frontend
+
+The frontend tests are implemented through react-scripts. They can be accessed by running `npm test` in `neuro_arcade/reactapp/`
+
 ## Support
 For any help or support, please create an issue on GitLab or message one of the contributors on Microsoft Teams. 
 
