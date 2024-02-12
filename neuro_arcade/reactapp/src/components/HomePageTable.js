@@ -6,7 +6,6 @@ import {DataGrid} from '@mui/x-data-grid';
  * 
  * @param inputData {Object}
  * @returns {JSX Element}
-
  */
 export function HomePageTable({inputData}) {
 
@@ -28,7 +27,6 @@ export function HomePageTable({inputData}) {
      * @param item {Object}
      * @param index {integer}
      * @returns {Object}
-
      * uses the top performers data and maps it to a row object
      */
     const rows = inputData.map(function(item, index) {
