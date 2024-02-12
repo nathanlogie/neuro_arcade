@@ -174,7 +174,7 @@ export async function requestGameTags() {
 /**
  * Requests a sorted list of games.
  *
- * @param query {URLSearchParams} instance of Reacts URLSearchParams, which you should get from useSearchParams()
+ * @param query {string} instance of Reacts URLSearchParams, which you should get from useSearchParams()
  *
  * @return {Game[]} response data
  *
