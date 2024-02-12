@@ -13,7 +13,7 @@
     border-radius: 1.5em;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     margin: 1em;
-    & img, .Icon {
+    .Icon {
         padding-bottom: 0.5em;
         width: 7em;
         height: 7em;
@@ -23,6 +23,11 @@
     }
     .Icon > * {
         width: 60%;
+        height: 100%;
+        border-radius: 1.5em;
+    }
+    .Icon > img {
+        width: 100%;
         height: 100%;
     }
     & p {

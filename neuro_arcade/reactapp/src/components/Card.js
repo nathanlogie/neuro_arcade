@@ -11,24 +11,15 @@ import {motion} from "framer-motion";
  * @returns 
  */
 export function Card ({subject, linkPrefix, link, text, icon}) {
+    // Extract subject information
     if (subject) {
-        let link = linkPrefix + subject.slug;
-        return (
-            <motion.div
-                whileHover={{scale: 1.05}}
-                whileTap={{scale: 0.95}}
-            >
-                <Link className={styles.Card} to={link}>
-                    <img src={subject.icon || 'http://localhost:8000/media/game_icons/example.png'} alt='icon'
+        link = linkPrefix + subject.slug;
+        text = subject.name || 'Name';
+        icon = <img src={subject.icon || 'http://localhost:8000/media/game_icons/example.png'} alt='icon'
                     // TODO Populate game icons
                     />
-                    <p>
-                        {subject.name || 'Name'}
-                    </p>
-                </Link>
-            </motion.div>
-        );
-    } else if (text && icon && link) {
+    }
+    if (text && icon && link) {
         return (
             <motion.div
                 whileHover={{scale: 1.05}}
