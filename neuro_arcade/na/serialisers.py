@@ -7,22 +7,22 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = ['url', 'username']
 
-class GameSerializer(serializers.HyperlinkedModelSerializer):
+class GameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
-        fields = ['url','name', 'description','owner','icon','tags', 'score_type', 'play_link', 'evaluation_script']
+        fields = ['id','name', 'slug', 'description','owner','icon','tags', 'score_type', 'play_link', 'evaluation_script']
 
-class GameTagSerializer(serializers.HyperlinkedModelSerializer):
+class GameTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = GameTag
-        fields = ['url', 'name', 'description']
+        fields = ['id', 'name', 'slug', 'description']
 
-class PlayerTagSerializer(serializers.HyperlinkedModelSerializer):
+class PlayerTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlayerTag
-        fields = ['url', 'name', 'description']
+        fields = ['id', 'name', 'slug', 'description']
 
-class PlayerSerializer(serializers.HyperlinkedModelSerializer):
+class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Player
-        fields = ['url', 'name', 'is_ai', 'user', 'description', 'player_tags']
+        fields = ['id', 'name', 'slug', 'is_ai', 'user', 'description', 'tags']
