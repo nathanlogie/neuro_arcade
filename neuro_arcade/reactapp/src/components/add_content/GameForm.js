@@ -122,7 +122,7 @@ export function GameForm() {
                     value: MAX_NAME_LENGTH,
                     message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH})`,
                 }
-            })} type={"text"} placeholder={"Game Name"}
+            })} type={"text"} placeholder={"game name"}
                    onChange={(event) => setName(event.target.value)}
             />
             {errors.name && (
@@ -137,7 +137,7 @@ export function GameForm() {
                     value: MAX_DESCRIPTION_LENGTH,
                     message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})`,
                 }
-            })} type={"text"} placeholder={"Game Description"}
+            })} type={"text"} placeholder={"game description"}
                    onChange={(event) => setDescription(event.target.value)}
             />
             {errors.description && (
@@ -147,7 +147,7 @@ export function GameForm() {
             <h3>Game Tags</h3>
             <input {...register("tags", {
                 required: false
-            })} type={"text"} placeholder={"Game Tags"}
+            })} type={"text"} placeholder={"example1, example2, example3, ..."}
                    onChange={(event) => setTags(event.target.value)}
             />
 
@@ -162,7 +162,7 @@ export function GameForm() {
                     }
                     return true
                 }
-            })} type={"text"} placeholder={"Play Link"} onChange={(event) => setPlayLink(event.target.value)}/>
+            })} type={"text"} placeholder={"https://link"} onChange={(event) => setPlayLink(event.target.value)}/>
             {errors.playLink && (
                 <div className={"text-red-500"}>{errors.playLink.message}</div>
             )}
