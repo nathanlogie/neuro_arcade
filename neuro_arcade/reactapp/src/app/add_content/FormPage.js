@@ -3,13 +3,23 @@ import styles from "../../styles/App.module.css";
 import {Banner, MobileBanner} from "../../components/Banner";
 import {NavBar} from "../../components/NavBar";
 import {motion} from "framer-motion";
-import {IoFilter} from "react-icons/io5";
+import {ModelForm} from "../../components/add_content/ModelForm";
 
 /**
  * @returns {JSX.Element} add game page
  * @constructor builds add game page
  */
-export function AddGame() {
+export function FormPage({type}) {
+
+    let form;
+    if (type === 'game') {
+        form = <GameForm />;
+    } else if (type === 'model') {
+        form  = <ModelForm/>
+    } else {
+        throw('invalid form type');
+    }
+
     return(
         <>
             <Banner size={'big'} button_left={{
@@ -20,7 +30,7 @@ export function AddGame() {
             }} button_right={{
                 link: '',
                 orientation: 'right'
-            }} />
+            }}/>
             <NavBar button_left={{
                 name: 'home',
                 link: 'home',
@@ -31,7 +41,7 @@ export function AddGame() {
                 direction: 'right'
             }}
             />
-            <MobileBanner />
+            <MobileBanner/>
             <motion.div
                 className={styles.MainBlock}
                 id={styles['big']}
@@ -40,11 +50,11 @@ export function AddGame() {
                 exit={{opacity: 0}}
             >
                 <div className={styles.Form}>
-                    <h1 className={styles.Header}>Add game</h1>
-                    <GameForm/>
+                    <h1 className={styles.Header}>Add {type}</h1>
+                    {form}
                 </div>
             </motion.div>
+            <div className={styles.MobileBannerBuffer}/>
         </>
     )
-
 }

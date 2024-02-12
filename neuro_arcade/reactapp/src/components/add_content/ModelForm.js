@@ -62,7 +62,7 @@ export function ModelForm(){
     }
 
     return (
-        <form className={"form"} onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <h3>Name</h3>
             <input {...register("name", {
                 required: "Name is required",
@@ -122,4 +122,4 @@ export function ModelForm(){
             )}
         </form>
     )
-};
+}

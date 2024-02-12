@@ -6,13 +6,14 @@ import {AboutPage} from './app/about/AboutPage';
 import reportWebVitals from './app/reportWebVitals';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {AddContent} from "./app/add_content/AddContent";
-import {AddGame} from "./app/add_content/AddGame";
-import {AddModel} from "./app/add_content/AddModel";
+import {FormPage} from "./app/add_content/FormPage";
 import {AllGames} from "./app/AllGames";
 import {GameView} from "./app/GameView";
 import { EditAbout } from "./app/about/EditAbout";
 import {AnimatePresence} from 'framer-motion'
 import {Background} from "./components/Background";
+import {GameForm} from "./components/add_content/GameForm";
+import {ModelForm} from "./components/add_content/ModelForm";
 
 const router = createBrowserRouter([
     {
@@ -38,11 +39,11 @@ const router = createBrowserRouter([
     },
     {
         path: "add_game",
-        element: <AddGame />
+        element: <FormPage type={'game'} />
     },
     {
         path: "add_model",
-        element: <AddModel />
+        element: <FormPage type={'model'} />
     },
     {
         path: 'all_games/:game_slug',
@@ -51,14 +52,6 @@ const router = createBrowserRouter([
     {
         path: "all_games",
         element: <AllGames/>
-    },
-    {
-        path: "add_game",
-        element: <AddGame/>
-    },
-    {
-        path: "add_model",
-        element: <AddModel/>
     }
 ]);
 
