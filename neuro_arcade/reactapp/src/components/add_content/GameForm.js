@@ -126,7 +126,7 @@ export function GameForm() {
                    onChange={(event) => setName(event.target.value)}
             />
             {errors.name && (
-                <div className={"text-red-500"}>{errors.name.message}</div>
+                <div>{errors.name.message}</div>
             )}
 
 
@@ -141,7 +141,7 @@ export function GameForm() {
                    onChange={(event) => setDescription(event.target.value)}
             />
             {errors.description && (
-                <div className={"text-red-500"}>{errors.description.message}</div>
+                <div>{errors.description.message}</div>
             )}
 
             <h3>Game Tags</h3>
@@ -164,7 +164,7 @@ export function GameForm() {
                 }
             })} type={"text"} placeholder={"https://link"} onChange={(event) => setPlayLink(event.target.value)}/>
             {errors.playLink && (
-                <div className={"text-red-500"}>{errors.playLink.message}</div>
+                <div>{errors.playLink.message}</div>
             )}
 
             <span>
@@ -189,7 +189,7 @@ export function GameForm() {
                                 }
                                 return true;
                             }
-                        })} type={"file"} onChange={handleImage}/>
+                        })} type={"file"} accept={"image/*"} onChange={handleImage}/>
                     </motion.div>
                 </div>
                 <div>
@@ -213,11 +213,10 @@ export function GameForm() {
                                 }
                                 return true;
                             }
-                        })} type={"file"}
-                               onChange={handleScores}
+                        })} type={"file"} accept={".json"} onChange={handleScores}
                         />
                         {errors.scoreTypes && (
-                            <div className={"text-red-500"}>{errors.scoreTypes.message}</div>
+                            <div>{errors.scoreTypes.message}</div>
                         )}
                     </motion.div>
                 </div>
@@ -242,11 +241,10 @@ export function GameForm() {
                                 }
                                 return true;
                             }
-                        })} type={"file"}
-                               onChange={handleEvalScript}
+                        })} type={"file"} accept={".py"} onChange={handleEvalScript}
                         />
                                             {errors.evaluationScript && (
-                                                <div className={"text-red-500"}>{errors.evaluationScript.message}</div>
+                                                <div>{errors.evaluationScript.message}</div>
                                             )}
                     </motion.div>
                 </div>
@@ -264,7 +262,7 @@ export function GameForm() {
                 </div>
             </motion.button>
             {errors.root && (
-                <div className={"text-red-500"}>{errors.root.message}</div>
+                <div>{errors.root.message}</div>
             )}
         </form>
     );
