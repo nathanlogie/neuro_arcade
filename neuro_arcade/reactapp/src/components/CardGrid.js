@@ -89,3 +89,9 @@ export function CardGrid({subjects, textQuery='', tagQuery=[], num=0, linkPrefix
         </div>
     );
 }
+
+export const exportedForTesting = {
+    textQueryFilter,
+    tagQueryFilter,
+    searchFilter,
+};
