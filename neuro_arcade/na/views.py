@@ -307,7 +307,7 @@ def sign_up(request: Request) -> Response:
     email = request.data['email']
     password = request.data['password']
     # input validation:
-    if username is "" or email is "" or password is "":
+    if username == "" or email == "" or password == "":
         return Response(status=400, data='Missing Fields.')
 
     if not validate_password(password):
