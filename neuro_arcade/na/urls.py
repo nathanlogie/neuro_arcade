@@ -18,4 +18,5 @@ urlpatterns = [
     path('delete_player/', views.delete_player, name='delete_player'),
     path('csrf/', views.csrf, name='csrf'),
     path('ping/', views.ping, name='ping'),
+    path('model_rankings/', views.get_model_rankings, name='get_model_rankings'),
 ]

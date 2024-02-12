@@ -3,12 +3,13 @@ import {Button} from "./Button";
 import {Logo} from "./Logo";
 import React from "react";
 import {motion} from "framer-motion"
-import Switcher from "./Switcher";
+import {Switcher} from "./Switcher";
+import { useNavigate } from 'react-router-dom';
 
 /**
  * @param size
- * @param button_left {JSX.Element} button parameters
- * @param button_right {JSX.Element} button parameters
+ * @param button_left button parameters
+ * @param button_right button parameters
  * @param state switcher active state parameter
  * @returns {JSX.Element} banner
  * @constructor builds banner
@@ -22,14 +23,15 @@ export function Banner({size, button_left, button_right, state}) {
     };
 
     const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(state);
+    const navigate = useNavigate();
 
     const handleSwitcherChange = (selectedValue) => {
         setSelectedSwitcherValue(selectedValue);
             if (selectedValue === 'Games') {
-                window.location.href = '/all_games';
+                navigate('/all_games');
             }
-            if (selectedValue === 'AI Platforms') {
-                window.location.href = '/'; // TODO Add AI Platforms page
+            if (selectedValue === 'Players') {
+                navigate('/all_players');
             }
     }
 

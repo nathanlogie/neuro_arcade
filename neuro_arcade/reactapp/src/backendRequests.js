@@ -26,24 +26,72 @@ const API_ROOT = "http://localhost:8000"
  */
 
 /**
+ * Game auto primary key
+ * @typedef {number} GameKey
+ */
+
+/**
+ * GameTag auto primary key
+ * @typedef {number} GameTagKey
+ */
+
+/**
  * Game API response
  * Corresponds to na.models.Game
  * @typedef {Object} Game
+ * @property {GameKey} id
  * @property {string} name
  * @property {string} slug
  * @property {string} description
- * @property {string[]} tags - slugs of the tags for this game
+ * @property {any} owner - TODO
+ * @property {any} icon - TODO
+ * @property {GameTagKey[]} tags
  * @property {ScoreType} score_type
  * @property {string} play_link
+ * @property {any} evaluation_script
  */
 
 /**
  * Game tag API response
  * Corresponds to na.models.GameTag
  * @typedef {Object} GameTag
+ * @property {GameTagKey} id
  * @property {string} name
  * @property {string} slug
  * @property {string} description
+ */
+
+/**
+ * PlayerTag auto primary key
+ * @typedef {number} PlayerTagKey
+ */
+
+/**
+ * PlayerTag API response
+ * Corresponds to na.models.PlayerTag
+ * @typedef {Object} PlayerTag
+ * @property {PlayerTagKey} id
+ * @property {string} name
+ * @property {string} slug
+ * @property {string} description
+ */
+
+/**
+ * Player auto primary key
+ * @typedef {number} PlayerKey
+ */
+
+/**
+ * Player API response
+ * Corresponds to na.models.Player
+ * @typedef {Object} Player
+ * @property {PlayerKey} id
+ * @property {string} name
+ * @property {string} slug
+ * @property {boolean} is_ai
+ * @property {string} user
+ * @property {string} description
+ * @property {PlayerTagKey[]} tags
  */
 
 /**
@@ -61,6 +109,14 @@ const API_ROOT = "http://localhost:8000"
  * @typedef {Object} AboutData
  * @property {string} description
  * @property {AboutDataPublication[]} publications
+ */
+
+/**
+ * Ranked AI player API response
+ * Corresponds to an entry in the /model_rankings/ endpoint
+ * @typedef {Object} RankedModel
+ * @property {Player} player - The player data of the model with this rank
+ * @property {number} overall_score - Score of the model across games
  */
 
 /**
@@ -161,7 +217,25 @@ export async function requestGame(gameName) {
  * @throws Error when the request is rejected.
  */
 export async function requestGameTags() {
-    const url = API_ROOT + '/tags/';
+    const url = API_ROOT + '/api/gameTag/';
+    try {
+        let response = await axios.get(url);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+/**
+ * Requests a list of all available PlayerTags.
+ *
+ * @return {PlayerTag[]} response data
+ *
+ * @throws Error when the request is rejected.
+ */
+export async function requestPlayerTags() {
+    const url = API_ROOT + '/api/playerTag/';
     return await axios.get(url)
         .then((response) => {
             return response.data;
@@ -180,8 +254,8 @@ export async function requestGameTags() {
  *
  * @throws Error when request is rejected
  */
-export async function requestGamesSorted(query='') {
-    const url = API_ROOT + '/get_games/' + query;
+export async function requestGames() {
+    const url = API_ROOT + '/api/games/';
     return await axios.get(url).then((response) => {
         return response.data;
     }).catch((error) => {
@@ -215,6 +289,41 @@ export async function createNewPlayer(playerName, isAI) {
         console.log(error);
         throw error;
     })
+}
+
+/**
+ * Requests a list of players.
+ *
+ * @return {Player[]} response data
+ *
+ * @throws Error when request is rejected
+ */
+export async function requestPlayers() {
+    const url = API_ROOT + '/api/players/';
+    try {
+        let response = await axios.get(url);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+/**
+ * Requests a sorted list of models by their overall rank.
+ *
+ * @return {RankedModel[]} - Models in descending order of overall score
+ */
+export async function requestModelsRanked() {
+    const url = API_ROOT + '/model_rankings/';
+    return await axios.get(url)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        })
 }
 
 /**
@@ -395,10 +504,6 @@ function passwordValidator(password) {
  * @param {string} userName - name of the user
  * @param {string} email - email address of the user
  * @param {string} password - the password in plaintext
- *
- * @throws Error when the request is rejected.
- *  If the email or username was already taken the status will be 409.
- *  An error can also be thrown if the password is invalid.
  *
  * @return {Object} response if successful
  *

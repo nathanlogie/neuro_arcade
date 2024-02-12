@@ -25,7 +25,7 @@ export function AddContent() {
             }} />
             <NavBar button_left={{
                 name: 'home',
-                link: 'home',
+                     link: 'home',
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{
@@ -38,7 +38,9 @@ export function AddContent() {
             <div className={styles.MainBlock}>
                 <div className={styles.Content}>
                     <div className={styles.ContentBlock}>
-                        <Link to='/add_game'> Add game </Link>
+                        <Link to='/add_game'>
+
+                        </Link>
                         <Link to='/add_model'> Add model </Link>
                     </div>
                 </div>

@@ -1,7 +1,6 @@
-import json
+from collections import defaultdict
 import os
 
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
@@ -9,7 +8,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
 
-from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer
 from rest_framework import viewsets
 from rest_framework.authtoken import views as rest_views
 from rest_framework.authtoken.models import Token
@@ -18,6 +16,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from na.models import PlayerTag
+from django.conf import settings
+
+from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
+import json
 from na.models import Game, GameTag, Player
 
 
@@ -336,6 +339,66 @@ def sign_up(request: Request) -> Response:
         return Response(status=400, data='Error creating new user.')
 
 
+@api_view(['GET'])
+def get_model_rankings(request: Request) -> Response:
+    """
+    Gets the overall rankings of AI models
+
+    Format is a list of score, player pairs in descending order of score
+
+    This is based on their relative performances across tasks.
+    Every task a model has a score in gives them a score from 0-100 based on the percentile
+    they fall in on the leaderboard, considering highest scores only.
+    Coming first in the leaderboard gives 100 points, decreasing by (100 / n) each position after.
+    These are then summed up to give their overall score.
+
+    This function definitely needs optimising in the future, probably running the calculations
+    automatically at an interval and caching the results. The logic could also use some splitting.
+    The API should remain stable, so the current implementation is enough for frontend development
+    to begin.
+    """
+
+    player_ranks = defaultdict(lambda: 0.0)
+
+    for game in Game.objects.all():
+        # Get the leaderboards for this game
+        try:
+            rank_tables = game.get_highest_scores()
+        except Exception as e:
+            # The database may currently contain some games with invalid leaderboards
+            # TODO: remove once validation & population updated
+            continue
+
+        # Distribute scores for each leaderboard
+        for ranking in rank_tables.values():
+            # Filter out humans
+            ai_ranking = [score for score in ranking if score.player.is_ai]
+
+            # Ignore empty leaderboards
+            if len(ai_ranking) == 0:
+                continue
+
+            # Calculate the decrease in score for each position
+            step = 100 / len(ai_ranking)
+
+            # Give out the points for each position
+            for i, score in enumerate(ai_ranking):
+                player_ranks[score.player.id] += 100.0 - (i * step)
+
+    # Build response data structure
+    data = [
+        {
+            'player': PlayerSerializer(player, context={'request': request}).data,
+            'overall_score': player_ranks[player.id],
+        }
+        for player in Player.objects.all()
+        if player.is_ai
+    ]
+    data.sort(key=lambda d: -d['overall_score'])
+
+    return Response(status=200, data=data)
+
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -347,3 +410,11 @@ class GameViewSet(viewsets.ModelViewSet):
 class GameTagViewSet(viewsets.ModelViewSet):
     queryset = GameTag.objects.all()
     serializer_class = GameTagSerializer
+
+class PlayerTagViewSet(viewsets.ModelViewSet):
+    queryset = PlayerTag.objects.all()
+    serializer_class = PlayerTagSerializer
+
+class PlayerViewSet(viewsets.ModelViewSet):
+    queryset = Player.objects.all()
+    serializer_class = PlayerSerializer

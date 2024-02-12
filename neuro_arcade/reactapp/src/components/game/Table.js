@@ -1,15 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Switcher from '../Switcher'
+import {Switcher} from '../Switcher'
 import { DataGrid } from '@mui/x-data-grid';
 import styles from '../../styles/components/TableGraph.module.css'
 import {createTheme, ThemeProvider} from "@mui/material";
 
-
+/**
+ * @param inputData {Object}
+ * @returns {Element}
+ * @constructor
+ */
 export function Table({inputData}) {
 
     const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState('all');
 
+    /**
+     * @param selectedValue {string}
+     */
     const handleSwitcherChange = (selectedValue) => {
         setSelectedSwitcherValue(selectedValue);
     }

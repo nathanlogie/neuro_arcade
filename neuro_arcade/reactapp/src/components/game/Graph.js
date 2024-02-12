@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import Switcher from '../Switcher'
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, ReferenceLine } from 'recharts';
+import {Switcher} from '../Switcher'
+import { LineChart, Line, XAxis, YAxis, ReferenceLine } from 'recharts';
 import styles from '../../styles/components/TableGraph.module.css'
 import {createTheme, ThemeProvider} from "@mui/material";
 

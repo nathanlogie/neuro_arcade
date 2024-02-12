@@ -10,6 +10,7 @@ import {AddGame} from "./app/add_content/AddGame";
 import {AddModel} from "./app/add_content/AddModel";
 import {AllGames} from "./app/AllGames";
 import {GameView} from "./app/GameView";
+import {AllPlayers} from './app/AllPlayers';
 import {EditAbout} from "./app/about/EditAbout";
 import {AnimatePresence} from 'framer-motion'
 import {AuthTest} from "./app/AuthTest";
@@ -54,6 +55,18 @@ const router = createBrowserRouter([
     {
         path: "auth_test",
         element: <AuthTest />
+    },
+    {
+        path: "add_game",
+        element: <AddGame />
+    },
+    {
+        path: "add_model",
+        element: <AddModel />
+    },
+    {
+        path: "all_players",
+        element: <AllPlayers />
     },
 ]);
 
