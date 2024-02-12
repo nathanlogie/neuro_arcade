@@ -217,13 +217,14 @@ export async function requestPlayers() {
  */
 export async function requestModelsRanked() {
     const url = API_ROOT + '/model_rankings/';
-    try {
-        let response = await axios.get(url);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
+    return await axios.get(url)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        })
 }
 
 /**
