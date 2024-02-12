@@ -14,6 +14,9 @@ import os
 from corsheaders.defaults import default_headers
 from pathlib import Path
 
+# TODO: change this to the URL of the website
+WEBSITE_URL = "localhost:3000"
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
@@ -43,11 +46,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://localhost:3000",
     "http://locahost:8000",
-    "https://localhost:8000"
-    # TODO: add the url of the website here
+    "https://localhost:8000",
+    "https://" + WEBSITE_URL
 ]
 CORS_ALLOWED_ORIGIN_REGEXES = [
     'http://localhost:3000/*.',
+    WEBSITE_URL + '/*'
 ]
 CORS_ALLOW_HEADERS = (
     *default_headers,
@@ -55,17 +59,15 @@ CORS_ALLOW_HEADERS = (
     'Authorisation'
 )
 
-# CSRF settings
-# these are not needed right now but might be in the future
-# the middleware would also require to be enabled
-
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True
-# CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'  # on client: 'X-CSRFToken'
-# CSRF_TRUSTED_ORIGINS = [
-#     "http://localhost:3000",
-#     "http://127.0.0.1:3000",
-# ]
+# CSRF protection settings
+CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True  # this is not necessary
+CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'  # on client: 'X-CSRFToken'
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://" + WEBSITE_URL
+]
 
 REST_USE_JWT = True
 JWT_AUTH_COOKIE_USE_CSRF = True
@@ -94,7 +96,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    # 'django.middleware.csrf.CsrfViewMiddleware',  # needs to be before other middleware
+    'django.middleware.csrf.CsrfViewMiddleware',  # needs to be before other middleware
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',   # needs to be after the security middleware
     'django.contrib.sessions.middleware.SessionMiddleware',

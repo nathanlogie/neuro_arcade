@@ -118,9 +118,9 @@ async function getHeaders(method, authenticated=false) {
     if (authenticated) {
         config.headers.Authorization = `Token ${get_user().token}`;
     }
-    // if (method.toUpperCase() === 'POST') {
-    //     config.headers['X-CSRFToken'] = await getCSRFToken();
-    // }
+    if (method.toUpperCase() === 'POST') {
+        config.headers['X-CSRFToken'] = await getCSRFToken();
+    }
     return config;
 }
 

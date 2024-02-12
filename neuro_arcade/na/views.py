@@ -5,9 +5,9 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
-from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.exceptions import ObjectDoesNotExist
 from django.middleware.csrf import get_token
+from django.views.decorators.csrf import csrf_exempt
 
 from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer
 from rest_framework import viewsets
@@ -67,20 +67,20 @@ def validate_password(password):
 # ----------------
 #    API CALLS
 # ----------------
+@api_view(['GET', 'POST'])
+def ping(request: Request) -> Response:
+    """
+    Ping! Always responds with a 200 OK.
+    """
+    return Response(status=200)
+
+
 @api_view(['GET'])
 def csrf(request: Request) -> Response:
     """
     Sends a CSRF token.
     """
     return Response({'csrfToken': get_token(request)})
-
-
-@api_view(['POST'])
-def ping(request: Request) -> Response:
-    """
-    Ping! Always responds with a 200 OK.
-    """
-    return Response(status=200)
 
 
 @api_view(['GET'])
@@ -299,6 +299,7 @@ def post_game(request: Request) -> Response:
     pass
 
 
+@csrf_exempt  # Needs to not check for a CSRF token due to django shenanigans. Should not be a security problem.
 def login(request: HttpRequest) -> Response:
     if request.method == 'POST':
         response = rest_views.obtain_auth_token(request)
