@@ -30,7 +30,6 @@ build-job:
     - echo "Compile complete."
 
 server-job:
-  image: python:latest
   stage: serverFix
   script:
     - python neuro_arcade/manage.py makemigrations
@@ -39,7 +38,6 @@ server-job:
 
 
 unit-test-job: 
-  image: python:latest 
   stage: django
   script:
     - python neuro_arcade/manage.py test
@@ -51,7 +49,6 @@ unit-test-job:
 
 lint-test-job:   # This job also runs in the test stage.
   stage: django
-  image: python:latest
   allow_failure: true    # It can run at the same time as unit-test-job (in parallel).
   script:
   # - find . -type f -name '*.py' ! -path '*/migrations/*' -exec autopep8 --in-place --aggressive --aggressive '{}' \;
