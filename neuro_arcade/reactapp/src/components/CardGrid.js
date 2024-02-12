@@ -1,14 +1,28 @@
 import styles from '../styles/components/CardGrid.module.css'
 import {Card} from "./Card";
-import {requestGamesSorted} from "../backendRequests";
-import {useEffect, useState} from "react";
+
+/**
+ * Type of item in a GridSubject's tag array.
+ * Typically a primary key
+ *
+ * @typedef {any} SubjectTag
+ */
+
+/**
+ * Interface for objects displayable in a CardGrid
+ *
+ * @typedef {Object} GridSubject
+ * @property {string} name
+ * @property {string} description
+ * @property {SubjectTag[]} tags
+ */
 
 /**
  * Checks if a subject's name or description contains a query string
  * The check is case insensitive
  * TODO: this should probably be made more advanced
  *
- * @param {Object} subject - the subject data to test
+ * @param {GridSubject} subject - the subject data to test
  * @param {string} textQuery - the string to search for
  *
  * @returns {boolean} true if the filter is passed
@@ -21,8 +35,8 @@ function textQueryFilter(subject, textQuery) {
 /**
  * Checks if a subject is tagged with every tag in a query list
  * 
- * @param {Object} subject - the subject data to test
- * @param {string[]} tagQuery - the list of required tag slugs
+ * @param {GridSubject} subject - the subject data to test
+ * @param {SubjectTag[]} tagQuery - the list of required tags
  * 
  * @returns {boolean} true if the filter is passed
  */
@@ -33,9 +47,9 @@ function tagQueryFilter(subject, tagQuery) {
 /**
  * Checks if a subject should be displayed under a query
  * 
- * @param {Object} subject - the subject data to test
+ * @param {GridSubject} subject - the subject data to test
  * @param {string} textQuery - string to search name/description for
- * @param {string[]} tagQuery - required tag slugs
+ * @param {SubjectTag[]} tagQuery - required tags
  * 
  * @returns {boolean} true if the filter is passed
  */
@@ -47,55 +61,31 @@ function searchFilter(subject, textQuery, tagQuery) {
  * Component to render a grid of subjects (as subjectCards)
  *
  * @param {Object} props
- * @param {string} props.nameQuery - string subject names/descriptions must contain
- * @param {string[]} props.tagQuery - slugs of tags which subjects must have applied
+ * @param {GridSubject[]} props.subjects - subjects to display
+ * @param {string} props.textQuery - string subject names/descriptions must contain
+ * @param {SubjectTag[]} props.tagQuery - tags which subjects must have applied
  * @param {number} props.num - max number of subjects to show
  * @param {string} props.linkPrefix - link prefix passed to Card
  * @param {string} props.id - element id for styling
  */
-export function CardGrid({nameQuery='', tagQuery=[], num=0, linkPrefix, id, type}) {
-    let [isLoading, setLoading] = useState(true);
-    let [subjects, setSubjects] = useState([]);
-
-    // Fetch subjects from server on initial load
-    if (type === 'game') {
-        useEffect(() => {
-            requestGamesSorted()
-                .then(g => {
-                    setSubjects(g);
-                    setLoading(false);
-                })
-        }, []);
-    } else {
-        // TODO request players/models
+export function CardGrid({subjects, textQuery='', tagQuery=[], num=0, linkPrefix, id}) {
+    // Select subset of names to display
+    let shownCards = subjects.filter((subject) => searchFilter(subject, textQuery, tagQuery));
+    if (num > 0) {
+        shownCards = shownCards.slice(0, num);
     }
 
-    // Display waiting message while waiting on server, then show subjects
-    if (isLoading) {
-        return (
-            <div className={styles.CardGrid}>
-                Loading...
-            </div>
-        )
-    } else {
-        // Select subset of names to display
-        let shownCards = subjects.filter((subject) => searchFilter(subject, nameQuery, tagQuery));
-        if (num > 0) {
-            shownCards = shownCards.slice(0, num);
-        }
-
-        // Render a card for each selected subject
-        return (
-            <div className={styles.CardGrid} id={styles[id]}>
-                {shownCards.filter((subject) => searchFilter(subject, nameQuery, tagQuery))
-                    .map((subject, index) => {
-                        return <Card
-                            key={index}
-                            subject={subject}
-                            linkPrefix={linkPrefix}
-                        />
-                })}
-            </div>
-        );
-    }
+    // Render a card for each selected subject
+    return (
+        <div className={styles.CardGrid} id={styles[id]}>
+            {shownCards.filter((subject) => searchFilter(subject, textQuery, tagQuery))
+                .map((subject, index) => {
+                    return <Card
+                        key={index}
+                        subject={subject}
+                        linkPrefix={linkPrefix}
+                    />
+            })}
+        </div>
+    );
 }
