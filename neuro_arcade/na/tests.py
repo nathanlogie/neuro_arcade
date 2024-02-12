@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.test import TestCase
+from na.models import *
 from django.urls import reverse
 
 # The ide will shout at you to remove the na from the import but don't
