@@ -30,6 +30,13 @@ build-job:
     - echo "Compile complete."
 
 server-job:
+  image: python:latest       # This job runs in the build stage, which runs first. It sets up the virtual environment in order to run the tests
+  before_script:
+  # - apt-get install -y python 3.11.5
+  # - update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11.5
+  - python -m venv venv
+  - source venv/bin/activate
+  - pip install -r requirements.txt
   stage: serverFix
   script:
     - python neuro_arcade/manage.py makemigrations
@@ -38,6 +45,13 @@ server-job:
 
 
 unit-test-job: 
+  image: python:latest       # This job runs in the build stage, which runs first. It sets up the virtual environment in order to run the tests
+  before_script:
+  # - apt-get install -y python 3.11.5
+  # - update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11.5
+  - python -m venv venv
+  - source venv/bin/activate
+  - pip install -r requirements.txt
   stage: django
   script:
     - python neuro_arcade/manage.py test
@@ -47,7 +61,14 @@ unit-test-job:
   except:
     - main
 
-lint-test-job:   # This job also runs in the test stage.
+lint-test-job: 
+  image: python:latest       # This job runs in the build stage, which runs first. It sets up the virtual environment in order to run the tests
+  before_script:
+  # - apt-get install -y python 3.11.5
+  # - update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11.5
+  - python -m venv venv
+  - source venv/bin/activate
+  - pip install -r requirements.txt  # This job also runs in the test stage.
   stage: django
   allow_failure: true    # It can run at the same time as unit-test-job (in parallel).
   script:
@@ -57,10 +78,12 @@ lint-test-job:   # This job also runs in the test stage.
 react-creation:
   stage: reactCreation
   image: npm:latest
-  script:
+  before_script:
     - cd neuro_arcade
     - cd reactapp
     - npm install --force
+  script:
+    echo "React compiled"
 
 
 
@@ -68,6 +91,7 @@ react-creation:
 unit-test-r-job:
   stage: react
   script:
+    - ls
     - npm test
     - npm test--coverage
   
