@@ -27,20 +27,36 @@ export function AllGames() {
             })
     }, [])
 
-    if (loading) {
-        return <>
-            <Banner size={'small'} state={'Games'} />
-            <MobileBanner  />
-            <div className={styles.MainBlock} id={styles['small']}>
-                loading...
+    let content = <>...</>;
+    if (!loading) {
+        content = <>
+            <div className={styles.Side}>
+                <div className={styles.Search}>
+                    <input onChange={e => setTextQuery(e.target.value)} placeholder="search..."/>
+                    <div className={styles.SearchIcon}>
+                        <FaMagnifyingGlass/>
+                    </div>
+                </div>
+                <TagFilter
+                    tags={tags.map((tag) => tag.name)}
+                    onTagChange={setSelectedTags}
+                />
+            </div>
+            <div className={styles.Content} id={styles['AllGames']}>
+                <h1>All Games</h1>
+                <GameGrid
+                    textQuery={textQuery}
+                    tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)}
+                    id={'AppGrid'}
+                />
             </div>
         </>
     }
 
     return (
         <>
-            <Banner size={'small'} state={'Games'} />
-            <MobileBanner  />
+            <Banner size={'small'} state={'Games'}/>
+            <MobileBanner/>
             <motion.div
                 className={styles.MainBlock}
                 id={styles['small']}
@@ -48,26 +64,7 @@ export function AllGames() {
                 animate={{opacity: 1, y: 0}}
                 exit={{opacity: 0, y: -100}}
             >
-                <div className={styles.Side}>
-                    <div className={styles.Search}>
-                        <input onChange={e => setTextQuery(e.target.value)} placeholder="search..."/>
-                        <div className={styles.SearchIcon}>
-                            <FaMagnifyingGlass />
-                        </div>
-                    </div>
-                    <TagFilter
-                        tags={tags.map((tag) => tag.name)}
-                        onTagChange={setSelectedTags}
-                    />
-                </div>
-                <div className={styles.Content} id={styles['AllGames']}>
-                    <h1>All Games</h1>
-                    <GameGrid
-                        textQuery={textQuery}
-                        tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)}
-                        id={'AppGrid'}
-                    />
-                </div>
+                {content}
             </motion.div>
         </>
     );

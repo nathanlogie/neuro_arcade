@@ -22,12 +22,16 @@ export function EditAbout() {
             })
     }, [])
 
-    if (!aboutData) {
-        return (
-            <>
-                Loading...
-            </>
-        )
+    let content = <>...</>;
+    if (aboutData) {
+        content = <>
+            <div className={styles.Content}>
+                <div className={styles.ContentBlock}>
+                    <DescriptionForm description={aboutData.description}/>
+                    <PublicationsForm publications={aboutData.publications}/>
+                </div>
+            </div>
+        </>
     }
 
     return (
@@ -37,8 +41,8 @@ export function EditAbout() {
                 link: '/about',
                 orientation: 'right',
                 direction: 'right'
-            }} />
-            <NavBar  button_right={{
+            }}/>
+            <NavBar button_right={{
                 name: 'about',
                 link: '/about',
                 orientation: 'right',
@@ -52,12 +56,7 @@ export function EditAbout() {
                 animate={{opacity: 1, x: 0}}
                 exit={{opacity: 0, x: -100}}
             >
-                <div className={styles.Content}>
-                    <div className={styles.ContentBlock}>
-                        <DescriptionForm description={aboutData.description} />
-                        <PublicationsForm publications={aboutData.publications}/>
-                    </div>
-                </div>
+                {content}
             </motion.div>
 
         </>

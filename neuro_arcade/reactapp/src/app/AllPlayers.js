@@ -57,14 +57,35 @@ export function AllPlayers() {
             })
     }, [])
 
-    if (loading) {
-        return <>
-            <Banner size={'small'} state={'Players'} />
-            <MobileBanner/>
-            <div className={styles.MainBlock} id={styles['small']}>
-                loading...
+    let content = <>...</>;
+    if (!loading) {
+        content = <>
+            <div className={styles.Side}>
+                <div className={styles.Search}>
+                    <input onChange={e => setTextQuery(e.target.value)} placeholder="search..."/>
+                    <div className={styles.SearchIcon}>
+                        <FaMagnifyingGlass/>
+                    </div>
+                </div>
+                <div className={styles.Switcher}>
+                    <Switcher
+                        data={switcher_labels}
+                        onSwitcherChange={handleSwitcherChange}
+                        switcherDefault={selectedSwitcherValue}
+                    />
+                </div>
+                <TagFilter tags={tags.map((tag) => tag.name)} onTagChange={setSelectedTags}/>
             </div>
-        </>
+            <div className={styles.Content} id={styles['AllGames']}>
+                <h1>All Players</h1>
+                <PlayerGrid
+                    mode={modes[modeIdx]}
+                    textQuery={textQuery}
+                    tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)}
+                    id={'AppGrid'}
+                />
+            </div>
+        </>;
     }
 
     return (
@@ -78,31 +99,7 @@ export function AllPlayers() {
                 animate={{opacity: 1, y: 0}}
                 exit={{opacity: 0, y: -100}}
             >
-                <div className={styles.Side}>
-                    <div className={styles.Search}>
-                        <input onChange={e => setTextQuery(e.target.value)} placeholder="search..."/>
-                        <div className={styles.SearchIcon}>
-                            <FaMagnifyingGlass/>
-                        </div>
-                    </div>
-                    <div className={styles.Switcher}>
-                        <Switcher
-                            data={switcher_labels}
-                            onSwitcherChange={handleSwitcherChange}
-                            switcherDefault={selectedSwitcherValue}
-                        />
-                    </div>
-                    <TagFilter tags={tags.map((tag) => tag.name)} onTagChange={setSelectedTags}/>
-                </div>
-                <div className={styles.Content} id={styles['AllGames']}>
-                    <h1>All Players</h1>
-                    <PlayerGrid
-                        mode={modes[modeIdx]}
-                        textQuery={textQuery}
-                        tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)}
-                        id={'AppGrid'}
-                    />
-                </div>
+                {content}
             </motion.div>
         </>
     );
