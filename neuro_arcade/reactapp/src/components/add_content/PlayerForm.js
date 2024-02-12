@@ -1,12 +1,14 @@
 import {useForm} from "react-hook-form";
 import React, {useState} from "react";
 import axios from "axios";
+import {motion} from "framer-motion";
+import {FaPlus} from "react-icons/fa6";
 
 //Should be synced up to models
 let MAX_NAME_LENGTH = 64
 let MAX_DESCRIPTION_LENGTH = 1024
 
-export function ModelForm(){
+export function PlayerForm(){
     const {
         register,
         handleSubmit,
@@ -71,7 +73,7 @@ export function ModelForm(){
                     message: `Maximum name length has been exceeded (${MAX_NAME_LENGTH})`
                 }
             })}
-                   type={"text"} placeholder={"Name!"}
+                   type={"text"} placeholder={"player name"}
                    onChange={(event) => setName(event.target.value)}
             />
             {errors.name && (
@@ -86,14 +88,14 @@ export function ModelForm(){
                     message: "Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})"
                 }
             })}
-                   type={"text"} placeholder={"Description"}
+                   type={"text"} placeholder={"player description"}
                    onChange={(event) => setDescription(event.target.value)}
             />
             {errors.description && (
                 <div className={"errorMessage"}>{errors.description.message}</div>
             )}
 
-            <h3> IS AI? </h3>
+            <h3> Is this an AI model? </h3>
             <select {...register("isAI", {
                 required: "This field is required"
             })}
@@ -109,16 +111,23 @@ export function ModelForm(){
             <input {...register("tags", {
                 required: false
             })}
-                   type={"text"} placeholder={"Game Tags"}
+                   type={"text"} placeholder={"example1, example2, example3, ..."}
                    onChange={(event) => setTags(event.target.value)}
             />
 
-            <br/>
-            <button disabled={isSubmitting} type={"submit"}>
-                {isSubmitting ? "Submitting form..." : "Submit!"}
-            </button>
+            <motion.button
+                disabled={isSubmitting}
+                type={"submit"}
+                whileHover={{scale: 1.1}}
+                whileTap={{scale: 0.9}}
+            >
+                {isSubmitting ? "submitting player/model..." : "add new player/model"}
+                <div>
+                    <FaPlus />
+                </div>
+            </motion.button>
             {errors.root && (
-                <div className={"errorMessage"}>{errors.root.message}</div>
+                <div className={"text-red-500"}>{errors.root.message}</div>
             )}
         </form>
     )

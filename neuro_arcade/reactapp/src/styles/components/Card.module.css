@@ -1,8 +1,12 @@
 .Card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: relative;
     float: left;
-    width: max-content;
-    padding-bottom: 3em;
+    width: 7em;
+    height: 10em;
+    padding-bottom: 1em;
     backdrop-filter: blur(20px);
     background: rgba(255, 255, 255, 0.1);
     border-radius: 1.5em;
@@ -21,14 +25,10 @@
         height: 100%;
     }
     & p {
-        position: absolute;
-        align-items: center;
         text-align: center;
-        width: calc(100% - 1em);
-        font-size: 1em;
-        height: max-content;
-        margin: 0;
-        text-decoration: none;
+        width: 7em;
+        font-size: 0.85em;
+        margin: auto 0;
         color: #FFFFFF;
         padding: 0 0.5em;
     }

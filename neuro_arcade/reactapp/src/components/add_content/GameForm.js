@@ -93,7 +93,7 @@ export function GameForm() {
         }).then(function (response) {
             console.log(response);
             reset();
-            setError("root", {message: "Form submitted successfully"});
+            setError("root", {message: "game submitted successfully"});
 
         }).catch(function (response) {
             console.log(response)
@@ -258,7 +258,7 @@ export function GameForm() {
                 whileHover={{scale: 1.1}}
                 whileTap={{scale: 0.9}}
             >
-                {isSubmitting ? "Submitting form..." : "add new game"}
+                {isSubmitting ? "submitting game..." : "add new game"}
                 <div>
                     <FaPlus />
                 </div>

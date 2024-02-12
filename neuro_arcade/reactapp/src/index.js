@@ -13,7 +13,7 @@ import { EditAbout } from "./app/about/EditAbout";
 import {AnimatePresence} from 'framer-motion'
 import {Background} from "./components/Background";
 import {GameForm} from "./components/add_content/GameForm";
-import {ModelForm} from "./components/add_content/ModelForm";
+import {PlayerForm} from "./components/add_content/PlayerForm";
 
 const router = createBrowserRouter([
     {
@@ -42,8 +42,8 @@ const router = createBrowserRouter([
         element: <FormPage type={'game'} />
     },
     {
-        path: "add_model",
-        element: <FormPage type={'model'} />
+        path: "add_player",
+        element: <FormPage type={'player/model'} />
     },
     {
         path: 'all_games/:game_slug',
