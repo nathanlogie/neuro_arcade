@@ -33,7 +33,7 @@ export function AddContent() {
                 direction: 'right'
             }}
             />
-            <MobileBanner  />
+            <MobileBanner />
 
             <motion.div
                 className={styles.MainBlock}
@@ -44,7 +44,7 @@ export function AddContent() {
             >
                 <div className={styles.DataBlock}>
                     <Card link={'/add_game'} text={'New Game'} icon={<FaGamepad />} />
-                    <Card link={'/add_player'} text={'New Player/Model'} icon={<TbBoxModel />} />
+                    <Card link={'/add_model'} text={'New Model'} icon={<TbBoxModel />} />
                 </div>
             </motion.div>
 

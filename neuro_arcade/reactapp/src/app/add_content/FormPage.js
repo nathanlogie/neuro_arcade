@@ -3,7 +3,7 @@ import styles from "../../styles/App.module.css";
 import {Banner, MobileBanner} from "../../components/Banner";
 import {NavBar} from "../../components/NavBar";
 import {motion} from "framer-motion";
-import {PlayerForm} from "../../components/add_content/PlayerForm";
+import {ModelForm} from "../../components/add_content/ModelForm";
 
 /**
  * @returns {JSX.Element} add game page
@@ -14,8 +14,8 @@ export function FormPage({type}) {
     let form;
     if (type === 'game') {
         form = <GameForm />;
-    } else if (type === 'player/model') {
-        form  = <PlayerForm/>
+    } else if (type === 'model') {
+        form  = <ModelForm/>
     } else {
         throw('invalid form type');
     }

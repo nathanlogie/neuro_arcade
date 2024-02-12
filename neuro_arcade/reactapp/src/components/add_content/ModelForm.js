@@ -8,7 +8,7 @@ import {FaPlus} from "react-icons/fa6";
 let MAX_NAME_LENGTH = 64
 let MAX_DESCRIPTION_LENGTH = 1024
 
-export function PlayerForm(){
+export function ModelForm(){
     const {
         register,
         handleSubmit,
@@ -25,15 +25,13 @@ export function PlayerForm(){
     const onSubmit = (event) => {
 
         const formData = new FormData();
-        formData.append("name", name)
-        formData.append("description", description)
+        formData.append("name", name);
+        formData.append("description", description);
 
         //Again temporary until authentication is done
-        formData.append("user", "http://localhost:8000/api/users/2/")
+        formData.append("user", "http://localhost:8000/api/users/2/");
 
-        //Converts the string value into an actual boolean value
-        let boolAi = (aiStatus === 'true');
-        formData.append("is_ai", boolAi)
+        formData.append("is_ai", true);
 
         axios({
             //I will move a lot of this stuff to backend requests to centralize it in a future merge request
@@ -52,7 +50,7 @@ export function PlayerForm(){
 
             } else {
                 if (response.response.data.includes("IntegrityError")) {
-                    setError("root", {message: "A game with that name already exists!"});
+                    setError("root", {message: "A model with that name already exists!"});
                 } else {
                     setError("root", {
                         message: `Something went wrong... ${response.response.data}`
@@ -60,7 +58,6 @@ export function PlayerForm(){
                 }
             }
         });
-
     }
 
     return (
@@ -73,11 +70,11 @@ export function PlayerForm(){
                     message: `Maximum name length has been exceeded (${MAX_NAME_LENGTH})`
                 }
             })}
-                   type={"text"} placeholder={"player name"}
+                   type={"text"} placeholder={"model name"}
                    onChange={(event) => setName(event.target.value)}
             />
             {errors.name && (
-                <div className={"errorMessage"}>{errors.name.message}</div>
+                <div>{errors.name.message}</div>
             )}
 
             <h3>Description</h3>
@@ -88,26 +85,14 @@ export function PlayerForm(){
                     message: "Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})"
                 }
             })}
-                   type={"text"} placeholder={"player description"}
+                   type={"text"} placeholder={"This model was designed to..."}
                    onChange={(event) => setDescription(event.target.value)}
             />
             {errors.description && (
-                <div className={"errorMessage"}>{errors.description.message}</div>
+                <div>{errors.description.message}</div>
             )}
 
-            <h3> Is this an AI model? </h3>
-            <select {...register("isAI", {
-                required: "This field is required"
-            })}
-                    onChange={(event) => setAiStatus(event.target.value)}>
-                <option value={"true"}>True</option>
-                <option value={"false"}>False</option>
-            </select>
-            {errors.isAI && (
-                <div className={"errorMessage"}>{errors.isAI.message}</div>
-            )}
-
-            <h3> Player Tags </h3>
+            <h3> Model Tags </h3>
             <input {...register("tags", {
                 required: false
             })}
@@ -121,13 +106,13 @@ export function PlayerForm(){
                 whileHover={{scale: 1.1}}
                 whileTap={{scale: 0.9}}
             >
-                {isSubmitting ? "submitting player/model..." : "add new player/model"}
+                {isSubmitting ? "submitting model..." : "add new model"}
                 <div>
                     <FaPlus />
                 </div>
             </motion.button>
             {errors.root && (
-                <div className={"text-red-500"}>{errors.root.message}</div>
+                <div>{errors.root.message}</div>
             )}
         </form>
     )

@@ -8,12 +8,12 @@ import { FaPlus } from "react-icons/fa6";
 import {motion} from "framer-motion";
 
 //Should be synced with models.py
-let MAX_NAME_LENGTH = 64
-let MAX_DESCRIPTION_LENGTH = 1024
+let MAX_NAME_LENGTH = 64;
+let MAX_DESCRIPTION_LENGTH = 1024;
 
-let ACCEPTED_SCORE_FILE = ['json']
-let ACCEPTED_EVAL_SCRIPT = ['py']
-let ACCEPTED_IMAGE = ['png', 'jpg', 'jpeg']
+let ACCEPTED_SCORE_FILE = ['json'];
+let ACCEPTED_EVAL_SCRIPT = ['py'];
+let ACCEPTED_IMAGE = ['png', 'jpg', 'jpeg'];
 
 /**
  * @returns {JSX.Element} add new game form
@@ -137,7 +137,7 @@ export function GameForm() {
                     value: MAX_DESCRIPTION_LENGTH,
                     message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})`,
                 }
-            })} type={"text"} placeholder={"game description"}
+            })} type={"text"} placeholder={"This game measures..."}
                    onChange={(event) => setDescription(event.target.value)}
             />
             {errors.description && (
@@ -175,6 +175,9 @@ export function GameForm() {
                         whileTap={{scale: 0.9}}
                     >
                         <label htmlFor={'icon'}>
+                            <p>
+                                {image ? image.name : 'No file chosen'}
+                            </p>
                             <div>
                                 <FaImage/>
                             </div>
@@ -199,6 +202,9 @@ export function GameForm() {
                         whileTap={{scale: 0.9}}
                     >
                         <label htmlFor={'score'}>
+                            <p>
+                                {scoreType ? scoreType.name : 'No file chosen'}
+                            </p>
                             <div>
                                 <LuFileJson/>
                             </div>
@@ -227,6 +233,9 @@ export function GameForm() {
                         whileTap={{scale: 0.9}}
                     >
                         <label htmlFor={'script'}>
+                            <p>
+                                {evaluationScript ? evaluationScript.name : 'No file chosen'}
+                            </p>
                             <div>
                                 <FaPython/>
                             </div>
@@ -243,9 +252,9 @@ export function GameForm() {
                             }
                         })} type={"file"} accept={".py"} onChange={handleEvalScript}
                         />
-                                            {errors.evaluationScript && (
-                                                <div>{errors.evaluationScript.message}</div>
-                                            )}
+                        {errors.evaluationScript && (
+                            <div>{errors.evaluationScript.message}</div>
+                        )}
                     </motion.div>
                 </div>
             </span>

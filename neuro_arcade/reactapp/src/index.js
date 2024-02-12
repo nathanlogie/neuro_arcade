@@ -41,8 +41,8 @@ const router = createBrowserRouter([
         element: <FormPage type={'game'} />
     },
     {
-        path: "add_player",
-        element: <FormPage type={'player/model'} />
+        path: "add_model",
+        element: <FormPage type={'model'} />
     },
     {
         path: 'all_games/:game_slug',

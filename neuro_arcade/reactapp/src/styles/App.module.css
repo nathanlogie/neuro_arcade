@@ -129,35 +129,53 @@
                     text-align: center;
                 }
                 div {
-                    width: 11em;
+                    width: 10.5em;
                 }
                 & input {
-                    width: 7.5em;
-                    height: 3em;
-                    padding: 0 1em 0 3.5em;
-                    cursor: pointer;
-                    line-height: 3em;
-                    margin-top: 0.25em;
-                    margin-left: 1em;
+                    /*width: 7.5em;*/
+                    /*height: 3em;*/
+                    /*padding: 0 1em 0 3.5em;*/
+                    /*cursor: pointer;*/
+                    /*line-height: 3em;*/
+                    /*margin-top: 0.25em;*/
+                    /*margin-left: 1em;*/
+                    display: none;
                 }
                 & input[type="file"]::file-selector-button {
                     display: none;
                 }
                 & label {
-                    position: absolute;
+                    position: relative;
                     display: flex;
                     justify-content: center;
                     width: max-content;
+                    cursor: pointer;
                     & div {
                         background-color: #D14081;
                         width: 3em;
                         height: 3em;
                         border-radius: 3em;
-                        cursor: pointer
                     }
                     & div > * {
                         width: 50%;
                         height: 100%;
+                    }
+                    p {
+                        position: absolute;
+                        width: 7.5em;
+                        height: 3em;
+                        padding: 0 1em 0 3em;
+                        line-height: 3em;
+                        background-color: rgba(255, 255, 255, 0.2);
+                        border-radius: 0.5em;
+                        margin: 0;
+                        left: 1.5em;
+                        top: 0.5em;
+                        font-size: 0.8em;
+                        z-index: -1;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
                     }
                 }
             }
@@ -177,7 +195,6 @@
                 font-size: 1.25em;
                 cursor: pointer;
                 padding: 0 1em 0 2em;
-
                 & div {
                     position: absolute;
                     top: -0.5em;
