@@ -67,7 +67,6 @@ react-creation:
 
 unit-test-r-job:
   stage: react
-  image: npm:latest
   script:
     - npm test
     - npm test--coverage
@@ -75,7 +74,6 @@ unit-test-r-job:
 lint-test-r-job:
   stage: react
   allow_failure: true 
-  image: npm:latest
   script:
     -npm lint
     
