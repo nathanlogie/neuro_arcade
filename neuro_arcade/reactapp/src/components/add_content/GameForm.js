@@ -5,6 +5,7 @@ import { FaImage } from "react-icons/fa6";
 import { LuFileJson } from "react-icons/lu";
 import { FaPython } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
+import {motion} from "framer-motion";
 
 //Should be synced with models.py
 let MAX_NAME_LENGTH = 64
@@ -169,10 +170,13 @@ export function GameForm() {
             <span>
                 <div>
                     <h3>Game Icon</h3>
-                    <div>
+                    <motion.div
+                        whileHover={{scale: 1.1}}
+                        whileTap={{scale: 0.9}}
+                    >
                         <label htmlFor={'icon'}>
                             <div>
-                                <FaImage />
+                                <FaImage/>
                             </div>
                         </label>
                         <input id={'icon'} {...register("icon", {
@@ -186,14 +190,17 @@ export function GameForm() {
                                 return true;
                             }
                         })} type={"file"} onChange={handleImage}/>
-                    </div>
+                    </motion.div>
                 </div>
                 <div>
                     <h3>Score Types</h3>
-                    <div>
+                    <motion.div
+                        whileHover={{scale: 1.1}}
+                        whileTap={{scale: 0.9}}
+                    >
                         <label htmlFor={'score'}>
                             <div>
-                                <LuFileJson />
+                                <LuFileJson/>
                             </div>
                         </label>
                         <input id={'score'} {...register("scoreTypes", {
@@ -212,14 +219,17 @@ export function GameForm() {
                         {errors.scoreTypes && (
                             <div className={"text-red-500"}>{errors.scoreTypes.message}</div>
                         )}
-                    </div>
+                    </motion.div>
                 </div>
                 <div>
                     <h3>Evaluation Script</h3>
-                    <div>
+                    <motion.div
+                        whileHover={{scale: 1.1}}
+                        whileTap={{scale: 0.9}}
+                    >
                         <label htmlFor={'script'}>
                             <div>
-                                <FaPython />
+                                <FaPython/>
                             </div>
                         </label>
                         <input id={'script'} {...register("evaluationScript", {
@@ -235,20 +245,24 @@ export function GameForm() {
                         })} type={"file"}
                                onChange={handleEvalScript}
                         />
-                        {errors.evaluationScript && (
-                            <div className={"text-red-500"}>{errors.evaluationScript.message}</div>
-                        )}
-                    </div>
+                                            {errors.evaluationScript && (
+                                                <div className={"text-red-500"}>{errors.evaluationScript.message}</div>
+                                            )}
+                    </motion.div>
                 </div>
             </span>
 
-
-            <button disabled={isSubmitting} type={"submit"}>
+            <motion.button
+                disabled={isSubmitting}
+                type={"submit"}
+                whileHover={{scale: 1.1}}
+                whileTap={{scale: 0.9}}
+            >
                 {isSubmitting ? "Submitting form..." : "add new game"}
                 <div>
                     <FaPlus />
                 </div>
-            </button>
+            </motion.button>
             {errors.root && (
                 <div className={"text-red-500"}>{errors.root.message}</div>
             )}
