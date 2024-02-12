@@ -1,12 +1,12 @@
 import {Banner, MobileBanner} from "../components/Banner";
-import {Background} from "../components/Background";
 import styles from "../styles/App.module.css"
 import {PlayerGrid, PlayerGridMode} from "../components/PlayerGrid";
 import {TagFilter} from "../components/TagFilter";
-import {RadioList} from "../components/RadioList";
 import {requestPlayerTags} from "../backendRequests";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import {Switcher} from "../components/Switcher";
+import {motion} from "framer-motion";
 
 /**
  * @returns {JSX.Element} all players page
@@ -23,6 +23,32 @@ export function AllPlayers() {
     let modes = [PlayerGridMode.ALL, PlayerGridMode.HUMAN, PlayerGridMode.AI];
     let [modeIdx, setModeIdx] = useState(0);
 
+    const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState('all');
+
+    /**
+     * @param selectedValue {string}
+     */
+    const handleSwitcherChange = (selectedValue) => {
+        setSelectedSwitcherValue(selectedValue);
+        if (selectedValue === 'AI Platforms') {
+            setModeIdx(2);
+        }
+        if (selectedValue === 'Humans') {
+            setModeIdx(1);
+        }
+        if (selectedValue === 'all') {
+            setModeIdx(0);
+        }
+    }
+
+    const switcher_labels = {
+        table_headers: [
+            { name: 'AI Platforms' },
+            { name: 'all' },
+            { name: 'Humans' }
+        ],
+    }
+
     useEffect(() => {
         requestPlayerTags()
             .then((tags) => {
@@ -33,32 +59,40 @@ export function AllPlayers() {
 
     if (loading) {
         return <>
-            Loading...
+            <Banner size={'small'} state={'Players'} />
+            <MobileBanner/>
+            <div className={styles.MainBlock} id={styles['small']}>
+                loading...
+            </div>
         </>
     }
 
     return (
-        <div>
-            <Background/>
-            <Banner size={'small'} state={'Players'} />
-            <MobileBanner  />
-            <div className={styles.MainBlock} id={styles['small']}>
+        <>
+            <Banner size={'small'} state={'Players'}/>
+            <MobileBanner/>
+            <motion.div
+                className={styles.MainBlock}
+                id={styles['small']}
+                initial={{opacity: 0, y: -100}}
+                animate={{opacity: 1, y: 0}}
+                exit={{opacity: 0, y: -100}}
+            >
                 <div className={styles.Side}>
                     <div className={styles.Search}>
                         <input onChange={e => setTextQuery(e.target.value)} placeholder="search..."/>
                         <div className={styles.SearchIcon}>
-                            <FaMagnifyingGlass />
+                            <FaMagnifyingGlass/>
                         </div>
                     </div>
-
-                    <TagFilter
-                        tags={tags.map((tag) => tag.name)}
-                        onTagChange={setSelectedTags}
-                    />
-
-                    <div>
-                        <RadioList name='mode' options={modes} onChange={(i) => setModeIdx(i)} />
+                    <div className={styles.Switcher}>
+                        <Switcher
+                            data={switcher_labels}
+                            onSwitcherChange={handleSwitcherChange}
+                            switcherDefault={selectedSwitcherValue}
+                        />
                     </div>
+                    <TagFilter tags={tags.map((tag) => tag.name)} onTagChange={setSelectedTags}/>
                 </div>
                 <div className={styles.Content} id={styles['AllGames']}>
                     <h1>All Players</h1>
@@ -69,7 +103,7 @@ export function AllPlayers() {
                         id={'AppGrid'}
                     />
                 </div>
-            </div>
-        </div>
+            </motion.div>
+        </>
     );
 }

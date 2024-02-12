@@ -5,6 +5,7 @@ import {TagFilter} from "../components/TagFilter";
 import {requestGameTags} from "../backendRequests";
 import {useEffect, useState} from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import {motion} from "framer-motion";
 
 /**
  * @returns {JSX.Element} all games page
@@ -28,7 +29,11 @@ export function AllGames() {
 
     if (loading) {
         return <>
-            Loading...
+            <Banner size={'small'} state={'Games'} />
+            <MobileBanner  />
+            <div className={styles.MainBlock} id={styles['small']}>
+                loading...
+            </div>
         </>
     }
 
@@ -36,7 +41,13 @@ export function AllGames() {
         <>
             <Banner size={'small'} state={'Games'} />
             <MobileBanner  />
-            <div className={styles.MainBlock} id={styles['small']}>
+            <motion.div
+                className={styles.MainBlock}
+                id={styles['small']}
+                initial={{opacity: 0, y: -100}}
+                animate={{opacity: 1, y: 0}}
+                exit={{opacity: 0, y: -100}}
+            >
                 <div className={styles.Side}>
                     <div className={styles.Search}>
                         <input onChange={e => setTextQuery(e.target.value)} placeholder="search..."/>
@@ -57,7 +68,7 @@ export function AllGames() {
                         id={'AppGrid'}
                     />
                 </div>
-            </div>
+            </motion.div>
         </>
     );
 }

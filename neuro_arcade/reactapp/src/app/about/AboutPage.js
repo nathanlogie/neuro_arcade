@@ -1,7 +1,7 @@
 import {Banner, MobileBanner} from "../../components/Banner";
 import {NavBar} from "../../components/NavBar";
 import styles from "../../styles/App.module.css";
-import {motion} from "framer-motion"
+import {motion} from "framer-motion";
 import {useEffect, useState} from "react";
 import {getAboutData} from "../../backendRequests";
 import {Description} from "../../components/about/Description"
