@@ -10,6 +10,10 @@ import PropTypes from 'prop-types'
  */
 export function SwarmPlot({inputData}) {
 
+    if (!inputData || !inputData.rows || inputData.rows.length === 0){
+        return <h1>No data</h1>;
+    }
+
     const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(
         inputData.table_headers[0].name
     );
@@ -39,6 +43,12 @@ export function SwarmPlot({inputData}) {
     const handleSwitcherChange = function(selectedValue) {
         setSelectedSwitcherValue(selectedValue);
     };
+
+    /**
+     * currently sets the size value to be a 5th of the max value
+     */
+    const maxValue = Math.max(...data.map(item => item.value));
+    const maxSize = maxValue / 5;
     
 
     return (
@@ -55,7 +65,7 @@ export function SwarmPlot({inputData}) {
                 value="value"
                 groupBy="group"
                 margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
-                size={{ key: 'value', values: [0, 100], sizes: [1, 10] }}
+                size={{ key: 'value', values: [1, maxSize], sizes: [1, 10] }}
                 forceStrength={1}
                 simulationIterations={100}
                 axisBottom={{
@@ -72,6 +82,7 @@ export function SwarmPlot({inputData}) {
                     tickSize: 5,
                     tickPadding: 5,
                     tickRotation: 0,
+                    legend: selectedSwitcherValue,
                     legendOffset: -40,
                 }}
             />
