@@ -25,7 +25,7 @@ router.register(r'games', GameViewSet)
 router.register(r'users', UserViewSet)
 router.register(r'gameTag', GameTagViewSet)
 router.register(r'players', PlayerViewSet)
-router.register(r'playerTags', PlayerTagViewSet)
+router.register(r'playerTag', PlayerTagViewSet)
 
 urlpatterns = [
     path('', include('na.urls')),

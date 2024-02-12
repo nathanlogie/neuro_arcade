@@ -9,11 +9,10 @@ import {AddContent} from "./app/add_content/AddContent";
 import {FormPage} from "./app/add_content/FormPage";
 import {AllGames} from "./app/AllGames";
 import {GameView} from "./app/GameView";
+import {AllPlayers} from './app/AllPlayers';
 import { EditAbout } from "./app/about/EditAbout";
 import {AnimatePresence} from 'framer-motion'
 import {Background} from "./components/Background";
-import {GameForm} from "./components/add_content/GameForm";
-import {PlayerForm} from "./components/add_content/PlayerForm";
 
 const router = createBrowserRouter([
     {
@@ -52,7 +51,11 @@ const router = createBrowserRouter([
     {
         path: "all_games",
         element: <AllGames/>
-    }
+    },
+    {
+        path: "all_players",
+        element: <AllPlayers/>
+    },
 ]);
 
 

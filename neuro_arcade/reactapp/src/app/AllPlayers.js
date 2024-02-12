@@ -1,25 +1,30 @@
 import {Banner, MobileBanner} from "../components/Banner";
+import {Background} from "../components/Background";
 import styles from "../styles/App.module.css"
-import {GameGrid} from "../components/GameGrid";
+import {PlayerGrid, PlayerGridMode} from "../components/PlayerGrid";
 import {TagFilter} from "../components/TagFilter";
-import {requestGameTags} from "../backendRequests";
+import {RadioList} from "../components/RadioList";
+import {requestPlayerTags} from "../backendRequests";
 import {useEffect, useState} from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 
 /**
- * @returns {JSX.Element} all games page
- * @constructor builds all games page
+ * @returns {JSX.Element} all players page
+ * @constructor builds all players page
  */
-export function AllGames() {
-    // name query for sorting the already fetched games
+export function AllPlayers() {
+    // name query for sorting the already fetched players
     // can be changed freely, as it only affect data displayed on the client
     let [textQuery, setTextQuery] = useState('');
     let [tags, setTags] = useState([]);
     let [selectedTags, setSelectedTags] = useState([]);
     let [loading, setLoading] = useState(true);
 
+    let modes = [PlayerGridMode.ALL, PlayerGridMode.HUMAN, PlayerGridMode.AI];
+    let [modeIdx, setModeIdx] = useState(0);
+
     useEffect(() => {
-        requestGameTags()
+        requestPlayerTags()
             .then((tags) => {
                 setTags(tags);
                 setLoading(false);
@@ -33,8 +38,9 @@ export function AllGames() {
     }
 
     return (
-        <>
-            <Banner size={'small'} state={'Games'} />
+        <div>
+            <Background/>
+            <Banner size={'small'} state={'Players'} />
             <MobileBanner  />
             <div className={styles.MainBlock} id={styles['small']}>
                 <div className={styles.Side}>
@@ -44,20 +50,26 @@ export function AllGames() {
                             <FaMagnifyingGlass />
                         </div>
                     </div>
+
                     <TagFilter
                         tags={tags.map((tag) => tag.name)}
                         onTagChange={setSelectedTags}
                     />
+
+                    <div>
+                        <RadioList name='mode' options={modes} onChange={(i) => setModeIdx(i)} />
+                    </div>
                 </div>
                 <div className={styles.Content} id={styles['AllGames']}>
-                    <h1>All Games</h1>
-                    <GameGrid
+                    <h1>All Players</h1>
+                    <PlayerGrid
+                        mode={modes[modeIdx]}
                         textQuery={textQuery}
                         tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)}
                         id={'AppGrid'}
                     />
                 </div>
             </div>
-        </>
+        </div>
     );
 }

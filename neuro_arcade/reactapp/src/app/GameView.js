@@ -3,6 +3,8 @@ import {requestGame} from "../backendRequests";
 import styles from "../styles/App.module.css";
 import {Table} from "../components/game/Table";
 import {Graph} from "../components/game/Graph";
+import {RadarC} from "../components/game/RadarC";
+import {SwarmPlot} from "../components/game/SwarmPlot";
 import {useEffect, useState} from "react";
 import {Banner, MobileBanner} from "../components/Banner";
 import {Background} from "../components/Background";
@@ -51,6 +53,8 @@ export function GameView() {
                     <div className={styles.DataBlock}>
                         <Table inputData={gameData}/>
                         <Graph inputData={gameData}/>
+                        <RadarC inputData={gameData}/>
+                        <SwarmPlot inputData={gameData}/>
                     </div>
                 </div>
             </>

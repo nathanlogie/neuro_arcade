@@ -4,6 +4,7 @@ import {Logo} from "./Logo";
 import React from "react";
 import {motion} from "framer-motion"
 import {Switcher} from "./Switcher";
+import { useNavigate } from 'react-router-dom';
 
 /**
  * @param size
@@ -22,14 +23,15 @@ export function Banner({size, button_left, button_right, state}) {
     };
 
     const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(state);
+    const navigate = useNavigate();
 
     const handleSwitcherChange = (selectedValue) => {
         setSelectedSwitcherValue(selectedValue);
             if (selectedValue === 'Games') {
-                window.location.href = '/all_games';
+                navigate('/all_games');
             }
-            if (selectedValue === 'AI Platforms') {
-                window.location.href = '/'; // TODO Add AI Platforms page
+            if (selectedValue === 'Players') {
+                navigate('/all_players');
             }
     }
 

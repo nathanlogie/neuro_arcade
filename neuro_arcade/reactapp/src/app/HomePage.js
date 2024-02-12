@@ -1,12 +1,13 @@
 import {Banner} from "../components/Banner";
-import {CardGrid} from "../components/CardGrid";
+import {GameGrid} from "../components/GameGrid";
 import styles from '../styles/App.module.css';
 import {NavBar} from "../components/NavBar";
 import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {TagFilter} from "../components/TagFilter";
+import {requestGameTags} from "../backendRequests";
 import {motion} from "framer-motion"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import { IoFilter } from "react-icons/io5";
 
 /**
@@ -14,11 +15,29 @@ import { IoFilter } from "react-icons/io5";
  * @constructor builds home page
  */
 export function HomePage() {
+    let [tags, setTags] = useState([]);
+    let [forcedTags, setForcedTags] = useState([]);
     let [selectedTags, setSelectedTags] = useState([]);
-    let forcedTags = ['featured'];
+    let [loading, setLoading] = useState(true);
 
     const [show, setShow] = useState(false);
     const [hover, setHover] = useState(false);
+
+    // Fetch the game tags on load
+    useEffect(() => {
+        requestGameTags()
+            .then((tags) => {
+                setTags(tags.filter((tag) => tag.slug != 'featured'));
+                setForcedTags(tags.filter((tag) => tag.slug == 'featured'));
+                setLoading(false);
+            })
+    }, [])
+
+    if (loading) {
+        return <>
+            Loading...
+        </>
+    }
 
     return (
         <div onClick={() => show && !hover ? setShow(false) : null}>
@@ -51,10 +70,12 @@ export function HomePage() {
                             <IoFilter />
                         </motion.div>
                     </div>
-                    <TagFilter onTagChange={setSelectedTags} excluded={forcedTags} id={show ? 'home' : 'invisible'}
-                               onMouseOver={() => setHover(true)}
-                               onMouseOut={() => setHover(false)}
-                               type={'game'}
+                    <TagFilter
+                        onTagChange={setSelectedTags}
+                        tags={tags.map((tag) => tag.name)}
+                        id={show ? 'home' : 'invisible'}
+                        onMouseOver={() => setHover(true)}
+                        onMouseOut={() => setHover(false)}
                     />
                     {/*
                         The featured tag is always applied, so that's put in the query for server-side
@@ -65,7 +86,14 @@ export function HomePage() {
                         be done server-side (resulting in a request on every check/uncheck), or num filtering should be
                         done locally
                     */}
-                    <CardGrid type={'game'} num={8} linkPrefix={'all_games/'} tagQuery={selectedTags.concat(forcedTags)}/>
+                    <GameGrid
+                        num={8}
+                        tagQuery={
+                            tags.filter((tag, i) => selectedTags[i])
+                                .concat(forcedTags)
+                                .map((tag) => tag.id)
+                        }
+                    />
                     <Button
                         id={'MoreGames'}
                         name={'more games'}
