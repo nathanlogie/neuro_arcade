@@ -77,7 +77,7 @@ lint-test-job:
 
 react-creation:
   stage: reactCreation
-  image: npm:latest
+  image: node:latest
   before_script:
     - cd neuro_arcade
     - cd reactapp
@@ -90,6 +90,11 @@ react-creation:
 
 unit-test-r-job:
   stage: react
+  image: node:latest
+  before_script:
+    - cd neuro_arcade
+    - cd reactapp
+    - npm install --force
   script:
     - ls
     - npm test
@@ -98,6 +103,11 @@ unit-test-r-job:
 lint-test-r-job:
   stage: react
   allow_failure: true 
+  image: node:latest
+  before_script:
+    - cd neuro_arcade
+    - cd reactapp
+    - npm install --force
   script:
     -npm lint
     
