@@ -30,14 +30,14 @@ export function HomePage() {
 
     let aboutLink = '/about';
     let addContent = ['', ''];
-    if (isLoggedIn()){
-        if (userIsAdmin()){
+    if (isLoggedIn()) {
+        if (userIsAdmin()) {
             aboutLink = '/edit_about';
         }
         addContent = ['add content', 'add_content'];
     }
 
-    function onLogout(e){
+    function onLogout(e) {
         e.preventDefault();
         logout();
         setLoggedIn(false);
@@ -55,21 +55,21 @@ export function HomePage() {
 
     let content = <>...</>;
     if (!loading) {
-        content =  <>
+        content = <>
             <div className={styles.Content} id={styles['small']}>
-                { loggedIn ? <button onClick={onLogout}>Logout</button> :
-                        <>
-                            <Link to='/sign_up'>Create an Account</Link>
-                            <Link to='/login'>Login</Link>
-                        </>
-                    }
+                {loggedIn ? <button onClick={onLogout}>Logout</button> :
+                    <>
+                        <Link to='/sign_up'>Create an Account</Link>
+                        <Link to='/login'>Login</Link>
+                    </>
+                }
                 <div className={styles.Title}>
                     <h1>Featured games</h1>
                     <motion.div
                         className={styles.FilterButton} onClick={() => setShow(!show)}
                         whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}
                     >
-                        <IoFilter />
+                        <IoFilter/>
                     </motion.div>
                 </div>
                 <TagFilter

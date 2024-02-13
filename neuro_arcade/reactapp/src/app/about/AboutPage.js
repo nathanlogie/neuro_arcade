@@ -94,7 +94,6 @@ export function AboutPage() {
                 />
                 <div className={styles.MobileBannerBuffer}/>
             </motion.div>
-
         </>
     );
 }

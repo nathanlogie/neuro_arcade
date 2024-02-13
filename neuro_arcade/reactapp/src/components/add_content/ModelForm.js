@@ -42,7 +42,7 @@ export function ModelForm(){
         }).then(function (response) {
             console.log(response);
             reset()
-            setError("root", {message: "Form Submitted Successfully"})
+            setError("root", {message: "model submitted successfully"})
         }).catch(function (response) {
             console.log(response)
             if (!response) {
