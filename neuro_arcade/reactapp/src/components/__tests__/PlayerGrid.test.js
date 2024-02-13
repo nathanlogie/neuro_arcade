@@ -1,9 +1,9 @@
 import { queryByText, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
-import { PlayerGrid, PlayerGridMode } from "./PlayerGrid";
+import { PlayerGrid, PlayerGridMode } from "../PlayerGrid";
 
 // We need to mock requestPlayers to control the component
-import { requestPlayers } from "../backendRequests";
-jest.mock('../backendRequests');
+import { requestPlayers } from "../../backendRequests";
+jest.mock('../../backendRequests');
 
 /*
     General note: since PlayerGrid has async behaviour triggered on creation,

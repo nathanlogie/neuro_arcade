@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react";
-import { CardGrid, exportedForTesting } from "./CardGrid";
+import { CardGrid, exportedForTesting } from "../CardGrid";
 
 // Import private methods
 const { textQueryFilter, tagQueryFilter, searchFilter } = exportedForTesting;
