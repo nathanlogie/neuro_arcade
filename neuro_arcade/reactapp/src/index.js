@@ -5,9 +5,8 @@ import {HomePage} from "./app/HomePage";
 import {AboutPage} from './app/about/AboutPage';
 import reportWebVitals from './app/reportWebVitals';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {AddContent} from "./app/add_content/AddContent";
-import {AddGame} from "./app/add_content/AddGame";
-import {AddModel} from "./app/add_content/AddModel";
+import {AccountPage} from "./app/user_account/AccountPage";
+import {FormPage} from "./app/user_account/FormPage";
 import {AllGames} from "./app/AllGames";
 import {GameView} from "./app/GameView";
 import {SignUp} from "./app/SignUp";
@@ -15,6 +14,7 @@ import {Login} from "./app/Login";
 import {AllPlayers} from './app/AllPlayers';
 import { EditAbout } from "./app/about/EditAbout";
 import {AnimatePresence} from 'framer-motion'
+import {Background} from "./components/Background";
 import {AuthTest} from "./app/AuthTest";
 
 const router = createBrowserRouter([
@@ -31,18 +31,18 @@ const router = createBrowserRouter([
         element: <EditAbout/>
     },
     {
-        path: "add_content",
+        path: "user_account", //TODO slug for users
         element: (
-            <AddContent/>
+            <AccountPage/>
         ),
     },
     {
         path: "add_game",
-        element: <AddGame/>
+        element: <FormPage type={'game'} />
     },
     {
         path: "add_model",
-        element: <AddModel/>
+        element: <FormPage type={'model'} />
     },
     {
         path: 'all_games/:game_slug',
@@ -66,15 +66,18 @@ const router = createBrowserRouter([
     },
     {
         path: "all_players",
-        element: <AllPlayers />
+        element: <AllPlayers/>
     },
 ]);
 
 
 createRoot(document.getElementById('root')).render(
-    <AnimatePresence>
-        <RouterProvider router={router}/>
-    </AnimatePresence>
+    <>
+        <Background />
+        <AnimatePresence>
+            <RouterProvider router={router}/>
+        </AnimatePresence>
+    </>
 );
 
 // If you want to start measuring performance in your app, pass a function

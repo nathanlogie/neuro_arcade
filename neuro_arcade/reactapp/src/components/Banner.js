@@ -64,14 +64,7 @@ export function Banner({size, button_left, button_right, state}) {
                 className={styles.Banner}
                 id={styles[size]}
             >
-                <motion.div
-                    className={styles.AnimationContainer}
-                    initial={{opacity: 0}}
-                    animate={{opacity: 1}}
-                    exit={{opacity: 0}}
-                >
-                    {banner}
-                </motion.div>
+                {banner}
             </div>
         );
     } else {
@@ -79,12 +72,6 @@ export function Banner({size, button_left, button_right, state}) {
             <div
                 className={styles.Banner}
                 id={styles['small']}>
-                <motion.div
-                    className={styles.AnimationContainer}
-                    initial={{opacity: 0}}
-                    animate={{opacity: 1}}
-                    exit={{opacity: 0}}
-                >
                     <Button
                         name={'back'}
                         link={'../'}
@@ -99,7 +86,6 @@ export function Banner({size, button_left, button_right, state}) {
                             switcherDefault={selectedSwitcherValue}
                         />
                     </div>
-                </motion.div>
             </div>
         );
     }
@@ -111,18 +97,11 @@ export function Banner({size, button_left, button_right, state}) {
  */
 export function MobileBanner() {
     return (
-        <div
-            className={styles.MobileBanner}
-            id={styles['small']}
-        >
-            <motion.div
-                className={styles.AnimationContainer}
-                    initial={{opacity: 0}}
-                    animate={{opacity: 1}}
-                    exit={{opacity: 0}}
-                >
-                    <Logo size={'small'}/>
-                </motion.div>
+            <div
+                className={styles.MobileBanner}
+                id={styles['small']}
+            >
+                <Logo size={'small'}/>
             </div>
         );
 }

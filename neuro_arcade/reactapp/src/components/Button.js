@@ -4,7 +4,7 @@ import { FaArrowUp } from "react-icons/fa6";
 import { FaArrowDown } from "react-icons/fa6";
 import styles from '../styles/components/Button.module.css';
 import {Link} from "react-router-dom";
-import {motion} from "framer-motion"
+import {motion} from "framer-motion";
 
 /**
  * @param id for button positioning
@@ -23,6 +23,9 @@ export function Button({id, name, link, direction, orientation}) {
                 id={styles[id]}
                 whileHover={{scale: 1.1}}
                 whileTap={{scale: 0.9}}
+                initial={{opacity: 0}}
+                animate={{opacity: 1}}
+                exit={{opacity: 0}}
             >
                 <Link
                     className={styles.ButtonBlock}

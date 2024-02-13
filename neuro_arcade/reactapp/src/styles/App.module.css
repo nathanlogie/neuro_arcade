@@ -38,7 +38,7 @@
         .ContentBlock {
             position: relative;
             width: 100%;
-            overflow: auto;
+            overflow: hidden;
             & img {
                 float: left;
                 width: 10rem;
@@ -52,6 +52,10 @@
                 text-align: left;
                 line-height: 2em;
             }
+        }
+        .Header {
+            z-index: 1;
+            left: 2em;
         }
     }
     .Content#small {
@@ -67,12 +71,147 @@
         justify-content: center;
         align-items: flex-start;
         flex-wrap: wrap;
+        .Switcher {
+            box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+            border-radius: 3em;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
     }
     .DataBlock {
         width: 100%;
         padding: 2em;
         display: flex;
         overflow-x: auto;
+        justify-content: center;
+        gap: 2em;
+    }
+    .Form {
+        margin: 3em;
+        width: 30em;
+        position: relative;
+        background-color: rgba(3, 3, 3, 0.4);
+        border-radius: 2em;
+        padding: 3em 3em;
+        backdrop-filter: blur(20px);
+        & h1 {
+            position: absolute;
+            top: -1.4em;
+        }
+        & form {
+            display: flex;
+            flex-direction: column;
+            & h3 {
+                text-align: left;
+                font-weight: 600;
+                color: #DDDDDD;
+            }
+            & input {
+                height: 3em;
+                margin-bottom: 1.5em;
+                border-radius: 0.5em;
+                border: none;
+                outline: none;
+                padding: 0 2em;
+                background-color: rgba(255, 255, 255, 0.2);
+                color: #FFFFFF;
+                font-family: inherit;
+            }
+            & input::placeholder {
+                color: #CCCCCC;
+            }
+            & span {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                margin-bottom: 2em;
+                align-items: center;
+                & h3 {
+                    text-align: center;
+                }
+                div {
+                    width: 10.5em;
+                }
+                & input {
+                    /*width: 7.5em;*/
+                    /*height: 3em;*/
+                    /*padding: 0 1em 0 3.5em;*/
+                    /*cursor: pointer;*/
+                    /*line-height: 3em;*/
+                    /*margin-top: 0.25em;*/
+                    /*margin-left: 1em;*/
+                    display: none;
+                }
+                & input[type="file"]::file-selector-button {
+                    display: none;
+                }
+                & label {
+                    position: relative;
+                    display: flex;
+                    justify-content: center;
+                    width: max-content;
+                    cursor: pointer;
+                    & div {
+                        background-color: #D14081;
+                        width: 3em;
+                        height: 3em;
+                        border-radius: 3em;
+                    }
+                    & div > * {
+                        width: 50%;
+                        height: 100%;
+                    }
+                    p {
+                        position: absolute;
+                        width: 7.5em;
+                        height: 3em;
+                        padding: 0 1em 0 3em;
+                        line-height: 3em;
+                        background-color: rgba(255, 255, 255, 0.2);
+                        border-radius: 0.5em;
+                        margin: 0;
+                        left: 1.5em;
+                        top: 0.5em;
+                        font-size: 0.8em;
+                        z-index: -1;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                    }
+                }
+            }
+            button {
+                position: relative;
+                width: max-content;
+                left: 0.5em;
+                height: 2em;
+                border-radius: 0.75em;
+                margin: 1em auto;
+                outline: none;
+                border: none;
+                background-color: #D14081;
+                font-family: inherit;
+                color: #FFFFFF;
+                font-weight: 600;
+                font-size: 1.25em;
+                cursor: pointer;
+                padding: 0 1em 0 2em;
+                & div {
+                    position: absolute;
+                    top: -0.5em;
+                    left: -1.5em;
+                    width: 3em;
+                    height: 3em;
+                    border-radius: 3em;
+                    background-color: rgba(255, 255, 255, 0.72);
+                    color: #41584C;
+                    backdrop-filter: blur(5px);
+                }
+                & div > * {
+                    height: 100%;
+                    width: 50%;
+                }
+            }
+        }
     }
 }
 .MobileBannerBuffer {
@@ -189,7 +328,7 @@
         padding: 0.75em 1em;
         border: none;
         outline: none;
-        background-color: rgba(255, 255, 255, 0.4);
+        background-color: rgba(255, 255, 255, 0.25);
         backdrop-filter: blur(5px);
         color: #ffffff;
         font-family: inherit;

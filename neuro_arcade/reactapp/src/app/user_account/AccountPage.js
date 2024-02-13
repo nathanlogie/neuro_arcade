@@ -1,20 +1,20 @@
 import {Banner} from "../../components/Banner";
-import {Link} from "react-router-dom";
 import styles from '../../styles/App.module.css';
 import {NavBar} from "../../components/NavBar";
 import {MobileBanner} from "../../components/Banner";
-import {Background} from "../../components/Background";
-import {is_logged_in} from "../../backendRequests";
+import {Card} from '../../components/Card';
+import { FaGamepad } from "react-icons/fa6";
+import { TbBoxModel } from "react-icons/tb";
+import {motion} from "framer-motion";
 
 
 /**
  * @returns {JSX.Element} add content page
  * @constructor builds add content page
  */
-export function AddContent() {
+export function AccountPage() {
     return (
-        <div>
-            <Background />
+        <>
             <Banner size={'big'} button_left={{
                 name: 'home',
                 link: '/',
@@ -34,18 +34,28 @@ export function AddContent() {
                 direction: 'right'
             }}
             />
-            <MobileBanner  />
+            <MobileBanner/>
 
-            <div className={styles.MainBlock}>
-                <div className={styles.Content}>
+            <motion.div
+                className={styles.MainBlock}
+                id={styles['big']}
+                initial={{opacity: 0, x: 100}}
+                animate={{opacity: 1, x: 0}}
+                exit={{opacity: 0, x: 100}}
+            >
+                <div className={styles.Content} id={styles['small']}>
+                    <div className={styles.Title}>
+                        <h1>Add Content</h1>
+                    </div>
                     <div className={styles.ContentBlock}>
-                        <Link to='/add_game'> Add game </Link>
-                        <Link to='/add_model'> Add model </Link>
+                        <Card link={'/add_game'} text={'New Game'} icon={<FaGamepad />} />
+                        <Card link={'/add_model'} text={'New Model'} icon={<TbBoxModel />} />
                     </div>
                 </div>
-            </div>
-
+                <div className={styles.Side}>
+                </div>
+            </motion.div>
             <div className={styles.MobileBannerBuffer} />
-        </div>
+        </>
     );
 }

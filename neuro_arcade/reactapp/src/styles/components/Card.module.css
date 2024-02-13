@@ -1,29 +1,41 @@
 .Card {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: relative;
     float: left;
-    width: max-content;
-    padding-bottom: 3em;
+    width: 7em;
+    height: 10em;
+    padding-bottom: 1em;
     backdrop-filter: blur(20px);
     background: rgba(255, 255, 255, 0.1);
     border-radius: 1.5em;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     margin: 1em;
-    & img {
+    .Icon {
         padding-bottom: 0.5em;
         width: 7em;
         height: 7em;
         border-radius: 1.5em;
         object-fit: contain;
+        color: rgba(255, 255, 255, 0.5);
     }
-    & p {
-        position: absolute;
-        align-items: center;
-        text-align: center;
-        width: calc(100% - 1em);
-        font-size: 1em;
-        height: max-content;
-        margin: 0;
+    .Icon > * {
+        width: 60%;
+        height: 100%;
+        border-radius: 1.5em;
+    }
+    .Icon > img {
+        width: 100%;
+        height: 100%;
+    }
+    .Text {
         text-decoration: none;
+        text-align: center;
+        width: 7em;
+        font-size: 0.85em;
+        margin: auto 0;
         color: #FFFFFF;
         padding: 0 0.5em;
     }
