@@ -29,12 +29,12 @@ export function HomePage() {
     const [loggedIn, setLoggedIn] = useState(isLoggedIn())
 
     let aboutLink = '/about';
-    let addContent = ['', ''];
+    let userAccount = ['', ''];
     if (isLoggedIn()) {
         if (userIsAdmin()) {
             aboutLink = '/edit_about';
         }
-        addContent = ['add content', 'add_content'];
+        userAccount = ['user account', 'user_account'];
     }
 
     function onLogout(e) {
@@ -117,8 +117,8 @@ export function HomePage() {
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{
-                name: 'user account',
-                link: 'user_account',
+                name: userAccount[0],
+                link: userAccount[1],
                 orientation: 'right',
                 direction: 'right'
             }}/>
@@ -137,8 +137,8 @@ export function HomePage() {
                     orientation: 'left',
                     direction: 'left'
                 }} button_right={{
-                    name: 'user account',
-                    link: 'user_account',
+                    name: userAccount[0],
+                    link: userAccount[1],
                     orientation: 'right',
                     direction: 'right'
                 }} //TODO create a user account button showing profile photo

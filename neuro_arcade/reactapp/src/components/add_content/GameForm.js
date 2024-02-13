@@ -63,7 +63,7 @@ export function GameForm() {
         }
     }
 
-    const onSubmit = (event) => {
+    const onSubmit = async (event) => {
 
 
         const formData = new FormData();
@@ -83,34 +83,29 @@ export function GameForm() {
             formData.append("scoreType", scoreType)
         }
 
-
-            axios({
+        await axios({
             method: "post",
             url: "http://127.0.0.1:8000/api/games/",
             data: formData,
-            headers: { "Content-Type": "multipart/form-data" },
-
+            headers: {"Content-Type": "multipart/form-data"},
         }).then(function (response) {
             console.log(response);
             reset();
             setError("root", {message: "game submitted successfully"});
-
         }).catch(function (response) {
             console.log(response)
-            if(!response){
-                setError("root", {message:"No response from server"});
-
-            }
-            else {
+            if (!response) {
+                setError("root", {message: "No response from server"});
+            } else {
                 if (response.response.data.includes("IntegrityError")) {
                     setError("root", {message: "A game with that name already exists!"});
                 } else {
                     setError("root", {
-                        message: `Something went wrong... ${response.response.data}`})
-                    }
+                        message: `Something went wrong... ${response.response.data}`
+                    })
                 }
+            }
         });
-
     };
 
     return (
@@ -128,7 +123,6 @@ export function GameForm() {
             {errors.name && (
                 <div>{errors.name.message}</div>
             )}
-
 
             <h3>Description</h3>
             <input {...register("description", {
