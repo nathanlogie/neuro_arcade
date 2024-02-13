@@ -95,8 +95,10 @@ test('CardGrid shows a game', async () => {
     let subjects = [
         {
             name: "Name",
+            slug: "name",
             description: "Description",
             tags: [1],
+            icon: "",
         },
     ];
 
@@ -109,13 +111,17 @@ test('CardGrid filters games by text filter', async () => {
     let subjects = [
         {
             name: "Name1",
+            slug: "name1",
             description: "Description",
             tags: [1],
+            icon: "",
         },
         {
             name: "Name2",
+            slug: "name2",
             description: "Description",
             tags: [1],
+            icon: "",
         },
     ];
 
@@ -129,13 +135,17 @@ test('CardGrid filters games by description filter', async () => {
     let subjects = [
         {
             name: "Name1",
+            slug: "name1",
             description: "Description1",
             tags: [1],
+            icon: "",
         },
         {
             name: "Name2",
+            slug: "name2",
             description: "Description2",
             tags: [1],
+            icon: "",
         },
     ];
 
@@ -149,13 +159,17 @@ test('CardGrid filters games by tag filter', async () => {
     let subjects = [
         {
             name: "Name1",
+            slug: "name1",
             description: "Description1",
             tags: [1],
+            icon: "",
         },
         {
             name: "Name2",
+            slug: "name2",
             description: "Description2",
             tags: [2],
+            icon: "",
         },
     ];
 

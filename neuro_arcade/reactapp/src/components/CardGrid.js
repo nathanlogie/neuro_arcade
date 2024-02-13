@@ -10,12 +10,15 @@ import {Card} from "./Card";
 
 /**
  * Interface for objects displayable in a CardGrid
+ * Implements CardSubject
  *
  * @typedef {Object} GridSubject
- * @property {string} name
- * @property {string} description
- * @property {SubjectTag[]} tags
- */
+ * @property {string} name - see CardSubject
+ * @property {string} slug - see CardSubject
+ * @property {string} description - description text
+ * @property {SubjectTag[]} tags - tags applied to this subject
+ * @property {string} icon - see CardSubject
+*/
 
 /**
  * Checks if a subject's name or description contains a query string
