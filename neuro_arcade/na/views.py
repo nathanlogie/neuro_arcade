@@ -303,14 +303,6 @@ def delete_player(request: Request) -> Response:
     return Response(status=200, data='Player successfully deleted!')
 
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def post_game(request: Request) -> Response:
-    # get the user with:
-    # user = request.user
-    pass
-
-
 @csrf_exempt  # Needs to not check for a CSRF token due to django shenanigans. Should not be a security problem.
 def login(request: HttpRequest) -> Response:
     if request.method == 'POST':
