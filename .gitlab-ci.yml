@@ -61,7 +61,6 @@ lint-test-job:
   - source venv/bin/activate
   - pip install -r requirements.txt
   stage: django
-  allow_failure: true
   script:
   - cd neuro_arcade
   - ruff check
@@ -96,7 +95,6 @@ unit-test-r-job:
   
 lint-test-r-job:
   stage: react
-  allow_failure: true 
   image: node:latest
   before_script:
     - cd neuro_arcade
