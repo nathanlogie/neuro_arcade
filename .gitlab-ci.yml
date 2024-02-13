@@ -99,6 +99,7 @@ lint-test-r-job:
   allow_failure: true 
   image: node:latest
   before_script:
+    - pip install -r requirements.txt
     - cd neuro_arcade
     - cd reactapp
     - npm install --force
