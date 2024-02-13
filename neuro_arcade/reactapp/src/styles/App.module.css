@@ -38,7 +38,7 @@
         .ContentBlock {
             position: relative;
             width: 100%;
-            overflow: auto;
+            overflow: hidden;
             & img {
                 float: left;
                 width: 10rem;

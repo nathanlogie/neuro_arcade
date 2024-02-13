@@ -91,8 +91,8 @@ export function HomePage() {
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{
-                name: 'add content',
-                link: 'add_content',
+                name: 'user account',
+                link: 'user_account',
                 orientation: 'right',
                 direction: 'right'
             }}/>
@@ -111,8 +111,8 @@ export function HomePage() {
                     orientation: 'left',
                     direction: 'left'
                 }} button_right={{
-                    name: 'add content',
-                    link: 'add_content',
+                    name: 'user account',
+                    link: 'user_account',
                     orientation: 'right',
                     direction: 'right'
                 }}

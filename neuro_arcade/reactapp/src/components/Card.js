@@ -29,9 +29,9 @@ export function Card ({subject, linkPrefix, link, text, icon}) {
                     <div className={styles.Icon}>
                         {icon}
                     </div>
-                    <p>
+                    <div className={styles.Text}>
                         {text}
-                    </p>
+                    </div>
                 </Link>
             </motion.div>
         );

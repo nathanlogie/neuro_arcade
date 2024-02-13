@@ -23,8 +23,8 @@ export function FormPage({type}) {
     return(
         <>
             <Banner size={'big'} button_left={{
-                name: 'add content',
-                link: '/add_content',
+                name: 'user account',
+                link: '/user_account',
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{

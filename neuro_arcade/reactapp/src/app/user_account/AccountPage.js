@@ -11,7 +11,7 @@ import {motion} from "framer-motion";
  * @returns {JSX.Element} add content page
  * @constructor builds add content page
  */
-export function AddContent() {
+export function AccountPage() {
     return (
         <>
             <Banner size={'big'} button_left={{
@@ -42,10 +42,16 @@ export function AddContent() {
                 animate={{opacity: 1, x: 0}}
                 exit={{opacity: 0, x: 100}}
             >
-                <div className={styles.DataBlock}>
-                    <Card link={'/add_game'} text={'New Game'} icon={<FaGamepad />} />
-                    <Card link={'/add_model'} text={'New Model'} icon={<TbBoxModel />} />
+                <div className={styles.Content} id={styles['small']}>
+                    <div className={styles.Title}>
+                        <h1>Add Content</h1>
+                    </div>
+                    <div className={styles.ContentBlock}>
+                        <Card link={'/add_game'} text={'New Game'} icon={<FaGamepad />} />
+                        <Card link={'/add_model'} text={'New Model'} icon={<TbBoxModel />} />
+                    </div>
                 </div>
+                <div className={styles.Side}></div>
             </motion.div>
 
             <div className={styles.MobileBannerBuffer} />

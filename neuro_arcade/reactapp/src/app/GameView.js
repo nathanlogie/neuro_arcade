@@ -32,9 +32,11 @@ export function GameView() {
             <div className={styles.Content}>
                 <h1>{gameData.game.name}</h1>
                 <div className={styles.ContentBlock}>
-                    <img src="https://loremflickr.com/500/500" alt={'image'} // TODO add query for image here
-                    />
-                    <p>{gameData.game.description}</p>
+                    <p>
+                        <img src="https://loremflickr.com/500/500" alt={'image'} // TODO add query for image here
+                        />
+                        {gameData.game.description}
+                    </p>
                 </div>
             </div>
             <div className={styles.DataBlock}>

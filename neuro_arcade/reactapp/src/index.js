@@ -5,8 +5,8 @@ import {HomePage} from "./app/HomePage";
 import {AboutPage} from './app/about/AboutPage';
 import reportWebVitals from './app/reportWebVitals';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {AddContent} from "./app/add_content/AddContent";
-import {FormPage} from "./app/add_content/FormPage";
+import {AccountPage} from "./app/user_account/AccountPage";
+import {FormPage} from "./app/user_account/FormPage";
 import {AllGames} from "./app/AllGames";
 import {GameView} from "./app/GameView";
 import {AllPlayers} from './app/AllPlayers';
@@ -31,9 +31,9 @@ const router = createBrowserRouter([
 
     },
     {
-        path: "add_content",
+        path: "user_account", //TODO slug for users
         element: (
-            <AddContent/>
+            <AccountPage/>
         ),
     },
     {
