@@ -44,8 +44,9 @@ export function GameView() {
                 <SwarmPlot inputData={gameData}/>
             </div>
         </>;
-    } else {
-        return (
+    }
+
+    return (
             <>
                 <Banner size={'small'} state={'Games'}/>
                 <MobileBanner/>
@@ -54,5 +55,4 @@ export function GameView() {
                 </div>
             </>
         );
-    }
 }
