@@ -368,7 +368,7 @@ export async function deletePlayer(playerName) {
 export async function postGameScore(gameName, playerIdentification, scoreData) {
     const url = API_ROOT + '/games/' + gameName + '/add_score/'
     // checking if the user is logged in
-    if (!is_logged_in())
+    if (!isLoggedIn())
         throw UserNotAuthenticatedError()
     // request data
     let data = scoreData;
