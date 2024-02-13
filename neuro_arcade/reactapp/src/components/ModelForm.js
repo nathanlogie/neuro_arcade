@@ -27,7 +27,7 @@ export function ModelForm(){
         formData.append("description", description)
 
         //Again temporary until authentication is done
-        formData.append("user", "http://localhost:8000/api/users/2/")
+        formData.append("user", 1)
 
         //Converts the string value into an actual boolean value
         let boolAi = (aiStatus === 'true');
