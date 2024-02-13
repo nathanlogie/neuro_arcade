@@ -1,6 +1,7 @@
 import {useForm} from "react-hook-form";
 import React, {useState} from "react";
 import axios from "axios";
+// import {get_user} from "../backendRequests";
 
 //Should be synced up to models
 let MAX_NAME_LENGTH = 64
@@ -20,36 +21,40 @@ export function ModelForm(){
     const [description, setDescription] = useState("")
     const [tags, setTags] = useState("")
 
-    const onSubmit = (event) => {
+    const onSubmit = async (event) => {
 
         const formData = new FormData();
         formData.append("name", name)
         formData.append("description", description)
 
         //Again temporary until authentication is done
-        formData.append("user", "http://localhost:8000/api/users/2/")
+        formData.append("user", get_user())
 
         //Converts the string value into an actual boolean value
         let boolAi = (aiStatus === 'true');
         formData.append("is_ai", boolAi)
 
-        axios({
+        await axios({
             //I will move a lot of this stuff to backend requests to centralize it in a future merge request
             method: "post",
             url: "http://127.0.0.1:8000/api/players/",
             data: formData,
             headers: {"Content-Type": "multipart/form-data"},
         }).then(function (response) {
+            console.log("success!")
             console.log(response);
+
             reset()
-            setError("root", {message: "Form Submitted Successfully"})
+            // setError("root", {message: "Form Submitted Successfully"})
         }).catch(function (response) {
             console.log(response)
             if (!response) {
                 setError("root", {message: "No response from server"});
 
             } else {
-                if (response.response.data.includes("IntegrityError")) {
+                console.log("RESPONSE:")
+                console.log(response.response.data)
+                if (response.response.data.user.includes("IntegrityError")) {
                     setError("root", {message: "A game with that name already exists!"});
                 } else {
                     setError("root", {
