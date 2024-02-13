@@ -255,8 +255,8 @@ def post_new_player(request: Request) -> Response:
     """
     # TODO add support for PlayerTags
     user = request.user
-    player_name = request.data['playerName']
-    is_AI = request.data['isAI']
+    player_name = request.data.get('playerName')
+    is_AI = request.data.get('isAI')
     if player_name is None or is_AI is None:
         return Response(status=400, data='Invalid data; `playerName` and `isAI` must be provided!')
 
