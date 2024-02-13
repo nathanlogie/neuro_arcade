@@ -11,13 +11,16 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
+from corsheaders.defaults import default_headers
 from pathlib import Path
+
+# TODO: change this to the URL of the website
+WEBSITE_URL = "localhost:3000"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
-DJANGO_TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
 # React paths:
 REACT_DIR = os.path.join(BASE_DIR, 'reactapp')
@@ -36,8 +39,45 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["sh08.pythonanywhere.com",
                  "127.0.0.1", "localhost"]
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://localhost:3000", "http://locahost:8000", "https://localhost:8000"]
 
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_PRIVATE_NETWORK = True  # idk what this does
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://localhost:3000",
+    "http://locahost:8000",
+    "https://localhost:8000",
+    "https://" + WEBSITE_URL
+]
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    'http://localhost:3000/*.',
+    WEBSITE_URL + '/*'
+]
+CORS_ALLOW_HEADERS = (
+    *default_headers,
+    'Authentication',
+    'Authorisation'
+)
+
+# CSRF protection settings
+CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True  # this is not necessary
+CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'  # on client: 'X-CSRFToken'
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://" + WEBSITE_URL
+]
+
+REST_USE_JWT = True
+JWT_AUTH_COOKIE_USE_CSRF = True
+JWT_AUTH = {
+    # Authorization:Token xxx
+    'JWT_AUTH_HEADER_PREFIX': 'Token',
+}
+
+# This might be necessary:
+USE_X_FORWARDED_PORT = True
 
 # Application definition
 
@@ -52,15 +92,15 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'na',
     'reactapp',
-    # 'corsheaders'  # why is this here? it's not in requirements.txt
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',  # needs to be before other middleware
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',   # needs to be after the security middleware
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.common.CommonMiddleware',  # needs to be after CORS
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -71,7 +111,7 @@ ROOT_URLCONF = 'neuro_arcade.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [REACT_BUILD_DIR],  # used to have DJANGO_TEMPLATE_DIR
+        'DIRS': [REACT_BUILD_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,7 +126,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'neuro_arcade.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -117,37 +156,27 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR, REACT_STATIC_DIR]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
 LOGIN_URL = 'na:login'
-
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
