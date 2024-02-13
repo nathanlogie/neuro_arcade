@@ -62,7 +62,7 @@ unit-test-job:
     - main
 
 lint-test-job: 
-  image: python:latest       # This job runs in the build stage, which runs first. It sets up the virtual environment in order to run the tests
+  image: python:3.11       # This job runs in the build stage, which runs first. It sets up the virtual environment in order to run the tests
   before_script:
   # - apt-get install -y python 3.11.5
   # - update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11.5
@@ -96,9 +96,9 @@ unit-test-r-job:
     - cd reactapp
     - npm install --force
   script:
-    - ls
-    - npm test
-    - npm test--coverage
+      #Temporary until we have tests as it will fail if there are no tests
+    - npm test --passWithNoTests
+    - npm test--coverage --passWithNoTests
   
 lint-test-r-job:
   stage: react
@@ -109,7 +109,7 @@ lint-test-r-job:
     - cd reactapp
     - npm install --force
   script:
-    -npm lint
+    - eslint  --fix src/**/*.js
     
 
 
