@@ -43,10 +43,11 @@ export function Banner({size, button_left, button_right, state}) {
                 link={button_left.link}
                 direction={button_left.direction}
                 orientation={button_left.orientation}
+                key={banner.length}
             />
         );
     }
-    banner.push(<Logo size={size} />)
+    banner.push(<Logo size={size} key={banner.length} />)
     if (button_right) {
         banner.push(
             <Button
@@ -54,6 +55,7 @@ export function Banner({size, button_left, button_right, state}) {
                 link={button_right.link}
                 direction={button_right.direction}
                 orientation={button_right.orientation}
+                key={banner.length}
             />
         );
     }
