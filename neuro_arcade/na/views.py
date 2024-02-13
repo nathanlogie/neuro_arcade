@@ -3,10 +3,12 @@ from collections import defaultdict
 import os
 
 from django.contrib.auth.models import User
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import get_object_or_404, render
-from django.views.decorators.csrf import csrf_exempt
+from django.db import IntegrityError
+from django.http import HttpRequest
+from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from django.middleware.csrf import get_token
+from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework import viewsets
 from rest_framework.authtoken import views as rest_views
@@ -16,10 +18,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from na.models import Game, GameTag, Player, PlayerTag
+from na.models import PlayerTag
 from django.conf import settings
 
 from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
+import json
+from na.models import Game, GameTag, Player
 
 
 # ------------------
@@ -68,6 +72,22 @@ def validate_password(password):
 # ----------------
 #    API CALLS
 # ----------------
+@api_view(['GET', 'POST'])
+def ping(request: Request) -> Response:
+    """
+    Ping! Always responds with a 200 OK.
+    """
+    return Response(status=200)
+
+
+@api_view(['GET'])
+def csrf(request: Request) -> Response:
+    """
+    Sends a CSRF token.
+    """
+    return Response({'csrfToken': get_token(request)})
+
+
 @api_view(['GET'])
 def get_game(request: Request, game_name_slug: str) -> Response:
     """
@@ -102,7 +122,6 @@ def get_games_sorted(request: Request) -> Response:
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-@csrf_exempt
 def post_game_score(request: Request, game_name_slug: str) -> Response:
     """
     Post Score for a game. The format for the body of the Post request is as follows:
@@ -231,21 +250,24 @@ def post_about_data(request) -> Response:
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-@csrf_exempt
 def post_new_player(request: Request) -> Response:
     """
     Requests the creation of a new player.
     The request should be of format: {playerName: str, isAI: bool}
     """
     # TODO add support for PlayerTags
-    print(request.data)
     user = request.user
-    player_name = request.data['playerName']
-    is_AI = request.data['isAI']
+    player_name = request.data.get('playerName')
+    is_AI = request.data.get('isAI')
     if player_name is None or is_AI is None:
         return Response(status=400, data='Invalid data; `playerName` and `isAI` must be provided!')
 
-    player, was_created = Player.objects.get_or_create(name=player_name, is_ai=is_AI, user=user)
+    try:
+        player, was_created = Player.objects.get_or_create(name=player_name, is_ai=is_AI, user=user)
+    except IntegrityError:
+        # Actually, it's the player slug that needs to be unique.
+        return Response(status=400, data='Invalid data; Player name must be unique!')
+
     if was_created:
         return Response(status=201, data={
             'msg': 'Player was successfully created!',
@@ -260,14 +282,13 @@ def post_new_player(request: Request) -> Response:
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-@csrf_exempt
 def delete_player(request: Request) -> Response:
     """
     Requests the deletion of a player associated with the current user.
     The request should be of format: {playerName: str}
     """
     user = request.user
-    player_name = request.data['playerName']
+    player_name = request.data.get('playerName')
     if player_name is None:
         return Response(status=400, data='Invalid data; `playerName` must be provided!')
 
@@ -276,20 +297,14 @@ def delete_player(request: Request) -> Response:
     except ObjectDoesNotExist:
         return Response(status=404, data='Player not found!')
 
+    if not player.is_ai:
+        return Response(status=400, data='Request Refused; Only AI players (AI Models) can be deleted!')
+
     player.delete()
     return Response(status=200, data='Player successfully deleted!')
 
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-@csrf_exempt
-def post_game(request: Request) -> Response:
-    # get the user with:
-    # user = request.user
-    pass
-
-
-@csrf_exempt  # TODO THIS IS UNSECURE; DO REMOVE
+@csrf_exempt  # Needs to not check for a CSRF token due to django shenanigans. Should not be a security problem.
 def login(request: HttpRequest) -> Response:
     if request.method == 'POST':
         response = rest_views.obtain_auth_token(request)
@@ -332,7 +347,7 @@ def sign_up(request: Request) -> Response:
 def get_model_rankings(request: Request) -> Response:
     """
     Gets the overall rankings of AI models
-    
+
     Format is a list of score, player pairs in descending order of score
 
     This is based on their relative performances across tasks.

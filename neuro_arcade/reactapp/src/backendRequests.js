@@ -111,10 +111,18 @@ const API_ROOT = "http://localhost:8000"
  */
 
 /**
+ * Ranked AI player API response
+ * Corresponds to an entry in the /model_rankings/ endpoint
+ * @typedef {Object} RankedModel
+ * @property {Player} player - The player data of the model with this rank
+ * @property {number} overall_score - Score of the model across games
+ */
+
+/**
  * Error thrown when a request that requires authentication
  *  is called, but no user is currently logged in.
  */
-class UserNotAuthenticatedError extends Error {
+export class UserNotAuthenticatedError extends Error {
     constructor() {
         super("User not logged in!");
         this.name = "UserNotAuthenticatedError";
@@ -122,12 +130,62 @@ class UserNotAuthenticatedError extends Error {
 }
 
 /**
- * Ranked AI player API response
- * Corresponds to an entry in the /model_rankings/ endpoint
- * @typedef {Object} RankedModel
- * @property {Player} player - The player data of the model with this rank
- * @property {number} overall_score - Score of the model across games
+ * CSRF token used for security things.
+ *
+ * Should only be accessed by the getCSRFToken() function.
  */
+let _csrfToken = null;
+
+/**
+ * Gets you the CSRF, which is usually cached.
+ * If not cached, it will make a request at <API_ROOT>/csrf/ to get it.
+ */
+async function getCSRFToken() {
+    if (_csrfToken == null) {
+        // token needs to be requested
+        const url = API_ROOT + '/csrf/';
+        await axios.get(url, {credentials: 'include'})
+            .then((response) => {
+                _csrfToken = response.data.csrfToken;
+            })
+    }
+    return _csrfToken;
+}
+
+/**
+ * Returns request headers that can be used for a request to the sever.
+ * Set authenticated to true to send the authentication token as well.
+ *
+ * @param {string} method HTTP method (so like GET, POST etc.)
+ * @param {boolean} authenticated
+ *
+ * @return Axios Request Config
+ */
+async function getHeaders(method, authenticated=false) {
+    let config = {
+        credentials: 'include',
+        method: method,
+        mode: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }
+    if (authenticated) {
+        config.headers.Authorization = `Token ${getUser().token}`;
+    }
+    if (method.toUpperCase() === 'POST') {
+        config.headers['X-CSRFToken'] = await getCSRFToken();
+    }
+    return config;
+}
+
+/**
+ * Pings the API. Should always return 200 OK, unless the POST headers are wrong.
+ */
+export async function ping() {
+    const url = API_ROOT + '/ping/';
+    return await axios.post(url, {}, await getHeaders('POST'));
+}
 
 /**
  * Requests the data associated with a game.
@@ -170,24 +228,26 @@ export async function requestGameTags() {
 
 /**
  * Requests a list of all available PlayerTags.
- * 
+ *
  * @return {PlayerTag[]} response data
  *
  * @throws Error when the request is rejected.
  */
 export async function requestPlayerTags() {
     const url = API_ROOT + '/api/playerTag/';
-    try {
-        let response = await axios.get(url);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
+    return await axios.get(url)
+        .then((response) => {
+            return response.data;
+        }).catch((error) => {
+            console.log(error);
+            throw error;
+        })
 }
 
 /**
  * Requests a sorted list of games.
+ *
+ * @param query {string} instance of Reacts URLSearchParams, which you should get from useSearchParams()
  *
  * @return {Game[]} response data
  *
@@ -195,20 +255,46 @@ export async function requestPlayerTags() {
  */
 export async function requestGames() {
     const url = API_ROOT + '/api/games/';
-    try {
-        let response = await axios.get(url);
+    return await axios.get(url).then((response) => {
         return response.data;
-    } catch (error) {
+    }).catch((error) => {
         console.log(error);
         throw error;
-    }
+    })
+}
+
+/**
+ * Creates a new player associated with the current user.
+ * Requires the user to be authenticated, will throw an error if not.
+ *
+ * @param {string} playerName
+ * @param {boolean} isAI
+ *
+ * @throws {Error | UserNotAuthenticatedError}
+ */
+export async function createNewPlayer(playerName, isAI) {
+    const url = API_ROOT + "/create_player/";
+
+    if (!isLoggedIn())
+        throw UserNotAuthenticatedError()
+
+    return await axios.post(url,
+        { playerName: playerName, isAI: isAI },
+        await getHeaders('POST', true)
+    ).then((response) => {
+        console.log('Creation of player ' + playerName + ' successful!');
+        return response;
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    })
 }
 
 /**
  * Requests a list of players.
  *
  * @return {Player[]} response data
- * 
+ *
  * @throws Error when request is rejected
  */
 export async function requestPlayers() {
@@ -223,37 +309,20 @@ export async function requestPlayers() {
 }
 
 /**
-<<<<<<< HEAD
- * Creates a new player associated with the current user.
- * Requires the user to be authenticated, will throw an error if not.
+ * Requests a sorted list of models by their overall rank.
  *
- * @param {string} playerName
- * @param {boolean} isAI
- *
- * @throws {Error | UserNotAuthenticatedError}
+ * @return {RankedModel[]} - Models in descending order of overall score
  */
-export async function createNewPlayer(playerName, isAI) {
-    const url = API_ROOT + "/create_player/";
-
-    if (!is_logged_in())
-        throw UserNotAuthenticatedError()
-
-    return await axios.post(url, {
-        playerName: playerName,
-        isAI: isAI,
-    }, {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${get_user().token}`,
-        },
-    }).then((response) => {
-        console.log('Creation of player ' + playerName + ' successful!');
-        return response;
-    }).catch((error) => {
-        console.log(error);
-        throw error;
-    })
+export async function requestModelsRanked() {
+    const url = API_ROOT + '/model_rankings/';
+    return await axios.get(url)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        })
 }
 
 /**
@@ -267,41 +336,17 @@ export async function createNewPlayer(playerName, isAI) {
 export async function deletePlayer(playerName) {
     const url = API_ROOT + "/delete_player/";
 
-    if (!is_logged_in())
-        throw UserNotAuthenticatedError()
+    if (!isLoggedIn())
+        throw new UserNotAuthenticatedError()
 
-    return await axios.post(url, {
-        playerName: playerName,
-    }, {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${get_user().token}`,
-        },
-    }).then((response) => {
+    return await axios.post(url, { playerName: playerName }, await getHeaders('POST', true))
+        .then((response) => {
         console.log('Deletion of player ' + playerName + ' successful!');
         return response;
     }).catch((error) => {
         console.log(error);
         throw error;
     })
-}
-
-/**
- * Requests a sorted list of models by their overall rank.
- * 
- * @return {RankedModel[]} - Models in descending order of overall score
- */
-export async function requestModelsRanked() {
-    const url = API_ROOT + '/model_rankings/';
-    return await axios.get(url)
-        .then((response) => {
-            return response.data;
-        })
-        .catch((error) => {
-            console.log(error);
-            throw error;
-        })
 }
 
 /**
@@ -378,10 +423,10 @@ export async function getAboutData(){
  *
  * @returns {Object} response when post is accepted
  */
-export function postDescription(description){
+export async function postDescription(description){
     const url = API_ROOT + '/edit_about'
 
-    axios.post(url, {value: description, field: "description"})
+    axios.post(url, {value: description, field: "description"}, await getHeaders('POST', true))
         .then(function (response) {
             return response.data
         })
@@ -404,7 +449,7 @@ export async function postPublications(publications){
     const url = API_ROOT + '/edit_about'
 
     try {
-        const response = await axios.post(url, { value: publications, field: "publications" });
+        const response = await axios.post(url, { value: publications, field: "publications" }, await getHeaders('POST', true));
         return response.data;
     }
     catch(error){
@@ -429,8 +474,8 @@ export function get_user() {
 /**
  * Returns true if the user is logged in.
  */
-export function is_logged_in() {
-    return get_user() != null
+export function isLoggedIn() {
+    return getUser() != null
 }
 
 /**
@@ -440,7 +485,7 @@ export function is_logged_in() {
 export function userIsAdmin() {
     let user = localStorage.getItem('user');
     if (user) {
-        return JSON.parse(user).is_admin;
+        return user.is_admin;
     }
     return null;
 }
@@ -464,10 +509,6 @@ function passwordValidator(password) {
  * @param {string} email - email address of the user
  * @param {string} password - the password in plaintext
  *
- * @throws Error when the request is rejected.
- *  If the email or username was already taken the status will be 409.
- *  An error can also be thrown if the password is invalid.
- *
  * @return {Object} response if successful
  *
  * @throws Error when the request is rejected.
@@ -479,8 +520,8 @@ export async function signupNewUser(userName, email, password) {
 
     // validating the password on client side:
     // Note: this doesn't mean that the password is not also going to be checked server side.
-    // if (!passwordValidator(password))
-    //     throw new Error('Password is not valid!')
+    if (!passwordValidator(password))
+        throw new Error('Password is not valid!')
 
     // sending the request:
     return await axios.post(url, {
@@ -491,7 +532,7 @@ export async function signupNewUser(userName, email, password) {
         console.log("Signup successful!");
         return response;
     }).catch((error) => {
-        console.log("ERROR: " + error);
+        console.log(error);
         throw error;
     })
 }
@@ -506,7 +547,7 @@ export async function signupNewUser(userName, email, password) {
  *
  * @throws Error login error
  *
- * @return {Object} response if successful
+ * @return {Object} resposne if successful
  */
 export async function login(userName, email, password) {
     const url = API_ROOT + '/login/';
@@ -515,18 +556,18 @@ export async function login(userName, email, password) {
         'username': userName,
         'email': email,
         'password': password,
-    }).then((response) => {
-        let user_data = {
-            token: response.data.token,
-            name: userName,
-            email: email,
-            is_admin: response.data.is_admin
-        };
-        console.log("IN LOGIN BACKEND: " + response.data.is_admin)
-        localStorage.setItem("user", JSON.stringify(user_data));
-        return response;
+    }, await getHeaders('POST'))
+        .then((response) => {
+            let user_data = {
+                token: response.data.token,
+                name: userName,
+                email: email,
+                is_admin: response.data.is_admin === true
+            };
+            localStorage.setItem("user", JSON.stringify(user_data));
+            return response;
     }).catch((error) => {
-        console.log("Error in backendRequest/login: " + error.response.data);
+        console.log(error);
         throw error;
     });
 }

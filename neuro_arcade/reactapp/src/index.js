@@ -15,7 +15,7 @@ import {Login} from "./app/Login";
 import {AllPlayers} from './app/AllPlayers';
 import { EditAbout } from "./app/about/EditAbout";
 import {AnimatePresence} from 'framer-motion'
-import {DevSupport} from "@react-buddy/ide-toolbox";
+import {AuthTest} from "./app/AuthTest";
 
 const router = createBrowserRouter([
     {
@@ -57,20 +57,20 @@ const router = createBrowserRouter([
         element: <SignUp/>
     },
     {
-        path: "login",
-        element: <Login/>
+        path: "auth_test",
+        element: <AuthTest />
     },
     {
         path: "add_game",
-        element: <AddGame/>
+        element: <AddGame />
     },
     {
         path: "add_model",
-        element: <AddModel/>
+        element: <AddModel />
     },
     {
         path: "all_players",
-        element: <AllPlayers/>
+        element: <AllPlayers />
     },
 ]);
 
