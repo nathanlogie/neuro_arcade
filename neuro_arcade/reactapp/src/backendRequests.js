@@ -485,7 +485,7 @@ export function isLoggedIn() {
 export function userIsAdmin() {
     let user = localStorage.getItem('user');
     if (user) {
-        return user.is_admin;
+        return JSON.parse(user).is_admin;
     }
     return null;
 }
