@@ -379,7 +379,7 @@ export async function postGameScore(gameName, playerIdentification, scoreData) {
         data.PlayerID = playerIdentification;
     } else {
         console.log(typeof playerIdentification)
-        throw Error("playerIdentification needs to be either an int or a string!")
+        throw new Error("playerIdentification needs to be either an int or a string!")
     }
     // sending the request:
     return await axios.post(url, data, await getHeaders('POST', true))
