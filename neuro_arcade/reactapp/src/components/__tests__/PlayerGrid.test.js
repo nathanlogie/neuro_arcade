@@ -1,4 +1,4 @@
-import { queryByText, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { PlayerGrid, PlayerGridMode } from "../PlayerGrid";
 
 // We need to mock requestPlayers to control the component
