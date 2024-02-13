@@ -24,9 +24,9 @@ django.setup()
 Main program
 """
 
-from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import Group, Permission, User
 from typing import Dict
-from na.models import *
+from na.models import Game, GameTag, Player, PlayerTag
 
 # For the randomly assigned priority
 
