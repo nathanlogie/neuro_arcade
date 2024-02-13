@@ -65,6 +65,17 @@ lint-test-job:
   - cd neuro_arcade
   - ruff check
 
+format-test-job:
+  image: python:3.11
+  before_script:
+  - python -m venv venv
+  - source venv/bin/activate
+  - pip install -r requirements.txt
+  stage: django
+  script:
+  - cd neuro_arcade
+  - ruff format --check
+
 
 react-creation:
   stage: reactCreation
@@ -92,7 +103,7 @@ unit-test-r-job:
 #  Maybe try and export as artifact at some point?
     - jest --collect-coverage
 
-  
+
 lint-test-r-job:
   stage: react
   image: node:latest
@@ -102,7 +113,18 @@ lint-test-r-job:
     - npm install --force
   script:
     - npm run testLint
-    
+
+format-test-r-job:
+  stage: react
+  image: node:latest
+  before_script:
+    - cd neuro_arcade
+    - cd reactapp
+    - npm install --force
+  script:
+    - npm run testFormat
+
+
 
 
 
