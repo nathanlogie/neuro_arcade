@@ -1,6 +1,10 @@
+import { screen } from "@testing-library/react";
+import { CardGrid, exportedForTesting } from "./CardGrid";
+
 // Import private methods
-import { exportedForTesting } from "./CardGrid";
 const { textQueryFilter, tagQueryFilter, searchFilter } = exportedForTesting;
+
+// Function tests
 
 test('textQueryFilter false when not matching', () => {
     let game = {
@@ -80,3 +84,84 @@ test('searchFilter true when matching', () => {
     };
     expect(searchFilter(game, "<match>", [2])).toBe(true);
 });
+
+// Component tests
+
+test('CardGrid renders without crashing', () => {
+    renderWithRouter(<CardGrid subjects={[]} />);
+});
+
+test('CardGrid shows a game', async () => {
+    let subjects = [
+        {
+            name: "Name",
+            description: "Description",
+            tags: [1],
+        },
+    ];
+
+    renderWithRouter(<CardGrid subjects={subjects} />);
+
+    expect(screen.getByText("Name")).toBeInTheDocument()
+});
+
+test('CardGrid filters games by text filter', async () => {
+    let subjects = [
+        {
+            name: "Name1",
+            description: "Description",
+            tags: [1],
+        },
+        {
+            name: "Name2",
+            description: "Description",
+            tags: [1],
+        },
+    ];
+
+    renderWithRouter(<CardGrid subjects={subjects} textQuery="Name1" />);
+
+    expect(screen.getByText("Name1")).toBeInTheDocument();
+    expect(screen.queryByText("Name2")).not.toBeInTheDocument();
+});
+
+test('CardGrid filters games by description filter', async () => {
+    let subjects = [
+        {
+            name: "Name1",
+            description: "Description1",
+            tags: [1],
+        },
+        {
+            name: "Name2",
+            description: "Description2",
+            tags: [1],
+        },
+    ];
+
+    renderWithRouter(<CardGrid subjects={subjects} textQuery="Description1" />);
+
+    expect(screen.getByText("Name1")).toBeInTheDocument();
+    expect(screen.queryByText("Name2")).not.toBeInTheDocument();
+});
+
+test('CardGrid filters games by tag filter', async () => {
+    let subjects = [
+        {
+            name: "Name1",
+            description: "Description1",
+            tags: [1],
+        },
+        {
+            name: "Name2",
+            description: "Description2",
+            tags: [2],
+        },
+    ];
+
+    renderWithRouter(<CardGrid subjects={subjects} tagQuery={[1]} />);
+
+    expect(screen.getByText("Name1")).toBeInTheDocument();
+    expect(screen.queryByText("Name2")).not.toBeInTheDocument();
+});
+
