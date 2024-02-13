@@ -4,32 +4,22 @@
 Populate the database with example data
 """
 import random
-
+import os
+from shutil import copy
+from neuro_arcade.settings import MEDIA_ROOT, STATIC_DIR
+from django.contrib.auth.models import Group, Permission, User
+from typing import Dict
+from na.models import Game, GameTag, Player, PlayerTag
+import django
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'neuro_arcade.settings')
+django.setup()
 """
 Setup django
 """
 
-import os
-from shutil import copy
-
-from neuro_arcade.settings import MEDIA_ROOT, STATIC_DIR
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'neuro_arcade.settings')
-
-import django
-
-django.setup()
-
 """
 Main program
 """
-
-from django.contrib.auth.models import Group, Permission, User
-from typing import Dict
-from na.models import Game, GameTag, Player, PlayerTag
-
-# For the randomly assigned priority
-
 
 users = [
     {
