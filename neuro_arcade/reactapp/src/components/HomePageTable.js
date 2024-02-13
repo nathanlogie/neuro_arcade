@@ -1,10 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {DataGrid} from '@mui/x-data-grid';
+import {RankedModel} from '../backendRequests';
 
 /**
  * 
- * @param inputData {Object}
+ * @param {Object} props
+ * @param {RankedModel[]} props.inputData
  * @returns {JSX Element}
 
  */
@@ -36,7 +38,7 @@ export function HomePageTable({inputData}) {
             id: index + 1,
             name: item.player.name,
             score: item.overall_score.toFixed(1),
-            owner: item.player.user.split('/').pop(),
+            owner: item.player.user,
             description: item.player.description
         };
     });
