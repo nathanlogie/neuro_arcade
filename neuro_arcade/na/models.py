@@ -1,4 +1,4 @@
-from typing import Iterable, Optional
+from typing import Dict, Iterable, List, Optional
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -110,6 +110,34 @@ class Game(models.Model):
             print("[WARN] Something went wrong when trying to get the scores for ", self)
             print("[WARN]  This might happen if score_type is not populated.")
             return None, None
+
+    def get_highest_scores(self) -> Dict[str, List["Score"]]:
+        """
+        Gets the highest recorded score for each player for each score type in this game.
+
+        Should probably be optimised to run at intervals and cache results in the future.
+        """
+
+        ret = {}
+
+        scores = self.score_set.all()
+        for header in self.score_type['headers']:
+            name = header['name']
+
+            # Sort by this score
+            ranked: List[Score] = sorted(scores, key=lambda s: -s.score[name])
+
+            # Filter to just the highest score for each player
+            filtered = []
+            player_set = set()
+            for score in ranked:
+                if score.player not in player_set:
+                    filtered.append(score)
+                    player_set.add(score.player)
+
+            ret[name] = filtered
+
+        return ret
 
     def serialize(self):
         d = {

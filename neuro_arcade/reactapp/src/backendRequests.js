@@ -111,6 +111,14 @@ const API_ROOT = "http://localhost:8000"
  */
 
 /**
+ * Ranked AI player API response
+ * Corresponds to an entry in the /model_rankings/ endpoint
+ * @typedef {Object} RankedModel
+ * @property {Player} player - The player data of the model with this rank
+ * @property {number} overall_score - Score of the model across games
+ */
+
+/**
  * Requests the data associated with a game.
  *
  * @param {string} gameName - slug of the game name
@@ -200,6 +208,23 @@ export async function requestPlayers() {
         console.log(error);
         throw error;
     }
+}
+
+/**
+ * Requests a sorted list of models by their overall rank.
+ * 
+ * @return {RankedModel[]} - Models in descending order of overall score
+ */
+export async function requestModelsRanked() {
+    const url = API_ROOT + '/model_rankings/';
+    return await axios.get(url)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        })
 }
 
 /**

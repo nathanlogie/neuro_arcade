@@ -28,6 +28,24 @@ The project can currently only be run locally. To run it git clone the project l
 3. python populate.py
 4. python manage.py runserver
 
+## Testing
+
+### Linting
+
+Linting of the project can be done through running 'npm run lint' in the reactapp.
+
+### Backend
+
+The backend tests are implemented through django. They can be accessed by running `python manage.py test` in `neuro_arcade/`
+
+### Frontend
+
+The frontend tests are implemented through react-scripts. They can be accessed by running `npm test` in `neuro_arcade/reactapp/`
+
+### Formatting
+
+Automatic formatting is built in through use of running 'npm run format' in the reactapp.
+
 ## Support
 For any help or support, please create an issue on GitLab or message one of the contributors on Microsoft Teams. 
 
