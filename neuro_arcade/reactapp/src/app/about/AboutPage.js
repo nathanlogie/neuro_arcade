@@ -50,23 +50,13 @@ export function AboutPage() {
 
     return (
         <>
-            <Banner size={'big'} button_left={{
-                name: 'edit about',
-                link: '/edit_about',
-                orientation: 'left',
-                direction: 'left'
-            }} button_right={{
+            <Banner size={'big'} button_right={{
                 name: 'home',
                 link: '/',
                 orientation: 'right',
                 direction: 'right'
             }}/>
-            <NavBar button_left={{
-                name: 'edit about',
-                link: '/edit_about',
-                orientation: 'left',
-                direction: 'left'
-            }} button_right={{
+            <NavBar button_right={{
                 name: 'home',
                 link: '/',
                 orientation: 'right',

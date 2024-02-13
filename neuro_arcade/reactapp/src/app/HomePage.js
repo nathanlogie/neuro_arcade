@@ -113,7 +113,7 @@ export function HomePage() {
         <div onClick={() => show && !hover ? setShow(false) : null}>
             <Banner size={'big'} button_left={{
                 name: 'about',
-                link: 'about',
+                link: aboutLink,
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{
@@ -133,7 +133,7 @@ export function HomePage() {
                 {content}
                 <NavBar button_left={{
                     name: 'about',
-                    link: 'about',
+                    link: aboutLink,
                     orientation: 'left',
                     direction: 'left'
                 }} button_right={{
