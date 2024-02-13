@@ -49,7 +49,7 @@ export function Switcher({data, onSwitcherChange, switcherDefault}) {
                             style={{
                                 borderColor: alignment === header.name ? 'white' : 'transparent',
                                 borderWidth: '0.4em',
-                                'backdrop-filter': 'blur(2.5em)',
+                                backdropFilter: 'blur(2.5em)',
                                 backgroundColor: alignment === header.name ? 'rgba(255, 255, 255, 0.3)' : 'rgba(143,143,143,0.2)',
                                 color: '#EEEEEE',
                                 fontSize: '0.75em',
