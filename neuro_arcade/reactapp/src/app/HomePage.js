@@ -10,6 +10,10 @@ import {requestGameTags} from "../backendRequests";
 import {motion} from "framer-motion"
 import {useEffect, useState} from "react";
 import { IoFilter } from "react-icons/io5";
+import {Link} from "react-router-dom";
+import {logout} from "../backendRequests";
+import {userIsAdmin} from "../backendRequests";
+import {isLoggedIn} from "../backendRequests";
 
 /**
  * @returns {JSX.Element} home page
@@ -23,6 +27,25 @@ export function HomePage() {
 
     const [show, setShow] = useState(false);
     const [hover, setHover] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(isLoggedIn())
+
+    let aboutLink = '/about';
+    let addContent = ['', ''];
+    if (isLoggedIn()){
+        if (userIsAdmin()){
+            aboutLink = '/edit_about';
+        }
+        addContent = ['add content', 'add_content'];
+    }
+
+    function onLogout(e){
+        e.preventDefault();
+        logout();
+        setLoggedIn(false);
+    }
+
+
+
 
     // Fetch the game tags on load
     useEffect(() => {
@@ -45,12 +68,12 @@ export function HomePage() {
             <Background />
             <Banner size={'big'} button_left={{
                 name: 'about',
-                link: 'about',
+                link: aboutLink,
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{
-                name: 'add content',
-                link: 'add_content',
+                name: addContent[0],
+                link: addContent[1],
                 orientation: 'right',
                 direction: 'right'
             }} />
@@ -63,6 +86,12 @@ export function HomePage() {
                 exit={{opacity: 0}}
             >
                 <div className={styles.Content} id={styles['small']}>
+                    { loggedIn ? <button onClick={onLogout}>Logout</button> :
+                            <>
+                                <Link to='/sign_up'>Create an Account</Link>
+                                <Link to='/login'>Login</Link>
+                            </>
+                        }
                     <div className={styles.Title}>
                         <h1>Featured games</h1>
                         <motion.div
@@ -121,5 +150,6 @@ export function HomePage() {
                 <div className={styles.MobileBannerBuffer}/>
             </motion.div>
         </div>
+
     );
 }

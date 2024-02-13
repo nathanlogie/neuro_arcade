@@ -36,14 +36,14 @@ export function EditAbout() {
 
             <Background />
             <Banner size={'big'} button_right={{
-                name: 'about',
-                link: '/about',
+                name: 'home',
+                link: '/',
                 orientation: 'right',
                 direction: 'right'
             }} />
             <NavBar  button_right={{
-                name: 'about',
-                link: '/about',
+                name: 'home',
+                link: '/',
                 orientation: 'right',
                 direction: 'right'
             }}

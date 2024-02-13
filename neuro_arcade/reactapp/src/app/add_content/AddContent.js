@@ -4,6 +4,7 @@ import styles from '../../styles/App.module.css';
 import {NavBar} from "../../components/NavBar";
 import {MobileBanner} from "../../components/Banner";
 import {Background} from "../../components/Background";
+import {is_logged_in} from "../../backendRequests";
 
 
 /**
@@ -38,9 +39,7 @@ export function AddContent() {
             <div className={styles.MainBlock}>
                 <div className={styles.Content}>
                     <div className={styles.ContentBlock}>
-                        <Link to='/add_game'>
-
-                        </Link>
+                        <Link to='/add_game'> Add game </Link>
                         <Link to='/add_model'> Add model </Link>
                     </div>
                 </div>
