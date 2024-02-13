@@ -115,7 +115,7 @@ export function HomePage() {
                     link: 'user_account',
                     orientation: 'right',
                     direction: 'right'
-                }}
+                }} //TODO create a user account button showing profile photo
                 />
                 <div className={styles.MobileBannerBuffer}/>
             </motion.div>

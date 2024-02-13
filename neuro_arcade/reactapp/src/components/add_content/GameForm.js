@@ -70,7 +70,7 @@ export function GameForm() {
         formData.append("name", name);
         formData.append("description", description);
         //Temporary until authentication is fulfilled
-        formData.append("owner", "http://localhost:8000/api/users/2/");
+        formData.append("owner", 3);
         formData.append("play_link", playLink);
 
         if (image) {
@@ -101,7 +101,7 @@ export function GameForm() {
                 setError("root", {message:"No response from server"});
 
             }
-            else{
+            else {
                 if (response.response.data.includes("IntegrityError")) {
                     setError("root", {message: "A game with that name already exists!"});
                 } else {

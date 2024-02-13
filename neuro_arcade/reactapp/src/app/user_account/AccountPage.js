@@ -51,7 +51,8 @@ export function AccountPage() {
                         <Card link={'/add_model'} text={'New Model'} icon={<TbBoxModel />} />
                     </div>
                 </div>
-                <div className={styles.Side}></div>
+                <div className={styles.Side}>
+                </div>
             </motion.div>
 
             <div className={styles.MobileBannerBuffer} />
