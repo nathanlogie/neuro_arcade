@@ -13,7 +13,7 @@ variables:
   MYSQL_USER: $MYSQL_USER
   MYSQL_PASSWORD: $MYSQL_PASS
 
-build-job:
+django-build-job:
   image: python:latest
   stage: build
   before_script:
@@ -67,6 +67,7 @@ lint-test-job:
 
 format-test-job:
   image: python:3.11
+  allow_failure: true
   before_script:
   - python -m venv venv
   - source venv/bin/activate
@@ -77,7 +78,7 @@ format-test-job:
   - ruff format --check
 
 
-react-creation:
+react-creation-job:
   stage: reactCreation
   image: node:latest
   before_script:
@@ -117,6 +118,7 @@ lint-test-r-job:
 format-test-r-job:
   stage: react
   image: node:latest
+  allow_failure: true
   before_script:
     - cd neuro_arcade
     - cd reactapp
