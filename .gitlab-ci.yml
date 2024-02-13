@@ -46,7 +46,8 @@ unit-test-job:
   - pip install -r requirements.txt
   stage: django
   script:
-    - python neuro_arcade/manage.py test
+    - cd neuro_arcade
+    - python manage.py test
     - echo "Django Unit Tests Ran"
   only:
     - branches
