@@ -172,7 +172,7 @@ async function getHeaders(method, authenticated=false) {
         },
     }
     if (authenticated) {
-        config.headers.Authorization = `Token ${get_user().token}`;
+        config.headers.Authorization = `Token ${getUser().token}`;
     }
     if (method.toUpperCase() === 'POST') {
         config.headers['X-CSRFToken'] = await getCSRFToken();
@@ -276,7 +276,7 @@ export async function requestGames() {
 export async function createNewPlayer(playerName, isAI) {
     const url = API_ROOT + "/create_player/";
 
-    if (!is_logged_in())
+    if (!isLoggedIn())
         throw UserNotAuthenticatedError()
 
     return await axios.post(url,
@@ -337,7 +337,7 @@ export async function requestModelsRanked() {
 export async function deletePlayer(playerName) {
     const url = API_ROOT + "/delete_player/";
 
-    if (!is_logged_in())
+    if (!isLoggedIn())
         throw new UserNotAuthenticatedError()
 
     return await axios.post(url, { playerName: playerName }, await getHeaders('POST', true))
@@ -369,7 +369,7 @@ export async function deletePlayer(playerName) {
 export async function postGameScore(gameName, playerIdentification, scoreData) {
     const url = API_ROOT + '/games/' + gameName + '/add_score/'
     // checking if the user is logged in
-    if (!is_logged_in())
+    if (!isLoggedIn())
         throw UserNotAuthenticatedError()
     // request data
     let data = scoreData;
@@ -459,7 +459,7 @@ export async function postPublications(publications){
  *
  * @return {{token, name, email, is_admin} | null} user object {token, name, email, is_admin} or null
  */
-export function get_user() {
+export function getUser() {
     let user_str = localStorage.getItem("user");
     if (!user_str) {
         return null;
@@ -470,8 +470,8 @@ export function get_user() {
 /**
  * Returns true if the user is logged in.
  */
-export function is_logged_in() {
-    return get_user() != null
+export function isLoggedIn() {
+    return getUser() != null
 }
 
 /**
