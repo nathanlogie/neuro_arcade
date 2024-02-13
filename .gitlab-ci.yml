@@ -73,7 +73,8 @@ lint-test-job:
   allow_failure: true    # It can run at the same time as unit-test-job (in parallel).
   script:
   # - find . -type f -name '*.py' ! -path '*/migrations/*' -exec autopep8 --in-place --aggressive --aggressive '{}' \;
-  - pylint $(git ls-files '*.py')
+  - cd neuro_arcade
+  - ruff lint
 
 react-creation:
   stage: reactCreation
@@ -98,7 +99,7 @@ unit-test-r-job:
   script:
       #Temporary until we have tests as it will fail if there are no tests
     - npm test --passWithNoTests
-    - npm test--coverage --passWithNoTests
+#    - npm test--coverage --passWithNoTests
   
 lint-test-r-job:
   stage: react
