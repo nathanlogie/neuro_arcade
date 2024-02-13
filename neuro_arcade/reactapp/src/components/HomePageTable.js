@@ -2,18 +2,41 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {DataGrid} from '@mui/x-data-grid';
 
-/**
- * 
- * @param inputData {Object}
- * @returns {JSX Element}
- */
-export function HomePageTable({inputData}) {
+export function HomePageTable() {
 
-    if(!inputData){
-        return(
-            <h2>No Data</h2>
-        );
-    }
+    const inputData = [
+        {
+            "player": {
+                "url": "http://127.0.0.1:8000/api/players/6/",
+                "name": "Monkey Bot",
+                "is_ai": true,
+                "user": "http://127.0.0.1:8000/api/users/13/",
+                "description": "AI player that is owned by monkey555",
+                "player_tags": [
+                    "http://127.0.0.1:8000/api/playerTags/4/",
+                    "http://127.0.0.1:8000/api/playerTags/5/",
+                    "http://127.0.0.1:8000/api/playerTags/10/"
+                ]
+            },
+            "overall_score": 1250.0
+        },
+        {
+            "player": {
+                "url": "http://127.0.0.1:8000/api/players/5/",
+                "name": "Zebra Bot",
+                "is_ai": true,
+                "user": "http://127.0.0.1:8000/api/users/14/",
+                "description": "AI player that is owned by zebra777",
+                "player_tags": [
+                    "http://127.0.0.1:8000/api/playerTags/1/",
+                    "http://127.0.0.1:8000/api/playerTags/3/",
+                    "http://127.0.0.1:8000/api/playerTags/10/"
+                ]
+            },
+            "overall_score": 1024.9999999999998
+        },
+    ]
+
 
     const columns = [
         {field: 'id', headerName: 'ID', width: 90, hide: true},
@@ -23,12 +46,6 @@ export function HomePageTable({inputData}) {
         {field: 'description', headerName: 'Description', width: 150}
     ]
 
-    /**
-     * @param item {Object}
-     * @param index {integer}
-     * @returns {Object}
-     * uses the top performers data and maps it to a row object
-     */
     const rows = inputData.map(function(item, index) {
         return {
             id: index + 1,
@@ -38,6 +55,8 @@ export function HomePageTable({inputData}) {
             description: item.player.description
         };
     });
+    
+
 
     return(
         <div className={'TableContainer'}>
@@ -51,12 +70,14 @@ export function HomePageTable({inputData}) {
                 columns={columns}
                 pageSizeOptions={[5]}
                 disableRowSelectionOnClick
+                getRowStyle={getRowStyle}
             />
             </div>
         </div>
     )
 }
 
-HomePageTable.propTypes = {
-    inputData: PropTypes.object.isRequired,
-}
+//Needs to get input data as currently using demonstration data
+// HomePageTable.propTypes = {
+//     inputData: PropTypes.object.isRequired,
+// }
