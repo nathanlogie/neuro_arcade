@@ -28,7 +28,7 @@ export function ModelForm(){
         formData.append("description", description)
 
         //Again temporary until authentication is done
-        formData.append("user", get_user())
+        formData.append("user", 1)
 
         //Converts the string value into an actual boolean value
         let boolAi = (aiStatus === 'true');
@@ -41,19 +41,15 @@ export function ModelForm(){
             data: formData,
             headers: {"Content-Type": "multipart/form-data"},
         }).then(function (response) {
-            console.log("success!")
             console.log(response);
-
             reset()
-            // setError("root", {message: "Form Submitted Successfully"})
+            setError("root", {message: "Form Submitted Successfully"})
         }).catch(function (response) {
             console.log(response)
             if (!response) {
                 setError("root", {message: "No response from server"});
 
             } else {
-                console.log("RESPONSE:")
-                console.log(response.response.data)
                 if (response.response.data.user.includes("IntegrityError")) {
                     setError("root", {message: "A game with that name already exists!"});
                 } else {

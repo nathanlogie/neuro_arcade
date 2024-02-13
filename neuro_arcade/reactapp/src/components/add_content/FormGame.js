@@ -65,7 +65,7 @@ export function FormGame() {
         formData.append("name", name);
         formData.append("description", description);
         //Temporary until authentication is fulfilled
-        formData.append("owner", "http://localhost:8000/api/users/2/");
+        formData.append("owner", 3);
         formData.append("play_link", playLink);
 
         if (image) {
