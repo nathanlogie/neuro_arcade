@@ -58,7 +58,7 @@ export function AuthTest() {
                         logout
                     </button>
                     <button onClick={() =>
-                        createNewPlayer('newGuyPlayer', false).then((r) => setResponse(r))
+                        createNewPlayer('newGuyPlayer', true).then((r) => setResponse(r))
                     }>
                         create newGuyPlayer
                     </button>

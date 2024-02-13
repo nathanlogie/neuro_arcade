@@ -281,7 +281,7 @@ def delete_player(request: Request) -> Response:
     The request should be of format: {playerName: str}
     """
     user = request.user
-    player_name = request.data['playerName']
+    player_name = request.data.get('playerName')
     if player_name is None:
         return Response(status=400, data='Invalid data; `playerName` must be provided!')
 
@@ -289,6 +289,9 @@ def delete_player(request: Request) -> Response:
         player = Player.objects.get(name=player_name, user=user)
     except ObjectDoesNotExist:
         return Response(status=404, data='Player not found!')
+
+    if not player.is_ai:
+        return Response(status=400, data='Request Refused; Only AI players (AI Models) can be deleted!')
 
     player.delete()
     return Response(status=200, data='Player successfully deleted!')
