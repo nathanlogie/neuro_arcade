@@ -9,6 +9,10 @@ import {requestGameTags} from "../backendRequests";
 import {motion} from "framer-motion"
 import {useEffect, useState} from "react";
 import { IoFilter } from "react-icons/io5";
+import {Link} from "react-router-dom";
+import {logout} from "../backendRequests";
+import {userIsAdmin} from "../backendRequests";
+import {isLoggedIn} from "../backendRequests";
 
 /**
  * @returns {JSX.Element} home page
@@ -22,6 +26,22 @@ export function HomePage() {
 
     const [show, setShow] = useState(false);
     const [hover, setHover] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(isLoggedIn())
+
+    let aboutLink = '/about';
+    let addContent = ['', ''];
+    if (isLoggedIn()){
+        if (userIsAdmin()){
+            aboutLink = '/edit_about';
+        }
+        addContent = ['add content', 'add_content'];
+    }
+
+    function onLogout(e){
+        e.preventDefault();
+        logout();
+        setLoggedIn(false);
+    }
 
     // Fetch the game tags on load
     useEffect(() => {
@@ -35,15 +55,21 @@ export function HomePage() {
 
     let content = <>...</>;
     if (!loading) {
-        content = <>
+        content =  <>
             <div className={styles.Content} id={styles['small']}>
+                { loggedIn ? <button onClick={onLogout}>Logout</button> :
+                        <>
+                            <Link to='/sign_up'>Create an Account</Link>
+                            <Link to='/login'>Login</Link>
+                        </>
+                    }
                 <div className={styles.Title}>
                     <h1>Featured games</h1>
                     <motion.div
                         className={styles.FilterButton} onClick={() => setShow(!show)}
                         whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}
                     >
-                        <IoFilter/>
+                        <IoFilter />
                     </motion.div>
                 </div>
                 <TagFilter
@@ -54,14 +80,14 @@ export function HomePage() {
                     onMouseOut={() => setHover(false)}
                 />
                 {/*
-                        The featured tag is always applied, so that's put in the query for server-side
-                        filtering
-                        TODO: CardGrid should probably abstract the query
-                        TODO: only the first 8 featured games will be requested, so when additional tags are applied
-                        there may be less than 8 games shown even if other valid ones exist. Either tag filtering should
-                        be done server-side (resulting in a request on every check/uncheck), or num filtering should be
-                        done locally
-                    */}
+                    The featured tag is always applied, so that's put in the query for server-side
+                    filtering
+                    TODO: CardGrid should probably abstract the query
+                    TODO: only the first 8 featured games will be requested, so when additional tags are applied
+                    there may be less than 8 games shown even if other valid ones exist. Either tag filtering should
+                    be done server-side (resulting in a request on every check/uncheck), or num filtering should be
+                    done locally
+                */}
                 <GameGrid
                     num={8}
                     tagQuery={

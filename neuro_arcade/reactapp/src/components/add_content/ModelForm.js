@@ -22,7 +22,7 @@ export function ModelForm(){
     const [description, setDescription] = useState("")
     const [tags, setTags] = useState("")
 
-    const onSubmit = (event) => {
+    const onSubmit = async (event) => {
 
         const formData = new FormData();
         formData.append("name", name);
@@ -33,7 +33,7 @@ export function ModelForm(){
 
         formData.append("is_ai", true);
 
-        axios({
+        await axios({
             //I will move a lot of this stuff to backend requests to centralize it in a future merge request
             method: "post",
             url: "http://127.0.0.1:8000/api/players/",
@@ -49,7 +49,7 @@ export function ModelForm(){
                 setError("root", {message: "No response from server"});
 
             } else {
-                if (response.response.data.includes("IntegrityError")) {
+                if (response.response.data.user.includes("IntegrityError")) {
                     setError("root", {message: "A game with that name already exists!"});
                 } else {
                     setError("root", {

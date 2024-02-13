@@ -7,6 +7,7 @@ import { FaGamepad } from "react-icons/fa6";
 import { TbBoxModel } from "react-icons/tb";
 import {motion} from "framer-motion";
 
+
 /**
  * @returns {JSX.Element} add content page
  * @constructor builds add content page
@@ -33,7 +34,7 @@ export function AccountPage() {
                 direction: 'right'
             }}
             />
-            <MobileBanner />
+            <MobileBanner/>
 
             <motion.div
                 className={styles.MainBlock}
@@ -54,7 +55,6 @@ export function AccountPage() {
                 <div className={styles.Side}>
                 </div>
             </motion.div>
-
             <div className={styles.MobileBannerBuffer} />
         </>
     );

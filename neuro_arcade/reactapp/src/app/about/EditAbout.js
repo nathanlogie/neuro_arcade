@@ -37,18 +37,17 @@ export function EditAbout() {
     return (
         <>
             <Banner size={'big'} button_right={{
-                name: 'about',
-                link: '/about',
+                name: 'home',
+                link: '/',
                 orientation: 'right',
                 direction: 'right'
-            }}/>
-            <NavBar button_right={{
-                name: 'about',
-                link: '/about',
+            }} />
+            <NavBar  button_right={{
+                name: 'home',
+                link: '/',
                 orientation: 'right',
                 direction: 'right'
-            }}
-            />
+            }} />
             <MobileBanner  />
             <motion.div
                 className={styles.MainBlock}
@@ -58,8 +57,6 @@ export function EditAbout() {
             >
                 {content}
             </motion.div>
-
         </>
     );
-
 }

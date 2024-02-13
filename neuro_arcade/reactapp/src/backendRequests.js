@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const API_ROOT = "http://localhost:8000"
-
 /**
  * This file contains functions that request or upload data from/to the backend
  */
@@ -379,11 +378,16 @@ export async function postGameScore(gameName, playerIdentification, scoreData) {
         data.PlayerID = playerIdentification;
     } else {
         console.log(typeof playerIdentification)
-        throw new Error("playerIdentification needs to be either an int or a string!")
+        throw Error("playerIdentification needs to be either an int or a string!")
     }
     // sending the request:
-    return await axios.post(url, data, await getHeaders('POST', true))
-        .then((response) => {
+    return await axios.post(url, data, {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${getUser().token}`,
+        },
+    }).then((response) => {
         console.log("Sending of game scores successful!");
         return response;
     }).catch((error) => {
@@ -575,3 +579,4 @@ export function logout() {
     console.log("Logging out...");
     localStorage.removeItem("user");
 }
+

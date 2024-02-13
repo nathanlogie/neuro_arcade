@@ -9,8 +9,10 @@ import {AccountPage} from "./app/user_account/AccountPage";
 import {FormPage} from "./app/user_account/FormPage";
 import {AllGames} from "./app/AllGames";
 import {GameView} from "./app/GameView";
+import {SignUp} from "./app/SignUp";
+import {Login} from "./app/Login";
 import {AllPlayers} from './app/AllPlayers';
-import {EditAbout} from "./app/about/EditAbout";
+import { EditAbout } from "./app/about/EditAbout";
 import {AnimatePresence} from 'framer-motion'
 import {Background} from "./components/Background";
 import {AuthTest} from "./app/AuthTest";
@@ -50,8 +52,14 @@ const router = createBrowserRouter([
         path: "all_games",
         element: <AllGames/>
     },
-    // This is here for testing purposes
-    // TODO: remove this when the login/signup pages have been made
+    {
+        path: "sign_up",
+        element: <SignUp/>
+    },
+    {
+        path: "login",
+        element: <Login />
+    },
     {
         path: "auth_test",
         element: <AuthTest />

@@ -322,8 +322,11 @@ def sign_up(request: Request) -> Response:
     email = request.data['email']
     password = request.data['password']
     # input validation:
-    if username is None or email is None or password is None or not validate_password(password):
-        return Response(status=400, data='Invalid data.')
+    if username == "" or email == "" or password == "":
+        return Response(status=400, data='Missing Fields.')
+
+    if not validate_password(password):
+        return Response(status=400, data='Invalid Password. Password must be at least 8 characters.')
 
     if User.objects.filter(username=username).exists():
         return Response(status=409, data='Username already taken.')
@@ -338,7 +341,6 @@ def sign_up(request: Request) -> Response:
         return Response(status=200)  # sending a success response back
     else:
         return Response(status=400, data='Error creating new user.')
-
 
 @api_view(['GET'])
 def get_model_rankings(request: Request) -> Response:
@@ -399,14 +401,15 @@ def get_model_rankings(request: Request) -> Response:
 
     return Response(status=200, data=data)
 
-
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
+
 
 class GameTagViewSet(viewsets.ModelViewSet):
     queryset = GameTag.objects.all()
