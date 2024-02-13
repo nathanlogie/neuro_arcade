@@ -385,7 +385,7 @@ export async function postGameScore(gameName, playerIdentification, scoreData) {
         method: 'post',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Token ${get_user().token}`,
+            'Authorization': `Token ${getUser().token}`,
         },
     }).then((response) => {
         console.log("Sending of game scores successful!");
@@ -463,7 +463,7 @@ export async function postPublications(publications){
  *
  * @return {{token, name, email, is_admin} | null} user object {token, name, email, is_admin} or null
  */
-export function get_user() {
+export function getUser() {
     let user_str = localStorage.getItem("user");
     if (!user_str) {
         return null;

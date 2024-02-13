@@ -57,16 +57,12 @@ const router = createBrowserRouter([
         element: <SignUp/>
     },
     {
+        path: "login",
+        element: <Login />
+    },
+    {
         path: "auth_test",
         element: <AuthTest />
-    },
-    {
-        path: "add_game",
-        element: <AddGame />
-    },
-    {
-        path: "add_model",
-        element: <AddModel />
     },
     {
         path: "all_players",

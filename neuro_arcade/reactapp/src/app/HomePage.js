@@ -13,7 +13,7 @@ import { IoFilter } from "react-icons/io5";
 import {Link} from "react-router-dom";
 import {logout} from "../backendRequests";
 import {userIsAdmin} from "../backendRequests";
-import {is_logged_in} from "../backendRequests";
+import {isLoggedIn} from "../backendRequests";
 
 /**
  * @returns {JSX.Element} home page
@@ -27,11 +27,11 @@ export function HomePage() {
 
     const [show, setShow] = useState(false);
     const [hover, setHover] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(is_logged_in)
+    const [loggedIn, setLoggedIn] = useState(isLoggedIn())
 
     let aboutLink = '/about';
     let addContent = ['', ''];
-    if (is_logged_in()){
+    if (isLoggedIn()){
         if (userIsAdmin()){
             aboutLink = '/edit_about';
         }
@@ -41,7 +41,7 @@ export function HomePage() {
     function onLogout(e){
         e.preventDefault();
         logout();
-        setIsLoggedIn(false);
+        setLoggedIn(false);
     }
 
 
@@ -86,7 +86,7 @@ export function HomePage() {
                 exit={{opacity: 0}}
             >
                 <div className={styles.Content} id={styles['small']}>
-                    { isLoggedIn ? <button onClick={onLogout}>Logout</button> :
+                    { loggedIn ? <button onClick={onLogout}>Logout</button> :
                             <>
                                 <Link to='/sign_up'>Create an Account</Link>
                                 <Link to='/login'>Login</Link>
