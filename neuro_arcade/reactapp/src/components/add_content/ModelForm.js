@@ -29,7 +29,7 @@ export function ModelForm(){
         formData.append("description", description);
 
         //Again temporary until authentication is done
-        formData.append("user", "http://localhost:8000/api/users/2/");
+        formData.append("user", 1);
 
         formData.append("is_ai", true);
 
@@ -50,7 +50,7 @@ export function ModelForm(){
 
             } else {
                 if (response.response.data.includes("IntegrityError")) {
-                    setError("root", {message: "A model with that name already exists!"});
+                    setError("root", {message: "A game with that name already exists!"});
                 } else {
                     setError("root", {
                         message: `Something went wrong... ${response.response.data}`
