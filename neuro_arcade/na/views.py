@@ -2,6 +2,7 @@ from collections import defaultdict
 import os
 
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
@@ -260,7 +261,12 @@ def post_new_player(request: Request) -> Response:
     if player_name is None or is_AI is None:
         return Response(status=400, data='Invalid data; `playerName` and `isAI` must be provided!')
 
-    player, was_created = Player.objects.get_or_create(name=player_name, is_ai=is_AI, user=user)
+    try:
+        player, was_created = Player.objects.get_or_create(name=player_name, is_ai=is_AI, user=user)
+    except IntegrityError:
+        # Actually, it's the player slug that needs to be unique.
+        return Response(status=400, data='Invalid data; Player name must be unique!')
+
     if was_created:
         return Response(status=201, data={
             'msg': 'Player was successfully created!',
