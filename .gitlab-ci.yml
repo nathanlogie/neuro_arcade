@@ -24,6 +24,7 @@ build-job:
     - echo "Compiling the code..."
     - echo "Compile complete."
 
+
 server-job:
   image: python:latest
   before_script:
@@ -52,6 +53,7 @@ unit-test-job:
   except:
     - main
 
+
 lint-test-job: 
   image: python:3.11
   before_script:
@@ -64,6 +66,7 @@ lint-test-job:
   - cd neuro_arcade
   - ruff check
 
+
 react-creation:
   stage: reactCreation
   image: node:latest
@@ -73,8 +76,6 @@ react-creation:
     - npm install --force
   script:
     echo "React compiled"
-
-
 
 
 unit-test-r-job:
@@ -89,6 +90,7 @@ unit-test-r-job:
   script:
     - export CI=1
     - npm test --passwithnotests
+#  Maybe try and export as artifact at some point?
     - jest --collect-coverage
 
   

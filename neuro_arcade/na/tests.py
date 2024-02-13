@@ -1,8 +1,7 @@
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.test import TestCase
-from django.urls import reverse
-
+from na.models import Game, GameTag, Player, PlayerTag, Score
 # The ide will shout at you to remove the na from the import but don't
 # The na allows it to run in terminal and in the pipeline
 from na.models import Game, GameTag, Player, PlayerTag, Score
