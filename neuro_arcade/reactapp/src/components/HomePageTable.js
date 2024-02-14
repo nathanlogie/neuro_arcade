@@ -75,7 +75,7 @@ export function HomePageTable({inputData}) {
                           color: 'white',
                         },
                         height: '100%',
-                        width: '100%',
+                        width: '32.5em'
                     }}
                     rows={rows}
                     columns={columns}
