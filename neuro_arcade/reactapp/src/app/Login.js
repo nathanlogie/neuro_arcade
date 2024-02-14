@@ -1,7 +1,7 @@
 import {Background} from "../components/Background";
 import {Banner, MobileBanner} from "../components/Banner";
 import styles from "../styles/App.module.css";
-import {useState} from "react";
+import React, {useState} from "react";
 import {login} from "../backendRequests";
 import {Navigate, Link} from "react-router-dom";
 
@@ -63,6 +63,7 @@ export function Login() {
                     </form>
 
                     <p>
+                        {/* eslint-disable-next-line react/no-unescaped-entities */}
                         Don't have an account? <Link to='/sign_up'>Sign Up Here</Link>
                     </p>
                 </div>

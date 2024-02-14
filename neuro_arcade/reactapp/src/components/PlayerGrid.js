@@ -1,7 +1,7 @@
 import styles from "../styles/components/CardGrid.module.css";
-import {PlayerTagKey, requestPlayers} from "../backendRequests";
+import {requestPlayers} from "../backendRequests";
 import {CardGrid} from "./CardGrid";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 
 /**
  * Player type filtering mode

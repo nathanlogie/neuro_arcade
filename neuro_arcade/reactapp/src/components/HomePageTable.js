@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {DataGrid} from "@mui/x-data-grid";
-import {RankedModel} from "../backendRequests";
 import styles from "../styles/components/TableGraph.module.css";
 import {createTheme, ThemeProvider} from "@mui/material";
 

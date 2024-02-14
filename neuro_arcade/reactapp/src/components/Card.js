@@ -1,7 +1,7 @@
 import styles from "../styles/components/Card.module.css";
 import {Link} from "react-router-dom";
 import {motion} from "framer-motion";
-
+import React from "react";
 /**
  * Component for rendering a card with a game's name and icon
  * Can be clicked to visit the game's view page

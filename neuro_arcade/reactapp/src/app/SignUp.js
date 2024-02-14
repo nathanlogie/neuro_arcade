@@ -1,7 +1,7 @@
 import {Background} from "../components/Background";
 import {Banner, MobileBanner} from "../components/Banner";
 import styles from "../styles/App.module.css";
-import {useState} from "react";
+import React, {useState} from "react";
 import {signupNewUser} from "../backendRequests";
 import {Navigate, Link} from "react-router-dom";
 

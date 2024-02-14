@@ -2,7 +2,7 @@ import {Background} from "../components/Background";
 import {MobileBanner} from "../components/Banner";
 import styles from "../styles/App.module.css";
 import {createNewPlayer, deletePlayer, ping, login, logout, postGameScore, signupNewUser} from "../backendRequests";
-import {useState} from "react";
+import React, {useState} from "react";
 import {motion} from "framer-motion";
 
 /**
@@ -26,7 +26,7 @@ export function AuthTest() {
                             })
                         }
                     >
-                        signup as 'newGuy'
+                        signup as new guy
                     </button>
                     <button
                         onClick={() =>
@@ -36,7 +36,7 @@ export function AuthTest() {
                             })
                         }
                     >
-                        login as 'newGuy'
+                        login as newGuy
                     </button>
                     <button
                         onClick={() => {

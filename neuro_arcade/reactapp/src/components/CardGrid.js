@@ -1,5 +1,6 @@
 import styles from "../styles/components/CardGrid.module.css";
 import {Card} from "./Card";
+import React from "react";
 
 /**
  * Type of item in a GridSubject's tag array.

@@ -1,7 +1,7 @@
 import styles from "../styles/components/CardGrid.module.css";
-import {GameTagKey, requestGames} from "../backendRequests";
+import {requestGames} from "../backendRequests";
 import {CardGrid} from "./CardGrid";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 
 /**
  * Component to render a grid of games (as Cards)

@@ -5,7 +5,7 @@ import {Table} from "../components/game/Table";
 import {LineC} from "../components/game/LineC";
 import {RadarC} from "../components/game/RadarC";
 import {SwarmPlot} from "../components/game/SwarmPlot";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Banner, MobileBanner} from "../components/Banner";
 
 /**

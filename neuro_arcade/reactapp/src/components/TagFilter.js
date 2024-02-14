@@ -1,5 +1,4 @@
-import {requestGameTags, requestPlayerTags} from "../backendRequests";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import styles from "../styles/components/TagFilter.module.css";
 
 /**
@@ -45,7 +44,7 @@ export function TagFilter({onTagChange, tags, id, onMouseOver, onMouseOut}) {
                     return (
                         <label key={index}>
                             {tag}
-                            <input type='checkbox' checked={ticks[index]} onChange={(e) => toggleTick(index)} />
+                            <input type='checkbox' checked={ticks[index]} onChange={() => toggleTick(index)} />
                         </label>
                     );
                 })}
