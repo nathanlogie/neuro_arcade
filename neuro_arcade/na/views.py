@@ -13,7 +13,7 @@ from rest_framework import viewsets
 from rest_framework.authtoken import views as rest_views
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 
@@ -185,7 +185,6 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
 
 @api_view(['GET'])
 def get_about_data(request: Request) -> Response:
-
     """
     Posts about data from json file
     Posts from media/about.json
@@ -205,8 +204,8 @@ def get_about_data(request: Request) -> Response:
 
 
 @api_view(['POST'])
+@permission_classes([IsAdminUser])
 def post_about_data(request) -> Response:
-
     """
     Retrieves About data from edit about form and posts it to media/about.json
     Gets a field and value. Depending on the field, it handles the data appropriately
@@ -221,7 +220,7 @@ def post_about_data(request) -> Response:
         with open(os.path.join(settings.STATICFILES_DIRS[0], file), "r") as f:
             about = json.load(f)
 
-    try:
+    try:  # todo don't have this entire function in a try block
 
         field = request.data.get('field')
         value = request.data.get('value')
@@ -347,6 +346,7 @@ def sign_up(request: Request) -> Response:
     else:
         return Response(status=400, data='Error creating new user.')
 
+
 @api_view(['GET'])
 def get_model_rankings(request: Request) -> Response:
     """
@@ -406,6 +406,7 @@ def get_model_rankings(request: Request) -> Response:
 
     return Response(status=200, data=data)
 
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -420,9 +421,11 @@ class GameTagViewSet(viewsets.ModelViewSet):
     queryset = GameTag.objects.all()
     serializer_class = GameTagSerializer
 
+
 class PlayerTagViewSet(viewsets.ModelViewSet):
     queryset = PlayerTag.objects.all()
     serializer_class = PlayerTagSerializer
+
 
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = Player.objects.all()
