@@ -1,10 +1,9 @@
-import styles from '../styles/components/Banner.module.css';
+import styles from "../styles/components/Banner.module.css";
 import {Button} from "./Button";
 import {Logo} from "./Logo";
 import React from "react";
-import {motion} from "framer-motion"
+import {motion} from "framer-motion";
 import {Switcher} from "./Switcher";
-import { useNavigate } from 'react-router-dom';
 
 /**
  * @param size
@@ -15,25 +14,19 @@ import { useNavigate } from 'react-router-dom';
  * @constructor builds banner
  */
 export function Banner({size, button_left, button_right, state}) {
-
-    const switcher_labels = {table_headers: [
-            { name: 'Games' },
-            { name: 'Players' }
-        ],
-    };
+    const switcher_labels = {table_headers: [{name: "Games"}, {name: "Players"}]};
 
     const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(state);
-    const navigate = useNavigate();
 
     const handleSwitcherChange = (selectedValue) => {
         setSelectedSwitcherValue(selectedValue);
-            if (selectedValue === 'Games') {
-                navigate('/all_games');
-            }
-            if (selectedValue === 'Players') {
-                navigate('/all_players');
-            }
-    }
+        if (selectedValue === "Games") {
+            window.location.href = "/all_games";
+        }
+        if (selectedValue === "AI Platforms") {
+            window.location.href = "/"; // TODO Add AI Platforms page
+        }
+    };
 
     const banner = [];
     if (button_left) {
@@ -46,7 +39,7 @@ export function Banner({size, button_left, button_right, state}) {
             />
         );
     }
-    banner.push(<Logo size={size} />)
+    banner.push(<Logo size={size} />);
     if (button_right) {
         banner.push(
             <Button
@@ -58,34 +51,24 @@ export function Banner({size, button_left, button_right, state}) {
         );
     }
 
-    if (size === 'big') {
+    if (size === "big") {
         return (
-            <div
-                className={styles.Banner}
-                id={styles[size]}
-            >
-                {banner}
+            <div className={styles.Banner} id={styles[size]}>
+                <motion.div className={styles.AnimationContainer} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                    {banner}
+                </motion.div>
             </div>
         );
     } else {
         return (
-            <div
-                className={styles.Banner}
-                id={styles['small']}>
-                    <Button
-                        name={'back'}
-                        link={'../'}
-                        direction={'up'}
-                        orientation={'left'}
-                    />
-                    <Logo size={size}/>
+            <div className={styles.Banner} id={styles["small"]}>
+                <motion.div className={styles.AnimationContainer} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                    <Button name={"back"} link={"../"} direction={"up"} orientation={"left"} />
+                    <Logo size={size} />
                     <div className={styles.TabSwitcher}>
-                        <Switcher
-                            data={switcher_labels}
-                            onSwitcherChange={handleSwitcherChange}
-                            switcherDefault={selectedSwitcherValue}
-                        />
+                        <Switcher data={switcher_labels} onSwitcherChange={handleSwitcherChange} switcherDefault={selectedSwitcherValue} />
                     </div>
+                </motion.div>
             </div>
         );
     }
@@ -97,11 +80,10 @@ export function Banner({size, button_left, button_right, state}) {
  */
 export function MobileBanner() {
     return (
-            <div
-                className={styles.MobileBanner}
-                id={styles['small']}
-            >
-                <Logo size={'small'}/>
-            </div>
-        );
+        <div className={styles.MobileBanner} id={styles["small"]}>
+            <motion.div className={styles.AnimationContainer} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                <Logo size={"small"} />
+            </motion.div>
+        </div>
+    );
 }

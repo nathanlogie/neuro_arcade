@@ -4,16 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('na', '0003_game_play_link'),
+        ("na", "0003_game_play_link"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='game',
-            name='evaluation_script',
-            field=models.FileField(default='evaluation_functions/example.py', upload_to='evaluation_functions'),
+            model_name="game",
+            name="evaluation_script",
+            field=models.FileField(
+                default="evaluation_functions/example.py",
+                upload_to="evaluation_functions",
+            ),
             preserve_default=False,
         ),
     ]

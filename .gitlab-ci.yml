@@ -1,28 +1,9 @@
-# This file is a template, and might need editing before it works on your project.
-# This is a sample GitLab CI/CD configuration file that should run without any modifications.
-# It demonstrates a basic 3 stage CI/CD pipeline. Instead of real tests or scripts,
-# it uses echo commands to simulate the pipeline execution.
-#
-# A pipeline is composed of independent jobs that run scripts, grouped into stages.
-# Stages run in sequential order, but jobs within stages run in parallel.
-#
-# For more information, see: https://docs.gitlab.com/ee/ci/yaml/index.html#stages
-#
-# You can copy and paste this template into a new `.gitlab-ci.yml` file.
-# You should not add this template to an existing `.gitlab-ci.yml` file by using the `include:` keyword.
-#
-# To contribute improvements to CI/CD templates, please follow the Development guide at:
-# https://docs.gitlab.com/ee/development/cicd/templates.html
-# This specific template is located at:
-# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
-
-
-image: python:latest
 
 stages:          # List of stages for jobs, and their order of execution
   - build
-  - serverFix
-  - test
+  - django
+  - reactCreation
+  - react
 
 variables:
   PYTHON_VERSION: "3.11.5"
@@ -31,44 +12,112 @@ variables:
   MYSQL_USER: $MYSQL_USER
   MYSQL_PASSWORD: $MYSQL_PASS
 
-before_script:
-  # - apt-get install -y python 3.11.5
-  # - update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11.5
+django-build-job:
+  image: python:latest
+  stage: build
+  before_script:
   - python -m venv venv
   - source venv/bin/activate
-  - ls
   - pip install -r requirements.txt
-
-
-build-job:       # This job runs in the build stage, which runs first. It sets up the virtual environment in order to run the tests
-  stage: build
   script:
     - echo "Compiling the code..."
     - echo "Compile complete."
-
-server-job:
-  stage: serverFix
-  script:
     - python neuro_arcade/manage.py makemigrations
     - python neuro_arcade/manage.py migrate
     - python neuro_arcade/manage.py check
+    
 
 
-unit-test-job:   # This job runs in the test stage.
-  stage: test    # It only starts when the job in the build stage completes successfully.
+unit-test-job: 
+  image: python:latest
+  before_script:
+  - python -m venv venv
+  - source venv/bin/activate
+  - pip install -r requirements.txt
+  stage: django
   script:
-    - echo "Running unit tests... This will take about 60 seconds."
     - python neuro_arcade/manage.py test
-    - echo "Code coverage is 90%"
+    - echo "Django Unit Tests Ran"
   only:
     - branches
   except:
     - main
 
-lint-test-job:   # This job also runs in the test stage.
-  stage: test    # It can run at the same time as unit-test-job (in parallel).
+
+lint-test-job: 
+  image: python:3.11
+  before_script:
+  - python -m venv venv
+  - source venv/bin/activate
+  - pip install -r requirements.txt
+  stage: django
   script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 10
-    - echo "No lint issues found."
+  - cd neuro_arcade
+  - ruff check
+
+format-test-job:
+  image: python:3.11
+  allow_failure: true
+  before_script:
+  - python -m venv venv
+  - source venv/bin/activate
+  - pip install -r requirements.txt
+  stage: django
+  script:
+  - cd neuro_arcade
+  - ruff format --check
+
+
+react-creation-job:
+  stage: reactCreation
+  image: node:latest
+  before_script:
+    - cd neuro_arcade
+    - cd reactapp
+    - npm install --force
+  script:
+    echo "React compiled"
+
+
+unit-test-r-job:
+  stage: react
+  image: node:latest
+  #Temporary until we have tests as it will fail if there are no tests
+  allow_failure: true
+  before_script:
+    - cd neuro_arcade
+    - cd reactapp
+    - npm install --force
+  script:
+    - export CI=1
+    - npm test --passwithnotests
+#  Maybe try and export as artifact at some point?
+    - jest --collect-coverage
+
+
+lint-test-r-job:
+  stage: react
+  image: node:latest
+  before_script:
+    - cd neuro_arcade
+    - cd reactapp
+    - npm install --force
+  script:
+    - npm run testLint
+
+format-test-r-job:
+  stage: react
+  image: node:latest
+  allow_failure: true
+  before_script:
+    - cd neuro_arcade
+    - cd reactapp
+    - npm install --force
+  script:
+    - npm run testFormat
+
+
+
+
+
 

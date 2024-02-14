@@ -1,12 +1,11 @@
-import {useState, useEffect} from 'react';
-import {DescriptionForm} from "../../components/about/DescriptionForm"
-import {PublicationsForm} from "../../components/about/PublicationsForm"
-import {getAboutData, isLoggedIn, userIsAdmin} from "../../backendRequests";
+import React, {useState, useEffect} from "react";
+import {DescriptionForm} from "../../components/about/DescriptionForm";
+import {PublicationsForm} from "../../components/about/PublicationsForm";
+import {getAboutData} from "../../backendRequests";
 import {Banner, MobileBanner} from "../../components/Banner";
 import styles from "../../styles/App.module.css";
-import {motion} from "framer-motion"
+import {motion} from "framer-motion";
 import {NavBar} from "../../components/NavBar";
-import { redirect } from "react-router-dom";
 
 /**
  * @returns {JSX.Element} edit about page
@@ -20,42 +19,48 @@ export function EditAbout() {
     // if (!userIsAdmin())
     //     return (<p>Only Admins can edit this page!</p>);
 
-    const [aboutData, updateAboutData] = useState()
+    const [aboutData, updateAboutData] = useState();
 
     useEffect(() => {
-        getAboutData()
-            .then(data => {
-                updateAboutData(data)
-            })
-    }, [])
+        getAboutData().then((data) => {
+            updateAboutData(data);
+        });
+    }, []);
 
     let content = <>...</>;
     if (aboutData) {
-        content = <>
-            <div className={styles.Content}>
-                <div className={styles.ContentBlock}>
-                    <DescriptionForm description={aboutData.description}/>
-                    <PublicationsForm publications={aboutData.publications}/>
+        content = (
+            <>
+                <div className={styles.Content}>
+                    <div className={styles.ContentBlock}>
+                        <DescriptionForm description={aboutData.description} />
+                        <PublicationsForm publications={aboutData.publications} />
+                    </div>
                 </div>
-            </div>
-        </>
+            </>
+        );
     }
 
     return (
         <>
-            <Banner size={'big'} button_right={{
-                name: 'home',
-                link: '/',
-                orientation: 'right',
-                direction: 'right'
-            }} />
-            <NavBar  button_right={{
-                name: 'home',
-                link: '/',
-                orientation: 'right',
-                direction: 'right'
-            }} />
-            <MobileBanner  />
+            <Banner
+                size={"big"}
+                button_right={{
+                    name: "home",
+                    link: "/",
+                    orientation: "right",
+                    direction: "right"
+                }}
+            />
+            <NavBar
+                button_right={{
+                    name: "home",
+                    link: "/",
+                    orientation: "right",
+                    direction: "right"
+                }}
+            />
+            <MobileBanner />
             <motion.div
                 className={styles.MainBlock}
                 initial={{opacity: 0, x: -100}}

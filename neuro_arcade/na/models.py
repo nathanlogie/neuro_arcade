@@ -1,4 +1,4 @@
-from typing import Dict, Iterable, List, Optional
+from typing import Iterable, Optional
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -8,14 +8,18 @@ from django.template.defaultfilters import slugify
 MAX_SCORE_VALUE_SIZE = 256
 
 # functions for setting default fields:
+
+
 def default_score_type():
     return {"headers": []}
+
 
 def default_score():
     return []
 
+
 class GameTag(models.Model):
-    """Category for a game. """
+    """Category for a game."""
 
     MAX_NAME_LENGTH = 64
     MAX_DESCRIPTION_LENGTH = 1024
@@ -29,24 +33,20 @@ class GameTag(models.Model):
         super(GameTag, self).save(*args, **kwargs)
 
     def serialize(self):
-        return {
-            'name': self.name,
-            'slug': self.slug,
-            'description': self.description
-        }
+        return {"name": self.name, "slug": self.slug, "description": self.description}
 
     def __str__(self):
         return self.name
 
 
 class Game(models.Model):
-    """Description of a game added to the website. """
+    """Description of a game added to the website."""
 
     MAX_NAME_LENGTH = 64
     MAX_DESCRIPTION_LENGTH = 1024
 
-    ICON_SUBDIR = 'game_icons'
-    EVALUATION_SUBDIR = 'evaluation_functions'
+    ICON_SUBDIR = "game_icons"
+    EVALUATION_SUBDIR = "evaluation_functions"
 
     SCORE_INT = "int"
     SCORE_FLOAT = "float"
@@ -73,7 +73,9 @@ class Game(models.Model):
         self.slug = slugify(self.name)
         super(Game, self).save(*args, **kwargs)
 
-    def matches_search(self, query: Optional[str], tags: Optional[Iterable[GameTag]]) -> bool:
+    def matches_search(
+        self, query: Optional[str], tags: Optional[Iterable[GameTag]]
+    ) -> bool:
         accept = True
 
         # Check tags
@@ -92,63 +94,39 @@ class Game(models.Model):
 
     def get_score_table(self):
         try:
-            headers = self.score_type['headers']
+            headers = self.score_type["headers"]
             score_objs = self.score_set.all()
             scores = []
 
             for score in score_objs:
-                s = [score.score[header['name']] for header in headers]
-                scores.append({
-                    'player_name': score.player.name,
-                    'is_ai': score.player.is_ai,
-                    'score': s
-                })
+                s = [score.score[header["name"]] for header in headers]
+                scores.append(
+                    {
+                        "player_name": score.player.name,
+                        "is_ai": score.player.is_ai,
+                        "score": s,
+                    }
+                )
 
             return headers, scores
 
         except TypeError:  # this can happen if score_type is not populated
-            print("[WARN] Something went wrong when trying to get the scores for ", self)
+            print(
+                "[WARN] Something went wrong when trying to get the scores for ", self
+            )
             print("[WARN]  This might happen if score_type is not populated.")
             return None, None
 
-    def get_highest_scores(self) -> Dict[str, List["Score"]]:
-        """
-        Gets the highest recorded score for each player for each score type in this game.
-
-        Should probably be optimised to run at intervals and cache results in the future.
-        """
-
-        ret = {}
-
-        scores = self.score_set.all()
-        for header in self.score_type['headers']:
-            name = header['name']
-
-            # Sort by this score
-            ranked: List[Score] = sorted(scores, key=lambda s: -s.score[name])
-
-            # Filter to just the highest score for each player
-            filtered = []
-            player_set = set()
-            for score in ranked:
-                if score.player not in player_set:
-                    filtered.append(score)
-                    player_set.add(score.player)
-
-            ret[name] = filtered
-
-        return ret
-
     def serialize(self):
         d = {
-            'name': str(self.name),
-            'slug': str(self.slug),
-            'description': str(self.description),
+            "name": str(self.name),
+            "slug": str(self.slug),
+            "description": str(self.description),
             # TODO make this give you a web URL, instead of a local filepath
             # 'icon': str(game.icon.path),
-            'tags': [tag.slug for tag in self.tags.all()],
-            'score_type': self.score_type,
-            'play_link': str(self.play_link),
+            "tags": [tag.slug for tag in self.tags.all()],
+            "score_type": self.score_type,
+            "play_link": str(self.play_link),
         }
         # TODO serialise evaluation script and game owner fields
 
@@ -165,18 +143,13 @@ class Game(models.Model):
 
 
 class PlayerTag(models.Model):
-    """A category of Player. Mostly used for AI players. """
+    """A category of Player. Mostly used for AI players."""
 
     MAX_NAME_LENGTH = 64
     MAX_DESCRIPTION_LENGTH = 1024
 
     name = models.CharField(max_length=MAX_NAME_LENGTH)
-    slug = models.SlugField(unique=True)
     description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH)
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(PlayerTag, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -185,9 +158,9 @@ class PlayerTag(models.Model):
 class Player(models.Model):
     """An entity that can appear on a scoreboard, human or AI.
 
-     Players have an `owner` user.
+    Players have an `owner` user.
 
-     The `is_ai` field decides whenever a player is a human or an AI. """
+    The `is_ai` field decides whenever a player is a human or an AI."""
 
     MAX_PLAYER_NAME_LENGTH = 64
     MAX_PLAYER_DESCRIPTION_LENGTH = 1024
@@ -196,8 +169,8 @@ class Player(models.Model):
     slug = models.SlugField(unique=True, null=True)
     is_ai = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    description = models.TextField(max_length=MAX_PLAYER_DESCRIPTION_LENGTH, default='')
-    tags = models.ManyToManyField(PlayerTag, blank=True)
+    description = models.TextField(max_length=MAX_PLAYER_DESCRIPTION_LENGTH, default="")
+    player_tags = models.ManyToManyField(PlayerTag, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -208,7 +181,7 @@ class Player(models.Model):
 
 
 class Score(models.Model):
-    """Scores. """
+    """Scores."""
 
     score = models.JSONField(default=default_score)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)

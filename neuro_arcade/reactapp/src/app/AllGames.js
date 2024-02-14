@@ -1,11 +1,10 @@
 import {Banner, MobileBanner} from "../components/Banner";
-import styles from "../styles/App.module.css"
-import {GameGrid} from "../components/GameGrid";
-import {TagFilter} from "../components/TagFilter";
-import {requestGameTags} from "../backendRequests";
-import {useEffect, useState} from "react";
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import {motion} from "framer-motion";
+import {Background} from "../components/Background";
+import styles from "../styles/App.module.css";
+import {GameGrid} from "../components/game/GameGrid";
+import {GameTagFilter} from "../components/game/GameTagFilter";
+import React, {useState} from "react";
+import {FaMagnifyingGlass} from "react-icons/fa6";
 
 /**
  * @returns {JSX.Element} all games page
@@ -14,58 +13,32 @@ import {motion} from "framer-motion";
 export function AllGames() {
     // name query for sorting the already fetched games
     // can be changed freely, as it only affect data displayed on the client
-    let [textQuery, setTextQuery] = useState('');
-    let [tags, setTags] = useState([]);
+    let [nameQuery, setNameQuery] = useState("");
     let [selectedTags, setSelectedTags] = useState([]);
-    let [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        requestGameTags()
-            .then((tags) => {
-                setTags(tags);
-                setLoading(false);
-            })
-    }, [])
-
-    let content = <>...</>;
-    if (!loading) {
-        content = <>
-            <div className={styles.Side}>
-                <div className={styles.Search}>
-                    <input onChange={e => setTextQuery(e.target.value)} placeholder="search..."/>
-                    <div className={styles.SearchIcon}>
-                        <FaMagnifyingGlass/>
-                    </div>
-                </div>
-                <TagFilter
-                    tags={tags.map((tag) => tag.name)}
-                    onTagChange={setSelectedTags}
-                />
-            </div>
-            <div className={styles.Content} id={styles['AllGames']}>
-                <h1>All Games</h1>
-                <GameGrid
-                    textQuery={textQuery}
-                    tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)}
-                    id={'AppGrid'}
-                />
-            </div>
-        </>
-    }
 
     return (
-        <>
-            <Banner size={'small'} state={'Games'}/>
-            <MobileBanner/>
-            <motion.div
-                className={styles.MainBlock}
-                id={styles['small']}
-                initial={{opacity: 0, y: -100}}
-                animate={{opacity: 1, y: 0}}
-                exit={{opacity: 0, y: -100}}
-            >
-                {content}
-            </motion.div>
-        </>
+        <div>
+            <Background />
+            <Banner state={"Games"} />
+            <MobileBanner />
+            <div className={styles.MainBlock} id={styles["small"]}>
+                <div className={styles.Side}>
+                    {/* TODO: this almost definitely shouldn't be here, but the background
+                    image gets interacted with instead of the search bar without it */}
+                    <div className={styles.Search}>
+                        <input onChange={(e) => setNameQuery(e.target.value)} placeholder='search...' />
+                        <div className={styles.SearchIcon}>
+                            <FaMagnifyingGlass />
+                        </div>
+                    </div>
+                    <GameTagFilter onTagChange={setSelectedTags} />
+                    {/* (see above) */}
+                </div>
+                <div className={styles.Content} id={styles["AllGames"]}>
+                    <h1>All Games</h1>
+                    <GameGrid nameQuery={nameQuery} tagQuery={selectedTags} linkPrefix={""} id={"AppGrid"} />
+                </div>
+            </div>
+        </div>
     );
 }

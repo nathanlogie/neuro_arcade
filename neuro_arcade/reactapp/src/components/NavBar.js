@@ -9,7 +9,6 @@ import React from "react";
  * @constructor builds navigation bar
  */
 export function NavBar({button_left, button_right}) {
-
     const navbar = [];
     if (button_left) {
         navbar.push(
@@ -18,8 +17,8 @@ export function NavBar({button_left, button_right}) {
                 link={button_left.link}
                 direction={button_left.direction}
                 orientation={button_left.orientation}
-            />)
-        ;
+            />
+        );
     }
     if (button_right) {
         navbar.push(
@@ -32,9 +31,5 @@ export function NavBar({button_left, button_right}) {
         );
     }
 
-    return (
-        <div className={styles.NavBar}>
-            {navbar}
-        </div>
-    )
+    return <div className={styles.NavBar}>{navbar}</div>;
 }

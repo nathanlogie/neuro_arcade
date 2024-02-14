@@ -1,7 +1,7 @@
-import styles from '../styles/components/CardGrid.module.css'
-import {GameTagKey, requestGames} from "../backendRequests";
-import {CardGrid} from './CardGrid';
-import {useEffect, useState} from "react";
+import styles from "../styles/components/CardGrid.module.css";
+import {requestGames} from "../backendRequests";
+import {CardGrid} from "./CardGrid";
+import React, {useEffect, useState} from "react";
 
 /**
  * Component to render a grid of games (as Cards)
@@ -12,34 +12,22 @@ import {useEffect, useState} from "react";
  * @param {number} props.num - max number of games to show
  * @param {string} props.id - element id for styling
  */
-export function GameGrid({textQuery='', tagQuery=[], num=0, id}) {
+export function GameGrid({textQuery = "", tagQuery = [], num = 0, id}) {
     let [isLoading, setLoading] = useState(true);
     let [games, setGames] = useState([]);
 
     // Fetch games from server on initial load
     useEffect(() => {
-        requestGames()
-            .then(g => {
-                setGames(g);
-                setLoading(false);
-            })
+        requestGames().then((g) => {
+            setGames(g);
+            setLoading(false);
+        });
     }, []);
 
     // Display waiting message while waiting on server, then show games
     if (isLoading) {
-        return (
-            <div className={styles.CardGrid}>
-                Loading...
-            </div>
-        )
+        return <div className={styles.CardGrid}>Loading...</div>;
     } else {
-        return <CardGrid
-            subjects={games}
-            textQuery={textQuery}
-            tagQuery={tagQuery}
-            num={num}
-            id={id}
-            linkPrefix='/all_games/'
-        />
+        return <CardGrid subjects={games} textQuery={textQuery} tagQuery={tagQuery} num={num} id={id} linkPrefix='/all_games/' />;
     }
 }

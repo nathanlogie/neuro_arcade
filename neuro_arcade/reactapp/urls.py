@@ -1,9 +1,3 @@
-from django.urls import path
+app_name = "reactapp"
 
-from . import views
-
-
-app_name = 'reactapp'
-
-urlpatterns = [
-]
+urlpatterns = []

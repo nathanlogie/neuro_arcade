@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class NaConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'na'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "na"

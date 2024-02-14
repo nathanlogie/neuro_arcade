@@ -5,20 +5,19 @@ import na.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('na', '0001_initial'),
+        ("na", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='game',
-            name='score_type',
+            model_name="game",
+            name="score_type",
             field=models.JSONField(default=na.models.default_score_type),
         ),
         migrations.AlterField(
-            model_name='score',
-            name='score',
+            model_name="score",
+            name="score",
             field=models.JSONField(default=na.models.default_score),
         ),
     ]

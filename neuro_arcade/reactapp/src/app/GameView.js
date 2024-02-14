@@ -5,7 +5,7 @@ import {Table} from "../components/game/Table";
 import {LineC} from "../components/game/LineC";
 import {RadarC} from "../components/game/RadarC";
 import {SwarmPlot} from "../components/game/SwarmPlot";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Banner, MobileBanner} from "../components/Banner";
 
 /**
@@ -19,44 +19,47 @@ export function GameView() {
     let [loading, setLoading] = useState(true);
     let [gameData, setGameData] = useState({});
     useEffect(() => {
-        requestGame(gameSlug)
-            .then(g => {
-                setGameData(g);
-                setLoading(false);
-            })
+        requestGame(gameSlug).then((g) => {
+            setGameData(g);
+            setLoading(false);
+        });
     }, []);
 
     let content = <>...</>;
     if (!loading) {
-        content = <>
-            <div className={styles.Content}>
-                <h1>{gameData.game.name}</h1>
-                <div className={styles.ContentBlock}>
-                    <p>
-                        <img src="https://loremflickr.com/500/500" alt={'image'} // TODO add query for image here
-                        />
-                        {gameData.game.description}
-                    </p>
-                </div>
-            </div>
-            <div className={styles.DataBlock}>
-                <Table inputData={gameData}/>
-                <div className={styles.Graphs}>
-                    <LineC inputData={gameData}/>
-                    <RadarC inputData={gameData}/>
-                    <SwarmPlot inputData={gameData}/>
-                </div>
-            </div>
-        </>;
-    }
-
-    return (
+        content = (
             <>
-                <Banner size={'small'} state={'Games'}/>
-                <MobileBanner/>
-                <div className={styles.MainBlock} id={styles['small']}>
-                    {content}
+                <div className={styles.Content}>
+                    <h1>{gameData.game.name}</h1>
+                    <div className={styles.ContentBlock}>
+                        <p>
+                            <img
+                                src='https://loremflickr.com/500/500'
+                                alt={"image"} // TODO add query for image here
+                            />
+                            {gameData.game.description}
+                        </p>
+                    </div>
+                </div>
+                <div className={styles.DataBlock}>
+                    <Table inputData={gameData} />
+                    <div className={styles.Graphs}>
+                        <LineC inputData={gameData} />
+                        <RadarC inputData={gameData} />
+                        <SwarmPlot inputData={gameData} />
+                    </div>
                 </div>
             </>
         );
+    }
+
+    return (
+        <>
+            <Banner size={"small"} state={"Games"} />
+            <MobileBanner />
+            <div className={styles.MainBlock} id={styles["small"]}>
+                {content}
+            </div>
+        </>
+    );
 }

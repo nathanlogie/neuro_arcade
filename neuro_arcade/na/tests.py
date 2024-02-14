@@ -1,11 +1,10 @@
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.test import TestCase
-from django.urls import reverse
+from na.models import Game, GameTag, Player, PlayerTag, Score
 
 # The ide will shout at you to remove the na from the import but don't
 # The na allows it to run in terminal and in the pipeline
-from na.models import Game, GameTag, Player, PlayerTag, Score
 import populate
 
 # Create your tests here.
@@ -19,9 +18,9 @@ class ModelTests(TestCase):
             owner=User.objects.create_user(
                 username="TestGameOwner",
                 password="SuperSecurePassword",
-                email="Tester@testing.com"
+                email="Tester@testing.com",
             ),
-            play_link="www.l"
+            play_link="www.l",
         )
 
     def test_game(self):
@@ -34,8 +33,7 @@ class ModelTests(TestCase):
 
     def create_gameTag(self) -> GameTag:
         return GameTag.objects.create(
-            name="TestGameTag",
-            description="WOW this game has tags"
+            name="TestGameTag", description="WOW this game has tags"
         )
 
     def test_gameTag(self):
@@ -46,10 +44,7 @@ class ModelTests(TestCase):
         self.assertEquals(testTag.name, "TestGameTag")
 
     def create_playerTag(self) -> PlayerTag:
-        return PlayerTag.objects.create(
-            name="playerTag",
-            description="wow"
-        )
+        return PlayerTag.objects.create(name="playerTag", description="wow")
 
     def test_playerTag(self):
         testTag = self.create_playerTag()
@@ -73,8 +68,7 @@ class ModelTests(TestCase):
 
     def create_score(self) -> Score:
         return Score.objects.create(
-            player=self.create_player(),
-            game=self.create_game()
+            player=self.create_player(), game=self.create_game()
         )
 
     def test_score(self):
@@ -86,7 +80,6 @@ class ModelTests(TestCase):
 
 
 class PopulationScriptTests(TestCase):
-
     def test_Added(self):
         populate.populate()
 
