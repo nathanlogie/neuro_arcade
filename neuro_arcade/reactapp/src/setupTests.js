@@ -13,6 +13,15 @@ global.renderWithRouter = (html, extra) => {
     );
 }
 
+// Prevents expected exceptions printing to console
+global.silentThrow = (fn) => {
+    return () => {
+        let consoleError = jest.spyOn(console, "error").mockImplementation(() => {});
+        fn();
+        consoleError.mockRestore();
+    }
+}
+
 // jest-dom adds custom jest matchers for asserting on DOM nodes.
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
