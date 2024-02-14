@@ -1,11 +1,13 @@
 import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 // Components with Links inside need to be wrapped in a router
 global.renderWithRouter = (html) => {
     return render(
         <MemoryRouter>
-            {html}
+            <Routes>
+                <Route path="" element={html} />
+            </Routes>
         </MemoryRouter>
     );
 }
