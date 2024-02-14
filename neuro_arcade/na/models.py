@@ -1,4 +1,4 @@
-from typing import Dict, Iterable, List, Optional
+from typing import Iterable, Optional
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -8,11 +8,15 @@ from django.template.defaultfilters import slugify
 MAX_SCORE_VALUE_SIZE = 256
 
 # functions for setting default fields:
+
+
 def default_score_type():
     return {"headers": []}
 
+
 def default_score():
     return []
+
 
 class GameTag(models.Model):
     """Category for a game. """
@@ -73,7 +77,9 @@ class Game(models.Model):
         self.slug = slugify(self.name)
         super(Game, self).save(*args, **kwargs)
 
-    def matches_search(self, query: Optional[str], tags: Optional[Iterable[GameTag]]) -> bool:
+    def matches_search(self,
+                       query: Optional[str],
+                       tags: Optional[Iterable[GameTag]]) -> bool:
         accept = True
 
         # Check tags
@@ -107,37 +113,11 @@ class Game(models.Model):
             return headers, scores
 
         except TypeError:  # this can happen if score_type is not populated
-            print("[WARN] Something went wrong when trying to get the scores for ", self)
+            print(
+                "[WARN] Something went wrong when trying to get the scores for ",
+                self)
             print("[WARN]  This might happen if score_type is not populated.")
             return None, None
-
-    def get_highest_scores(self) -> Dict[str, List["Score"]]:
-        """
-        Gets the highest recorded score for each player for each score type in this game.
-
-        Should probably be optimised to run at intervals and cache results in the future.
-        """
-
-        ret = {}
-
-        scores = self.score_set.all()
-        for header in self.score_type['headers']:
-            name = header['name']
-
-            # Sort by this score
-            ranked: List[Score] = sorted(scores, key=lambda s: -s.score[name])
-
-            # Filter to just the highest score for each player
-            filtered = []
-            player_set = set()
-            for score in ranked:
-                if score.player not in player_set:
-                    filtered.append(score)
-                    player_set.add(score.player)
-
-            ret[name] = filtered
-
-        return ret
 
     def serialize(self):
         d = {
@@ -171,12 +151,7 @@ class PlayerTag(models.Model):
     MAX_DESCRIPTION_LENGTH = 1024
 
     name = models.CharField(max_length=MAX_NAME_LENGTH)
-    slug = models.SlugField(unique=True)
     description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH)
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(PlayerTag, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -196,8 +171,9 @@ class Player(models.Model):
     slug = models.SlugField(unique=True, null=True)
     is_ai = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    description = models.TextField(max_length=MAX_PLAYER_DESCRIPTION_LENGTH, default='')
-    tags = models.ManyToManyField(PlayerTag, blank=True)
+    description = models.TextField(
+        max_length=MAX_PLAYER_DESCRIPTION_LENGTH, default='')
+    player_tags = models.ManyToManyField(PlayerTag, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)

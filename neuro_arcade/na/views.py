@@ -1,28 +1,19 @@
-from collections import defaultdict
 import os
 
 from django.contrib.auth.models import User
-from django.db import IntegrityError
-from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
-from django.core.exceptions import ObjectDoesNotExist
-from django.middleware.csrf import get_token
-from django.views.decorators.csrf import csrf_exempt
 
-from rest_framework import viewsets
-from rest_framework.authtoken import views as rest_views
-from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework.request import Request
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.request import Request
+from rest_framework import viewsets
 
-from na.models import PlayerTag
+from na.models import Game, GameTag, Player, PlayerTag
 from django.conf import settings
 
 from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
 import json
-from na.models import Game, GameTag, Player
 
 
 # ------------------
@@ -71,22 +62,6 @@ def validate_password(password):
 # ----------------
 #    API CALLS
 # ----------------
-@api_view(['GET', 'POST'])
-def ping(request: Request) -> Response:
-    """
-    Ping! Always responds with a 200 OK.
-    """
-    return Response(status=200)
-
-
-@api_view(['GET'])
-def csrf(request: Request) -> Response:
-    """
-    Sends a CSRF token.
-    """
-    return Response({'csrfToken': get_token(request)})
-
-
 @api_view(['GET'])
 def get_game(request: Request, game_name_slug: str) -> Response:
     """
@@ -119,6 +94,7 @@ def get_games_sorted(request: Request) -> Response:
     return Response([game.serialize() for game in game_list])
 
 
+# TODO maybe you should be logged in for this request
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def post_game_score(request: Request, game_name_slug: str) -> Response:
@@ -126,28 +102,20 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
     Post Score for a game. The format for the body of the Post request is as follows:
 
     For every score type header, the request needs to have a field called the same as the score header.
-    Additionally, the request needs to specify the player responsible for the score by including either
-    the id ('PlayerID') or name ('PlayerName') of the player. Keep in mind that the player needs to be
-    associated with the current authenticated user, or the request will be refused.
+    Additionally, the request needs to specify the id of the player responsible for the score.
 
-    Example: for a score type with a single header called 'Points' then the request needs to have
-    a field called 'Points' and a field either called 'PlayerID' or 'PlayerName'.
+    Example: for a score type with a single header called 'Points' that has an int value,
+    the request needs to look like: {'played':<player.id>, 'Points': <value>}
     """
-
-    # checking that the Post request contains a player field
-    # either 'PlayerID' or 'PlayerName'
-    playerID = request.data.get('PlayerID', None)
-    playerName = request.data.get('PlayerName', None)
-    if playerID is not None:
-        player = Player.objects.get(id=playerID, user=request.user)
-    elif playerName is not None:
-        player = Player.objects.get(name=playerName, user=request.user)
-    else:
-        return Response(status=400, data={
-            'description': 'No player field provided, or provided player is not associated with this your user.'
-        })
+    # todo: this needs to be changed for the new authentication
+    # checking that the Post request contains the player field
+    if request.user.get('player') is None:
+        return Response(
+            status=400, data={
+                'description': 'No player field was provided.'})
 
     game = get_object_or_404(Game, slug=game_name_slug)
+    player = get_object_or_404(Player, id=request.data.get('player'))
     added_score = {}
     # for score type header in game
     for header in game.score_type['headers']:
@@ -157,11 +125,13 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
             value = float(score)
             # Checking that it is above the min:
             if header['min'] is not None and value < header['min']:
-                msg = 'Score field ' + header['name'] + ' is invalid: value is bellow the allowed minimum.'
+                msg = 'Score field ' + \
+                    header['name'] + ' is invalid: value is bellow the allowed minimum.'
                 return Response(status=400, data={'description': msg})
             # Checking that it is below the max:
             if header['max'] is not None and value > header['max']:
-                msg = 'Score field ' + header['name'] + ' is invalid: value is above the allowed maximum.'
+                msg = 'Score field ' + \
+                    header['name'] + ' is invalid: value is above the allowed maximum.'
                 return Response(status=400, data={'description': msg})
 
             # TODO use validation script here
@@ -169,10 +139,14 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
             # Value is valid, so it will be added to the database
             added_score[header['name']] = score
         else:
-            return Response(status=400, data={'description': 'Score field ' + header['name'] + ' not present'})
+            return Response(
+                status=400, data={
+                    'description': 'Score field ' + header['name'] + ' not present'})
 
     if len(added_score.keys()) == 0:
-        return Response(status=400, data={'description': 'No relevant score fields were provided.'})
+        return Response(
+            status=400, data={
+                'description': 'No relevant score fields were provided.'})
 
     game.score_set.create(
         player_id=player.id,
@@ -204,23 +178,17 @@ def get_about_data(request: Request) -> Response:
 
 
 @api_view(['POST'])
-@permission_classes([IsAdminUser])
 def post_about_data(request) -> Response:
     """
     Retrieves About data from edit about form and posts it to media/about.json
     Gets a field and value. Depending on the field, it handles the data appropriately
     """
-    file = 'about.json'
-    media_file_path = os.path.join(settings.MEDIA_ROOT, file)
+
+    file_path = os.path.join(settings.MEDIA_ROOT, 'about.json')
+
     try:
-        with open(media_file_path, "r") as f:
-            about = json.load(f)
-
-    except FileNotFoundError:
-        with open(os.path.join(settings.STATICFILES_DIRS[0], file), "r") as f:
-            about = json.load(f)
-
-    try:  # todo don't have this entire function in a try block
+        with open(file_path, 'r') as f:
+            data = json.load(f)
 
         field = request.data.get('field')
         value = request.data.get('value')
@@ -229,12 +197,12 @@ def post_about_data(request) -> Response:
             return Response(status=400)
 
         if field == "description":
-            about["description"] = value
+            data["description"] = value
         elif field == "publications":
-            about["publications"] = []
+            data["publications"] = []
 
             for p in value:
-                about["publications"].append(
+                data["publications"].append(
                     {
                         'title': p['title'],
                         'author': p['author'],
@@ -242,8 +210,8 @@ def post_about_data(request) -> Response:
                     }
                 )
 
-        with open(media_file_path, 'w') as f:
-            json.dump(about, f)
+        with open(file_path, 'w') as f:
+            json.dump(data, f)
 
         return Response(status=200)
     except Exception as e:
@@ -252,159 +220,23 @@ def post_about_data(request) -> Response:
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def post_new_player(request: Request) -> Response:
-    """
-    Requests the creation of a new player.
-    The request should be of format: {playerName: str, isAI: bool}
-    """
-    # TODO add support for PlayerTags
-    user = request.user
-    player_name = request.data.get('playerName')
-    is_AI = request.data.get('isAI')
-    if player_name is None or is_AI is None:
-        return Response(status=400, data='Invalid data; `playerName` and `isAI` must be provided!')
-
-    try:
-        player, was_created = Player.objects.get_or_create(name=player_name, is_ai=is_AI, user=user)
-    except IntegrityError:
-        # Actually, it's the player slug that needs to be unique.
-        return Response(status=400, data='Invalid data; Player name must be unique!')
-
-    if was_created:
-        return Response(status=201, data={
-            'msg': 'Player was successfully created!',
-            'playerID': player.id
-        })
-    else:
-        return Response(status=200, data={
-            'msg': 'Player already exists!',
-            'playerID': player.id,
-        })
-
-
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def delete_player(request: Request) -> Response:
-    """
-    Requests the deletion of a player associated with the current user.
-    The request should be of format: {playerName: str}
-    """
-    user = request.user
-    player_name = request.data.get('playerName')
-    if player_name is None:
-        return Response(status=400, data='Invalid data; `playerName` must be provided!')
-
-    try:
-        player = Player.objects.get(name=player_name, user=user)
-    except ObjectDoesNotExist:
-        return Response(status=404, data='Player not found!')
-
-    if not player.is_ai:
-        return Response(status=400, data='Request Refused; Only AI players (AI Models) can be deleted!')
-
-    player.delete()
-    return Response(status=200, data='Player successfully deleted!')
-
-
-@csrf_exempt  # Needs to not check for a CSRF token due to django shenanigans. Should not be a security problem.
-def login(request: HttpRequest) -> Response:
-    if request.method == 'POST':
-        response = rest_views.obtain_auth_token(request)
-
-        # sending back if the user is admin or not
-        user_id = Token.objects.get(key=response.data['token']).user_id
-        user = User.objects.get(id=user_id)
-        response.data['is_admin'] = user.is_superuser
-
-        return response
-
-
-@api_view(['POST'])
 def sign_up(request: Request) -> Response:
     username = request.data['username']
     email = request.data['email']
     password = request.data['password']
     # input validation:
-    if username == "" or email == "" or password == "":
-        return Response(status=400, data='Missing Fields.')
-
-    if not validate_password(password):
-        return Response(status=400, data='Invalid Password. Password must be at least 8 characters.')
-
-    if User.objects.filter(username=username).exists():
-        return Response(status=409, data='Username already taken.')
-
-    if User.objects.filter(email=email).exists():
-        return Response(status=409, data='Email already taken.')
+    if username is None or email is None or password is None or not validate_password(
+            password):
+        return Response(status=400, data='Invalid data.')
 
     # creating a new User in the DB:
-    new_user = User.objects.create_user(username=username, email=email, password=password)
+    new_user = User.objects.create_user(
+        username=username, email=email, password=password)
 
     if new_user is not None:
         return Response(status=200)  # sending a success response back
     else:
         return Response(status=400, data='Error creating new user.')
-
-
-@api_view(['GET'])
-def get_model_rankings(request: Request) -> Response:
-    """
-    Gets the overall rankings of AI models
-
-    Format is a list of score, player pairs in descending order of score
-
-    This is based on their relative performances across tasks.
-    Every task a model has a score in gives them a score from 0-100 based on the percentile
-    they fall in on the leaderboard, considering highest scores only.
-    Coming first in the leaderboard gives 100 points, decreasing by (100 / n) each position after.
-    These are then summed up to give their overall score.
-
-    This function definitely needs optimising in the future, probably running the calculations
-    automatically at an interval and caching the results. The logic could also use some splitting.
-    The API should remain stable, so the current implementation is enough for frontend development
-    to begin.
-    """
-
-    player_ranks = defaultdict(lambda: 0.0)
-
-    for game in Game.objects.all():
-        # Get the leaderboards for this game
-        try:
-            rank_tables = game.get_highest_scores()
-        except Exception as e:
-            # The database may currently contain some games with invalid leaderboards
-            # TODO: remove once validation & population updated
-            continue
-
-        # Distribute scores for each leaderboard
-        for ranking in rank_tables.values():
-            # Filter out humans
-            ai_ranking = [score for score in ranking if score.player.is_ai]
-
-            # Ignore empty leaderboards
-            if len(ai_ranking) == 0:
-                continue
-
-            # Calculate the decrease in score for each position
-            step = 100 / len(ai_ranking)
-
-            # Give out the points for each position
-            for i, score in enumerate(ai_ranking):
-                player_ranks[score.player.id] += 100.0 - (i * step)
-
-    # Build response data structure
-    data = [
-        {
-            'player': PlayerSerializer(player, context={'request': request}).data,
-            'overall_score': player_ranks[player.id],
-        }
-        for player in Player.objects.all()
-        if player.is_ai
-    ]
-    data.sort(key=lambda d: -d['overall_score'])
-
-    return Response(status=200, data=data)
 
 
 class UserViewSet(viewsets.ModelViewSet):
