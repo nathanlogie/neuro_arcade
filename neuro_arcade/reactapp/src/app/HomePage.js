@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Banner} from "../components/Banner";
 import {GameGrid} from "../components/game/GameGrid";
 import styles from "../styles/App.module.css";

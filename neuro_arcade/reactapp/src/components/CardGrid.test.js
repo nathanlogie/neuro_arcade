@@ -1,4 +1,4 @@
-import {screen} from "@testing-library/react";
+import renderWithRouter, {screen} from "@testing-library/react";
 import {CardGrid, exportedForTesting} from "./CardGrid";
 import React from "react";
 // Import private methods
