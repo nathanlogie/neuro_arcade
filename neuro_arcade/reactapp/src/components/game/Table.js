@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Switcher} from '../Switcher'
 import { DataGrid } from '@mui/x-data-grid';
-import styles from '../../styles/components/TableGraph.module.css'
+import styles from '../../styles/components/TableGraph.module.css';
 import {createTheme, ThemeProvider} from "@mui/material";
 
 /**
@@ -72,20 +72,20 @@ export function Table({inputData}) {
         ],
       };
 
-      const filteredRows =
-      selectedSwitcherValue === 'all'
-        ? rows
-        : selectedSwitcherValue === 'AI Platforms'
-        ? rows.filter((row) => row.is_AI)
-        : selectedSwitcherValue === 'Humans'
-        ? rows.filter((row) => !row.is_AI)
-        : rows;
+  const filteredRows =
+  selectedSwitcherValue === 'all'
+    ? rows
+    : selectedSwitcherValue === 'AI Platforms'
+    ? rows.filter((row) => row.is_AI)
+    : selectedSwitcherValue === 'Humans'
+    ? rows.filter((row) => !row.is_AI)
+    : rows;
 
-        const table_theme = createTheme({
-          palette: {
-              mode: 'dark',
-          },
-        });
+    const table_theme = createTheme({
+      palette: {
+          mode: 'dark',
+      },
+    });
 
     return(
         <div className={styles.TableContainer}>
@@ -97,35 +97,33 @@ export function Table({inputData}) {
                     switcherDefault={selectedSwitcherValue}
                 />
             </div>
-            <div className={'Table'}>
-                <ThemeProvider theme={table_theme}>
-                    <DataGrid
-                        sx={{
-                            boxShadow: 2,
-                            border: 2,
-                            color: 'white',
-                            borderColor: 'rgba(0,0,0,0)',
-                            '& .MuiDataGrid-cell:hover': {
-                              color: 'white',
+            <ThemeProvider theme={table_theme}>
+                <DataGrid
+                    sx={{
+                        boxShadow: 2,
+                        border: 2,
+                        color: 'white',
+                        borderColor: 'rgba(0,0,0,0)',
+                        '& .MuiDataGrid-cell:hover': {
+                          color: 'white',
+                        },
+                        height: '100%',
+                        width: '33em'
+                    }}
+                    rows={filteredRows}
+                    columns={columns}
+                    initialState={{
+                        pagination: {
+                            paginationModel: {
+                                pageSize: 7,
                             },
-                            height: '100%',
-                            width: '33em'
-                        }}
-                        rows={filteredRows}
-                        columns={columns}
-                        initialState={{
-                            pagination: {
-                                paginationModel: {
-                                    pageSize: 7,
-                                },
-                            },
-                        }}
-                        pageSizeOptions={[5]}
-                        disableRowSelectionOnClick
-                        getRowStyle={getRowStyle}
-                    />
-                </ThemeProvider>
-            </div>
+                        },
+                    }}
+                    pageSizeOptions={[5]}
+                    disableRowSelectionOnClick
+                    getRowStyle={getRowStyle}
+                />
+            </ThemeProvider>
         </div>
     )
 }

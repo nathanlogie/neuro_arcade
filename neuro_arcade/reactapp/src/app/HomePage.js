@@ -109,7 +109,6 @@ export function HomePage() {
                             .map((tag) => tag.id)
                     }
                 />
-                <HomePageTable inputData={models} />
                 <Button
                     id={'MoreGames'}
                     name={'more games'}
@@ -119,6 +118,7 @@ export function HomePage() {
                 />
             </div>
             <div className={styles.Side}>
+                <HomePageTable inputData={models} />
             </div>
         </>;
     }

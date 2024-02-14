@@ -66,6 +66,7 @@
         padding: 2em 0;
     }
     .Side {
+        padding: 4em 0;
         width: 32.5em;
         display: flex;
         justify-content: center;
