@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types'
 import {Switcher} from '../Switcher'
 import { LineChart, Line, XAxis, YAxis, ReferenceLine } from 'recharts';
-import styles from '../../styles/components/TableGraph.module.css'
+import styles from '../../styles/components/TableGraph.module.css';
 import {createTheme, ThemeProvider} from "@mui/material";
 
 const graph_theme = createTheme({
@@ -13,7 +13,7 @@ const graph_theme = createTheme({
 
 // inputData: the JSON data used to generate the graph
 // x-axis: the name of the score type to be displayed on the x-axis
-export function Graph({inputData}) {
+export function LineC({inputData}) {
     // setting the default switcher value to the first score
     const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(
         inputData.table_headers[0].name
@@ -29,8 +29,11 @@ export function Graph({inputData}) {
         <div className={styles.GraphContainer}>
             <h2>Trends</h2>
             <div className={styles.TabSwitcher}>
-                <Switcher data={inputData} onSwitcherChange={handleSwitcherChange}
-                          switcherDefault={selectedSwitcherValue}/>
+                <Switcher
+                    data={inputData}
+                    onSwitcherChange={handleSwitcherChange}
+                    switcherDefault={selectedSwitcherValue}
+                />
             </div>
             <ThemeProvider theme={graph_theme}>
                 <LineChart
@@ -79,6 +82,6 @@ export function Graph({inputData}) {
     );
 }
 
-Graph.propTypes = {
+LineC.propTypes = {
     inputData: PropTypes.object.isRequired,
 }

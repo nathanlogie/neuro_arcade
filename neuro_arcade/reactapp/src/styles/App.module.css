@@ -84,6 +84,12 @@
         display: flex;
         overflow-x: auto;
         gap: 3em;
+        .Graphs {
+            display: flex;
+            flex-direction: column;
+            gap: 2em;
+            margin-right: auto;
+        }
     }
     .Form {
         margin: 3em;

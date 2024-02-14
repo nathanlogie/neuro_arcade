@@ -16,7 +16,9 @@
 
 .TableContainer {
     padding: 2em;
-    width: 100%;
+    width: fit-content;
+    height: 32em;
+    margin-left: auto;
     .TabSwitcher {
         right: 0;
         top: -2em;
@@ -25,7 +27,8 @@
 
 .GraphContainer {
     padding: 2em 0;
-    width: 43.75em;
+    height: 32em;
+    width: fit-content;
     .TabSwitcher {
         top: 0.5em;
         width: 100%;
