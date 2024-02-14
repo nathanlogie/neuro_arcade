@@ -25,6 +25,10 @@
     }
 }
 
+#home {
+    height: fit-content;
+}
+
 .GraphContainer {
     padding: 2em 0;
     height: 32em;

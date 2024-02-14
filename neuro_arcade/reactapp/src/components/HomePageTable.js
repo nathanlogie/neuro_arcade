@@ -62,7 +62,7 @@ export function HomePageTable({inputData}) {
     });
 
     return(
-        <div className={styles.TableContainer}>
+        <div className={styles.TableContainer} id={styles['home']}>
             <h2>Top Performers</h2>
             <ThemeProvider theme={table_theme}>
                 <DataGrid
