@@ -1,19 +1,21 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
-import axios from 'axios';
-import { FaImage } from "react-icons/fa6";
-import { LuFileJson } from "react-icons/lu";
-import { FaPython } from "react-icons/fa6";
-import { FaPlus } from "react-icons/fa6";
+import axios from "axios";
+import {FaImage} from "react-icons/fa6";
+import {LuFileJson} from "react-icons/lu";
+import {FaPython} from "react-icons/fa6";
+import {FaPlus} from "react-icons/fa6";
 import {motion} from "framer-motion";
+
+
 
 //Should be synced with models.py
 let MAX_NAME_LENGTH = 64;
 let MAX_DESCRIPTION_LENGTH = 1024;
 
-let ACCEPTED_SCORE_FILE = ['json'];
-let ACCEPTED_EVAL_SCRIPT = ['py'];
-let ACCEPTED_IMAGE = ['png', 'jpg', 'jpeg'];
+let ACCEPTED_SCORE_FILE = ["json"];
+let ACCEPTED_EVAL_SCRIPT = ["py"];
+let ACCEPTED_IMAGE = ["png", "jpg", "jpeg"];
 
 /**
  * @returns {JSX.Element} add new game form
@@ -25,12 +27,12 @@ export function GameForm() {
         handleSubmit,
         formState: {errors, isSubmitting},
         setError,
-        reset,
+        reset
     } = useForm();
 
-    const [image, setImage] = useState(null)
-    const [evaluationScript, setEvaluationScript] = useState(null)
-    const [scoreType, setScoreType] = useState(null)
+    const [image, setImage] = useState(null);
+    const [evaluationScript, setEvaluationScript] = useState(null);
+    const [scoreType, setScoreType] = useState(null);
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [tags, setTags] = useState("");
@@ -38,30 +40,48 @@ export function GameForm() {
 
     const handleImage = (event) => {
         const file = event.target.files[0];
-        if (file) {
-            setImage(file);
-        } else {
-            setImage(null);
+        if(!file){
+            return;
         }
-    }
+        const acceptedFormats = ACCEPTED_IMAGE;
+        const fileExtension = file.name.split(".").pop().toLowerCase();
+        if (!acceptedFormats.includes(fileExtension)) {
+            setError("root", {message: `Error: Invalid file type provided ${fileExtension}`});
+            setImage(null);
+        } else {
+            setImage(file);
+        }
+    };
 
     const handleEvalScript = (event) => {
         const file = event.target.files[0];
-        if (file) {
-            setEvaluationScript(file);
-        } else {
-            setEvaluationScript(null);
+        if(!file){
+            return;
         }
-    }
+        const acceptedFormats = ACCEPTED_EVAL_SCRIPT;
+        const fileExtension = file.name.split(".").pop().toLowerCase();
+        if (!acceptedFormats.includes(fileExtension)) {
+            setError("evaluationScript", {message: `Error: Invalid file type provided ${fileExtension}`});
+            setEvaluationScript(null);
+        } else {
+            setEvaluationScript(file);
+        }
+    };
 
     const handleScores = (event) => {
-        const file = event.target.files[0]
-        if (file) {
-            setScoreType(file)
-        } else {
-            setScoreType(null)
+        const file = event.target.files[0];
+        if(!file){
+            return;
         }
-    }
+        const acceptedFormats = ACCEPTED_SCORE_FILE;
+        const fileExtension = file.name.split(".").pop().toLowerCase();
+        if (!acceptedFormats.includes(fileExtension)) {
+            setError("scoreTypes", {message: `Error: Invalid file type provided ${fileExtension}`});
+            setScoreType(null);
+        } else {
+            setScoreType(file);
+        }
+    };
 
     const onSubmit = async (event) => {
 
@@ -74,26 +94,26 @@ export function GameForm() {
         formData.append("play_link", playLink);
 
         if (image) {
-            formData.append("icon", image)
+            formData.append("icon", image);
         }
         if (evaluationScript) {
-            formData.append("evaluation_script", evaluationScript)
+            formData.append("evaluation_script", evaluationScript);
         }
         if (scoreType) {
-            formData.append("scoreType", scoreType)
+            formData.append("scoreType", scoreType);
         }
 
         await axios({
             method: "post",
             url: "http://127.0.0.1:8000/api/games/",
             data: formData,
-            headers: {"Content-Type": "multipart/form-data"},
-        }).then(function (response) {
+            headers: {"Content-Type": "multipart/form-data"}
+        }).then(function(response) {
             console.log(response);
             reset();
             setError("root", {message: "game submitted successfully"});
-        }).catch(function (response) {
-            console.log(response)
+        }).catch(function(response) {
+            console.log(response);
             if (!response) {
                 setError("root", {message: "No response from server"});
             } else {
@@ -102,7 +122,7 @@ export function GameForm() {
                 } else {
                     setError("root", {
                         message: `Something went wrong... ${response.response.data}`
-                    })
+                    });
                 }
             }
         });
@@ -115,7 +135,7 @@ export function GameForm() {
                 required: "Name is required",
                 maxLength: {
                     value: MAX_NAME_LENGTH,
-                    message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH})`,
+                    message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH})`
                 }
             })} type={"text"} placeholder={"game name"}
                    onChange={(event) => setName(event.target.value)}
@@ -129,7 +149,7 @@ export function GameForm() {
                 required: "A description is required",
                 maxLength: {
                     value: MAX_DESCRIPTION_LENGTH,
-                    message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})`,
+                    message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})`
                 }
             })} type={"text"} placeholder={"This game measures..."}
                    onChange={(event) => setDescription(event.target.value)}
@@ -148,15 +168,15 @@ export function GameForm() {
             <h3>Play Link</h3>
             <input {...register("playLink", {
                 required: "A Play link must be provided",
-                validate: (value) =>{
-                    try{
-                        let url = new URL(value)
-                    } catch(error){
-                        return "Invalid URL Provided"
+                validate: (value) => {
+                    try {
+                        let url = new URL(value);
+                    } catch (error) {
+                        return "Invalid URL Provided";
                     }
-                    return true
+                    return true;
                 }
-            })} type={"text"} placeholder={"https://link"} onChange={(event) => setPlayLink(event.target.value)}/>
+            })} type={"text"} placeholder={"https://link"} onChange={(event) => setPlayLink(event.target.value)} />
             {errors.playLink && (
                 <div>{errors.playLink.message}</div>
             )}
@@ -168,25 +188,17 @@ export function GameForm() {
                         whileHover={{scale: 1.1}}
                         whileTap={{scale: 0.9}}
                     >
-                        <label htmlFor={'icon'}>
+                        <label htmlFor={"icon"}>
                             <p>
-                                {image ? image.name : 'No file chosen'}
+                                {image ? image.name : "No file chosen"}
                             </p>
                             <div>
-                                <FaImage/>
+                                <FaImage />
                             </div>
                         </label>
-                        <input id={'icon'} {...register("icon", {
+                        <input id={"icon"} {...register("icon", {
                             required: false,
-                            validate: (value) => {
-                                const acceptedFormats = ACCEPTED_IMAGE;
-                                const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
-                                if (!acceptedFormats.includes(fileExtension)) {
-                                    return "Error: Invalid IMG"
-                                }
-                                return true;
-                            }
-                        })} type={"file"} accept={"image/*"} onChange={handleImage}/>
+                        })} type={"file"} accept={"image/*"} onChange={handleImage} />
                     </motion.div>
                 </div>
                 <div>
@@ -195,24 +207,16 @@ export function GameForm() {
                         whileHover={{scale: 1.1}}
                         whileTap={{scale: 0.9}}
                     >
-                        <label htmlFor={'score'}>
+                        <label htmlFor={"score"}>
                             <p>
-                                {scoreType ? scoreType.name : 'No file chosen'}
+                                {scoreType ? scoreType.name : "No file chosen"}
                             </p>
                             <div>
-                                <LuFileJson/>
+                                <LuFileJson />
                             </div>
                         </label>
-                        <input id={'score'} {...register("scoreTypes", {
+                        <input id={"score"} {...register("scoreTypes", {
                             required: "Score types must be uploaded",
-                            validate: (value) => {
-                                const acceptedFormats = ACCEPTED_SCORE_FILE;
-                                const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
-                                if (!acceptedFormats.includes(fileExtension)) {
-                                    return `Error: Invalid file type provided ${fileExtension}`
-                                }
-                                return true;
-                            }
                         })} type={"file"} accept={".json"} onChange={handleScores}
                         />
                         {errors.scoreTypes && (
@@ -226,24 +230,16 @@ export function GameForm() {
                         whileHover={{scale: 1.1}}
                         whileTap={{scale: 0.9}}
                     >
-                        <label htmlFor={'script'}>
+                        <label htmlFor={"script"}>
                             <p>
-                                {evaluationScript ? evaluationScript.name : 'No file chosen'}
+                                {evaluationScript ? evaluationScript.name : "No file chosen"}
                             </p>
                             <div>
-                                <FaPython/>
+                                <FaPython />
                             </div>
                         </label>
-                        <input id={'script'} {...register("evaluationScript", {
-                            required: "An Evaluation Script must be uploaded",
-                            validate: (value) => {
-                                const acceptedFormats = ACCEPTED_EVAL_SCRIPT;
-                                const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
-                                if (!acceptedFormats.includes(fileExtension)) {
-                                    return "Error: Invalid file type provided"
-                                }
-                                return true;
-                            }
+                        <input id={"script"} {...register("evaluationScript", {
+                            required: "An Evaluation Script must be uploaded"
                         })} type={"file"} accept={".py"} onChange={handleEvalScript}
                         />
                         {errors.evaluationScript && (
