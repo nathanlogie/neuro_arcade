@@ -1,5 +1,7 @@
 import { screen } from "@testing-library/react";
 import { Button } from "../Button";
+import { Route } from "react-router";
+import userEvent from "@testing-library/user-event";
 
 // TODO: currently the case where link is an empty string is not tested
 // This seems like it should be removed, but if not then tests should be made
@@ -80,6 +82,23 @@ test('Button renders right orientation without crashing', () => {
     );
 
     expect(screen.getByText("Name")).toBeInTheDocument();
+});
+
+test('Button link functions', () => {
+    renderWithRouter(
+        <Button
+            name='Name'
+            link='dest'
+            direction='left'
+            orentation='left'
+        />,
+
+        <Route path="dest" element={<p>Success</p>} />
+    );
+
+    userEvent.click(screen.getByText("Name"));
+
+    expect(screen.getByText("Success")).toBeInTheDocument();
 });
 
 // TODO: test link?
