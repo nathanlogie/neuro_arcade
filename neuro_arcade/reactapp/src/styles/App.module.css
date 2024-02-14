@@ -79,11 +79,10 @@
     }
     .DataBlock {
         width: 100%;
-        padding: 2em;
+        padding: 3em;
         display: flex;
         overflow-x: auto;
-        justify-content: center;
-        gap: 2em;
+        gap: 3em;
     }
     .Form {
         margin: 3em;

@@ -23,14 +23,28 @@ export function Table({inputData}) {
 
     const columns = [
         // { field: 'id', headerName: 'ID', width: 90 },
-        { field: 'player', headerName: ' ', width: 150 },
+        { field: 'player', width: 150, renderHeader: () => (
+          <strong>
+            Player
+          </strong>
+        ), },
         ...inputData.table_headers.map(header => ({
             field: header.name.toLowerCase(),
             headerName: header.name,
             type: header.type === 'int' ? 'number' : 'float',
             width: 100,
+            renderHeader: () => (
+                <strong>
+                    {header.name}
+                </strong>
+            ),
         })),
-        { field: 'is_AI', headerName: 'Is AI?', type: 'boolean', width: 100 },
+        {field: 'is_AI', headerName: 'Is AI?', type: 'boolean', width: 100, renderHeader: () => (
+                <strong>
+                    is AI?
+                </strong>
+            ),
+        },
     ];
 
     const rows = inputData.rows.map((row, index) => ({
@@ -94,7 +108,8 @@ export function Table({inputData}) {
                             '& .MuiDataGrid-cell:hover': {
                               color: 'white',
                             },
-                            height: '100%'
+                            height: '100%',
+                            width: '33em'
                         }}
                         rows={filteredRows}
                         columns={columns}

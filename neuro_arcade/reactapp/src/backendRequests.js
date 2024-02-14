@@ -424,7 +424,7 @@ export async function getAboutData(){
  * @returns {Object} response when post is accepted
  */
 export async function postDescription(description){
-    const url = API_ROOT + '/edit_about'
+    const url = API_ROOT + '/edit_about/'
 
     axios.post(url, {value: description, field: "description"}, await getHeaders('POST', true))
         .then(function (response) {
@@ -446,7 +446,7 @@ export async function postDescription(description){
  * @return {Object} response if successful
  */
 export async function postPublications(publications){
-    const url = API_ROOT + '/edit_about'
+    const url = API_ROOT + '/edit_about/'
 
     try {
         const response = await axios.post(url, { value: publications, field: "publications" }, await getHeaders('POST', true));
