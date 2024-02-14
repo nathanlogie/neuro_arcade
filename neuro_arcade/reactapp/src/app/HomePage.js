@@ -110,7 +110,6 @@ export function HomePage() {
                     }
                 />
                 <Button
-                    id={'MoreGames'}
                     name={'more games'}
                     link={'all_games'}
                     orientation={'right'}
@@ -119,6 +118,12 @@ export function HomePage() {
             </div>
             <div className={styles.Side}>
                 <HomePageTable inputData={models} />
+                <Button
+                    name={'all players'}
+                    link={'all_players'}
+                    orientation={'right'}
+                    direction={'down'}
+                />
             </div>
         </>;
     }

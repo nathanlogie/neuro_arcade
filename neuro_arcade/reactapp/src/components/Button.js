@@ -7,7 +7,6 @@ import {Link} from "react-router-dom";
 import {motion} from "framer-motion";
 
 /**
- * @param id for button positioning
  * @param name for button name
  * @param link for button link
  * @param direction for arrow direction
@@ -15,12 +14,11 @@ import {motion} from "framer-motion";
  * @returns {JSX.Element} button
  * @constructor builds button
  */
-export function Button({id, name, link, direction, orientation}) {
+export function Button({name, link, direction, orientation}) {
     if (link !== '') {
         return (
             <motion.div
                 className={styles.Button}
-                id={styles[id]}
                 whileHover={{scale: 1.1}}
                 whileTap={{scale: 0.9}}
                 initial={{opacity: 0}}
@@ -44,7 +42,7 @@ export function Button({id, name, link, direction, orientation}) {
         );
     } else {
         return (
-            <div className={styles.Button} id={styles[id]} />
+            <div className={styles.Button} />
         );
     }
 }

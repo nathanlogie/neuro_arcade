@@ -48,9 +48,6 @@
 .Arrow#right {
     right: 10%;
 }
-#MoreGames {
-    margin: 0 0 1em auto;
-}
 
 @media (max-width: 50em) {
     .Button {
