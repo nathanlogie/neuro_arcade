@@ -8,7 +8,6 @@ import {motion} from "framer-motion";
 import React from "react";
 
 /**
- * @param id for button positioning
  * @param name for button name
  * @param link for button link
  * @param direction for arrow direction
@@ -16,11 +15,22 @@ import React from "react";
  * @returns {JSX.Element} button
  * @constructor builds button
  */
-export function Button({id, name, link, direction, orientation}) {
-    if (link !== "") {
+export function Button({name, link, direction, orientation}) {
+    if (link !== '') {
         return (
-            <motion.div className={styles.Button} id={styles[id]} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
-                <Link className={styles.ButtonBlock} id={styles[orientation]} to={link}>
+            <motion.div
+                className={styles.Button}
+                whileHover={{scale: 1.1}}
+                whileTap={{scale: 0.9}}
+                initial={{opacity: 0}}
+                animate={{opacity: 1}}
+                exit={{opacity: 0}}
+            >
+                <Link
+                    className={styles.ButtonBlock}
+                    id={styles[orientation]}
+                    to={link}
+                >
                     {name}
                 </Link>
                 <Link className={styles.Arrow} id={styles[orientation]} to={link}>
@@ -29,7 +39,9 @@ export function Button({id, name, link, direction, orientation}) {
             </motion.div>
         );
     } else {
-        return <div className={styles.Button} id={styles[id]} />;
+        return (
+            <div className={styles.Button} />
+        );
     }
 }
 

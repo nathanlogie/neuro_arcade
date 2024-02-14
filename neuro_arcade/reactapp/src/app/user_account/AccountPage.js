@@ -26,7 +26,7 @@ export function AccountPage() {
             }} />
             <NavBar button_left={{
                 name: 'home',
-                     link: 'home',
+                link: 'home',
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{

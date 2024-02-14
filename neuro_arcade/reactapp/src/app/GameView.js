@@ -2,8 +2,10 @@ import {useParams} from "react-router-dom";
 import {requestGame} from "../backendRequests";
 import styles from "../styles/App.module.css";
 import {Table} from "../components/game/Table";
-import {Graph} from "../components/game/Graph";
-import React, {useEffect, useState} from "react";
+import {LineC} from "../components/game/LineC";
+import {RadarC} from "../components/game/RadarC";
+import {SwarmPlot} from "../components/game/SwarmPlot";
+import {useEffect, useState} from "react";
 import {Banner, MobileBanner} from "../components/Banner";
 import {Background} from "../components/Background";
 
@@ -23,8 +25,32 @@ export function GameView() {
             setLoading(false);
         });
     }, []);
-    if (isLoading) {
-        return (
+
+    let content = <>...</>;
+    if (!loading) {
+        content = <>
+            <div className={styles.Content}>
+                <h1>{gameData.game.name}</h1>
+                <div className={styles.ContentBlock}>
+                    <p>
+                        <img src="https://loremflickr.com/500/500" alt={'image'} // TODO add query for image here
+                        />
+                        {gameData.game.description}
+                    </p>
+                </div>
+            </div>
+            <div className={styles.DataBlock}>
+                <Table inputData={gameData}/>
+                <div className={styles.Graphs}>
+                    <LineC inputData={gameData}/>
+                    <RadarC inputData={gameData}/>
+                    <SwarmPlot inputData={gameData}/>
+                </div>
+            </div>
+        </>;
+    }
+
+    return (
             <>
                 <Background />
                 <Banner size={"small"} state={"Games"} />

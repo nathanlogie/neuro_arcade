@@ -15,7 +15,7 @@ export function RadarC({inputData}) {
 
   const numDataTypes = inputData.table_headers.length;
   if (numDataTypes < 3){
-    return <h1>Insufficient number of data types to display radar chart</h1>;
+    return null;
   }
 
   const scores = {};

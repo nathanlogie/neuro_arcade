@@ -424,8 +424,80 @@ players = [
 ]
 
 score_types = {
-    "Varying Shapes": {
-        "headers": [
+    'Varying Shapes': {
+        'headers': [
+            {
+                'name': 'Coins',
+                'description': "Number of coins collected",
+                'min': 0,
+                'max': 100,
+            }
+        ]
+    },
+    'Flying Objects': {
+        'headers': [
+            {
+                'name': 'Points',
+                'description': "Number of points collected",
+                'min': 0,
+                'max': 20,
+            }
+        ]
+    },
+    'Object Crops': {
+        'headers': [
+            {
+                'name': 'Points',
+                'description': "Number of points collected",
+                'min': 0,
+                'max': 100,
+            }
+        ]
+    },
+    'Block Drops': {
+        'headers': [
+            {
+                'name': 'Points',
+                'description': "Number of points collected",
+                'min': 0,
+                'max': 10000,
+            }
+        ]
+    },
+    '2048': {
+        'headers': [
+            {
+                'name': 'Points',
+                'description': "Number of points collected",
+                'min': 0,
+                'max': 10000,
+            }
+        ]
+    },
+    'Space Creatures': {
+        'headers': [
+            {
+                'name': 'Points',
+                'description': "Number of points collected",
+                'min': 0,
+                'max': 10,
+            },
+            {
+                'name': 'Time',
+                'description': "Time",
+                'min': 0,
+                'max': 9999,
+            },
+            {
+                'name': 'Coins',
+                'description': "Coins collected",
+                'min': 0,
+                'max': 10,
+            },
+        ]
+    },
+    'Flying Bird': {
+        'headers': [
             {
                 "name": "Coins",
                 "description": "Number of coins collected",

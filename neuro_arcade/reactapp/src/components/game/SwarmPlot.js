@@ -1,7 +1,15 @@
 import React from 'react';
 import {ResponsiveSwarmPlot} from '@nivo/swarmplot';
 import {Switcher} from '../Switcher';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import styles from '../../styles/components/TableGraph.module.css';
+import {createTheme, ThemeProvider} from "@mui/material";
+
+const graph_theme = createTheme({
+  palette: {
+      mode: 'dark',
+  },
+});
 
 /**
  * @param inputData {Object}
@@ -52,40 +60,52 @@ export function SwarmPlot({inputData}) {
     
 
     return (
-        <div style={{ width: '600px', height: '400px' }}>
-            <Switcher 
-                data={inputData} 
-                onSwitcherChange={handleSwitcherChange}
-                switcherDefault={selectedSwitcherValue}
-            />
-            <ResponsiveSwarmPlot
-                data={data}
-                groups={['AI', 'Human']} 
-                identity='id'
-                value="value"
-                groupBy="group"
-                margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
-                size={{ key: 'value', values: [1, maxSize], sizes: [1, 10] }}
-                forceStrength={1}
-                simulationIterations={100}
-                axisBottom={{
-                    orient: 'bottom',
-                    tickSize: 5,
-                    tickPadding: 5,
-                    tickRotation: 0,
-                    legend:'AI vs Humans',
-                    legendPosition: 'middle',
-                    legendOffset: 36,
-                }}
-                axisLeft={{
-                    orient: 'left',
-                    tickSize: 5,
-                    tickPadding: 5,
-                    tickRotation: 0,
-                    legend: selectedSwitcherValue,
-                    legendOffset: -40,
-                }}
-            />
+        <div className={styles.GraphContainer}>
+            <div style={{width: '43.8em', height: '32em'}}>
+                <h2>Trends</h2>
+                <div className={styles.TabSwitcher}>
+                    <Switcher
+                        data={inputData}
+                        onSwitcherChange={handleSwitcherChange}
+                        switcherDefault={selectedSwitcherValue}
+                    />
+                </div>
+                <ThemeProvider theme={graph_theme}>
+                    <ResponsiveSwarmPlot
+                        data={data}
+                        groups={['AI', 'Human']}
+                        identity='id'
+                        value="value"
+                        groupBy="group"
+                        margin={{top: 50, right: 50, bottom: 50, left: 60}}
+                        size={{key: 'value', values: [1, maxSize], sizes: [1, 10]}}
+                        forceStrength={1}
+                        simulationIterations={100}
+                        style={{
+                            background: 'linear-gradient(270deg, rgba(217, 217, 217, 0.43) 0%, rgba(217, 217, 217, 0.00) 100%)',
+                            stroke: '#FFFFFF',
+                            color: '#FFFFFF'
+                        }}
+                        axisBottom={{
+                            orient: 'bottom',
+                            tickSize: 5,
+                            tickPadding: 5,
+                            tickRotation: 0,
+                            legend: 'AI vs Humans',
+                            legendPosition: 'middle',
+                            legendOffset: 36,
+                        }}
+                        axisLeft={{
+                            orient: 'left',
+                            tickSize: 5,
+                            tickPadding: 5,
+                            tickRotation: 0,
+                            legend: selectedSwitcherValue,
+                            legendOffset: -40,
+                        }}
+                    />
+                </ThemeProvider>
+            </div>
         </div>
     );
 };
