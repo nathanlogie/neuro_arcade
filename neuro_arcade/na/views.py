@@ -12,7 +12,13 @@ from rest_framework import viewsets
 from na.models import Game, GameTag, Player, PlayerTag
 from django.conf import settings
 
-from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
+from na.serialisers import (
+    GameSerializer,
+    UserSerializer,
+    GameTagSerializer,
+    PlayerSerializer,
+    PlayerTagSerializer,
+)
 import json
 
 
@@ -26,11 +32,11 @@ def get_game_dict(game_slug: str):
     :param game_slug: string representing the game slug
     """
     game = get_object_or_404(Game, slug=game_slug)
-    dictionary = {'game': game.serialize()}
+    dictionary = {"game": game.serialize()}
     headers, scores = game.get_score_table()
     if headers is not None and scores is not None:
-        dictionary['table_headers'] = headers
-        dictionary['rows'] = scores
+        dictionary["table_headers"] = headers
+        dictionary["rows"] = scores
     return dictionary
 
 
@@ -45,8 +51,7 @@ def get_game_list(query, wanted_tags=None, num=None):
     if wanted_tags is None:
         wanted_tags = []
     games = [
-        game for game in Game.objects.all()
-        if game.matches_search(query, wanted_tags)
+        game for game in Game.objects.all() if game.matches_search(query, wanted_tags)
     ]
     # taking only the first N games
     if num is not None:
@@ -62,7 +67,7 @@ def validate_password(password):
 # ----------------
 #    API CALLS
 # ----------------
-@api_view(['GET'])
+@api_view(["GET"])
 def get_game(request: Request, game_name_slug: str) -> Response:
     """
     Retrieve Game Information
@@ -71,7 +76,7 @@ def get_game(request: Request, game_name_slug: str) -> Response:
     return Response(game)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def get_tags(request: Request) -> Response:
     """
     Retrieves the GameTags
@@ -79,13 +84,13 @@ def get_tags(request: Request) -> Response:
     return Response([tag.serialize() for tag in GameTag.objects.all()])
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def get_games_sorted(request: Request) -> Response:
     # Process GET parameters
-    query = request.GET.get('query')
-    wanted_tag_slugs = request.GET.getlist('tags')
+    query = request.GET.get("query")
+    wanted_tag_slugs = request.GET.getlist("tags")
     wanted_tags = GameTag.objects.filter(slug__in=wanted_tag_slugs)
-    num = request.GET.get('num')
+    num = request.GET.get("num")
     if num is not None:
         num = int(num)
 
@@ -95,7 +100,7 @@ def get_games_sorted(request: Request) -> Response:
 
 
 # TODO maybe you should be logged in for this request
-@api_view(['POST'])
+@api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def post_game_score(request: Request, game_name_slug: str) -> Response:
     """
@@ -109,55 +114,58 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
     """
     # todo: this needs to be changed for the new authentication
     # checking that the Post request contains the player field
-    if request.user.get('player') is None:
+    if request.user.get("player") is None:
         return Response(
-            status=400, data={
-                'description': 'No player field was provided.'})
+            status=400, data={"description": "No player field was provided."}
+        )
 
     game = get_object_or_404(Game, slug=game_name_slug)
-    player = get_object_or_404(Player, id=request.data.get('player'))
+    player = get_object_or_404(Player, id=request.data.get("player"))
     added_score = {}
     # for score type header in game
-    for header in game.score_type['headers']:
-        score = request.data.get(header['name'])
+    for header in game.score_type["headers"]:
+        score = request.data.get(header["name"])
         if score is not None:
             # Score has been found, now it has to be checked if it's valid.
             value = float(score)
             # Checking that it is above the min:
-            if header['min'] is not None and value < header['min']:
-                msg = 'Score field ' + \
-                    header['name'] + ' is invalid: value is bellow the allowed minimum.'
-                return Response(status=400, data={'description': msg})
+            if header["min"] is not None and value < header["min"]:
+                msg = (
+                    "Score field "
+                    + header["name"]
+                    + " is invalid: value is bellow the allowed minimum."
+                )
+                return Response(status=400, data={"description": msg})
             # Checking that it is below the max:
-            if header['max'] is not None and value > header['max']:
-                msg = 'Score field ' + \
-                    header['name'] + ' is invalid: value is above the allowed maximum.'
-                return Response(status=400, data={'description': msg})
+            if header["max"] is not None and value > header["max"]:
+                msg = (
+                    "Score field "
+                    + header["name"]
+                    + " is invalid: value is above the allowed maximum."
+                )
+                return Response(status=400, data={"description": msg})
 
             # TODO use validation script here
 
             # Value is valid, so it will be added to the database
-            added_score[header['name']] = score
+            added_score[header["name"]] = score
         else:
             return Response(
-                status=400, data={
-                    'description': 'Score field ' + header['name'] + ' not present'})
+                status=400,
+                data={"description": "Score field " + header["name"] + " not present"},
+            )
 
     if len(added_score.keys()) == 0:
         return Response(
-            status=400, data={
-                'description': 'No relevant score fields were provided.'})
+            status=400, data={"description": "No relevant score fields were provided."}
+        )
 
-    game.score_set.create(
-        player_id=player.id,
-        game_id=game.id,
-        score=added_score
-    )
+    game.score_set.create(player_id=player.id, game_id=game.id, score=added_score)
 
     return Response(status=200)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def get_about_data(request: Request) -> Response:
     """
     Posts about data from json file
@@ -165,7 +173,7 @@ def get_about_data(request: Request) -> Response:
     Uses static/about.json as a fallback
     """
 
-    file = 'about.json'
+    file = "about.json"
     try:
         with open(os.path.join(settings.MEDIA_ROOT, file), "r") as f:
             about = json.load(f)
@@ -177,21 +185,21 @@ def get_about_data(request: Request) -> Response:
     return Response(about)
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 def post_about_data(request) -> Response:
     """
     Retrieves About data from edit about form and posts it to media/about.json
     Gets a field and value. Depending on the field, it handles the data appropriately
     """
 
-    file_path = os.path.join(settings.MEDIA_ROOT, 'about.json')
+    file_path = os.path.join(settings.MEDIA_ROOT, "about.json")
 
     try:
-        with open(file_path, 'r') as f:
+        with open(file_path, "r") as f:
             data = json.load(f)
 
-        field = request.data.get('field')
-        value = request.data.get('value')
+        field = request.data.get("field")
+        value = request.data.get("value")
 
         if not field:
             return Response(status=400)
@@ -203,14 +211,10 @@ def post_about_data(request) -> Response:
 
             for p in value:
                 data["publications"].append(
-                    {
-                        'title': p['title'],
-                        'author': p['author'],
-                        'link': p['link']
-                    }
+                    {"title": p["title"], "author": p["author"], "link": p["link"]}
                 )
 
-        with open(file_path, 'w') as f:
+        with open(file_path, "w") as f:
             json.dump(data, f)
 
         return Response(status=200)
@@ -219,24 +223,29 @@ def post_about_data(request) -> Response:
         return Response(status=400)
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 def sign_up(request: Request) -> Response:
-    username = request.data['username']
-    email = request.data['email']
-    password = request.data['password']
+    username = request.data["username"]
+    email = request.data["email"]
+    password = request.data["password"]
     # input validation:
-    if username is None or email is None or password is None or not validate_password(
-            password):
-        return Response(status=400, data='Invalid data.')
+    if (
+        username is None
+        or email is None
+        or password is None
+        or not validate_password(password)
+    ):
+        return Response(status=400, data="Invalid data.")
 
     # creating a new User in the DB:
     new_user = User.objects.create_user(
-        username=username, email=email, password=password)
+        username=username, email=email, password=password
+    )
 
     if new_user is not None:
         return Response(status=200)  # sending a success response back
     else:
-        return Response(status=400, data='Error creating new user.')
+        return Response(status=400, data="Error creating new user.")
 
 
 class UserViewSet(viewsets.ModelViewSet):

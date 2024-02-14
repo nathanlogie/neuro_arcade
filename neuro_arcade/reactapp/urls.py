@@ -1,5 +1,3 @@
+app_name = "reactapp"
 
-app_name = 'reactapp'
-
-urlpatterns = [
-]
+urlpatterns = []

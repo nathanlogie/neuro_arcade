@@ -4,15 +4,14 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('na', '0009_playertag_unique_slug'),
+        ("na", "0009_playertag_unique_slug"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='player',
-            old_name='player_tags',
-            new_name='tags',
+            model_name="player",
+            old_name="player_tags",
+            new_name="tags",
         ),
     ]

@@ -4,16 +4,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('na', '0002_auto_20231123_1515'),
+        ("na", "0002_auto_20231123_1515"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='game',
-            name='play_link',
-            field=models.URLField(default='http://game.com'),
+            model_name="game",
+            name="play_link",
+            field=models.URLField(default="http://game.com"),
             preserve_default=False,
         ),
     ]

@@ -13,11 +13,8 @@ def set_slug(*args):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('na', '0007_playertag_slug'),
+        ("na", "0007_playertag_slug"),
     ]
 
-    operations = [
-        migrations.RunPython(set_slug)
-    ]
+    operations = [migrations.RunPython(set_slug)]
