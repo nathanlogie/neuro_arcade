@@ -1,7 +1,6 @@
 
 stages:          # List of stages for jobs, and their order of execution
   - build
-  - serverFix
   - django
   - reactCreation
   - react
@@ -23,19 +22,10 @@ django-build-job:
   script:
     - echo "Compiling the code..."
     - echo "Compile complete."
-
-
-server-job:
-  image: python:latest
-  before_script:
-  - python -m venv venv
-  - source venv/bin/activate
-  - pip install -r requirements.txt
-  stage: serverFix
-  script:
     - python neuro_arcade/manage.py makemigrations
     - python neuro_arcade/manage.py migrate
     - python neuro_arcade/manage.py check
+    
 
 
 unit-test-job: 
@@ -46,8 +36,7 @@ unit-test-job:
   - pip install -r requirements.txt
   stage: django
   script:
-    - cd neuro_arcade
-    - python manage.py test
+    - python neuro_arcade/manage.py test
     - echo "Django Unit Tests Ran"
   only:
     - branches
