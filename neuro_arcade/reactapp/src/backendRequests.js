@@ -401,7 +401,7 @@ export async function postGameScore(gameName, playerIdentification, scoreData) {
  *
  * @throws err when get is rejected
  *
- * @returns {AboutData} response if successful
+ * @returns {Promise} response if successful
  */
 export async function getAboutData(){
     try {

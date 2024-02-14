@@ -479,7 +479,19 @@ score_types = {
                 'description': "Number of points collected",
                 'min': 0,
                 'max': 10,
-            }
+            },
+            {
+                'name': 'Time',
+                'description': "Time",
+                'min': 0,
+                'max': 9999,
+            },
+            {
+                'name': 'Coins',
+                'description': "Coins collected",
+                'min': 0,
+                'max': 10,
+            },
         ]
     },
     'Flying Bird': {
