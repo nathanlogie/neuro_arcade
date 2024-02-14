@@ -63,7 +63,7 @@ export function HomePageTable({inputData}) {
 
     return(
         <div className={styles.TableContainer}>
-            <h2>Leaderboards</h2>
+            <h2>Top Performers</h2>
             <ThemeProvider theme={table_theme}>
                 <DataGrid
                     sx={{
