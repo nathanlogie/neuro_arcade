@@ -5,7 +5,8 @@ import {NavBar} from "../components/NavBar";
 import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {TagFilter} from "../components/TagFilter";
-import {requestGameTags} from "../backendRequests";
+import {HomePageTable} from "../components/HomePageTable";
+import {requestGameTags, requestModelsRanked} from "../backendRequests";
 import {motion} from "framer-motion"
 import {useEffect, useState} from "react";
 import { IoFilter } from "react-icons/io5";
@@ -22,7 +23,10 @@ export function HomePage() {
     let [tags, setTags] = useState([]);
     let [forcedTags, setForcedTags] = useState([]);
     let [selectedTags, setSelectedTags] = useState([]);
-    let [loading, setLoading] = useState(true);
+    let [loadingTags, setLoadingTags] = useState(true);
+
+    let [models, setModels] = useState([]);
+    let [loadingModels, setLoadingModels] = useState(true);
 
     const [show, setShow] = useState(false);
     const [hover, setHover] = useState(false);
@@ -49,12 +53,21 @@ export function HomePage() {
             .then((tags) => {
                 setTags(tags.filter((tag) => tag.slug != 'featured'));
                 setForcedTags(tags.filter((tag) => tag.slug == 'featured'));
-                setLoading(false);
+                setLoadingTags(false);
+            })
+    }, [])
+    
+    // Fetch the model rankings on load
+    useEffect(() => {
+        requestModelsRanked()
+            .then((models) => {
+                setModels(models);
+                setLoadingModels(false);
             })
     }, [])
 
     let content = <>...</>;
-    if (!loading) {
+    if (!loadingTags && !loadingModels) {
         content = <>
             <div className={styles.Content} id={styles['small']}>
                 {loggedIn ? <button onClick={onLogout}>Logout</button> :
@@ -105,6 +118,7 @@ export function HomePage() {
                 />
             </div>
             <div className={styles.Side}>
+                <HomePageTable inputData={models} />
             </div>
         </>;
     }
