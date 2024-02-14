@@ -16,7 +16,7 @@ import React from "react";
  * @constructor builds button
  */
 export function Button({name, link, direction, orientation}) {
-    if (link !== '') {
+    if (link !== "") {
         return (
             <motion.div
                 className={styles.Button}
@@ -26,11 +26,7 @@ export function Button({name, link, direction, orientation}) {
                 animate={{opacity: 1}}
                 exit={{opacity: 0}}
             >
-                <Link
-                    className={styles.ButtonBlock}
-                    id={styles[orientation]}
-                    to={link}
-                >
+                <Link className={styles.ButtonBlock} id={styles[orientation]} to={link}>
                     {name}
                 </Link>
                 <Link className={styles.Arrow} id={styles[orientation]} to={link}>
@@ -39,9 +35,7 @@ export function Button({name, link, direction, orientation}) {
             </motion.div>
         );
     } else {
-        return (
-            <div className={styles.Button} />
-        );
+        return <div className={styles.Button} />;
     }
 }
 
