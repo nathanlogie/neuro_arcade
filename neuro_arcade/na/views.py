@@ -211,12 +211,17 @@ def post_about_data(request) -> Response:
     Retrieves About data from edit about form and posts it to media/about.json
     Gets a field and value. Depending on the field, it handles the data appropriately
     """
+    file = 'about.json'
+    media_file_path = os.path.join(settings.MEDIA_ROOT, file)
+    try:
+        with open(media_file_path, "r") as f:
+            about = json.load(f)
 
-    file_path = os.path.join(settings.MEDIA_ROOT, 'about.json')
+    except FileNotFoundError:
+        with open(os.path.join(settings.STATICFILES_DIRS[0], file), "r") as f:
+            about = json.load(f)
 
     try:
-        with open(file_path, 'r') as f:
-            data = json.load(f)
 
         field = request.data.get('field')
         value = request.data.get('value')
@@ -225,12 +230,12 @@ def post_about_data(request) -> Response:
             return Response(status=400)
 
         if field == "description":
-            data["description"] = value
+            about["description"] = value
         elif field == "publications":
-            data["publications"] = []
+            about["publications"] = []
 
             for p in value:
-                data["publications"].append(
+                about["publications"].append(
                     {
                         'title': p['title'],
                         'author': p['author'],
@@ -238,8 +243,8 @@ def post_about_data(request) -> Response:
                     }
                 )
 
-        with open(file_path, 'w') as f:
-            json.dump(data, f)
+        with open(media_file_path, 'w') as f:
+            json.dump(about, f)
 
         return Response(status=200)
     except Exception as e:
