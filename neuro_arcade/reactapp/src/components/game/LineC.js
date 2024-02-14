@@ -55,7 +55,7 @@ export function LineC({inputData}) {
                         dataKey="name"
                         angle={290}
                         dy={40}
-                        label={{value: "AI Platforms", position: 'bottom', offset: 90}}
+                        label={{value: "Players", position: 'bottom', offset: 90}}
                         axisLine={{stroke: 'transparent'}}
                         padding={{left: 10}}
                         tickLine={false}
