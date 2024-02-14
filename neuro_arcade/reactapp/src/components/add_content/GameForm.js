@@ -7,6 +7,8 @@ import {FaPython} from "react-icons/fa6";
 import {FaPlus} from "react-icons/fa6";
 import {motion} from "framer-motion";
 
+
+
 //Should be synced with models.py
 let MAX_NAME_LENGTH = 64;
 let MAX_DESCRIPTION_LENGTH = 1024;
@@ -33,12 +35,12 @@ export function GameForm() {
     const [scoreType, setScoreType] = useState(null);
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    // const [tags, setTags] = useState("");
+    const [tags, setTags] = useState("");
     const [playLink, setPlayLink] = useState("");
 
     const handleImage = (event) => {
         const file = event.target.files[0];
-        if (!file) {
+        if(!file){
             return;
         }
         const acceptedFormats = ACCEPTED_IMAGE;
@@ -53,7 +55,7 @@ export function GameForm() {
 
     const handleEvalScript = (event) => {
         const file = event.target.files[0];
-        if (!file) {
+        if(!file){
             return;
         }
         const acceptedFormats = ACCEPTED_EVAL_SCRIPT;
@@ -68,7 +70,7 @@ export function GameForm() {
 
     const handleScores = (event) => {
         const file = event.target.files[0];
-        if (!file) {
+        if(!file){
             return;
         }
         const acceptedFormats = ACCEPTED_SCORE_FILE;
@@ -81,7 +83,9 @@ export function GameForm() {
         }
     };
 
-    const onSubmit = async () => {
+    const onSubmit = async (event) => {
+
+
         const formData = new FormData();
         formData.append("name", name);
         formData.append("description", description);
@@ -104,162 +108,161 @@ export function GameForm() {
             url: "http://127.0.0.1:8000/api/games/",
             data: formData,
             headers: {"Content-Type": "multipart/form-data"}
-        })
-            .then(function (response) {
-                console.log(response);
-                reset();
-                setError("root", {message: "game submitted successfully"});
-            })
-            .catch(function (response) {
-                console.log(response);
-                if (!response) {
-                    setError("root", {message: "No response from server"});
+        }).then(function(response) {
+            console.log(response);
+            reset();
+            setError("root", {message: "game submitted successfully"});
+        }).catch(function(response) {
+            console.log(response);
+            if (!response) {
+                setError("root", {message: "No response from server"});
+            } else {
+                if (response.response.data.includes("IntegrityError")) {
+                    setError("root", {message: "A game with that name already exists!"});
                 } else {
-                    if (response.response.data.includes("IntegrityError")) {
-                        setError("root", {message: "A game with that name already exists!"});
-                    } else {
-                        setError("root", {
-                            message: `Something went wrong... ${response.response.data}`
-                        });
-                    }
+                    setError("root", {
+                        message: `Something went wrong... ${response.response.data}`
+                    });
                 }
-            });
+            }
+        });
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <h3>Name</h3>
-            <input
-                {...register("name", {
-                    required: "Name is required",
-                    maxLength: {
-                        value: MAX_NAME_LENGTH,
-                        message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH})`
-                    }
-                })}
-                type={"text"}
-                placeholder={"game name"}
-                onChange={(event) => setName(event.target.value)}
+            <input {...register("name", {
+                required: "Name is required",
+                maxLength: {
+                    value: MAX_NAME_LENGTH,
+                    message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH})`
+                }
+            })} type={"text"} placeholder={"game name"}
+                   onChange={(event) => setName(event.target.value)}
             />
-            {errors.name && <div>{errors.name.message}</div>}
+            {errors.name && (
+                <div>{errors.name.message}</div>
+            )}
 
             <h3>Description</h3>
-            <input
-                {...register("description", {
-                    required: "A description is required",
-                    maxLength: {
-                        value: MAX_DESCRIPTION_LENGTH,
-                        message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})`
-                    }
-                })}
-                type={"text"}
-                placeholder={"This game measures..."}
-                onChange={(event) => setDescription(event.target.value)}
+            <input {...register("description", {
+                required: "A description is required",
+                maxLength: {
+                    value: MAX_DESCRIPTION_LENGTH,
+                    message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})`
+                }
+            })} type={"text"} placeholder={"This game measures..."}
+                   onChange={(event) => setDescription(event.target.value)}
             />
-            {errors.description && <div>{errors.description.message}</div>}
+            {errors.description && (
+                <div>{errors.description.message}</div>
+            )}
 
             <h3>Game Tags</h3>
-            <input
-                {...register("tags", {
-                    required: false
-                })}
-                type={"text"}
-                placeholder={"example1, example2, example3, ..."}
-                // onChange={(event) => setTags(event.target.value)}
+            <input {...register("tags", {
+                required: false
+            })} type={"text"} placeholder={"example1, example2, example3, ..."}
+                   onChange={(event) => setTags(event.target.value)}
             />
 
             <h3>Play Link</h3>
-            <input
-                {...register("playLink", {
-                    required: "A Play link must be provided",
-                    validate: (value) => {
-                        try {
-                            // eslint-disable-next-line no-unused-vars
-                            let url = new URL(value);
-                        } catch (error) {
-                            return "Invalid URL Provided";
-                        }
-                        return true;
+            <input {...register("playLink", {
+                required: "A Play link must be provided",
+                validate: (value) => {
+                    try {
+                        let url = new URL(value);
+                    } catch (error) {
+                        return "Invalid URL Provided";
                     }
-                })}
-                type={"text"}
-                placeholder={"https://link"}
-                onChange={(event) => setPlayLink(event.target.value)}
-            />
-            {errors.playLink && <div>{errors.playLink.message}</div>}
+                    return true;
+                }
+            })} type={"text"} placeholder={"https://link"} onChange={(event) => setPlayLink(event.target.value)} />
+            {errors.playLink && (
+                <div>{errors.playLink.message}</div>
+            )}
 
             <span>
                 <div>
                     <h3>Game Icon</h3>
-                    <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
+                    <motion.div
+                        whileHover={{scale: 1.1}}
+                        whileTap={{scale: 0.9}}
+                    >
                         <label htmlFor={"icon"}>
-                            <p>{image ? image.name : "No file chosen"}</p>
+                            <p>
+                                {image ? image.name : "No file chosen"}
+                            </p>
                             <div>
                                 <FaImage />
                             </div>
                         </label>
-                        <input
-                            id={"icon"}
-                            {...register("icon", {
-                                required: false
-                            })}
-                            type={"file"}
-                            accept={"image/*"}
-                            onChange={handleImage}
-                        />
+                        <input id={"icon"} {...register("icon", {
+                            required: false,
+                        })} type={"file"} accept={"image/*"} onChange={handleImage} />
                     </motion.div>
                 </div>
                 <div>
                     <h3>Score Types</h3>
-                    <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
+                    <motion.div
+                        whileHover={{scale: 1.1}}
+                        whileTap={{scale: 0.9}}
+                    >
                         <label htmlFor={"score"}>
-                            <p>{scoreType ? scoreType.name : "No file chosen"}</p>
+                            <p>
+                                {scoreType ? scoreType.name : "No file chosen"}
+                            </p>
                             <div>
                                 <LuFileJson />
                             </div>
                         </label>
-                        <input
-                            id={"score"}
-                            {...register("scoreTypes", {
-                                required: "Score types must be uploaded"
-                            })}
-                            type={"file"}
-                            accept={".json"}
-                            onChange={handleScores}
+                        <input id={"score"} {...register("scoreTypes", {
+                            required: "Score types must be uploaded",
+                        })} type={"file"} accept={".json"} onChange={handleScores}
                         />
-                        {errors.scoreTypes && <div>{errors.scoreTypes.message}</div>}
+                        {errors.scoreTypes && (
+                            <div>{errors.scoreTypes.message}</div>
+                        )}
                     </motion.div>
                 </div>
                 <div>
                     <h3>Evaluation Script</h3>
-                    <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
+                    <motion.div
+                        whileHover={{scale: 1.1}}
+                        whileTap={{scale: 0.9}}
+                    >
                         <label htmlFor={"script"}>
-                            <p>{evaluationScript ? evaluationScript.name : "No file chosen"}</p>
+                            <p>
+                                {evaluationScript ? evaluationScript.name : "No file chosen"}
+                            </p>
                             <div>
                                 <FaPython />
                             </div>
                         </label>
-                        <input
-                            id={"script"}
-                            {...register("evaluationScript", {
-                                required: "An Evaluation Script must be uploaded"
-                            })}
-                            type={"file"}
-                            accept={".py"}
-                            onChange={handleEvalScript}
+                        <input id={"script"} {...register("evaluationScript", {
+                            required: "An Evaluation Script must be uploaded"
+                        })} type={"file"} accept={".py"} onChange={handleEvalScript}
                         />
-                        {errors.evaluationScript && <div>{errors.evaluationScript.message}</div>}
+                        {errors.evaluationScript && (
+                            <div>{errors.evaluationScript.message}</div>
+                        )}
                     </motion.div>
                 </div>
             </span>
 
-            <motion.button disabled={isSubmitting} type={"submit"} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
+            <motion.button
+                disabled={isSubmitting}
+                type={"submit"}
+                whileHover={{scale: 1.1}}
+                whileTap={{scale: 0.9}}
+            >
                 {isSubmitting ? "submitting game..." : "add new game"}
                 <div>
                     <FaPlus />
                 </div>
             </motion.button>
-            {errors.root && <div>{errors.root.message}</div>}
+            {errors.root && (
+                <div>{errors.root.message}</div>
+            )}
         </form>
     );
 }
