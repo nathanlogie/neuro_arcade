@@ -471,6 +471,16 @@ export function getUser() {
     return JSON.parse(user_str);
 }
 
+export async function getAllUsers() {
+    const url = API_ROOT + '/api/users/';
+    return await axios.get(url).then((response) => {
+        return response.data;
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    })
+}
+
 /**
  * Returns true if the user is logged in.
  */

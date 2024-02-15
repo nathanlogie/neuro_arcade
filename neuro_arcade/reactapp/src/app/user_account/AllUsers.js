@@ -3,18 +3,35 @@ import styles from '../../styles/App.module.css';
 import {NavBar} from "../../components/NavBar";
 import {MobileBanner} from "../../components/Banner";
 import {motion} from "framer-motion";
-import {Card} from "../../components/Card";
-import {FaGamepad} from "react-icons/fa6";
-import {TbBoxModel} from "react-icons/tb";
-import {getUser, userIsAdmin} from "../../backendRequests";
-import {Link} from "react-router-dom";
-
+import {getAllUsers} from "../../backendRequests";
+import {useEffect, useState} from "react";
 
 /**
  * Page for admins only
  * Lets admins see all users and approve new ones
  */
 export function AllUsers(){
+
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        getAllUsers()
+            .then( (usersResponse) => {
+                setUsers(usersResponse);
+        }
+
+        )
+    }, []);
+
+    console.log(users)
+
+    const displayUsers = users.map( function(user)
+    {
+        return (<li>User:{user.username}</li>)
+    }
+    )
+
+
     return (
         <>
             <Banner size={'big'} button_left={{
@@ -51,6 +68,9 @@ export function AllUsers(){
                     </div>
                     <div className={styles.ContentBlock}>
 
+                       <ul>
+                           {displayUsers}
+                       </ul>
 
                     </div>
                 </div>
