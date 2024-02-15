@@ -1,8 +1,8 @@
 import {Banner, MobileBanner} from "../components/Banner";
 import {Background} from "../components/Background";
 import styles from "../styles/App.module.css";
-import {GameGrid} from "../components/game/GameGrid";
-import {GameTagFilter} from "../components/game/GameTagFilter";
+import {GameGrid} from "../components/GameGrid";
+import {TagFilter} from "../components/TagFilter";
 import React, {useState} from "react";
 import {FaMagnifyingGlass} from "react-icons/fa6";
 
@@ -31,7 +31,7 @@ export function AllGames() {
                             <FaMagnifyingGlass />
                         </div>
                     </div>
-                    <GameTagFilter onTagChange={setSelectedTags} />
+                    <TagFilter onTagChange={setSelectedTags} />
                     {/* (see above) */}
                 </div>
                 <div className={styles.Content} id={styles["AllGames"]}>
