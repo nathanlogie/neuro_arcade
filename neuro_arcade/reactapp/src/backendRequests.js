@@ -537,22 +537,29 @@ export async function signupNewUser(userName, email, password) {
 
 /**
  * Sends a login requests. The user data associated is stored on local storage, and it can be acquired
- * by doing `localStorage.getItem("user")`.
+ * by doing `localStorage.getItem("user")`. Either the email or username need to be provided.
  *
- * @param {string} userName - name of the user
+ * @param {string} userID - either the username or email of the user
  * @param {string} password - the password in plaintext
  *
- * @throws Error login error
+ * @throws Error login error or if neither email nor username wasn't provided
  *
- * @return {Object} resposne if successful
+ * @return {Promise} promise of response if successful
  */
-export async function login(userName, password) {
+export async function login(userID, password) {
     const url = API_ROOT + '/login/';
+    let data;
+
+    if (userID.includes("@")) {
+        // userID is considered to be an email address
+        data = {'email': userID, 'password': password};
+    } else {
+        // userID is considered to be a username
+        data = {'username': userID, 'password': password};
+    }
+
     // sending the request:
-    return await axios.post(url, {
-        'username': userName,
-        'password': password,
-    }, await getHeaders('POST'))
+    return await axios.post(url, data, await getHeaders('POST'))
         .then((response) => {
             let user_data = {
                 token: response.data.token,

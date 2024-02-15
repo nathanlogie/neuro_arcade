@@ -307,12 +307,25 @@ def delete_player(request: Request) -> Response:
 
 @api_view(['POST'])
 def login(request: Request) -> Response:
-    # todo add support for auth with email only
-    username = request.data['username']
-    password = request.data['password']
-    user = authenticate(username=username, password=password)
+    username = request.data.get('username')
+    email = request.data.get('email')
+    password = request.data.get('password')
+    user = None
+    if username is not None:
+        # login with username
+        user = authenticate(username=username, password=password)
+    if username is None and email is not None:
+        # login with email
+        # Note that the authenticate function does not work with email.
+        # get a user associated with the email
+        maybe_user = User.objects.get(email=email)
+        if maybe_user is not None:
+            # check the password
+            if maybe_user.check_password(password):
+                # email and password are good, set user
+                user = maybe_user
     if user is None:
-        return Response(status=403, data="Wrong user credentials.")
+        return Response(status=403, data="Wrong credentials provided.")
 
     token = Token.objects.get_or_create(user=user)[0]
     response_data = {
