@@ -247,8 +247,6 @@ export async function requestPlayerTags() {
 /**
  * Requests a sorted list of games.
  *
- * @param query {string} instance of Reacts URLSearchParams, which you should get from useSearchParams()
- *
  * @return {Game[]} response data
  *
  * @throws Error when request is rejected
@@ -542,26 +540,24 @@ export async function signupNewUser(userName, email, password) {
  * by doing `localStorage.getItem("user")`.
  *
  * @param {string} userName - name of the user
- * @param {string} email - email address of the user
  * @param {string} password - the password in plaintext
  *
  * @throws Error login error
  *
  * @return {Object} resposne if successful
  */
-export async function login(userName, email, password) {
+export async function login(userName, password) {
     const url = API_ROOT + '/login/';
     // sending the request:
     return await axios.post(url, {
         'username': userName,
-        'email': email,
         'password': password,
     }, await getHeaders('POST'))
         .then((response) => {
             let user_data = {
                 token: response.data.token,
-                name: userName,
-                email: email,
+                name: response.data.username,
+                email: response.data.email,
                 is_admin: response.data.is_admin === true
             };
             localStorage.setItem("user", JSON.stringify(user_data));

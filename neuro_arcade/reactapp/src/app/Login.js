@@ -16,14 +16,9 @@ export function Login(){
     async function handleSubmit(e) {
         e.preventDefault();
 
-        await login(username, email, password)
-            .then (function() {
-                setSuccess(true)
-            })
-            .catch (function(error){
-                console.log("AN ERROR HAS OCCURRED: " + error)
-                setInvalidMessage("Invalid Details.")
-            })
+        await login(username, password)
+            .then (() => setSuccess(true))
+            .catch ((error) => setInvalidMessage("Invalid Details."))
     }
 
     return (
@@ -41,7 +36,7 @@ export function Login(){
                     <form onSubmit={handleSubmit}>
 
                         <p>Username: <input type={"text"} value={username} placeholder={"Username..."} onChange={(e) => setUsername(e.target.value)}/></p>
-                        <p>Email: <input type={"email"} value={email} placeholder={"Email..."} onChange={(e) => setEmail(e.target.value)}/></p>
+                        {/*<p>Email: <input type={"email"} value={email} placeholder={"Email..."} onChange={(e) => setEmail(e.target.value)}/></p>*/}
                         <p>Password: <input type={"password"} value={password} placeholder={"Password..."} onChange={(e) => setPassword(e.target.value)}/></p>
                         <button type={"submit"}>LOGIN</button>
 

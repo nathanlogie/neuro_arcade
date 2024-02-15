@@ -3,14 +3,12 @@ import os
 
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from django.http import HttpRequest
+from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.middleware.csrf import get_token
-from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework import viewsets
-from rest_framework.authtoken import views as rest_views
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -307,17 +305,24 @@ def delete_player(request: Request) -> Response:
     return Response(status=200, data='Player successfully deleted!')
 
 
-@csrf_exempt  # Needs to not check for a CSRF token due to django shenanigans. Should not be a security problem.
-def login(request: HttpRequest) -> Response:
-    if request.method == 'POST':
-        response = rest_views.obtain_auth_token(request)
+@api_view(['POST'])
+def login(request: Request) -> Response:
+    # todo add support for auth with email only
+    username = request.data['username']
+    password = request.data['password']
+    user = authenticate(username=username, password=password)
+    if user is None:
+        return Response(status=403, data="Wrong user credentials.")
 
-        # sending back if the user is admin or not
-        user_id = Token.objects.get(key=response.data['token']).user_id
-        user = User.objects.get(id=user_id)
-        response.data['is_admin'] = user.is_superuser
+    token = Token.objects.get_or_create(user=user)[0]
+    response_data = {
+        'username': user.username,
+        'email': user.email,
+        'is_admin': user.is_superuser,
+        'token': token.key,
+    }
 
-        return response
+    return Response(status=200, data=response_data)
 
 
 @api_view(['POST'])
