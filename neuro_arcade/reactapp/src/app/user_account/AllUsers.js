@@ -2,25 +2,24 @@ import {Banner} from "../../components/Banner";
 import styles from '../../styles/App.module.css';
 import {NavBar} from "../../components/NavBar";
 import {MobileBanner} from "../../components/Banner";
-import {Card} from '../../components/Card';
-import { FaGamepad } from "react-icons/fa6";
-import { TbBoxModel } from "react-icons/tb";
 import {motion} from "framer-motion";
-import {getUser} from "../../backendRequests";
-import {userIsAdmin} from "../../backendRequests";
-import {Link} from "react-router-dom"
+import {Card} from "../../components/Card";
+import {FaGamepad} from "react-icons/fa6";
+import {TbBoxModel} from "react-icons/tb";
+import {getUser, userIsAdmin} from "../../backendRequests";
+import {Link} from "react-router-dom";
 
 
 /**
- * @returns {JSX.Element} add content page
- * @constructor builds add content page
+ * Page for admins only
+ * Lets admins see all users and approve new ones
  */
-export function AccountPage() {
+export function AllUsers(){
     return (
         <>
             <Banner size={'big'} button_left={{
-                name: 'home',
-                link: '/',
+                name: 'Back to Account Page',
+                link: '/user_account',
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{
@@ -28,8 +27,8 @@ export function AccountPage() {
                 orientation: 'right'
             }} />
             <NavBar button_left={{
-                name: 'home',
-                link: 'home',
+                name: 'Back to Account Page',
+                link: '/user_account',
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{
@@ -48,20 +47,16 @@ export function AccountPage() {
             >
                 <div className={styles.Content} id={styles['small']}>
                     <div className={styles.Title}>
-                        <h1>Add Content</h1>
+                        <h1>ALL USERS</h1>
                     </div>
                     <div className={styles.ContentBlock}>
-                        <Card link={'/add_game'} text={'New Game'} icon={<FaGamepad />} />
-                        <Card link={'/add_model'} text={'New Model'} icon={<TbBoxModel />} />
 
-                        { getUser() && userIsAdmin() ? <Link to='all_users'>ALL USERS</Link> : null}
 
                     </div>
                 </div>
-                <div className={styles.Side}>
-                </div>
+                <div className={styles.Side}></div>
             </motion.div>
             <div className={styles.MobileBannerBuffer} />
         </>
-    );
+    )
 }

@@ -12,10 +12,11 @@ import {GameView} from "./app/GameView";
 import {SignUp} from "./app/SignUp";
 import {Login} from "./app/Login";
 import {AllPlayers} from './app/AllPlayers';
-import { EditAbout } from "./app/about/EditAbout";
+import {EditAbout} from "./app/about/EditAbout";
 import {AnimatePresence} from 'framer-motion'
 import {Background} from "./components/Background";
 import {AuthTest} from "./app/AuthTest";
+import {AllUsers} from "./app/user_account/AllUsers"
 
 const router = createBrowserRouter([
     {
@@ -34,7 +35,11 @@ const router = createBrowserRouter([
         path: "user_account", //TODO slug for users
         element: (
             <AccountPage/>
-        ),
+        )
+    },
+    {
+        path: "user_account/all_users",
+        element: <AllUsers />
     },
     {
         path: "add_game",
