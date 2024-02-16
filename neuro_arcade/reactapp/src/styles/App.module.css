@@ -6,9 +6,9 @@
     align-items: flex-start;
     flex-wrap: wrap;
     overflow-y: auto;
+    gap: 3em;
     .Content {
         width: 80em;
-        padding: 0 2em;
         display: flex;
         flex-wrap: wrap;
         overflow: hidden;
@@ -244,8 +244,8 @@
 
 @media (max-width: 75em) {
     .MainBlock {
-        position: relative;
         margin: 0;
+        gap: 0;
         width: 100dvw;
         height: auto;
         max-height: calc(100dvh - 14.5em);

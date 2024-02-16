@@ -41,6 +41,12 @@
     }
 }
 
+@media(max-width: 75em) {
+    #home {
+        margin: 1em auto 0;
+    }
+}
+
 @media (max-width: 50em) {
     .TableContainer, .GraphContainer {
         margin-left: auto;
