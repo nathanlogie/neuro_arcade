@@ -15,7 +15,7 @@ import {logout} from "../backendRequests";
 import {userIsAdmin} from "../backendRequests";
 import {isLoggedIn} from "../backendRequests";
 import {Card} from "../components/card/Card";
-import {FaGamepad} from "react-icons/fa6";
+import { FaRegUserCircle } from "react-icons/fa";
 
 /**
  * @returns {JSX.Element} home page
@@ -33,7 +33,7 @@ export function HomePage() {
     );
     let nav_right = (
         <div className={styles.NavBuffer}>
-            <Card link={'user_account'} text={'user'} icon={<FaGamepad />} //TODO signed in user profile display
+            <Card link={'user_account'} text={'user'} icon={<FaRegUserCircle/>} //TODO signed in user profile display
             />
         </div>
     );
