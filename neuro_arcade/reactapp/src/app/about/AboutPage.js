@@ -5,6 +5,7 @@ import {motion} from "framer-motion";
 import {useEffect, useState} from "react";
 import {getAboutData} from "../../backendRequests";
 import {Description} from "../../components/about/Description";
+import {Button} from "../../components/Button";
 
 /**
  * @returns {JSX.Element} about page
@@ -50,20 +51,28 @@ export function AboutPage() {
 
     return (
         <>
-            <Banner size={'big'} button_right={{
-                name: 'home',
-                link: '/',
-                orientation: 'right',
-                direction: 'right'
-            }}/>
-            <NavBar button_right={{
-                name: 'home',
-                link: '/',
-                orientation: 'right',
-                direction: 'right'
-            }}
+            <Banner
+                size={'big'}
+                right={
+                    <Button
+                        name={'home'}
+                        link={'/'}
+                        orientation={'right'}
+                        direction={'right'}
+                    />
+                }
             />
             <MobileBanner />
+            <NavBar
+                right={
+                    <Button
+                        name={'home'}
+                        link={'/'}
+                        orientation={'right'}
+                        direction={'right'}
+                    />
+                }
+            />
             <motion.div
                 className={styles.MainBlock}
                 id={styles['big']}
@@ -72,16 +81,6 @@ export function AboutPage() {
                 exit={{opacity: 0, x: -100}}
             >
                 {content}
-                <NavBar button_left={{
-                    link: '',
-                    orientation: 'left'
-                }} button_right={{
-                    name: 'home',
-                    link: '/',
-                    orientation: 'right',
-                    direction: 'right'
-                }}
-                />
                 <div className={styles.MobileBannerBuffer}/>
             </motion.div>
         </>

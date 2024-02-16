@@ -2,19 +2,18 @@ import styles from '../styles/components/Banner.module.css';
 import {Button} from "./Button";
 import {Logo} from "./Logo";
 import React from "react";
-import {motion} from "framer-motion"
 import {Switcher} from "./Switcher";
 import { useNavigate } from 'react-router-dom';
 
 /**
- * @param size
- * @param button_left button parameters
- * @param button_right button parameters
- * @param state switcher active state parameter
+ * @param size height
+ * @param left left component
+ * @param right right component
+ * @param selected switcher active state parameter
  * @returns {JSX.Element} banner
  * @constructor builds banner
  */
-export function Banner({size, button_left, button_right, state}) {
+export function Banner({size, left, right, selected}) {
 
     const switcher_labels = {table_headers: [
             { name: 'Games' },
@@ -22,7 +21,7 @@ export function Banner({size, button_left, button_right, state}) {
         ],
     };
 
-    const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(state);
+    const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(selected);
     const navigate = useNavigate();
 
     const handleSwitcherChange = (selectedValue) => {
@@ -36,26 +35,14 @@ export function Banner({size, button_left, button_right, state}) {
     }
 
     const banner = [];
-    if (button_left) {
-        banner.push(
-            <Button
-                name={button_left.name}
-                link={button_left.link}
-                direction={button_left.direction}
-                orientation={button_left.orientation}
-            />
-        );
+    if (left) {
+        banner.push(left);
+    } else {
+        banner.push(<div className={styles.Buffer} />)
     }
     banner.push(<Logo size={size} />)
-    if (button_right) {
-        banner.push(
-            <Button
-                name={button_right.name}
-                link={button_right.link}
-                direction={button_right.direction}
-                orientation={button_right.orientation}
-            />
-        );
+    if (right) {
+        banner.push(right);
     }
 
     if (size === 'big') {

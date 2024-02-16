@@ -5,6 +5,9 @@
     bottom: 0;
     padding: 0 0 2em;
     z-index: 1;
+    .Buffer {
+        width: 50%;
+    }
 }
 
 @media (min-width: 50em) {
