@@ -34,18 +34,19 @@ export function Banner({size, left, right, selected}) {
             }
     }
 
-    const banner = [];
-    if (left) {
-        banner.push(left);
-    } else {
-        banner.push(<div className={styles.Buffer} />)
-    }
-    banner.push(<Logo size={size} />)
-    if (right) {
-        banner.push(right);
-    }
-
     if (size === 'big') {
+        const banner = [];
+        if (left) {
+            banner.push(left);
+        } else {
+            banner.push(<div className={styles.Buffer} />)
+        }
+        banner.push(<Logo size={size} />)
+        if (right) {
+            banner.push(right);
+        } else {
+            banner.push(<div className={styles.Buffer} />)
+        }
         return (
             <div
                 className={styles.Banner}

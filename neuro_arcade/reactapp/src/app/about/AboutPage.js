@@ -13,6 +13,15 @@ import {Button} from "../../components/Button";
  */
 export function AboutPage() {
 
+    let nav_right = (
+        <Button
+            name={'home'}
+            link={'/'}
+            orientation={'right'}
+            direction={'right'}
+        />
+    );
+
     const [aboutData, updateAboutData] = useState()
 
     useEffect(() => {
@@ -51,28 +60,9 @@ export function AboutPage() {
 
     return (
         <>
-            <Banner
-                size={'big'}
-                right={
-                    <Button
-                        name={'home'}
-                        link={'/'}
-                        orientation={'right'}
-                        direction={'right'}
-                    />
-                }
-            />
+            <Banner size={'big'} right={nav_right} />
             <MobileBanner />
-            <NavBar
-                right={
-                    <Button
-                        name={'home'}
-                        link={'/'}
-                        orientation={'right'}
-                        direction={'right'}
-                    />
-                }
-            />
+            <NavBar right={nav_right} />
             <motion.div
                 className={styles.MainBlock}
                 id={styles['big']}

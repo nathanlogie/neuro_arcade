@@ -6,7 +6,9 @@
     padding: 0 0 2em;
     z-index: 1;
     .Buffer {
-        width: 50%;
+        width: 14em;
+        scale: 85%;
+        margin: 0 auto;
     }
 }
 

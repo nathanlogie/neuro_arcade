@@ -6,6 +6,7 @@ import {Card} from '../../components/Card';
 import { FaGamepad } from "react-icons/fa6";
 import { TbBoxModel } from "react-icons/tb";
 import {motion} from "framer-motion";
+import {Button} from "../../components/Button";
 
 
 /**
@@ -13,27 +14,21 @@ import {motion} from "framer-motion";
  * @constructor builds add content page
  */
 export function AccountPage() {
+
+    let nav_left = (
+        <Button
+            name={'home'}
+            link={'/'}
+            orientation={'left'}
+            direction={'left'}
+        />
+    );
+;
+
     return (
         <>
-            <Banner size={'big'} button_left={{
-                name: 'home',
-                link: '/',
-                orientation: 'left',
-                direction: 'left'
-            }} button_right={{
-                link: '',
-                orientation: 'right'
-            }} />
-            <NavBar button_left={{
-                name: 'home',
-                link: 'home',
-                orientation: 'left',
-                direction: 'left'
-            }} button_right={{
-                link: '...',
-                direction: 'right'
-            }}
-            />
+            <Banner size={'big'} left={nav_left} />
+            <NavBar left={nav_left} />
             <MobileBanner/>
 
             <motion.div
