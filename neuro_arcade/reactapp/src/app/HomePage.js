@@ -23,21 +23,6 @@ import { FaRegUserCircle } from "react-icons/fa";
  */
 export function HomePage() {
 
-    let nav_left = (
-        <Button
-            name={'about'}
-            link={'about'}
-            orientation={'left'}
-            direction={'left'}
-        />
-    );
-    let nav_right = (
-        <div className={styles.NavBuffer}>
-            <Card link={'user_account'} text={'user'} icon={<FaRegUserCircle/>} //TODO signed in user profile display
-            />
-        </div>
-    );
-
     let [tags, setTags] = useState([]);
     let [forcedTags, setForcedTags] = useState([]);
     let [selectedTags, setSelectedTags] = useState([]);
@@ -48,16 +33,31 @@ export function HomePage() {
 
     const [show, setShow] = useState(false);
     const [hover, setHover] = useState(false);
-    const [loggedIn, setLoggedIn] = useState(isLoggedIn())
+    const [loggedIn, setLoggedIn] = useState(isLoggedIn());
+
+    let nav_right = null;
 
     let aboutLink = '/about';
-    let userAccount = ['', ''];
     if (isLoggedIn()) {
         if (userIsAdmin()) {
             aboutLink = '/edit_about';
         }
-        userAccount = ['user account', 'user_account'];
+        nav_right = (
+            <div className={styles.NavBuffer}>
+                <Card link={'user_account'} text={'user'} icon={<FaRegUserCircle/>} //TODO signed in user profile display
+                />
+            </div>
+        );
     }
+
+    let nav_left = (
+        <Button
+            name={'about'}
+            link={aboutLink}
+            orientation={'left'}
+            direction={'left'}
+        />
+    );
 
     function onLogout(e) {
         e.preventDefault();
