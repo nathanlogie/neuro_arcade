@@ -2,7 +2,6 @@ import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Card } from "../Card";
 import { Route } from "react-router";
-import { expect } from "@jest/globals";
 
 test('Card renders manually without crashing', () => {
     renderWithRouter(
