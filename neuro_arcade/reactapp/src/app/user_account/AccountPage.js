@@ -7,8 +7,8 @@ import { FaGamepad } from "react-icons/fa6";
 import { TbBoxModel } from "react-icons/tb";
 import {motion} from "framer-motion";
 import {Button} from "../../components/Button";
-import {Link} from "react-router-dom";
-import {useState} from "react";
+import {Link, Navigate} from "react-router-dom";
+import React, {useState} from "react";
 import {isLoggedIn, logout} from "../../backendRequests";
 
 
@@ -48,7 +48,7 @@ export function AccountPage() {
                 exit={{opacity: 0, x: 100}}
             >
                 <div className={styles.Content} id={styles['small']}>
-                    {loggedIn ? <button onClick={onLogout}>Logout</button> : <>successfully logged out</>}
+                    {loggedIn ? <button onClick={onLogout}>Logout</button> : <Navigate to={'/'}/>}
                 </div>
                 <div className={styles.Side}>
                     <div className={styles.Title}>
