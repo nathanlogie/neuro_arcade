@@ -221,6 +221,14 @@
         }
     }
 }
+
+.NavBuffer {
+    display: flex;
+    justify-content: center;
+    width: 14em;
+    margin: 0 auto;
+}
+
 .MobileBannerBuffer {
     position: relative;
     display: none;

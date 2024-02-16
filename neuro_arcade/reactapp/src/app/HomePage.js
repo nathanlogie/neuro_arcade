@@ -14,12 +14,30 @@ import {Link} from "react-router-dom";
 import {logout} from "../backendRequests";
 import {userIsAdmin} from "../backendRequests";
 import {isLoggedIn} from "../backendRequests";
+import {Card} from "../components/card/Card";
+import {FaGamepad} from "react-icons/fa6";
 
 /**
  * @returns {JSX.Element} home page
  * @constructor builds home page
  */
 export function HomePage() {
+
+    let nav_left = (
+        <Button
+            name={'about'}
+            link={'about'}
+            orientation={'left'}
+            direction={'left'}
+        />
+    );
+    let nav_right = (
+        <div className={styles.NavBuffer}>
+            <Card link={'user_account'} text={'user'} icon={<FaGamepad />} //TODO signed in user profile display
+            />
+        </div>
+    );
+
     let [tags, setTags] = useState([]);
     let [forcedTags, setForcedTags] = useState([]);
     let [selectedTags, setSelectedTags] = useState([]);
@@ -130,18 +148,9 @@ export function HomePage() {
 
     return (
         <div onClick={() => show && !hover ? setShow(false) : null}>
-            <Banner size={'big'} button_left={{
-                name: 'about',
-                link: aboutLink,
-                orientation: 'left',
-                direction: 'left'
-            }} button_right={{
-                name: userAccount[0],
-                link: userAccount[1],
-                orientation: 'right',
-                direction: 'right'
-            }}/>
+            <Banner size={'big'} left={nav_left} right={nav_right} />
             <MobileBanner/>
+            <NavBar left={nav_left} right={nav_right} />
             <motion.div
                 className={styles.MainBlock}
                 id={styles['big']}
@@ -150,18 +159,6 @@ export function HomePage() {
                 exit={{opacity: 0}}
             >
                 {content}
-                <NavBar button_left={{
-                    name: 'about',
-                    link: aboutLink,
-                    orientation: 'left',
-                    direction: 'left'
-                }} button_right={{
-                    name: userAccount[0],
-                    link: userAccount[1],
-                    orientation: 'right',
-                    direction: 'right'
-                }} //TODO create a user account button showing profile photo
-                />
                 <div className={styles.MobileBannerBuffer}/>
             </motion.div>
         </div>

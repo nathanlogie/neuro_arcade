@@ -24,8 +24,9 @@ export function Card ({subject, linkPrefix, link, text, icon}) {
             <motion.div
                 whileHover={{scale: 1.05}}
                 whileTap={{scale: 0.95}}
+                className={styles.Card}
             >
-                <Link className={styles.Card} to={link}>
+                <Link to={link}>
                     <div className={styles.Icon}>
                         {icon}
                     </div>
