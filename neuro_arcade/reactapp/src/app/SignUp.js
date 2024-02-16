@@ -1,11 +1,13 @@
-import {Background} from "../components/Background";
-import {Banner, MobileBanner} from "../components/Banner";
-import styles from "../styles/App.module.css";
-import {useState} from "react";
-import {signupNewUser} from "../backendRequests";
+import {Background} from "../../components/Background";
+import {Banner, MobileBanner} from "../../components/Banner";
+import styles from "../../styles/App.module.css";
+import React, {useState} from "react";
+import {signupNewUser} from "../../backendRequests";
 import {Navigate, Link} from "react-router-dom"
 import {NavBar} from "../../components/NavBar";
 import {Button} from "../../components/Button";
+import {motion} from "framer-motion";
+import {FaPlus} from "react-icons/fa6";
 
 export function SignUp(){
 
@@ -51,29 +53,52 @@ export function SignUp(){
             <MobileBanner/>
             <NavBar left={nav_left} />
             <div className={styles.MainBlock} id={styles['small']}>
-
-                <div className={styles.Title}>
-                    <h1>{success ? <Navigate to={'/login'}/> : "Create an Account"}</h1>
-                </div>
-                <div className={styles.Content}>
-                    <p>{ invalidResponse }</p>
+                <div className={styles.Form}>
+                    <h1>{success ? <Navigate to={'/login'}/> : "Sign up"}</h1>
                     <form onSubmit={handleSubmit}>
-
-                        <p>Username: <input type={"text"} value={username} placeholder={"Username..."} onChange={(e) => setUsername(e.target.value)}/></p>
-                        <p>Email: <input type={"email"} value={email} placeholder={"Email..."} onChange={(e) => setEmail(e.target.value)}/></p>
-
-                        { isPasswordMatch ? null : "Passwords don't match" }
-                        <p>Password: <input type={"password"} value={password} placeholder={"Password..."} onChange={(e) => setPassword(e.target.value)}/></p>
-                        <p>Confirm Password: <input type={"password"} value={confirmPassword} placeholder={"Confirm Password..."} onChange={(e) => setConfirmPassword(e.target.value)}/></p>
-
-                        <button type={"submit"}>CREATE ACCOUNT</button>
-
+                        <h3>Username</h3>
+                        <input
+                            type={"text"}
+                            value={username}
+                            placeholder={"User"}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                        <h3>Email</h3>
+                        <input
+                            type={"email"}
+                            value={email}
+                            placeholder={"example@email.address"}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <h3>Password</h3>
+                        <input
+                            type={"password"}
+                            value={password}
+                            placeholder={"..."}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <h3>Confirm password</h3>
+                        <input
+                            type={"password"}
+                            value={confirmPassword}
+                            placeholder={"..."}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                        />
+                        <div>{isPasswordMatch ? null : "Passwords don't match"}</div>
+                        <div>{invalidResponse}</div>
+                        <motion.button
+                            type={"submit"}
+                            whileHover={{scale: 1.1}}
+                            whileTap={{scale: 0.9}}
+                        >
+                            create account
+                            <div>
+                                <FaPlus/>
+                            </div>
+                        </motion.button>
+                        <p>Already have an account? <Link to='/login'>Login here...</Link></p>
                     </form>
-
-                    <p>Already have an account? <Link to='/login'>Login Here</Link></p>
-
                 </div>
-
             </div>
         </>
     )

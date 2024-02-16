@@ -23,7 +23,7 @@ export function FormPage({type}) {
 
     let form;
     if (type === 'game') {
-        form = <GameForm />;
+        form = <GameForm/>;
     } else if (type === 'model') {
         form  = <ModelForm/>
     } else {
