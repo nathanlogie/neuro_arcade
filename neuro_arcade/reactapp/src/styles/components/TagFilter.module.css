@@ -20,7 +20,7 @@
         align-items: flex-start;
         flex-wrap: wrap;
         overflow-y: auto;
-        height: calc(100% - 2em);
+        height: 26em;
     }
     & label {
         width: 100%;
