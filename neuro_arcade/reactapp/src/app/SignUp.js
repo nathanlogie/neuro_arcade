@@ -4,6 +4,8 @@ import styles from "../styles/App.module.css";
 import {useState} from "react";
 import {signupNewUser} from "../backendRequests";
 import {Navigate, Link} from "react-router-dom"
+import {NavBar} from "../../components/NavBar";
+import {Button} from "../../components/Button";
 
 export function SignUp(){
 
@@ -34,11 +36,20 @@ export function SignUp(){
             })
     }
 
+    let nav_left = (
+        <Button
+            name={'home'}
+            link={'/'}
+            orientation={'left'}
+            direction={'left'}
+        />
+    );
+
     return (
         <>
-            <Background/>
-            <Banner size={'big'}/>
-            <MobileBanner size={'big'} />
+            <Banner size={'big'} left={nav_left} />
+            <MobileBanner/>
+            <NavBar left={nav_left} />
             <div className={styles.MainBlock} id={styles['small']}>
 
                 <div className={styles.Title}>
