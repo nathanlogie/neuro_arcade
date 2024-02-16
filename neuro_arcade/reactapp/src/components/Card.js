@@ -10,7 +10,7 @@ import {motion} from "framer-motion";
  * @param {string} props.linkPrefix - base url to append the game's slug to
  * @returns 
  */
-export function Card ({subject, linkPrefix, link, text, icon}) {
+export function Card ({subject, linkPrefix, link, text, icon, id}) {
     // Extract subject information
     if (subject) {
         link = linkPrefix + subject.slug;
@@ -25,6 +25,7 @@ export function Card ({subject, linkPrefix, link, text, icon}) {
                 whileHover={{scale: 1.05}}
                 whileTap={{scale: 0.95}}
                 className={styles.Card}
+                id={styles[id]}
             >
                 <Link to={link}>
                     <div className={styles.Icon}>

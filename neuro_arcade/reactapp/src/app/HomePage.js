@@ -35,7 +35,11 @@ export function HomePage() {
     const [hover, setHover] = useState(false);
     const [loggedIn, setLoggedIn] = useState(isLoggedIn());
 
-    let nav_right = null;
+    let nav_right = (
+        <div className={styles.NavBuffer}>
+            <Card id={'nav'} link={'user_account'} text={'guest'} icon={<FaRegUserCircle/>}/>
+        </div>
+    );
 
     let aboutLink = '/about';
     if (isLoggedIn()) {
@@ -44,7 +48,7 @@ export function HomePage() {
         }
         nav_right = (
             <div className={styles.NavBuffer}>
-                <Card link={'user_account'} text={'user'} icon={<FaRegUserCircle/>} //TODO signed in user profile display
+            <Card id={'nav'} link={'user_account'} text={'user'} icon={<FaRegUserCircle/>} //TODO signed in user profile display
                 />
             </div>
         );

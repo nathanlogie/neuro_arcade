@@ -41,6 +41,16 @@
         margin: auto 0;
         color: #FFFFFF;
         padding: 0 0.5em;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+
+#nav {
+    scale: 80%;
+    .Text {
+        font-size: 1.25em;
+        width: 4.6em;
     }
 }
 
