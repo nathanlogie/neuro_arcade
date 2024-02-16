@@ -3,6 +3,29 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import styles from '../styles/App.module.css'
 
+// TODO: this should really just be passed a list of names, the table data
+// structure should be handled by the component using this
+
+/**
+ * @typedef {Object} TableHeader
+ * @property {string} name
+ */
+
+/**
+ * Prototype for Switcher.onSwitcherChange callback
+ * 
+ * @typedef {function} OnSwitcherChange
+ * @param {string} name the name switched to
+ */
+
+/**
+ * Renders a tab switcher for a list of options
+ * @param {Object} props
+ * @param {Object} props.data
+ * @param {TableHeader[]} props.data.table_headers list of option names
+ * @param {OnSwitcherChange} onSwitcherChange callback for a tab being clicked
+ * @returns {JSX.Element} switcher
+ */
 export function Switcher({data, onSwitcherChange, switcherDefault}) {
 
     const [alignment, setAlignment] = React.useState(switcherDefault);
