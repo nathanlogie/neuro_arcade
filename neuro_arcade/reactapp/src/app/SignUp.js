@@ -1,4 +1,3 @@
-import {Background} from "../../components/Background";
 import {Banner, MobileBanner} from "../../components/Banner";
 import styles from "../../styles/App.module.css";
 import React, {useState} from "react";
@@ -9,7 +8,7 @@ import {Button} from "../../components/Button";
 import {motion} from "framer-motion";
 import {FaPlus} from "react-icons/fa6";
 
-export function SignUp(){
+export function SignUp() {
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -49,10 +48,16 @@ export function SignUp(){
 
     return (
         <>
-            <Banner size={'big'} left={nav_left} />
+            <Banner size={'big'} left={nav_left}/>
             <MobileBanner/>
-            <NavBar left={nav_left} />
-            <div className={styles.MainBlock} id={styles['small']}>
+            <NavBar left={nav_left}/>
+            <motion.div
+                className={styles.MainBlock}
+                id={styles['big']}
+                initial={{opacity: 0}}
+                animate={{opacity: 1}}
+                exit={{opacity: 0}}
+            >
                 <div className={styles.Form}>
                     <h1>{success ? <Navigate to={'/login'}/> : "Sign up"}</h1>
                     <form onSubmit={handleSubmit}>
@@ -99,7 +104,7 @@ export function SignUp(){
                         <p>Already have an account? <Link to='/login'>Login here...</Link></p>
                     </form>
                 </div>
-            </div>
+            </motion.div>
         </>
     )
 

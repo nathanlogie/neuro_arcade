@@ -1,13 +1,14 @@
-import {Background} from "../components/Background";
-import {Banner, MobileBanner} from "../components/Banner";
-import styles from "../styles/App.module.css";
-import {useState} from "react";
-import {login} from "../backendRequests";
+import {Banner, MobileBanner} from "../../components/Banner";
+import styles from "../../styles/App.module.css";
+import React, {useState} from "react";
+import {login} from "../../backendRequests";
 import {Navigate, Link} from "react-router-dom"
 import {NavBar} from "../../components/NavBar";
 import {Button} from "../../components/Button";
+import {motion} from "framer-motion";
+import { FaArrowDown } from "react-icons/fa6";
 
-export function Login(){
+export function Login() {
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -39,29 +40,56 @@ export function Login(){
 
     return (
         <>
-            <Banner size={'big'} left={nav_left} />
+            <Banner size={'big'} left={nav_left}/>
             <MobileBanner/>
-            <NavBar left={nav_left} />
-            <div className={styles.MainBlock} id={styles['small']}>
-                <div className={styles.Title}>
-                    <h1>{success ? <Navigate to={'/'}/> : "Login"}</h1>
-                </div>
-                <div className={styles.Content}>
-                    <p>{ invalidMessage }</p>
+            <NavBar left={nav_left}/>
+            <motion.div
+                className={styles.MainBlock}
+                id={styles['big']}
+                initial={{opacity: 0}}
+                animate={{opacity: 1}}
+                exit={{opacity: 0}}
+            >
+
+                <div className={styles.Form}>
+                    <h1>{success ? <Navigate to={'/'}/> : "Sign in"}</h1>
                     <form onSubmit={handleSubmit}>
-
-                        <p>Username: <input type={"text"} value={username} placeholder={"Username..."} onChange={(e) => setUsername(e.target.value)}/></p>
-                        <p>Email: <input type={"email"} value={email} placeholder={"Email..."} onChange={(e) => setEmail(e.target.value)}/></p>
-                        <p>Password: <input type={"password"} value={password} placeholder={"Password..."} onChange={(e) => setPassword(e.target.value)}/></p>
-                        <button type={"submit"}>LOGIN</button>
-
+                        <h3>Username</h3>
+                        <input
+                            type={"text"}
+                            value={username}
+                            placeholder={"User"}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                        <h3>Email</h3>
+                        <input
+                            type={"email"}
+                            value={email}
+                            placeholder={"example@email.address"}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <h3>Password</h3>
+                        <input
+                            type={"password"}
+                            value={password}
+                            placeholder={"..."}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <div>{invalidMessage}</div>
+                        <motion.button
+                            type={"submit"}
+                            whileHover={{scale: 1.1}}
+                            whileTap={{scale: 0.9}}
+                        >
+                            sign in
+                            <div>
+                                <FaArrowDown/>
+                            </div>
+                        </motion.button>
+                        <p>Don't have an account? <Link to='/sign_up'>Sign Up Here</Link></p>
                     </form>
-
-                    <p>Don't have an account? <Link to='/sign_up'>Sign Up Here</Link></p>
-
                 </div>
-
-            </div>
+            </motion.div>
         </>
     )
 
