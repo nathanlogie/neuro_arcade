@@ -1,11 +1,11 @@
 import {Banner} from "../components/Banner";
-import {GameGrid} from "../components/GameGrid";
+import {GameGrid} from "../components/card/GameGrid";
 import styles from '../styles/App.module.css';
 import {NavBar} from "../components/NavBar";
 import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {TagFilter} from "../components/TagFilter";
-import {HomePageTable} from "../components/HomePageTable";
+import {HomePageTable} from "../components/data/HomePageTable";
 import {requestGameTags, requestModelsRanked} from "../backendRequests";
 import {motion} from "framer-motion"
 import {useEffect, useState} from "react";
@@ -63,13 +63,7 @@ export function HomePage() {
         />
     );
 
-    function onLogout(e) {
-        e.preventDefault();
-        logout();
-        setLoggedIn(false);
-    }
-
-    // Fetch the game tags on load
+    // Fetch the data tags on load
     useEffect(() => {
         requestGameTags()
             .then((tags) => {
@@ -92,12 +86,6 @@ export function HomePage() {
     if (!loadingTags && !loadingModels) {
         content = <>
             <div className={styles.Content} id={styles['small']}>
-                {loggedIn ? <button onClick={onLogout}>Logout</button> :
-                    <>
-                        <Link to='/sign_up'>Create an Account</Link>
-                        <Link to='/login'>Login</Link>
-                    </>
-                }
                 <div className={styles.Title}>
                     <h1>Featured games</h1>
                     <motion.div

@@ -69,14 +69,16 @@
     .Side {
         width: 32.5em;
         display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        flex-wrap: wrap;
+        flex-direction: column;
         overflow: hidden;
         .Switcher {
             box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
             border-radius: 3em;
             background-color: rgba(255, 255, 255, 0.1);
+        }
+        .ContentBlock {
+            display: flex;
+            justify-content: center;
         }
     }
     .DataBlock {
@@ -138,13 +140,6 @@
                     width: 10.5em;
                 }
                 & input {
-                    /*width: 7.5em;*/
-                    /*height: 3em;*/
-                    /*padding: 0 1em 0 3.5em;*/
-                    /*cursor: pointer;*/
-                    /*line-height: 3em;*/
-                    /*margin-top: 0.25em;*/
-                    /*margin-left: 1em;*/
                     display: none;
                 }
                 & input[type="file"]::file-selector-button {

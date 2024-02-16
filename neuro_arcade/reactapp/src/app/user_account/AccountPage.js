@@ -7,6 +7,9 @@ import { FaGamepad } from "react-icons/fa6";
 import { TbBoxModel } from "react-icons/tb";
 import {motion} from "framer-motion";
 import {Button} from "../../components/Button";
+import {Link} from "react-router-dom";
+import {useState} from "react";
+import {isLoggedIn, logout} from "../../backendRequests";
 
 
 /**
@@ -14,6 +17,14 @@ import {Button} from "../../components/Button";
  * @constructor builds add content page
  */
 export function AccountPage() {
+
+    const [loggedIn, setLoggedIn] = useState(isLoggedIn());
+
+    function onLogout(e) {
+        e.preventDefault();
+        logout();
+        setLoggedIn(false);
+    }
 
     let nav_left = (
         <Button
@@ -37,18 +48,19 @@ export function AccountPage() {
                 exit={{opacity: 0, x: 100}}
             >
                 <div className={styles.Content} id={styles['small']}>
+                    {loggedIn ? <button onClick={onLogout}>Logout</button> : <>successfully logged out</>}
+                </div>
+                <div className={styles.Side}>
                     <div className={styles.Title}>
                         <h1>Add Content</h1>
                     </div>
                     <div className={styles.ContentBlock}>
-                        <Card link={'/add_game'} text={'New Game'} icon={<FaGamepad />} />
-                        <Card link={'/add_model'} text={'New Model'} icon={<TbBoxModel />} />
+                        <Card link={'/add_game'} text={'New Game'} icon={<FaGamepad/>}/>
+                        <Card link={'/add_model'} text={'New Model'} icon={<TbBoxModel/>}/>
                     </div>
                 </div>
-                <div className={styles.Side}>
-                </div>
             </motion.div>
-            <div className={styles.MobileBannerBuffer} />
+            <div className={styles.MobileBannerBuffer}/>
         </>
     );
 }
