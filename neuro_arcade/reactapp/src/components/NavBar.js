@@ -14,10 +14,12 @@ export function NavBar({left, right}) {
     if (left) {
         navbar.push(left);
     } else {
-        navbar.push(<div className={styles.Buffer}/>)
+        navbar.push(<div className={styles.Buffer}/>);
     }
     if (right) {
         navbar.push(right);
+    } else {
+        navbar.push(<div className={styles.Buffer}/>);
     }
 
     return (

@@ -23,7 +23,6 @@ export function AccountPage() {
             direction={'left'}
         />
     );
-;
 
     return (
         <>
