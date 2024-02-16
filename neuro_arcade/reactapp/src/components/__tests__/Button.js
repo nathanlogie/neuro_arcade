@@ -100,5 +100,3 @@ test('Button link functions', () => {
 
     expect(screen.getByText("Success")).toBeInTheDocument();
 });
-
-// TODO: test link?
