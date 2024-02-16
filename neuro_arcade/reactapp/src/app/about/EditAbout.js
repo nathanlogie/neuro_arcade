@@ -14,6 +14,16 @@ import {Button} from "../../components/Button";
  * @constructor builds edit about page
  */
 export function EditAbout() {
+
+    let nav_right = (
+        <Button
+            name={'home'}
+            link={'/'}
+            orientation={'right'}
+            direction={'right'}
+        />
+    );
+
     // todo do this:
     // redirect if user is not logged in
     // if (!isLoggedIn())
@@ -44,28 +54,9 @@ export function EditAbout() {
 
     return (
         <>
-            <Banner
-                size={'big'}
-                right={
-                    <Button
-                        name={'home'}
-                        link={'/'}
-                        orientation={'right'}
-                        direction={'right'}
-                    />
-                }
-            />
-            <NavBar
-                right={
-                    <Button
-                        name={'home'}
-                        link={'/'}
-                        orientation={'right'}
-                        direction={'right'}
-                    />
-                }
-            />
+            <Banner size={'big'} right={nav_right} />
             <MobileBanner/>
+            <NavBar right={nav_right} />
             <motion.div
                 className={styles.MainBlock}
                 initial={{opacity: 0, x: -100}}

@@ -28,9 +28,8 @@ export function AccountPage() {
     return (
         <>
             <Banner size={'big'} left={nav_left} />
-            <NavBar left={nav_left} />
             <MobileBanner/>
-
+            <NavBar left={nav_left} />
             <motion.div
                 className={styles.MainBlock}
                 id={styles['big']}
