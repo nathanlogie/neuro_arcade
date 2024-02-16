@@ -4,6 +4,7 @@
     border-radius: 0.5em;
     backdrop-filter: blur(20px);
     height: 30em;
+    width: max-content;
     margin-top: 2em;
     & h2 {
         position: absolute;
