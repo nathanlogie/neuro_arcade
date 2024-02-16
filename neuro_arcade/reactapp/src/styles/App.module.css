@@ -81,7 +81,6 @@
     }
     .DataBlock {
         width: 100%;
-        padding: 3em;
         display: flex;
         overflow-x: auto;
         gap: 3em;
@@ -260,7 +259,6 @@
         }
         .Side {
             width: 100%;
-            padding: 1.5em;
         }
     }
     .MobileBannerBuffer {
@@ -271,6 +269,7 @@
 @media (max-width: 50em) {
     .MainBlock {
         .DataBlock {
+            padding: 0 2em;
             display: block;
         }
     }

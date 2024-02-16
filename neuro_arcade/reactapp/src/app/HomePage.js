@@ -135,7 +135,9 @@ export function HomePage() {
                 />
             </div>
             <div className={styles.Side}>
-                <HomePageTable inputData={models} />
+                <div className={styles.DataBlock}>
+                    <HomePageTable inputData={models} />
+                </div>
                 <Button
                     name={'all players'}
                     link={'all_players'}
