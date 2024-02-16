@@ -21,6 +21,7 @@ export function GameView() {
     useEffect(() => {
         requestGame(gameSlug)
             .then(g => {
+                console.log(g);
                 setGameData(g);
                 setLoading(false);
             })
@@ -30,12 +31,12 @@ export function GameView() {
     if (!loading) {
         content = <>
             <div className={styles.Content}>
-                <h1>{gameData.game.name}</h1>
+                <h1>{gameData.data.name}</h1>
                 <div className={styles.ContentBlock}>
                     <p>
                         <img src="https://loremflickr.com/500/500" alt={'image'} // TODO add query for image here
                         />
-                        {gameData.game.description}
+                        {gameData.data.description}
                     </p>
                 </div>
             </div>

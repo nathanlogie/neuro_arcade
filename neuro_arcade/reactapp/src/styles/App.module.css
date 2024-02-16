@@ -8,6 +8,7 @@
     overflow-y: auto;
     gap: 3em;
     .Content {
+        padding: 3em;
         width: 80em;
         display: flex;
         flex-wrap: wrap;
@@ -242,6 +243,12 @@
 
 .MainBlock#small {
     max-height: calc(100dvh - 9em);
+}
+
+@media(max-width: 85em) {
+    .MainBlock {
+        gap: 0;
+    }
 }
 
 @media (max-width: 75em) {
