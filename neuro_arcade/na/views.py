@@ -22,7 +22,7 @@ from django.conf import settings
 
 from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
 import json
-from na.models import Game, GameTag, Player
+from na.models import Game, GameTag, Player, UserStatus
 
 
 # ------------------
@@ -316,6 +316,8 @@ def login(request: HttpRequest) -> Response:
         user_id = Token.objects.get(key=response.data['token']).user_id
         user = User.objects.get(id=user_id)
         response.data['is_admin'] = user.is_superuser
+        if not user.is_superuser:
+            response.data['status'] = user.status.status
 
         return response
 
@@ -340,6 +342,7 @@ def sign_up(request: Request) -> Response:
 
     # creating a new User in the DB:
     new_user = User.objects.create_user(username=username, email=email, password=password)
+    status = UserStatus.objects.create(user=new_user)
 
     if new_user is not None:
         return Response(status=200)  # sending a success response back

@@ -474,7 +474,19 @@ export function getUser() {
 export async function getAllUsers() {
     const url = API_ROOT + '/api/users/';
     return await axios.get(url).then((response) => {
-        return response.data;
+        console.log(response.data)
+        const users = response.data.map(function(user) {
+            let status = "NONE"
+            if (user.status) {
+                status = user.status.status
+            }
+            return ({
+                username: user.username,
+                email: user.email,
+                status: status
+            })
+        })
+        return users;
     }).catch((error) => {
         console.log(error);
         throw error;
@@ -572,8 +584,14 @@ export async function login(userName, email, password) {
                 token: response.data.token,
                 name: userName,
                 email: email,
-                is_admin: response.data.is_admin === true
+                is_admin: response.data.is_admin === true,
+                status: null
             };
+
+            if (!user_data.is_admin){
+                user_data.status = response.data.status.status;
+            }
+
             localStorage.setItem("user", JSON.stringify(user_data));
             return response;
     }).catch((error) => {

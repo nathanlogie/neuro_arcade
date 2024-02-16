@@ -23,11 +23,16 @@ export function AllUsers(){
         )
     }, []);
 
-    console.log(users)
-
     const displayUsers = users.map( function(user)
     {
-        return (<li>User:{user.username}</li>)
+        return (<li>
+            <ul>
+                <li>User:{user.username}</li>
+                <li>Email: {user.email}</li>
+                <li>Status: {user.status}</li>
+            </ul>
+            <br />
+        </li>)
     }
     )
 

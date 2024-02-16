@@ -1,11 +1,21 @@
 from rest_framework import serializers
-from na.models import Game, GameTag, Player, PlayerTag
+from na.models import Game, GameTag, Player, PlayerTag, UserStatus
 from django.contrib.auth.models import User
 
+
+class UserStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserStatus
+        fields = '__all__'
+
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    status = UserStatusSerializer()
+
     class Meta:
         model = User
-        fields = ['url', 'username']
+        fields = ['url', 'username', 'email', 'status']
+
 
 class GameSerializer(serializers.ModelSerializer):
     class Meta:
