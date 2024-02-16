@@ -84,67 +84,7 @@ export function HomePage() {
 
     let content = <>...</>;
     if (!loadingTags && !loadingModels) {
-        content = <>
-            <div className={styles.Content} id={styles['small']}>
-                <div className={styles.Title}>
-                    <h1>Featured games</h1>
-                    <motion.div
-                        className={styles.FilterButton} onClick={() => setShow(!show)}
-                        whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}
-                    >
-                        <IoFilter/>
-                    </motion.div>
-                </div>
-                <TagFilter
-                    onTagChange={setSelectedTags}
-                    tags={tags.map((tag) => tag.name)}
-                    id={show ? 'home' : 'invisible'}
-                    onMouseOver={() => setHover(true)}
-                    onMouseOut={() => setHover(false)}
-                />
-                {/*
-                    The featured tag is always applied, so that's put in the query for server-side
-                    filtering
-                    TODO: CardGrid should probably abstract the query
-                    TODO: only the first 8 featured games will be requested, so when additional tags are applied
-                    there may be less than 8 games shown even if other valid ones exist. Either tag filtering should
-                    be done server-side (resulting in a request on every check/uncheck), or num filtering should be
-                    done locally
-                */}
-                <GameGrid
-                    num={8}
-                    tagQuery={
-                        tags.filter((tag, i) => selectedTags[i])
-                            .concat(forcedTags)
-                            .map((tag) => tag.id)
-                    }
-                />
-                <Button
-                    name={'more games'}
-                    link={'all_games'}
-                    orientation={'right'}
-                    direction={'down'}
-                />
-            </div>
-            <div className={styles.Side}>
-                <div className={styles.DataBlock}>
-                    <HomePageTable inputData={models} />
-                </div>
-                <Button
-                    name={'all players'}
-                    link={'all_players'}
-                    orientation={'right'}
-                    direction={'down'}
-                />
-            </div>
-        </>;
-    }
-
-    return (
-        <div onClick={() => show && !hover ? setShow(false) : null}>
-            <Banner size={'big'} left={nav_left} right={nav_right} />
-            <MobileBanner/>
-            <NavBar left={nav_left} right={nav_right} />
+        content =
             <motion.div
                 className={styles.MainBlock}
                 id={styles['big']}
@@ -152,9 +92,68 @@ export function HomePage() {
                 animate={{opacity: 1}}
                 exit={{opacity: 0}}
             >
-                {content}
+                <div className={styles.Content} id={styles['small']}>
+                    <div className={styles.Title}>
+                        <h1>Featured games</h1>
+                        <motion.div
+                            className={styles.FilterButton} onClick={() => setShow(!show)}
+                            whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}
+                        >
+                            <IoFilter/>
+                        </motion.div>
+                    </div>
+                    <TagFilter
+                        onTagChange={setSelectedTags}
+                        tags={tags.map((tag) => tag.name)}
+                        id={show ? 'home' : 'invisible'}
+                        onMouseOver={() => setHover(true)}
+                        onMouseOut={() => setHover(false)}
+                    />
+                    {/*
+                        The featured tag is always applied, so that's put in the query for server-side
+                        filtering
+                        TODO: CardGrid should probably abstract the query
+                        TODO: only the first 8 featured games will be requested, so when additional tags are applied
+                        there may be less than 8 games shown even if other valid ones exist. Either tag filtering should
+                        be done server-side (resulting in a request on every check/uncheck), or num filtering should be
+                        done locally
+                    */}
+                    <GameGrid
+                        num={8}
+                        tagQuery={
+                            tags.filter((tag, i) => selectedTags[i])
+                                .concat(forcedTags)
+                                .map((tag) => tag.id)
+                        }
+                    />
+                    <Button
+                        name={'more games'}
+                        link={'all_games'}
+                        orientation={'right'}
+                        direction={'down'}
+                    />
+                </div>
+                <div className={styles.Side}>
+                    <div className={styles.DataBlock}>
+                        <HomePageTable inputData={models}/>
+                    </div>
+                    <Button
+                        name={'all players'}
+                        link={'all_players'}
+                        orientation={'right'}
+                        direction={'down'}
+                    />
+                </div>
                 <div className={styles.MobileBannerBuffer}/>
-            </motion.div>
+            </motion.div>;
+    }
+
+    return (
+        <div onClick={() => show && !hover ? setShow(false) : null}>
+            <Banner size={'big'} left={nav_left} right={nav_right}/>
+            <MobileBanner/>
+            <NavBar left={nav_left} right={nav_right} />
+                {content}
         </div>
     );
 }
