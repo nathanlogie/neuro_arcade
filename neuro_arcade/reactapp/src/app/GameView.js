@@ -21,7 +21,6 @@ export function GameView() {
     useEffect(() => {
         requestGame(gameSlug)
             .then(g => {
-                console.log(g);
                 setGameData(g);
                 setLoading(false);
             })
