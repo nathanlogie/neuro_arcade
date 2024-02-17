@@ -3,7 +3,7 @@ import {createRoot} from 'react-dom/client';
 import './styles/index.css';
 import {HomePage} from "./app/HomePage";
 import {AboutPage} from './app/about/AboutPage';
-import reportWebVitals from './reportWebVitals';
+import reportWebVitals from './app/reportWebVitals';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {AccountPage} from "./app/user_account/AccountPage";
 import {FormPage} from "./app/user_account/FormPage";
@@ -15,7 +15,7 @@ import {AllPlayers} from './app/AllPlayers';
 import { EditAbout } from "./app/about/EditAbout";
 import {AnimatePresence} from 'framer-motion'
 import {Background} from "./components/Background";
-import {AuthTest} from "./app/user_account/AuthTest";
+import {AuthTest} from "./app/AuthTest";
 
 const router = createBrowserRouter([
     {

@@ -1,6 +1,6 @@
 import {Banner, MobileBanner} from "../components/Banner";
 import styles from "../styles/App.module.css"
-import {PlayerGrid, PlayerGridMode} from "../components/card/PlayerGrid";
+import {PlayerGrid, PlayerGridMode} from "../components/PlayerGrid";
 import {TagFilter} from "../components/TagFilter";
 import {requestPlayerTags} from "../backendRequests";
 import React, {useEffect, useState} from "react";
