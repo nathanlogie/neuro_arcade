@@ -1,11 +1,11 @@
 import {Banner} from "../components/Banner";
-import {GameGrid} from "../components/card/GameGrid";
+import {GameGrid} from "../components/GameGrid";
 import styles from '../styles/App.module.css';
 import {NavBar} from "../components/NavBar";
 import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {TagFilter} from "../components/TagFilter";
-import {HomePageTable} from "../components/data/HomePageTable";
+import {HomePageTable} from "../components/HomePageTable";
 import {requestGameTags, requestModelsRanked} from "../backendRequests";
 import {motion} from "framer-motion"
 import {useEffect, useState} from "react";
@@ -14,7 +14,7 @@ import {Link} from "react-router-dom";
 import {logout} from "../backendRequests";
 import {userIsAdmin} from "../backendRequests";
 import {isLoggedIn} from "../backendRequests";
-import {Card} from "../components/card/Card";
+import {Card} from "../components/Card";
 import { FaRegUserCircle } from "react-icons/fa";
 
 /**
