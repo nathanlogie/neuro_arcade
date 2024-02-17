@@ -1,4 +1,4 @@
-import styles from '../styles/components/Card.module.css'
+import styles from '../../styles/components/Card.module.css'
 import {Link} from "react-router-dom";
 import {motion} from "framer-motion";
 

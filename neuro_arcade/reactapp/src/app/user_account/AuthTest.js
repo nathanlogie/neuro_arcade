@@ -1,6 +1,6 @@
-import {Background} from "../components/Background";
-import {MobileBanner} from "../components/Banner";
-import styles from "../styles/App.module.css";
+import {Background} from "../../components/Background";
+import {MobileBanner} from "../../components/Banner";
+import styles from "../../styles/App.module.css";
 import {
     createNewPlayer,
     deletePlayer,
@@ -9,7 +9,7 @@ import {
     logout,
     postGameScore,
     signupNewUser
-} from "../backendRequests";
+} from "../../backendRequests";
 import {useState} from "react";
 import {motion} from "framer-motion"
 

@@ -1,6 +1,6 @@
 import {Banner, MobileBanner} from "../components/Banner";
 import styles from "../styles/App.module.css"
-import {GameGrid} from "../components/GameGrid";
+import {GameGrid} from "../components/card/GameGrid";
 import {TagFilter} from "../components/TagFilter";
 import {requestGameTags} from "../backendRequests";
 import {useEffect, useState} from "react";

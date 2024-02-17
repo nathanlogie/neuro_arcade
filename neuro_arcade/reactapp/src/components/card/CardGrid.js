@@ -1,4 +1,4 @@
-import styles from '../styles/components/CardGrid.module.css'
+import styles from '../../styles/components/CardGrid.module.css'
 import {Card} from "./Card";
 
 /**

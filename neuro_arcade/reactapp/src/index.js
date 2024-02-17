@@ -3,19 +3,19 @@ import {createRoot} from 'react-dom/client';
 import './styles/index.css';
 import {HomePage} from "./app/HomePage";
 import {AboutPage} from './app/about/AboutPage';
-import reportWebVitals from './app/reportWebVitals';
+import reportWebVitals from './reportWebVitals';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {AccountPage} from "./app/user_account/AccountPage";
 import {FormPage} from "./app/user_account/FormPage";
 import {AllGames} from "./app/AllGames";
 import {GameView} from "./app/GameView";
-import {SignUp} from "./app/SignUp";
-import {Login} from "./app/Login";
+import {SignUp} from "./app/user_account/SignUp";
+import {Login} from "./app/user_account/Login";
 import {AllPlayers} from './app/AllPlayers';
 import { EditAbout } from "./app/about/EditAbout";
 import {AnimatePresence} from 'framer-motion'
 import {Background} from "./components/Background";
-import {AuthTest} from "./app/AuthTest";
+import {AuthTest} from "./app/user_account/AuthTest";
 
 const router = createBrowserRouter([
     {
