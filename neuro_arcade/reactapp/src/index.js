@@ -9,8 +9,8 @@ import {AccountPage} from "./app/user_account/AccountPage";
 import {FormPage} from "./app/user_account/FormPage";
 import {AllGames} from "./app/AllGames";
 import {GameView} from "./app/GameView";
-import {SignUp} from "./app/user_account/SignUp";
-import {Login} from "./app/user_account/Login";
+import {SignUp} from "./app/SignUp";
+import {Login} from "./app/Login";
 import {AllPlayers} from './app/AllPlayers';
 import { EditAbout } from "./app/about/EditAbout";
 import {AnimatePresence} from 'framer-motion'

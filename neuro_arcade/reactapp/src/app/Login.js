@@ -1,39 +1,31 @@
-import {Banner, MobileBanner} from "../../components/Banner";
-import styles from "../../styles/App.module.css";
+import {Banner, MobileBanner} from "../components/Banner";
+import styles from "../styles/App.module.css";
 import React, {useState} from "react";
-import {signupNewUser} from "../../backendRequests";
+import {login} from "../backendRequests";
 import {Navigate, Link} from "react-router-dom"
-import {NavBar} from "../../components/NavBar";
-import {Button} from "../../components/Button";
+import {NavBar} from "../components/NavBar";
+import {Button} from "../components/Button";
 import {motion} from "framer-motion";
-import {FaPlus} from "react-icons/fa6";
+import { FaArrowDown } from "react-icons/fa6";
 
-export function SignUp() {
+export function Login() {
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [isPasswordMatch, setIsPasswordMatch] = useState(true)
     const [success, setSuccess] = useState(false);
-    const [invalidResponse, setInvalidResponse] = useState("")
+    const [invalidMessage, setInvalidMessage] = useState("")
 
     async function handleSubmit(e) {
         e.preventDefault();
 
-        if (password!==confirmPassword){
-            setIsPasswordMatch(false)
-            return;
-        }
-        setIsPasswordMatch(true)
-
-        await signupNewUser(username, email, password)
+        await login(username, email, password)
             .then (function() {
                 setSuccess(true)
             })
             .catch (function(error){
                 console.log("AN ERROR HAS OCCURRED: " + error)
-                setInvalidResponse(error.response.data)
+                setInvalidMessage("Invalid Details.")
             })
     }
 
@@ -58,8 +50,9 @@ export function SignUp() {
                 animate={{opacity: 1}}
                 exit={{opacity: 0}}
             >
+
                 <div className={styles.Form}>
-                    <h1>{success ? <Navigate to={'/login'}/> : "Sign up"}</h1>
+                    <h1>{success ? <Navigate to={'/'}/> : "Sign in"}</h1>
                     <form onSubmit={handleSubmit}>
                         <h3>Username</h3>
                         <input
@@ -82,26 +75,18 @@ export function SignUp() {
                             placeholder={"..."}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                        <h3>Confirm password</h3>
-                        <input
-                            type={"password"}
-                            value={confirmPassword}
-                            placeholder={"..."}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                        />
-                        <div>{isPasswordMatch ? null : "Passwords don't match"}</div>
-                        <div>{invalidResponse}</div>
+                        <div>{invalidMessage}</div>
                         <motion.button
                             type={"submit"}
                             whileHover={{scale: 1.1}}
                             whileTap={{scale: 0.9}}
                         >
-                            create account
+                            sign in
                             <div>
-                                <FaPlus/>
+                                <FaArrowDown/>
                             </div>
                         </motion.button>
-                        <p>Already have an account? <Link to='/login'>Login here...</Link></p>
+                        <p>Don't have an account? <Link to='/sign_up'>Sign Up Here</Link></p>
                     </form>
                 </div>
             </motion.div>
