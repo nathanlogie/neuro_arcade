@@ -9,24 +9,18 @@ import {motion} from "framer-motion";
 import { FaArrowDown } from "react-icons/fa6";
 
 export function Login() {
-
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
+    // userID is either a username or an email address.
+    const [userID, setUserID] = useState("");
     const [password, setPassword] = useState("");
     const [success, setSuccess] = useState(false);
     const [invalidMessage, setInvalidMessage] = useState("")
 
     async function handleSubmit(e) {
         e.preventDefault();
-
-        await login(username, email, password)
-            .then (function() {
-                setSuccess(true)
-            })
-            .catch (function(error){
-                console.log("AN ERROR HAS OCCURRED: " + error)
-                setInvalidMessage("Invalid Details.")
-            })
+        await login(userID, password).then(() => {
+            setSuccess(true);
+            setInvalidMessage("");
+        }).catch((error) => setInvalidMessage("Invalid Details. Error: " + error.toString()))
     }
 
     let nav_left = (
@@ -57,16 +51,9 @@ export function Login() {
                         <h3>Username</h3>
                         <input
                             type={"text"}
-                            value={username}
-                            placeholder={"User"}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                        <h3>Email</h3>
-                        <input
-                            type={"email"}
-                            value={email}
-                            placeholder={"example@email.address"}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={userID}
+                            placeholder={"type in your email or username"}
+                            onChange={(e) => setUserID(e.target.value)}
                         />
                         <h3>Password</h3>
                         <input

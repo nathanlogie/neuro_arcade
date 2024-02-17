@@ -247,8 +247,6 @@ export async function requestPlayerTags() {
 /**
  * Requests a sorted list of games.
  *
- * @param query {string} instance of Reacts URLSearchParams, which you should get from useSearchParams()
- *
  * @return {Game[]} response data
  *
  * @throws Error when request is rejected
@@ -539,29 +537,34 @@ export async function signupNewUser(userName, email, password) {
 
 /**
  * Sends a login requests. The user data associated is stored on local storage, and it can be acquired
- * by doing `localStorage.getItem("user")`.
+ * by doing `localStorage.getItem("user")`. Either the email or username need to be provided.
  *
- * @param {string} userName - name of the user
- * @param {string} email - email address of the user
+ * @param {string} userID - either the username or email of the user
  * @param {string} password - the password in plaintext
  *
- * @throws Error login error
+ * @throws Error login error or if neither email nor username wasn't provided
  *
- * @return {Object} resposne if successful
+ * @return {Promise} promise of response if successful
  */
-export async function login(userName, email, password) {
+export async function login(userID, password) {
     const url = API_ROOT + '/login/';
+    let data;
+
+    if (userID.includes("@")) {
+        // userID is considered to be an email address
+        data = {'email': userID, 'password': password};
+    } else {
+        // userID is considered to be a username
+        data = {'username': userID, 'password': password};
+    }
+
     // sending the request:
-    return await axios.post(url, {
-        'username': userName,
-        'email': email,
-        'password': password,
-    }, await getHeaders('POST'))
+    return await axios.post(url, data, await getHeaders('POST'))
         .then((response) => {
             let user_data = {
                 token: response.data.token,
-                name: userName,
-                email: email,
+                name: response.data.username,
+                email: response.data.email,
                 is_admin: response.data.is_admin === true
             };
             localStorage.setItem("user", JSON.stringify(user_data));
