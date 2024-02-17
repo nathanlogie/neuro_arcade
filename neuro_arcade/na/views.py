@@ -341,10 +341,18 @@ def sign_up(request: Request) -> Response:
     # creating a new User in the DB:
     new_user = User.objects.create_user(username=username, email=email, password=password)
 
-    if new_user is not None:
-        return Response(status=200)  # sending a success response back
-    else:
-        return Response(status=400, data='Error creating new user.')
+    if new_user is None:
+        return Response(status=500, data='Error creating new user.')
+
+    # creating a human player associated with the User:
+    Player.objects.create(  # Todo: can this fail? If it can, handle the error.
+        name=username,
+        is_ai=False,
+        user=new_user,
+        description=("Human player of " + username + ".")
+    )
+
+    return Response(status=200)
 
 
 @api_view(['GET'])
