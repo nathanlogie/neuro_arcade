@@ -10,27 +10,26 @@ import React from "react";
  */
 export function NavBar({left, right}) {
 
-    const navbar = [];
+    let nav_left = <div className={styles.Buffer}/>;
+    let nav_right = <div className={styles.Buffer}/>;
+
     if (left) {
-        navbar.push(
-            <div className={styles.Buffer} key={0}>
+        nav_left =
+            <div className={styles.Buffer}>
                 {left}
-            </div>
-        );
-    } else {
-        navbar.push(<div className={styles.Buffer} key={0}/>);
+            </div>;
     }
     if (right) {
-        <div className={styles.Buffer} key={2}>
-            {right}
-        </div>
-    } else {
-        navbar.push(<div className={styles.Buffer} key={2}/>);
+        nav_right =
+            <div className={styles.Buffer}>
+                {right}
+            </div>;
     }
 
     return (
         <div className={styles.NavBar}>
-            {navbar}
+            {nav_left}
+            {nav_right}
         </div>
     )
 }

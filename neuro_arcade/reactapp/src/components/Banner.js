@@ -35,32 +35,31 @@ export function Banner({size, left, right, selected}) {
     }
 
     if (size === 'big') {
-        const banner = [];
+
+        let nav_left = <div className={styles.Buffer}/>;
+        let nav_right = <div className={styles.Buffer}/>;
+
         if (left) {
-            banner.push(
-                <div className={styles.Buffer} key={0}>
+            nav_left =
+                <div className={styles.Buffer}>
                     {left}
-                </div>
-            );
-        } else {
-            banner.push(<div className={styles.Buffer} key={0}/>)
+                </div>;
         }
-        banner.push(<Logo size={size} key={1}/>)
         if (right) {
-            banner.push(
-                <div className={styles.Buffer} key={2}>
+            nav_right =
+                <div className={styles.Buffer}>
                     {right}
-                </div>
-            );
-        } else {
-            banner.push(<div className={styles.Buffer} key={2}/>)
+                </div>;
         }
+
         return (
             <div
                 className={styles.Banner}
                 id={styles[size]}
             >
-                {banner}
+                {nav_left}
+                <Logo size={size}/>
+                {nav_right}
             </div>
         );
     } else {
