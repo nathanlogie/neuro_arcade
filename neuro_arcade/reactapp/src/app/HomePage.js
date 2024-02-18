@@ -43,14 +43,11 @@ export function HomePage() {
             link={aboutLink}
             orientation={'left'}
             direction={'left'}
-            key={0}
         />
     );
 
     let nav_right = (
-        <div className={styles.NavBuffer} key={2}>
-            <Card id={'nav'} link={'sign_up'} text={'guest'} icon={<FaRegUserCircle/>}/>
-        </div>
+        <Card id={'nav'} link={'sign_up'} text={'guest'} icon={<FaRegUserCircle/>}/>
     );
 
     if (isLoggedIn()) {
@@ -58,7 +55,7 @@ export function HomePage() {
             aboutLink = '/edit_about';
         }
         nav_right = (
-            <div className={styles.NavBuffer} key={2}>
+            <div className={styles.NavBuffer}>
             <Card id={'nav'} link={'user_account'} text={'user'} icon={<FaRegUserCircle/>} //TODO signed in user profile display
             />
             </div>

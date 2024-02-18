@@ -37,13 +37,21 @@ export function Banner({size, left, right, selected}) {
     if (size === 'big') {
         const banner = [];
         if (left) {
-            banner.push(left);
+            banner.push(
+                <div className={styles.Buffer} key={0}>
+                    {left}
+                </div>
+            );
         } else {
             banner.push(<div className={styles.Buffer} key={0}/>)
         }
         banner.push(<Logo size={size} key={1}/>)
         if (right) {
-            banner.push(right);
+            banner.push(
+                <div className={styles.Buffer} key={2}>
+                    {right}
+                </div>
+            );
         } else {
             banner.push(<div className={styles.Buffer} key={2}/>)
         }

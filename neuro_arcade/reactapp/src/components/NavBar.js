@@ -12,14 +12,20 @@ export function NavBar({left, right}) {
 
     const navbar = [];
     if (left) {
-        navbar.push(left);
+        navbar.push(
+            <div className={styles.Buffer} key={0}>
+                {left}
+            </div>
+        );
     } else {
         navbar.push(<div className={styles.Buffer} key={0}/>);
     }
     if (right) {
-        navbar.push(right);
+        <div className={styles.Buffer} key={2}>
+            {right}
+        </div>
     } else {
-        navbar.push(<div className={styles.Buffer} key={1}/>);
+        navbar.push(<div className={styles.Buffer} key={2}/>);
     }
 
     return (
