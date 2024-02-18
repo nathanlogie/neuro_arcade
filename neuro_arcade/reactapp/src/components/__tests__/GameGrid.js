@@ -5,6 +5,15 @@ import { GameGrid } from "../GameGrid";
 import { requestGames } from "../../backendRequests";
 jest.mock('../../backendRequests');
 
+test('GameGrid renders without crashing', async () => {
+    requestGames.mockResolvedValue([]);
+    renderWithRouter(<GameGrid />);
+    // Wait for load to complete
+    await waitFor(() => {
+        expect(requestGames).toHaveBeenCalledTimes(1);
+    });
+});
+
 test('GameGrid shows a player', async () => {
     requestGames.mockResolvedValue([
         {
