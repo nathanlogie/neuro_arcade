@@ -43,6 +43,7 @@ export function SignUp() {
             link={'/'}
             orientation={'left'}
             direction={'left'}
+            key={0}
         />
     );
 

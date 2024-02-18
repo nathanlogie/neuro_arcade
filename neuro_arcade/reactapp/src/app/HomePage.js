@@ -35,24 +35,7 @@ export function HomePage() {
     const [hover, setHover] = useState(false);
     const [loggedIn, setLoggedIn] = useState(isLoggedIn());
 
-    let nav_right = (
-        <div className={styles.NavBuffer}>
-            <Card id={'nav'} link={'sign_up'} text={'guest'} icon={<FaRegUserCircle/>}/>
-        </div>
-    );
-
     let aboutLink = '/about';
-    if (isLoggedIn()) {
-        if (userIsAdmin()) {
-            aboutLink = '/edit_about';
-        }
-        nav_right = (
-            <div className={styles.NavBuffer}>
-            <Card id={'nav'} link={'user_account'} text={'user'} icon={<FaRegUserCircle/>} //TODO signed in user profile display
-            />
-            </div>
-        );
-    }
 
     let nav_left = (
         <Button
@@ -60,8 +43,27 @@ export function HomePage() {
             link={aboutLink}
             orientation={'left'}
             direction={'left'}
+            key={0}
         />
     );
+
+    let nav_right = (
+        <div className={styles.NavBuffer} key={2}>
+            <Card id={'nav'} link={'sign_up'} text={'guest'} icon={<FaRegUserCircle/>}/>
+        </div>
+    );
+
+    if (isLoggedIn()) {
+        if (userIsAdmin()) {
+            aboutLink = '/edit_about';
+        }
+        nav_right = (
+            <div className={styles.NavBuffer} key={2}>
+            <Card id={'nav'} link={'user_account'} text={'user'} icon={<FaRegUserCircle/>} //TODO signed in user profile display
+            />
+            </div>
+        );
+    }
 
     // Fetch the data tags on load
     useEffect(() => {

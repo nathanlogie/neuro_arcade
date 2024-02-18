@@ -19,6 +19,7 @@ export function AboutPage() {
             link={'/'}
             orientation={'right'}
             direction={'right'}
+            key={2}
         />
     );
 

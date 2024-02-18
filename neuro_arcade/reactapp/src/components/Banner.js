@@ -39,13 +39,13 @@ export function Banner({size, left, right, selected}) {
         if (left) {
             banner.push(left);
         } else {
-            banner.push(<div className={styles.Buffer} />)
+            banner.push(<div className={styles.Buffer} key={0}/>)
         }
-        banner.push(<Logo size={size} />)
+        banner.push(<Logo size={size} key={1}/>)
         if (right) {
             banner.push(right);
         } else {
-            banner.push(<div className={styles.Buffer} />)
+            banner.push(<div className={styles.Buffer} key={2}/>)
         }
         return (
             <div

@@ -119,7 +119,7 @@ export function Table({inputData}) {
                             },
                         },
                     }}
-                    pageSizeOptions={[5]}
+                    pageSizeOptions={[7]}
                     disableRowSelectionOnClick
                     getRowStyle={getRowStyle}
                 />

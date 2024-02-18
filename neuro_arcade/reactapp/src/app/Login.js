@@ -29,6 +29,7 @@ export function Login() {
             link={'/'}
             orientation={'left'}
             direction={'left'}
+            key={0}
         />
     );
 
