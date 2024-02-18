@@ -10,21 +10,15 @@ import React from "react";
  */
 export function NavBar({left, right}) {
 
-    let nav_left = <div className={styles.Buffer}/>;
-    let nav_right = <div className={styles.Buffer}/>;
+    let nav_left =
+        <div className={styles.Buffer}>
+            {left}
+        </div>;
 
-    if (left) {
-        nav_left =
-            <div className={styles.Buffer}>
-                {left}
-            </div>;
-    }
-    if (right) {
-        nav_right =
-            <div className={styles.Buffer}>
-                {right}
-            </div>;
-    }
+    let nav_right =
+        <div className={styles.Buffer}>
+            {right}
+        </div>;
 
     return (
         <div className={styles.NavBar}>

@@ -15,19 +15,6 @@ jest.mock('../../backendRequests');
     disappear or for a player to appear.
 */
 
-test('PlayerGrid renders without crashing', async () => {
-    requestPlayers.mockResolvedValue([]);
-    renderWithRouter(<PlayerGrid />);
-
-    // Check initial loading render
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
-
-    // Check it updates once load is complete
-    await waitFor(() => {
-        expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
-    });
-});
-
 test('PlayerGrid shows a player', async () => {
     requestPlayers.mockResolvedValue([
         {

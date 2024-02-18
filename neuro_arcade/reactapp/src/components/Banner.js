@@ -36,21 +36,15 @@ export function Banner({size, left, right, selected}) {
 
     if (size === 'big') {
 
-        let nav_left = <div className={styles.Buffer}/>;
-        let nav_right = <div className={styles.Buffer}/>;
+        let nav_left =
+            <div className={styles.Buffer}>
+                {left}
+            </div>;
 
-        if (left) {
-            nav_left =
-                <div className={styles.Buffer}>
-                    {left}
-                </div>;
-        }
-        if (right) {
-            nav_right =
-                <div className={styles.Buffer}>
-                    {right}
-                </div>;
-        }
+        let nav_right =
+            <div className={styles.Buffer}>
+                {right}
+            </div>;
 
         return (
             <div
