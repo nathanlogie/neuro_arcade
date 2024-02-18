@@ -108,7 +108,8 @@ export function Table({inputData}) {
                           color: 'white',
                         },
                         height: '34.05em',
-                        width: '33em'
+                        width: '33em',
+                        fontFamily: 'inherit'
                     }}
                     rows={filteredRows}
                     columns={columns}
