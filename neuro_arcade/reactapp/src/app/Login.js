@@ -6,24 +6,18 @@ import {login} from "../backendRequests";
 import {Navigate, Link} from "react-router-dom"
 
 export function Login(){
-
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
+    // userID is either a username or an email address.
+    const [userID, setUserID] = useState("");
     const [password, setPassword] = useState("");
     const [success, setSuccess] = useState(false);
     const [invalidMessage, setInvalidMessage] = useState("")
 
     async function handleSubmit(e) {
         e.preventDefault();
-
-        await login(username, email, password)
-            .then (function() {
-                setSuccess(true)
-            })
-            .catch (function(error){
-                console.log("AN ERROR HAS OCCURRED: " + error)
-                setInvalidMessage("Invalid Details.")
-            })
+        await login(userID, password).then(() => {
+            setSuccess(true);
+            setInvalidMessage("");
+        }).catch((error) => setInvalidMessage("Invalid Details. Error: " + error.toString()))
     }
 
     return (
@@ -40,9 +34,18 @@ export function Login(){
                     <p>{ invalidMessage }</p>
                     <form onSubmit={handleSubmit}>
 
-                        <p>Username: <input type={"text"} value={username} placeholder={"Username..."} onChange={(e) => setUsername(e.target.value)}/></p>
-                        <p>Email: <input type={"email"} value={email} placeholder={"Email..."} onChange={(e) => setEmail(e.target.value)}/></p>
-                        <p>Password: <input type={"password"} value={password} placeholder={"Password..."} onChange={(e) => setPassword(e.target.value)}/></p>
+                        <p>Username: <input
+                            type={"text"}
+                            value={userID}
+                            placeholder={"Username or Email..."}
+                            onChange={(e) => setUserID(e.target.value)}/>
+                        </p>
+                        <p>Password: <input
+                            type={"password"}
+                            value={password}
+                            placeholder={"Password..."}
+                            onChange={(e) => setPassword(e.target.value)}/>
+                        </p>
                         <button type={"submit"}>LOGIN</button>
 
                     </form>
