@@ -67,6 +67,23 @@ def validate_password(password):
     # TODO improve password validation
     return len(password) >= 8
 
+def get_player_dict(player_slug: str):
+    """
+    Gets the data associated with a player.
+
+    :param player_slug: string representing the player slug
+    """
+    player = get_object_or_404(Player, slug=player_slug)
+    dictionary = {
+        'id': player.id,
+        'name': player.name,
+        'is_ai': player.is_ai,
+        'user': player.user.username if player.user else None,
+        'description': player.description,
+        'tags': [tag.name for tag in player.tags.all()] if player.tags else [],
+    }
+    return dictionary
+
 
 # ----------------
 #    API CALLS
@@ -405,6 +422,14 @@ def get_model_rankings(request: Request) -> Response:
     data.sort(key=lambda d: -d['overall_score'])
 
     return Response(status=200, data=data)
+
+@api_view(['GET'])
+def get_player(request: Request, player_name_slug: str) -> Response:
+    """
+    Retrieve Player Information
+    """
+    player = get_player_dict(player_name_slug)
+    return Response(player)
 
 
 class UserViewSet(viewsets.ModelViewSet):
