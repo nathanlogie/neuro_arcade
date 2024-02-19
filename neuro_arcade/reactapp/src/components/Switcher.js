@@ -45,10 +45,6 @@ export function Switcher({data, onSwitcherChange, switcherDefault}) {
                 exclusive
                 onChange={handleAlignment}
                 aria-label="Platform"
-                style={{
-                    overflow: 'hidden',
-                    right: '0'
-                }}
             >
 
                 {data.table_headers.map((header, index) => (
@@ -70,7 +66,8 @@ export function Switcher({data, onSwitcherChange, switcherDefault}) {
                                 ]}
                             style={{
                                 borderColor: alignment === header.name ? 'white' : 'transparent',
-                                borderWidth: '0.4em',
+                                borderWidth: alignment === header.name ? '0.4em': '0',
+                                padding: alignment === header.name ? '1em': '1.3em',
                                 backdropFilter: 'blur(2.5em)',
                                 backgroundColor: alignment === header.name ? 'rgba(255, 255, 255, 0.3)' : 'rgba(143,143,143,0.2)',
                                 color: '#EEEEEE',

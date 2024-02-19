@@ -110,7 +110,7 @@
             }
             .GraphSwitcher {
                 position: absolute;
-                right: -8.75em;
+                right: -10.6em;
                 border-radius: 0;
                 * {
                     flex-direction: column;
@@ -121,7 +121,7 @@
                         border-radius: 0 0 2em 0;
                     }
                     * {
-                        width: 10em;
+                        width: 12em;
                     }
                 }
             }
