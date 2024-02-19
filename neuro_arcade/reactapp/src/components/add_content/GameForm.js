@@ -88,11 +88,15 @@ export function GameForm() {
     }
 
     const handleScores = (event) => {
-        const file = event.target.files[0]
-        if (file) {
-            setScoreType(file)
-        } else {
+        const file = event.target.files[0];
+        const acceptedFormats = ACCEPTED_SCORE_FILE;
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        if (!acceptedFormats.includes(fileExtension)) {
+            setError("scoreType", {message: "Invalid file type provided"})
             setScoreType(null)
+        }
+        else{
+            setScoreType(file)
         }
     }
 
@@ -234,15 +238,7 @@ export function GameForm() {
                             </div>
                         </label>
                         <input id={'score'} {...register("scoreTypes", {
-                            required: "Score types must be uploaded",
-                            validate: (value) => {
-                                const acceptedFormats = ACCEPTED_SCORE_FILE;
-                                const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
-                                if (!acceptedFormats.includes(fileExtension)) {
-                                    return `Error: Invalid file type provided ${fileExtension}`
-                                }
-                                return true;
-                            }
+                            required: "Score types must be uploaded"
                         })} type={"file"} accept={".json"} onChange={handleScores}
                         />
                         {errors.scoreTypes && (
@@ -265,15 +261,7 @@ export function GameForm() {
                             </div>
                         </label>
                         <input id={'script'} {...register("evaluationScript", {
-                            required: "An Evaluation Script must be uploaded",
-                            validate: (value) => {
-                                const acceptedFormats = ACCEPTED_EVAL_SCRIPT;
-                                const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
-                                if (!acceptedFormats.includes(fileExtension)) {
-                                    return "Error: Invalid file type provided"
-                                }
-                                return true;
-                            }
+                            required: "An Evaluation Script must be uploaded"
                         })} type={"file"} accept={".py"} onChange={handleEvalScript}
                         />
                         {errors.evaluationScript && (
