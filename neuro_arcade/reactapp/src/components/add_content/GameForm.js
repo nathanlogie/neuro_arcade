@@ -8,7 +8,7 @@ import {FaPlus} from "react-icons/fa6";
 import {motion} from "framer-motion";
 import CreatableSelect from 'react-select/creatable';
 import {requestGameTags} from "../../backendRequests";
-import {json} from "react-router-dom";
+import slugify from 'react-slugify';
 
 //Should be synced with models.py
 let MAX_NAME_LENGTH = 64;
@@ -70,6 +70,7 @@ export function GameForm() {
     function handleCreate(tagName) {
         let formData = new FormData()
         formData.append("name", tagName)
+        formData.append("slug", slugify(tagName))
         axios({
             method: "post",
             url: "http://127.0.0.1:8000/api/gameTag/",
@@ -116,7 +117,7 @@ export function GameForm() {
         //Temporary until authentication is fulfilled
         formData.append("owner", 3);
         formData.append("play_link", playLink);
-
+        formData.append("slug", slugify(name));
         let finalTags = []
         tags.forEach((tag) => {
             finalTags.push(tag.value)
