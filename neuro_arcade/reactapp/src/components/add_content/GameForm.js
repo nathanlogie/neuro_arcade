@@ -71,12 +71,14 @@ export function GameForm() {
         let formData = new FormData()
         formData.append("name", tagName)
         formData.append("slug", slugify(tagName))
+        formData.append("description", "described")
         axios({
             method: "post",
             url: "http://127.0.0.1:8000/api/gameTag/",
             data: formData,
             headers: {"Content-Type": "multipart/form-data"},
         }).then((response) => {
+            console.log(response)
             options.push({
                 value: response.data.id,
                 label: response.data.name
