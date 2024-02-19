@@ -48,6 +48,15 @@ export function SwarmPlot({inputData}) {
     const maxValue = Math.max(...data.map(item => item.value));
     const minValue = Math.min(...data.map(item => item.value));
 
+    const getColor = (e) => {
+        switch (e.group) {
+            case "AI":
+                return "rgba(209,64,129,0.75)"
+            case "Human":
+                return "rgba(121,255,183,0.75)"
+        }
+    }
+
     return (
         <div className={styles.GraphContainer}>
             <div style={{width: '43.8em', height: '32em'}}>
@@ -65,7 +74,7 @@ export function SwarmPlot({inputData}) {
                     groupBy="group"
                     margin={{top: 100, right: 75, bottom: 100, left: 100}}
                     size={{key: 'value', values: [minValue, maxValue], sizes: [15, 60]}}
-                    colors={{scheme: 'accent'}}
+                    colors={getColor}
                     forceStrength={1}
                     simulationIterations={100}
                     theme={{
