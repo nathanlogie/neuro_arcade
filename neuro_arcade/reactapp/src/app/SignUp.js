@@ -33,7 +33,11 @@ export function SignUp() {
             })
             .catch (function(error){
                 console.log("AN ERROR HAS OCCURRED: " + error)
-                setInvalidResponse(error.response.data)
+                if (error.response)
+                    setInvalidResponse(error.response.data);
+                else{
+                    setInvalidResponse(error.toString())
+                }
             })
     }
 
