@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Radar, RadarChart, PolarGrid, Legend, PolarAngleAxis, PolarRadiusAxis} from 'recharts';
+import styles from '../../styles/components/TableGraph.module.css';
 
 /**
  * @param inputData {Object}
@@ -9,7 +10,7 @@ import {Radar, RadarChart, PolarGrid, Legend, PolarAngleAxis, PolarRadiusAxis} f
  */
 export function RadarC({inputData}) {
 
-  if (!inputData || !inputData.rows || inputData.rows.length === 0){
+  if (!inputData || !inputData.rows || inputData.rows.length === 0) {
     return null;
   }
 
@@ -24,7 +25,10 @@ export function RadarC({inputData}) {
    * for each table header (score type) initialises the score object and sets the counts and totals of AI and humans to 0
    */  
   inputData.table_headers.forEach(function(header){
-    scores[header.name] = { ai: { count: 0, total: 0 }, human: { count: 0, total: 0 } };
+    scores[header.name] = {
+      ai: { count: 0, total: 0, max: 0, min: 0 },
+      human: { count: 0, total: 0, max: 0, min: 0 }
+    };
   });
 
   /**
@@ -41,6 +45,12 @@ export function RadarC({inputData}) {
     inputData.table_headers.forEach(function(header, index){
       scores[header.name][scoreType].count++;
       scores[header.name][scoreType].total += row.score[index];
+      if (scores[header.name][scoreType].max < row.score[index]) {
+        scores[header.name][scoreType].max = row.score[index];
+      }
+      if (scores[header.name][scoreType].min > row.score[index]) {
+        scores[header.name][scoreType].min = row.score[index];
+      }
     });
   });
 
@@ -50,26 +60,31 @@ export function RadarC({inputData}) {
    * finds the average AI and human scores then adds this to an object data to be used in the Radar Chart
    */
   const data = inputData.table_headers.map(function(header){
-    const averageAI = scores[header.name].ai.total / scores[header.name].ai.count;
-    const averageHuman = scores[header.name].human.total / scores[header.name].human.count;
-
+    const meanAI = scores[header.name].ai.total / scores[header.name].ai.count;
+    const meanHuman = scores[header.name].human.total / scores[header.name].human.count;
+    const max = Math.max(scores[header.name].ai.max, scores[header.name].human.max);
+    const min = Math.min(scores[header.name].ai.min, scores[header.name].human.min);
+    const normalizedMeanAI = (meanAI - min) / (max - min);
+    const normalizedMeanHuman = (meanHuman - min) / (max - min);
     return {
       data_type: header.name,
-      average_ai: averageAI.toFixed(2),
-      average_human: averageHuman.toFixed(2)
+      average_ai: normalizedMeanAI.toFixed(2),
+      average_human: normalizedMeanHuman.toFixed(2)
     };
   });
 
 
   return (
-    <RadarChart cx={300} cy={250} outerRadius={150} width={600} height={500} data={data}>
-      <PolarGrid />
-      <PolarAngleAxis dataKey="data_type" />
-      <PolarRadiusAxis />
-      <Radar name="Average AI Score" dataKey="average_ai" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-      <Radar name="Average Human Score" dataKey="average_human" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
-      <Legend />
-    </RadarChart>
+      <div className={styles.GraphContainer}>
+        <h2>Trends</h2>
+        <RadarChart cx={'40em'} cy={'40em'} outerRadius={200} width={700} height={500} data={data}>
+          <PolarGrid/>
+          <PolarAngleAxis dataKey="data_type"/>
+          <Radar name="Average AI Score" dataKey="average_ai" stroke="#D14081" fill="#D14081" fillOpacity={0.4}/>
+          <Radar name="Average Human Score" dataKey="average_human" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.4}/>
+          <Legend/>
+        </RadarChart>
+      </div>
   );
 }
 
