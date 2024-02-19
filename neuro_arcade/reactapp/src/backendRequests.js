@@ -515,11 +515,16 @@ function passwordValidator(password) {
  */
 export async function signupNewUser(userName, email, password) {
     const url = API_ROOT + '/sign_up/';
+    const emailRegex = new RegExp('[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}');
 
     // validating the password on client side:
     // Note: this doesn't mean that the password is not also going to be checked server side.
     if (!passwordValidator(password))
         throw new Error('Password is not valid!')
+
+    // the username should not pass a test for being an email address:
+    if (emailRegex.test(userName))
+        throw new Error('Username cannot be a valid email address!')
 
     // sending the request:
     return await axios.post(url, {
@@ -548,9 +553,10 @@ export async function signupNewUser(userName, email, password) {
  */
 export async function login(userID, password) {
     const url = API_ROOT + '/login/';
+    const emailRegex = new RegExp('[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}');
     let data;
 
-    if (userID.includes("@")) {
+    if (emailRegex.test(userID)) {
         // userID is considered to be an email address
         data = {'email': userID, 'password': password};
     } else {

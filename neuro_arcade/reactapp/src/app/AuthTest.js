@@ -42,13 +42,22 @@ export function AuthTest() {
                         signup as 'newGuy'
                     </button>
                     <button onClick={() =>
-                        login('newGuy', 'newGuy@gmail.com', "asdfqwer112!")
+                        login('newGuy', "asdfqwer112!")
                             .then((r) => {
                                 setResponse(r);
                                 setUserInfo(localStorage.getItem("user"));
                             })
                     }>
-                        login as 'newGuy'
+                        login as 'newGuy' with username
+                    </button>
+                    <button onClick={() =>
+                        login('newGuy@gmail.com', "asdfqwer112!")
+                            .then((r) => {
+                                setResponse(r);
+                                setUserInfo(localStorage.getItem("user"));
+                            })
+                    }>
+                        login as 'newGuy@gmail.com' with email
                     </button>
                     <button onClick={() => {
                         logout()
