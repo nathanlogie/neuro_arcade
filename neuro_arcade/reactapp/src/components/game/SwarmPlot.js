@@ -3,13 +3,6 @@ import {ResponsiveSwarmPlot} from '@nivo/swarmplot';
 import {Switcher} from '../Switcher';
 import PropTypes from 'prop-types';
 import styles from '../../styles/components/TableGraph.module.css';
-import {createTheme, ThemeProvider} from "@mui/material";
-
-const graph_theme = createTheme({
-  palette: {
-      mode: 'dark',
-  },
-});
 
 /**
  * @param inputData {Object}
@@ -70,41 +63,40 @@ export function SwarmPlot({inputData}) {
                         switcherDefault={selectedSwitcherValue}
                     />
                 </div>
-                <ThemeProvider theme={graph_theme}>
-                    <ResponsiveSwarmPlot
-                        data={data}
-                        groups={['AI', 'Human']}
-                        identity='id'
-                        value="value"
-                        groupBy="group"
-                        margin={{top: 50, right: 50, bottom: 50, left: 60}}
-                        size={{key: 'value', values: [1, maxSize], sizes: [1, 10]}}
-                        forceStrength={1}
-                        simulationIterations={100}
-                        style={{
-                            background: 'linear-gradient(270deg, rgba(217, 217, 217, 0.43) 0%, rgba(217, 217, 217, 0.00) 100%)',
-                            stroke: '#FFFFFF',
-                            color: '#FFFFFF'
-                        }}
-                        axisBottom={{
-                            orient: 'bottom',
-                            tickSize: 5,
-                            tickPadding: 5,
-                            tickRotation: 0,
-                            legend: 'AI vs Humans',
-                            legendPosition: 'middle',
-                            legendOffset: 36,
-                        }}
-                        axisLeft={{
-                            orient: 'left',
-                            tickSize: 5,
-                            tickPadding: 5,
-                            tickRotation: 0,
-                            legend: selectedSwitcherValue,
-                            legendOffset: -40,
-                        }}
-                    />
-                </ThemeProvider>
+                <ResponsiveSwarmPlot
+                    data={data}
+                    groups={['AI', 'Human']}
+                    groupBy="group"
+                    margin={{top: 50, right: 50, bottom: 50, left: 60}}
+                    size={{key: 'value', values: [1, maxSize], sizes: [1, 10]}}
+                    colors={{scheme: 'accent'}}
+                    forceStrength={1}
+                    simulationIterations={100}
+                    theme={{
+                        'background': 'rgba(255,255,255,0.1)',
+                        'text': {
+                            'fill': '#FFFFFF',
+                            fontFamily: 'inherit'
+                        }
+                    }}
+                    axisBottom={{
+                        orient: 'bottom',
+                        tickSize: 5,
+                        tickPadding: 5,
+                        tickRotation: 0,
+                        legend: 'AI vs Humans',
+                        legendPosition: 'middle',
+                        legendOffset: 36,
+                    }}
+                    axisLeft={{
+                        orient: 'left',
+                        tickSize: 5,
+                        tickPadding: 5,
+                        tickRotation: 0,
+                        legend: selectedSwitcherValue,
+                        legendOffset: -40,
+                    }}
+                />
             </div>
         </div>
     );

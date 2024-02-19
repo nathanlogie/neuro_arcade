@@ -56,7 +56,7 @@ export function Banner({size, left, right, selected}) {
                 id={styles['small']}>
                     <Button
                         name={'back'}
-                        link={'javascript:history.back()'}
+                        link={-1}
                         direction={'up'}
                         orientation={'left'}
                     />

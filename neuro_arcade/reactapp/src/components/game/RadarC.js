@@ -10,7 +10,7 @@ import {Radar, RadarChart, PolarGrid, Legend, PolarAngleAxis, PolarRadiusAxis} f
 export function RadarC({inputData}) {
 
   if (!inputData || !inputData.rows || inputData.rows.length === 0){
-    return <h1>No data</h1>;
+    return null;
   }
 
   const numDataTypes = inputData.table_headers.length;
