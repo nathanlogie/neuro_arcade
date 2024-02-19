@@ -9,6 +9,7 @@ import {motion} from "framer-motion";
 import CreatableSelect from 'react-select/creatable';
 import {requestGameTags} from "../../backendRequests";
 import slugify from 'react-slugify';
+import makeAnimated from 'react-select/animated';
 
 //Should be synced with models.py
 let MAX_NAME_LENGTH = 64;
@@ -79,10 +80,13 @@ export function GameForm() {
             headers: {"Content-Type": "multipart/form-data"},
         }).then((response) => {
             console.log(response)
-            options.push({
+            let newValue = {
                 value: response.data.id,
                 label: response.data.name
-            })
+            }
+            options.push(newValue)
+            tags.push(newValue)
+
         }).catch()
     }
 
@@ -201,6 +205,7 @@ export function GameForm() {
                 onCreateOption={handleCreate}
                 value={tags}
                 options={options}
+                components={makeAnimated()}
             />
 
             <h3>Play Link</h3>
