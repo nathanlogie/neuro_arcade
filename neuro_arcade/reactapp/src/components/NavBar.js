@@ -18,6 +18,7 @@ export function NavBar({button_left, button_right}) {
                 link={button_left.link}
                 direction={button_left.direction}
                 orientation={button_left.orientation}
+                key={navbar.length}
             />)
         ;
     }
@@ -28,6 +29,7 @@ export function NavBar({button_left, button_right}) {
                 link={button_right.link}
                 direction={button_right.direction}
                 orientation={button_right.orientation}
+                key={navbar.length}
             />
         );
     }

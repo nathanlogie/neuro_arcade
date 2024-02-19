@@ -3,14 +3,12 @@ import os
 
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from django.http import HttpRequest
+from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.middleware.csrf import get_token
-from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework import viewsets
-from rest_framework.authtoken import views as rest_views
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -307,19 +305,39 @@ def delete_player(request: Request) -> Response:
     return Response(status=200, data='Player successfully deleted!')
 
 
-@csrf_exempt  # Needs to not check for a CSRF token due to django shenanigans. Should not be a security problem.
-def login(request: HttpRequest) -> Response:
-    if request.method == 'POST':
-        response = rest_views.obtain_auth_token(request)
+@api_view(['POST'])
+def login(request: Request) -> Response:
+    username = request.data.get('username')
+    email = request.data.get('email')
+    password = request.data.get('password')
+    user = None
+    if username is not None:
+        # login with username
+        user = authenticate(username=username, password=password)
+    if username is None and email is not None:
+        # login with email
+        # Note that the authenticate function does not work with email.
+        # get a user associated with the email
+        maybe_user = User.objects.get(email=email)
+        if maybe_user is not None:
+            # check the password
+            if maybe_user.check_password(password):
+                # email and password are good, set user
+                user = maybe_user
+    if user is None:
+        return Response(status=403, data="Wrong credentials provided.")
 
-        # sending back if the user is admin or not
-        user_id = Token.objects.get(key=response.data['token']).user_id
-        user = User.objects.get(id=user_id)
-        response.data['is_admin'] = user.is_superuser
-        if not user.is_superuser:
-            response.data['status'] = user.status.status
+    token = Token.objects.get_or_create(user=user)[0]
+    response_data = {
+        'username': user.username,
+        'email': user.email,
+        'is_admin': user.is_superuser,
+        'token': token.key,
+    }
+    if not user.is_superuser:
+        response_data['status'] = user.status.status
 
-        return response
+    return Response(status=200, data=response_data)
 
 
 @api_view(['POST'])
@@ -344,10 +362,18 @@ def sign_up(request: Request) -> Response:
     new_user = User.objects.create_user(username=username, email=email, password=password)
     status = UserStatus.objects.create(user=new_user)
 
-    if new_user is not None:
-        return Response(status=200)  # sending a success response back
-    else:
-        return Response(status=400, data='Error creating new user.')
+    if new_user is None:
+        return Response(status=500, data='Error creating new user.')
+
+    # creating a human player associated with the User:
+    Player.objects.create(  # Todo: can this fail? If it can, handle the error.
+        name=username,
+        is_ai=False,
+        user=new_user,
+        description=("Human player of " + username + ".")
+    )
+
+    return Response(status=200)
 
 
 @api_view(['POST'])
