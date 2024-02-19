@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import axios from 'axios';
-import { FaImage } from "react-icons/fa6";
-import { LuFileJson } from "react-icons/lu";
-import { FaPython } from "react-icons/fa6";
-import { FaPlus } from "react-icons/fa6";
+import {FaImage} from "react-icons/fa6";
+import {LuFileJson} from "react-icons/lu";
+import {FaPython} from "react-icons/fa6";
+import {FaPlus} from "react-icons/fa6";
 import {motion} from "framer-motion";
 import CreatableSelect from 'react-select/creatable';
 import {requestGameTags} from "../../backendRequests";
@@ -47,8 +47,7 @@ export function GameForm() {
     }, [])
 
     let options = []
-    existingTags.forEach((tag)=>
-    {
+    existingTags.forEach((tag) => {
         options.push({
             value: tag.id,
             label: tag.name
@@ -58,56 +57,31 @@ export function GameForm() {
 
     const handleImage = (event) => {
         const file = event.target.files[0];
-            const acceptedFormats = ACCEPTED_IMAGE;
-            const fileExtension = file.name.split('.').pop().toLowerCase();
-            if (!acceptedFormats.includes(fileExtension)) {
-                setError("root", {message: "Invalid file type provided"})
-                setImage(null)
-            }
-            else{
-                setImage(file)
+        const acceptedFormats = ACCEPTED_IMAGE;
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        if (!acceptedFormats.includes(fileExtension)) {
+            setError("root", {message: "Invalid file type provided"})
+            setImage(null)
+        } else {
+            setImage(file)
         }
     }
 
-    function handleCreate(tagName){
+    function handleCreate(tagName) {
         let formData = new FormData()
         formData.append("name", tagName)
-        formData.append("description", "described")
-
-
         axios({
             method: "post",
             url: "http://127.0.0.1:8000/api/gameTag/",
             data: formData,
             headers: {"Content-Type": "multipart/form-data"},
-        }).then((response)=>{
-            console.log(response)
-            console.log(response.data)
+        }).then((response) => {
             options.push({
                 value: response.data.id,
                 label: response.data.name
             })
         }).catch()
     }
-
-
-
-        // axios.post("http://127.0.0.1:8000/api/gameTag/",
-        //     {"name": tagName, "slug": ""})
-        //     .then( response =>{
-        //         console.log("responsive")
-        //         console.log(response)
-        //         let newTag = response.data
-        //         options.push({
-        //             value: newTag.get("id"),
-        //             label: newTag.get("name")
-        //         })
-        //     })
-        //     .catch(
-        //         (error)=> {
-        //             setError("tags",
-        //             {message: "Tag Creation Unsuccessful"})})
-
 
     const handleEvalScript = (event) => {
         const file = event.target.files[0];
@@ -116,8 +90,7 @@ export function GameForm() {
         if (!acceptedFormats.includes(fileExtension)) {
             setError("evaluationScript", {message: "Invalid file type provided"})
             setEvaluationScript(null)
-        }
-        else{
+        } else {
             setEvaluationScript(file)
         }
     }
@@ -129,8 +102,7 @@ export function GameForm() {
         if (!acceptedFormats.includes(fileExtension)) {
             setError("scoreType", {message: "Invalid file type provided"})
             setScoreType(null)
-        }
-        else{
+        } else {
             setScoreType(file)
         }
     }
@@ -146,7 +118,7 @@ export function GameForm() {
         formData.append("play_link", playLink);
 
         let finalTags = []
-        tags.forEach((tag)=>{
+        tags.forEach((tag) => {
             finalTags.push(tag.value)
         })
 
@@ -222,7 +194,7 @@ export function GameForm() {
             <CreatableSelect
                 isMulti={true}
                 isClearable={true}
-                onChange={(newValue)=> setTags(newValue)}
+                onChange={(newValue) => setTags(newValue)}
                 onCreateOption={handleCreate}
                 value={tags}
                 options={options}
@@ -231,10 +203,10 @@ export function GameForm() {
             <h3>Play Link</h3>
             <input {...register("playLink", {
                 required: "A Play link must be provided",
-                validate: (value) =>{
-                    try{
+                validate: (value) => {
+                    try {
                         let url = new URL(value)
-                    } catch(error){
+                    } catch (error) {
                         return "Invalid URL Provided"
                     }
                     return true
@@ -321,7 +293,7 @@ export function GameForm() {
             >
                 {isSubmitting ? "submitting game..." : "add new game"}
                 <div>
-                    <FaPlus />
+                    <FaPlus/>
                 </div>
             </motion.button>
             {errors.root && (
