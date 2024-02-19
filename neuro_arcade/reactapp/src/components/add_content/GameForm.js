@@ -76,10 +76,14 @@ export function GameForm() {
     }
     const handleEvalScript = (event) => {
         const file = event.target.files[0];
-        if (file) {
-            setEvaluationScript(file);
-        } else {
-            setEvaluationScript(null);
+        const acceptedFormats = ACCEPTED_EVAL_SCRIPT;
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        if (!acceptedFormats.includes(fileExtension)) {
+            setError("playLink", {message: "Invalid file type provided"})
+            setPlayLink(null)
+        }
+        else{
+            setPlayLink(file)
         }
     }
 
