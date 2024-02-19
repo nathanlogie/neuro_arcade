@@ -17,7 +17,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from na.models import PlayerTag
+from na.models import PlayerTag, RawScore
 from django.conf import settings
 
 from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
@@ -413,6 +413,60 @@ def get_model_rankings(request: Request) -> Response:
     data.sort(key=lambda d: -d['overall_score'])
 
     return Response(status=200, data=data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def post_raw_score(request: Request) -> Response:
+    """
+    Upload of raw score that will need to be evaluated. User needs to be authenticated.
+    Request format: {
+        game: <game slug>,
+        player: <player slug>,
+        content: <raw score, as string>,
+    }
+    Player field needs to be owned by the user making the request
+    """
+    # getting the fields from the request
+    game = request.data.get('game')
+    player = request.data.get('player')
+    content = request.data.get('content')
+    # making sure the fields are present
+    if game is None:
+        return Response(status=400, data='Field \'game\' not provided!')
+    if player is None:
+        return Response(status=400, data='Field \'player\' not provided! ' +
+                                         'Note: AI models are considered players for this request.')
+    if content is None:
+        return Response(status=400, data='Field \'content\' not provided!')
+    # getting the game object
+    try:
+        game_obj = Game.objects.get(slug=game)
+    except ObjectDoesNotExist:
+        # game slug is incorrect; throwing an error
+        return Response(status=400,
+                        data='Provided game does not exist! Make sure you are passing the Game\'s name slug.')
+    # getting the player object
+    try:
+        player_obj = Player.objects.get(name=player)
+    except ObjectDoesNotExist:
+        # player slug is incorrect; throwing an error
+        return Response(status=400,
+                        data='Provided player/model does not exist! Make sure you are passing the Player\'s name.')
+    # checking that the player is owned by the authenticated user
+    if player_obj.user != request.user:
+        return Response(status=400,
+                        data='Provided player/model is not owned by the authenticated user! ' +
+                             'You can not upload scores attributed to a Player/Model that\'s not associated with the user')
+    # finally, creating the raw score object
+    new_raw_score = RawScore.objects.create(game=game_obj, player=player_obj, content=content)
+    # checking the raw score was actually created
+    if new_raw_score is None:
+        return Response(status=500,
+                        data='Internal error encountered while trying to upload a raw score to the database!' +
+                             'Please contact an admin.')
+    # request fully successful, returning OK 200
+    return Response(status=200, data='Raw Score has successfully been added to the queue.')
 
 
 class UserViewSet(viewsets.ModelViewSet):

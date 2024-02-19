@@ -397,6 +397,39 @@ export async function postGameScore(gameName, playerIdentification, scoreData) {
 }
 
 /**
+ * Uploads raw score data to be processed.
+ * Corresponds to na.views.post_raw_score in django.
+ * User needs to be authenticated.
+ *
+ * @param {any} content - will be converted to string before upload
+ * @param {string} game_slug
+ * @param {string} player_name
+ *
+ * @return {Promise} server response
+ *
+ * @throws {Error | UserNotAuthenticatedError} when the request is rejected or when the user is not logged in.
+ */
+export async function postRawScore(content, game_slug, player_name) {
+    const url = API_ROOT + '/upload/raw_score/';
+
+    if (!isLoggedIn())
+        throw UserNotAuthenticatedError()
+
+    return await axios.post(url, {
+        content: content.toString(),
+        game: game_slug,
+        player: player_name
+    }, await getHeaders('POST', true)
+    ).then((response) => {
+        console.log("Sending of raw scores successful!");
+        return response;
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    });
+}
+
+/**
  * Requests about data
  *
  * @throws err when get is rejected

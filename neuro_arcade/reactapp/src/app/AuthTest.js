@@ -8,7 +8,7 @@ import {
     login,
     logout,
     postGameScore,
-    signupNewUser
+    signupNewUser, postRawScore
 } from "../backendRequests";
 import {useState} from "react";
 import {motion} from "framer-motion"
@@ -73,6 +73,15 @@ export function AuthTest() {
                             })
                     }>
                         postGameScore
+                    </button>
+                    <button onClick={() =>
+                        postRawScore('things', 'words', 'newGuyPlayer')
+                            .then((r) => {
+                                setResponse(r);
+                                setUserInfo(localStorage.getItem("user"));
+                            })
+                    }>
+                        postRawScore
                     </button>
                     <button onClick={() => ping().then((r) => setResponse(r))}>
                         ping!
