@@ -67,6 +67,7 @@ def validate_password(password):
     # TODO improve password validation
     return len(password) >= 8
 
+
 def get_player_dict(player_slug: str):
     """
     Gets the data associated with a player.
@@ -75,7 +76,6 @@ def get_player_dict(player_slug: str):
     """
     player = get_object_or_404(Player, slug=player_slug)
     dictionary = {
-        'id': player.id,
         'name': player.name,
         'is_ai': player.is_ai,
         'user': player.user.username if player.user else None,

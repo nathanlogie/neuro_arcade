@@ -1,5 +1,6 @@
 import {useParams} from "react-router-dom";
 import {requestPlayer} from "../backendRequests";
+import styles from "../styles/App.module.css";
 import {useEffect, useState} from "react";
 
 /**
@@ -19,7 +20,12 @@ export function PlayerView() {
                 setLoading(false);
             })
     }, []);
+    
     return (
-        <h2>HELLO</h2>
+        <div>
+            <h1>{playerData.name}</h1>
+            <p>{playerData.description}</p>
+            <p>The user for this player is: {playerData.user}</p>
+        </div>
     );
 }
