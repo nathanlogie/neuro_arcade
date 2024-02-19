@@ -40,6 +40,7 @@ export function GameForm() {
     const [tags, setTags] = useState([])
     const [playLink, setPlayLink] = useState("");
     const [existingTags, setExistingTags] = useState([])
+    const [loading, setLoading] = useState(false)
     useEffect(() => {
         requestGameTags()
             .then((tags) => {
@@ -69,6 +70,7 @@ export function GameForm() {
     }
 
     function handleCreate(tagName) {
+        setLoading(true)
         let formData = new FormData()
         formData.append("name", tagName)
         formData.append("slug", slugify(tagName))
@@ -86,6 +88,8 @@ export function GameForm() {
             }
             options.push(newValue)
             tags.push(newValue)
+            setLoading(false)
+
 
         }).catch()
     }
@@ -206,6 +210,7 @@ export function GameForm() {
                 value={tags}
                 options={options}
                 components={makeAnimated()}
+                isLoading={loading}
             />
 
             <h3>Play Link</h3>
