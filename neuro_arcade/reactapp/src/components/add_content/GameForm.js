@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import axios from 'axios';
 import { FaImage } from "react-icons/fa6";
@@ -6,6 +6,8 @@ import { LuFileJson } from "react-icons/lu";
 import { FaPython } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
 import {motion} from "framer-motion";
+import CreatableSelect from 'react-select/creatable';
+import {requestGameTags} from "../../backendRequests";
 
 //Should be synced with models.py
 let MAX_NAME_LENGTH = 64;
@@ -33,9 +35,29 @@ export function GameForm() {
     const [scoreType, setScoreType] = useState(null)
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [tags, setTags] = useState("");
+    const [tags, setTags] = useState(null)
     const [playLink, setPlayLink] = useState("");
+    const [existingTags, setExistingTags] = useState([])
 
+    useEffect(() => {
+        requestGameTags()
+            .then((tags) => {
+                setExistingTags(tags);
+            })
+    }, [])
+
+    let options = []
+
+    existingTags.forEach((tag)=>
+    {
+        console.log(tag.id)
+        options.push({
+            value: tag.id,
+            label: tag.name
+        })
+    })
+
+    console.log(options)
     const handleImage = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -45,6 +67,9 @@ export function GameForm() {
         }
     }
 
+    function handleCreate(tagName){
+
+    }
     const handleEvalScript = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -72,6 +97,7 @@ export function GameForm() {
         //Temporary until authentication is fulfilled
         formData.append("owner", 3);
         formData.append("play_link", playLink);
+        formData.append("tags", tags)
 
         if (image) {
             formData.append("icon", image)
@@ -139,10 +165,13 @@ export function GameForm() {
             )}
 
             <h3>Game Tags</h3>
-            <input {...register("tags", {
-                required: false
-            })} type={"text"} placeholder={"example1, example2, example3, ..."}
-                   onChange={(event) => setTags(event.target.value)}
+            <CreatableSelect
+                isMulti={true}
+                isClearable={true}
+                onChange={(newValue)=> setTags(newValue)}
+                onCreateOption={handleCreate}
+                value={tags}
+                options={options}
             />
 
             <h3>Play Link</h3>
