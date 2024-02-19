@@ -19,8 +19,8 @@ export function AllUsers(){
     const [users, setUsers] = useState([]);
 
 
-    useEffect(async function() {
-        await getAllUsers()
+    useEffect( function() {
+        getAllUsers()
             .then( function (usersResponse) {
                 setUsers(usersResponse);
         }
@@ -71,7 +71,7 @@ export function AllUsers(){
             } else if (user.status === "pending") {
                 return <><button onClick={() => changeUserStatus(user, "approved")}>Approve User</button><button onClick={() => changeUserStatus(user, "block")}>Block User</button></>;
             }
-            else {
+            else if (user.status === "blocked") {
                 return <button onClick={() => changeUserStatus(user, "pending")}>Unblock User</button>
             }
         }

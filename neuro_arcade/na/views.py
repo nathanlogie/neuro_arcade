@@ -353,7 +353,7 @@ def sign_up(request: Request) -> Response:
 @api_view(['POST'])
 def update_user_status(request: Request) -> Response:
 
-    user = User.objects.get(username = request.data['user'])
+    user = User.objects.get(username=request.data['user'])
     newStatus = request.data['status']
 
     status = UserStatus.objects.get(user=user)

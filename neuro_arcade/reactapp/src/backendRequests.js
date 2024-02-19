@@ -473,28 +473,30 @@ export function getUser() {
 
 
 /**
+ * Gets all users
+ * All regular users should have a status on sign up
+ * But admins don't and hence will be marked as admin
  *
- * @return {Promise<axios.AxiosResponse<any>>}
+ * @returns {array} of users on success
+ * @throws error otherwise
  */
 export async function getAllUsers() {
     const url = API_ROOT + '/api/users/';
     return await axios.get(url).then((response) => {
-        console.log(response.data)
-        const users = response.data.map(function(user) {
-            let status = ""
+        return(response.data.map(function(user) {
+            let status = "";
             if (user.status) {
-                status = user.status.status
+                status = user.status.status;
             }
             else{
-                status = "ADMIN"
+                status = "Admin";
             }
             return ({
                 username: user.username,
                 email: user.email,
                 status: status
-            })
-        })
-        return users;
+            });
+        }))
     }).catch((error) => {
         console.log(error);
         throw error;
@@ -504,6 +506,10 @@ export async function getAllUsers() {
 
 /**
  * change user status
+ *
+ * @params {user, status}
+ * @returns response
+ * @throws error otherwise
  */
 export async function updateStatus(user, newStatus){
     const url = API_ROOT + '/update_status/';
@@ -619,7 +625,10 @@ export async function login(userName, email, password) {
             };
 
             if (!user_data.is_admin){
-                user_data.status = response.data.status.status;
+                user_data.status = response.data.status;
+            }
+            else{
+                user_data.status = "admin"
             }
 
             localStorage.setItem("user", JSON.stringify(user_data));

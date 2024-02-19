@@ -9,6 +9,7 @@ import {motion} from "framer-motion";
 import {getUser} from "../../backendRequests";
 import {userIsAdmin} from "../../backendRequests";
 import {Link} from "react-router-dom"
+import {useState} from "react";
 
 
 /**
@@ -16,6 +17,18 @@ import {Link} from "react-router-dom"
  * @constructor builds add content page
  */
 export function AccountPage() {
+
+    const [user, setUser] = useState(getUser())
+
+    const pendingUser = <p>Your account is still pending. Once an admin approves you can post models and games.</p>
+    const regularContent =
+        <>
+            <Card link={'/add_game'} text={'New Game'} icon={<FaGamepad />} />
+            <Card link={'/add_model'} text={'New Model'} icon={<TbBoxModel />} />
+
+            { user && userIsAdmin() ? <Link to='all_users'>ALL USERS</Link> : null}
+        </>
+
     return (
         <>
             <Banner size={'big'} button_left={{
@@ -51,11 +64,7 @@ export function AccountPage() {
                         <h1>Add Content</h1>
                     </div>
                     <div className={styles.ContentBlock}>
-                        <Card link={'/add_game'} text={'New Game'} icon={<FaGamepad />} />
-                        <Card link={'/add_model'} text={'New Model'} icon={<TbBoxModel />} />
-
-                        { getUser() && userIsAdmin() ? <Link to='all_users'>ALL USERS</Link> : null}
-
+                        {user.status === "pending" ? pendingUser : regularContent }
                     </div>
                 </div>
                 <div className={styles.Side}>
