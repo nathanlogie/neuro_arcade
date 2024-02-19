@@ -22,9 +22,11 @@ export function Login(){
             })
             .catch (function(error){
                 console.log("AN ERROR HAS OCCURRED: " + error)
-                setInvalidMessage("Invalid Details.")
+                setInvalidMessage(error.message)
             })
     }
+
+
 
     return (
         <>

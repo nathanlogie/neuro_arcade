@@ -631,6 +631,10 @@ export async function login(userName, email, password) {
                 user_data.status = "admin"
             }
 
+            if (user_data.status === "blocked"){
+                throw new Error("Your account has been blocked.")
+            }
+
             localStorage.setItem("user", JSON.stringify(user_data));
             return response;
     }).catch((error) => {

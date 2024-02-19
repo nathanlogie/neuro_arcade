@@ -67,9 +67,9 @@ export function AllUsers(){
         renderCell: (params) => {
             const user = params.row;
             if (user.status === "approved") {
-                return <><button onClick={() => changeUserStatus(user, "pending")}>Revoke Approval</button><button onClick={() => changeUserStatus(user, "block")}>Block User</button></>;
+                return <><button onClick={() => changeUserStatus(user, "pending")}>Revoke Approval</button><button onClick={() => changeUserStatus(user, "blocked")}>Block User</button></>;
             } else if (user.status === "pending") {
-                return <><button onClick={() => changeUserStatus(user, "approved")}>Approve User</button><button onClick={() => changeUserStatus(user, "block")}>Block User</button></>;
+                return <><button onClick={() => changeUserStatus(user, "approved")}>Approve User</button><button onClick={() => changeUserStatus(user, "blocked")}>Block User</button></>;
             }
             else if (user.status === "blocked") {
                 return <button onClick={() => changeUserStatus(user, "pending")}>Unblock User</button>
@@ -77,12 +77,6 @@ export function AllUsers(){
         }
     }
     ]
-
-    function block(e){
-        e.preventDefault();
-
-    }
-
 
     const rows = users.map(function(user, index) {
 
