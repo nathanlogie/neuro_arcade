@@ -6,9 +6,10 @@
     align-items: flex-start;
     flex-wrap: wrap;
     overflow-y: auto;
+    gap: 3em;
     .Content {
+        padding: 3em;
         width: 80em;
-        padding: 0 2em;
         display: flex;
         flex-wrap: wrap;
         overflow: hidden;
@@ -69,19 +70,23 @@
     .Side {
         width: 32.5em;
         display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
         overflow: hidden;
         .Switcher {
             box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
             border-radius: 3em;
             background-color: rgba(255, 255, 255, 0.1);
+            width: max-content;
+        }
+        .ContentBlock {
+            display: flex;
+            justify-content: center;
         }
     }
     .DataBlock {
+        padding: 3em 3em 0 3em;
         width: 100%;
-        padding: 3em;
         display: flex;
         overflow-x: auto;
         gap: 3em;
@@ -139,13 +144,6 @@
                     width: 10.5em;
                 }
                 & input {
-                    /*width: 7.5em;*/
-                    /*height: 3em;*/
-                    /*padding: 0 1em 0 3.5em;*/
-                    /*cursor: pointer;*/
-                    /*line-height: 3em;*/
-                    /*margin-top: 0.25em;*/
-                    /*margin-left: 1em;*/
                     display: none;
                 }
                 & input[type="file"]::file-selector-button {
@@ -215,12 +213,25 @@
                 }
                 & div > * {
                     height: 100%;
-                    width: 50%;
+                    width: 40%;
+                }
+            }
+            p {
+                & a {
+                    color: #79FFB7;
                 }
             }
         }
     }
 }
+
+.NavBuffer {
+    display: flex;
+    justify-content: center;
+    width: 14em;
+    margin: 0 auto;
+}
+
 .MobileBannerBuffer {
     position: relative;
     display: none;
@@ -235,10 +246,16 @@
     max-height: calc(100dvh - 9em);
 }
 
+@media(max-width: 85em) {
+    .MainBlock {
+        gap: 0;
+    }
+}
+
 @media (max-width: 75em) {
     .MainBlock {
-        position: relative;
         margin: 0;
+        gap: 0;
         width: 100dvw;
         height: auto;
         max-height: calc(100dvh - 14.5em);
@@ -252,7 +269,6 @@
         }
         .Side {
             width: 100%;
-            padding: 1.5em;
         }
     }
     .MobileBannerBuffer {
@@ -263,6 +279,7 @@
 @media (max-width: 50em) {
     .MainBlock {
         .DataBlock {
+            padding: 0 2em;
             display: block;
         }
     }

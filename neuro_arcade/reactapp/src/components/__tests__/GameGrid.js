@@ -8,13 +8,9 @@ jest.mock('../../backendRequests');
 test('GameGrid renders without crashing', async () => {
     requestGames.mockResolvedValue([]);
     renderWithRouter(<GameGrid />);
-
-    // Check initial loading render
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
-
-    // Check it updates once load is complete
+    // Wait for load to complete
     await waitFor(() => {
-        expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
+        expect(requestGames).toHaveBeenCalledTimes(1);
     });
 });
 

@@ -1,14 +1,27 @@
 .NavBar {
-    position: fixed;
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.075);
     display: flex;
+    align-items: center;
+    position: fixed;
     width: 100%;
     bottom: 0;
-    padding: 0 0 2em;
     z-index: 1;
+    .Buffer {
+        width: 14em;
+        scale: 85%;
+        margin: 0 auto;
+    }
 }
 
 @media (min-width: 50em) {
     .NavBar {
         display: none;
+    }
+}
+
+@media (max-width: 20em) {
+    .NavBar {
+        display: block;
     }
 }

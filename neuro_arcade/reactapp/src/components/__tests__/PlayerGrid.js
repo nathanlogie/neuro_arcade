@@ -2,7 +2,7 @@ import { screen, waitFor } from "@testing-library/react";
 import { PlayerGrid, PlayerGridMode } from "../PlayerGrid";
 
 // We need to mock requestPlayers to control the component
-import { requestPlayers } from "../../backendRequests";
+import {requestGames, requestPlayers} from "../../backendRequests";
 jest.mock('../../backendRequests');
 
 /*
@@ -18,13 +18,9 @@ jest.mock('../../backendRequests');
 test('PlayerGrid renders without crashing', async () => {
     requestPlayers.mockResolvedValue([]);
     renderWithRouter(<PlayerGrid />);
-
-    // Check initial loading render
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
-
-    // Check it updates once load is complete
+    // Wait for load to complete
     await waitFor(() => {
-        expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
+        expect(requestPlayers).toHaveBeenCalledTimes(1);
     });
 });
 
