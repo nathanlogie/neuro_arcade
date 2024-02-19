@@ -91,7 +91,10 @@ export function GameForm() {
             setLoading(false)
 
 
-        }).catch()
+        }).catch(() =>{
+                setError( "tags", {message: "Error creating new tag"})
+            }
+        )
     }
 
     const handleEvalScript = (event) => {
@@ -212,6 +215,9 @@ export function GameForm() {
                 components={makeAnimated()}
                 isLoading={loading}
             />
+            {errors.tags && (
+                <div>{errors.tags.message}</div>
+            )}
 
             <h3>Play Link</h3>
             <input {...register("playLink", {
