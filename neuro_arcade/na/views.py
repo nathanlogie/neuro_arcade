@@ -350,6 +350,23 @@ def sign_up(request: Request) -> Response:
         return Response(status=400, data='Error creating new user.')
 
 
+@api_view(['POST'])
+def update_user_status(request: Request) -> Response:
+
+    user = User.objects.get(username = request.data['user'])
+    newStatus = request.data['status']
+
+    status = UserStatus.objects.get(user=user)
+    status.status = newStatus
+
+    status.save()
+
+    if status.status == newStatus:
+        return Response(status=200)
+    else:
+        return Response(status=400, data='Error while trying to update user status')
+
+
 @api_view(['GET'])
 def get_model_rankings(request: Request) -> Response:
     """

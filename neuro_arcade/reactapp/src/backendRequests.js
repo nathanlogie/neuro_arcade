@@ -471,14 +471,22 @@ export function getUser() {
     return JSON.parse(user_str);
 }
 
+
+/**
+ *
+ * @return {Promise<axios.AxiosResponse<any>>}
+ */
 export async function getAllUsers() {
     const url = API_ROOT + '/api/users/';
     return await axios.get(url).then((response) => {
         console.log(response.data)
         const users = response.data.map(function(user) {
-            let status = "NONE"
+            let status = ""
             if (user.status) {
                 status = user.status.status
+            }
+            else{
+                status = "ADMIN"
             }
             return ({
                 username: user.username,
@@ -491,6 +499,25 @@ export async function getAllUsers() {
         console.log(error);
         throw error;
     })
+}
+
+
+/**
+ * change user status
+ */
+export async function updateStatus(user, newStatus){
+    const url = API_ROOT + '/update_status/';
+
+    await axios.post(url, {user: user, status: newStatus})
+        .then( function (response) {
+                return response;
+            }
+        )
+        .catch(function(error){
+            console.log(error);
+            throw error;
+        })
+
 }
 
 /**
@@ -511,6 +538,9 @@ export function userIsAdmin() {
     }
     return null;
 }
+
+
+
 
 /**
  * Checks if a password is valid.

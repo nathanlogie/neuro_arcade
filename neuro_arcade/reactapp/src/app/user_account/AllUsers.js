@@ -1,10 +1,14 @@
 import {Banner} from "../../components/Banner";
-import styles from '../../styles/App.module.css';
+// import styles from '../../styles/App.module.css';
 import {NavBar} from "../../components/NavBar";
 import {MobileBanner} from "../../components/Banner";
 import {motion} from "framer-motion";
-import {getAllUsers} from "../../backendRequests";
-import {useEffect, useState} from "react";
+import {getAllUsers, updateStatus} from "../../backendRequests";
+import React, {useEffect, useState} from "react";
+import styles from '../../styles/components/TableGraph.module.css';
+import {createTheme, ThemeProvider} from "@mui/material";
+import {DataGrid} from '@mui/x-data-grid';
+
 
 /**
  * Page for admins only
@@ -14,51 +18,93 @@ export function AllUsers(){
 
     const [users, setUsers] = useState([]);
 
-    useEffect(() => {
-        getAllUsers()
-            .then( (usersResponse) => {
+
+    useEffect(async function() {
+        await getAllUsers()
+            .then( function (usersResponse) {
                 setUsers(usersResponse);
         }
 
         )
     }, []);
 
-    const displayUsers = users.map( function(user)
-    {
-        return (<li>
-            <ul>
-                <li>User:{user.username}</li>
-                <li>Email: {user.email}</li>
-                <li>Status: {user.status}</li>
-            </ul>
-            <br />
-        </li>)
+
+    async function changeUserStatus(user, newStatus){
+
+        await updateStatus(user.username, newStatus)
+            .then(() => {
+                getAllUsers()
+                    .then(data => setUsers(data))
+                    .catch((error) => console.log(error))
+            })
+            .catch((error) => {
+                console.log("Error occurred while changing status:")
+                console.log(error)
+            })
+
     }
-    )
+
+    const columns = [
+        {field: 'username', width:150, renderHeader: () => (
+          <strong>
+            Username
+          </strong>
+        ),},
+        {field: 'email', width:150, renderHeader: () => (
+            <strong>
+                Email
+            </strong>
+        ),},
+        {field: 'status', width: 150, renderHeader: () => (
+            <strong>
+                Status
+            </strong>
+        ),},
+        {
+        field: 'actions',
+        headerName: 'Actions',
+        width: 200,
+        renderCell: (params) => {
+            const user = params.row;
+            if (user.status === "approved") {
+                return <><button onClick={() => changeUserStatus(user, "pending")}>Revoke Approval</button><button onClick={() => changeUserStatus(user, "block")}>Block User</button></>;
+            } else if (user.status === "pending") {
+                return <><button onClick={() => changeUserStatus(user, "approved")}>Approve User</button><button onClick={() => changeUserStatus(user, "block")}>Block User</button></>;
+            }
+            else {
+                return <button onClick={() => changeUserStatus(user, "pending")}>Unblock User</button>
+            }
+        }
+    }
+    ]
+
+    function block(e){
+        e.preventDefault();
+
+    }
+
+
+    const rows = users.map(function(user, index) {
+
+        return {
+            id: index + 1,
+            username: user.username,
+            email: user.email,
+            status: user.status
+        };
+    });
+
+    const table_theme = createTheme({
+      palette: {
+          mode: 'dark',
+      },
+    });
 
 
     return (
         <>
-            <Banner size={'big'} button_left={{
-                name: 'Back to Account Page',
-                link: '/user_account',
-                orientation: 'left',
-                direction: 'left'
-            }} button_right={{
-                link: '',
-                orientation: 'right'
-            }} />
-            <NavBar button_left={{
-                name: 'Back to Account Page',
-                link: '/user_account',
-                orientation: 'left',
-                direction: 'left'
-            }} button_right={{
-                link: '...',
-                direction: 'right'
-            }}
-            />
-            <MobileBanner/>
+            <Banner size={'big'}/>
+            <MobileBanner size={'big'} />
 
             <motion.div
                 className={styles.MainBlock}
@@ -73,13 +119,26 @@ export function AllUsers(){
                     </div>
                     <div className={styles.ContentBlock}>
 
-                       <ul>
-                           {displayUsers}
-                       </ul>
-
+                        <ThemeProvider theme={table_theme}>
+                            <DataGrid
+                                sx={{
+                                    boxShadow: 2,
+                                    border: 2,
+                                    color: 'white',
+                                    borderColor: 'rgba(0,0,0,0)',
+                                    '& .MuiDataGrid-cell:hover': {
+                                      color: 'white',
+                                    },
+                                    height: '100%',
+                                    width: '50%'
+                                }}
+                                rows={rows}
+                                columns={columns}
+                                disableRowSelectionOnClick
+                            />
+                        </ThemeProvider>
                     </div>
                 </div>
-                <div className={styles.Side}></div>
             </motion.div>
             <div className={styles.MobileBannerBuffer} />
         </>
