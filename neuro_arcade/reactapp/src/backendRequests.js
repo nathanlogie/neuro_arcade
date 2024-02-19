@@ -475,7 +475,7 @@ export function getUser() {
  * All regular users should have a status on sign up
  * But admins don't and hence will be marked as admin
  *
- * @returns {array} of users on success
+ * @return {Object} user array on success
  * @throws error otherwise
  */
 export async function getAllUsers() {
@@ -505,8 +505,11 @@ export async function getAllUsers() {
 /**
  * change user status
  *
- * @params {user, status}
- * @returns response
+ * @param {String} user - username
+ * @param {String} newStatus - status to update
+ *
+ * @return {Promise} promise if status was successfully updated
+ *
  * @throws error otherwise
  */
 export async function updateStatus(user, newStatus){

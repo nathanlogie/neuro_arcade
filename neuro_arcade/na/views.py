@@ -333,6 +333,7 @@ def login(request: Request) -> Response:
         'email': user.email,
         'is_admin': user.is_superuser,
         'token': token.key,
+        'status': None,
     }
     if not user.is_superuser:
         response_data['status'] = user.status.status

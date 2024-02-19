@@ -17,7 +17,7 @@ export function Login(){
         await login(userID, password).then(() => {
             setSuccess(true);
             setInvalidMessage("");
-        }).catch((error) => setInvalidMessage("Invalid Details. Error: " + error.toString()))
+        }).catch((error) => setInvalidMessage("Invalid Details. " + error.toString()))
     }
 
     return (
