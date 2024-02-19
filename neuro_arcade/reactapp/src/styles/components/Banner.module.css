@@ -15,9 +15,6 @@
     display: none;
 }
 
-.TabSwitcher {
-    margin: 0 auto;
-}
 .TabSwitcher > * > * > * {
     width: 15em;
 }

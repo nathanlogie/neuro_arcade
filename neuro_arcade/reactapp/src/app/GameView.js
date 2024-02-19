@@ -30,7 +30,9 @@ export function GameView() {
     if (!loading) {
         content = <>
             <div className={styles.Content}>
-                <h1>{gameData.game.name}</h1>
+                <div className={styles.Title}>
+                    <h1>{gameData.game.name}</h1>
+                </div>
                 <div className={styles.ContentBlock}>
                     <p>
                         <img src="https://loremflickr.com/500/500" alt={'image'} // TODO add query for image here
