@@ -63,7 +63,7 @@ export function SwarmPlot({inputData}) {
                     data={data}
                     groups={['AI', 'Human']}
                     groupBy="group"
-                    margin={{top: 75, right: 75, bottom: 100, left: 100}}
+                    margin={{top: 100, right: 75, bottom: 100, left: 100}}
                     size={{key: 'value', values: [minValue, maxValue], sizes: [15, 60]}}
                     colors={{scheme: 'accent'}}
                     forceStrength={1}
@@ -82,12 +82,17 @@ export function SwarmPlot({inputData}) {
                                     color: '#DDDDDD'
                                 }
                             }
+                        },
+                        'grid': {
+                            'line': {
+                                stroke: 'rgba(255,255,255,0.4)'
+                            }
                         }
                     }}
                     axisBottom={{
                         orient: 'bottom',
-                        tickSize: 5,
-                        tickPadding: 5,
+                        tickSize: 20,
+                        tickPadding: 20,
                         tickRotation: 0,
                         legend: 'AI vs Humans',
                         legendPosition: 'middle',
@@ -101,6 +106,10 @@ export function SwarmPlot({inputData}) {
                         legend: selectedSwitcherValue,
                         legendPosition: 'middle',
                         legendOffset: -60,
+                    }}
+                    axisTop={{
+                        tickSize: 20,
+                        tickPadding: 20
                     }}
                 />
             </div>
