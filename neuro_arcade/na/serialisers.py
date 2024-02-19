@@ -15,7 +15,7 @@ class GameSerializer(serializers.ModelSerializer):
 class GameTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = GameTag
-        fields = ['id', 'name', 'slug' 'description']
+        fields = ['id', 'name', 'slug', 'description']
 
 class PlayerTagSerializer(serializers.ModelSerializer):
     class Meta:
