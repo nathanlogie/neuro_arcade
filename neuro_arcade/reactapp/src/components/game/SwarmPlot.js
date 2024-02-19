@@ -46,6 +46,7 @@ export function SwarmPlot({inputData}) {
     };
 
     const maxValue = Math.max(...data.map(item => item.value));
+    const minValue = Math.min(...data.map(item => item.value));
 
     return (
         <div className={styles.GraphContainer}>
@@ -62,16 +63,25 @@ export function SwarmPlot({inputData}) {
                     data={data}
                     groups={['AI', 'Human']}
                     groupBy="group"
-                    margin={{top: 75, right: 75, bottom: 75, left: 75}}
-                    size={{key: 'value', values: [0, maxValue], sizes: [15, 60]}}
+                    margin={{top: 75, right: 75, bottom: 100, left: 100}}
+                    size={{key: 'value', values: [minValue, maxValue], sizes: [15, 60]}}
                     colors={{scheme: 'accent'}}
                     forceStrength={1}
                     simulationIterations={100}
                     theme={{
                         'background': 'rgba(255,255,255,0.1)',
                         'text': {
-                            'fill': '#FFFFFF',
+                            'fill': '#CCCCCC',
                             fontFamily: 'inherit',
+                        },
+                        'axis': {
+                            'legend': {
+                                'text': {
+                                    fontWeight: 'bold',
+                                    fontSize: '1em',
+                                    color: '#DDDDDD'
+                                }
+                            }
                         }
                     }}
                     axisBottom={{
@@ -81,7 +91,7 @@ export function SwarmPlot({inputData}) {
                         tickRotation: 0,
                         legend: 'AI vs Humans',
                         legendPosition: 'middle',
-                        legendOffset: 36,
+                        legendOffset: 60,
                     }}
                     axisLeft={{
                         orient: 'left',
@@ -90,7 +100,7 @@ export function SwarmPlot({inputData}) {
                         tickRotation: 0,
                         legend: selectedSwitcherValue,
                         legendPosition: 'middle',
-                        legendOffset: -40,
+                        legendOffset: -60,
                     }}
                 />
             </div>
