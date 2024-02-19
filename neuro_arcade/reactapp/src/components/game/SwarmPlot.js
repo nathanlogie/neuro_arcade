@@ -59,8 +59,7 @@ export function SwarmPlot({inputData}) {
 
     return (
         <>
-            <div style={{width: '43.8em', height: '32em'}}>
-                <h2>Trends</h2>
+            <div style={{width: '43em', height: '30.75em'}}>
                 <div className={styles.TabSwitcher}>
                     <Switcher
                         data={inputData}

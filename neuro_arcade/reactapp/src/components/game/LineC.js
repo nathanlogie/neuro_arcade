@@ -28,8 +28,8 @@ export function LineC({inputData}) {
                 />
             </div>
             <LineChart
-                width={700}
-                height={500}
+                width={688}
+                height={492}
                 data={data}
                 margin={{
                     top: 30,
