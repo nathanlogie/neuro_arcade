@@ -60,10 +60,14 @@ export function GameForm() {
     console.log(options)
     const handleImage = (event) => {
         const file = event.target.files[0];
-        if (file) {
-            setImage(file);
-        } else {
-            setImage(null);
+            const acceptedFormats = ACCEPTED_IMAGE;
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+            if (!acceptedFormats.includes(fileExtension)) {
+                setError("root", {message: "Invalid file type provided"})
+                setImage(null)
+            }
+            else{
+                setImage(file)
         }
     }
 
@@ -207,14 +211,7 @@ export function GameForm() {
                         </label>
                         <input id={'icon'} {...register("icon", {
                             required: false,
-                            validate: (value) => {
-                                const acceptedFormats = ACCEPTED_IMAGE;
-                                const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
-                                if (!acceptedFormats.includes(fileExtension)) {
-                                    return "Error: Invalid IMG"
-                                }
-                                return true;
-                            }
+
                         })} type={"file"} accept={"image/*"} onChange={handleImage}/>
                     </motion.div>
                 </div>
