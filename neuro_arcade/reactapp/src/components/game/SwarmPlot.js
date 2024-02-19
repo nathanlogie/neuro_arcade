@@ -45,12 +45,7 @@ export function SwarmPlot({inputData}) {
         setSelectedSwitcherValue(selectedValue);
     };
 
-    /**
-     * currently sets the size value to be a 5th of the max value
-     */
     const maxValue = Math.max(...data.map(item => item.value));
-    const maxSize = maxValue / 5;
-    
 
     return (
         <div className={styles.GraphContainer}>
@@ -67,8 +62,8 @@ export function SwarmPlot({inputData}) {
                     data={data}
                     groups={['AI', 'Human']}
                     groupBy="group"
-                    margin={{top: 50, right: 50, bottom: 50, left: 60}}
-                    size={{key: 'value', values: [1, maxSize], sizes: [1, 10]}}
+                    margin={{top: 75, right: 75, bottom: 75, left: 75}}
+                    size={{key: 'value', values: [0, maxValue], sizes: [15, 60]}}
                     colors={{scheme: 'accent'}}
                     forceStrength={1}
                     simulationIterations={100}
@@ -76,7 +71,7 @@ export function SwarmPlot({inputData}) {
                         'background': 'rgba(255,255,255,0.1)',
                         'text': {
                             'fill': '#FFFFFF',
-                            fontFamily: 'inherit'
+                            fontFamily: 'inherit',
                         }
                     }}
                     axisBottom={{
@@ -94,6 +89,7 @@ export function SwarmPlot({inputData}) {
                         tickPadding: 5,
                         tickRotation: 0,
                         legend: selectedSwitcherValue,
+                        legendPosition: 'middle',
                         legendOffset: -40,
                     }}
                 />
