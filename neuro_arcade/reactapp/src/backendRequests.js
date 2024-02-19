@@ -548,9 +548,10 @@ export async function signupNewUser(userName, email, password) {
  */
 export async function login(userID, password) {
     const url = API_ROOT + '/login/';
+    const emailRegex = new RegExp('[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}');
     let data;
 
-    if (userID.includes("@")) {
+    if (emailRegex.test(userID)) {
         // userID is considered to be an email address
         data = {'email': userID, 'password': password};
     } else {
