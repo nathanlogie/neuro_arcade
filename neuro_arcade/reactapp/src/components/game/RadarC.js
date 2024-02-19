@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Radar, RadarChart, PolarGrid, Legend, PolarAngleAxis, PolarRadiusAxis} from 'recharts';
+import {Radar, RadarChart, PolarGrid, Legend, PolarAngleAxis} from 'recharts';
 import styles from '../../styles/components/TableGraph.module.css';
 
 /**

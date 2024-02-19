@@ -43,9 +43,11 @@
 }
 
 #home {
-    position: absolute;
-    z-index: 1;
-    margin-top: 6em;
+    position: fixed;
+    margin-top: 4.5em;
+    margin-left: 12em;
+    height: fit-content;
+    z-index: 20;
     background-color: rgba(3, 3, 3, 0.6);
     & h2 {
         display: none;
