@@ -19,8 +19,7 @@ export function LineC({inputData}) {
         setSelectedSwitcherValue(selectedValue);
     };
     return (
-        <div className={styles.GraphContainer}>
-            <h2>Trends</h2>
+        <>
             <div className={styles.TabSwitcher}>
                 <Switcher
                     data={inputData}
@@ -69,7 +68,7 @@ export function LineC({inputData}) {
                     dot={false}
                 />
             </LineChart>
-        </div>
+        </>
     );
 }
 

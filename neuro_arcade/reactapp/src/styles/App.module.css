@@ -93,11 +93,38 @@
         display: flex;
         overflow-x: auto;
         gap: 3em;
+        justify-content: center;
         .Graphs {
-            display: flex;
-            flex-direction: column;
-            gap: 2em;
-            margin-right: auto;
+            padding: 2em 0;
+            height: 31em;
+            width: fit-content;
+            position: relative;
+            background-color: rgba(3, 3, 3, 0.4);
+            border-radius: 0.5em;
+            backdrop-filter: blur(20px);
+            h2 {
+                position: absolute;
+                top: -1.5em;
+                left: 1em;
+                font-size: 1.75em;
+            }
+            .GraphSwitcher {
+                position: absolute;
+                right: -8.75em;
+                border-radius: 0;
+                * {
+                    flex-direction: column;
+                    #start {
+                        border-radius: 0 2em 0 0;
+                    }
+                    #end {
+                        border-radius: 0 0 2em 0;
+                    }
+                    * {
+                        width: 10em;
+                    }
+                }
+            }
         }
     }
     .Form {

@@ -75,7 +75,7 @@ export function RadarC({inputData}) {
 
 
   return (
-      <div className={styles.GraphContainer}>
+      <>
         <h2>Trends</h2>
         <RadarChart cx={'40em'} cy={'40em'} outerRadius={200} width={700} height={500} data={data}>
           <PolarGrid/>
@@ -84,7 +84,7 @@ export function RadarC({inputData}) {
           <Radar name="Average Human Score" dataKey="average_human" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.4}/>
           <Legend/>
         </RadarChart>
-      </div>
+      </>
   );
 }
 

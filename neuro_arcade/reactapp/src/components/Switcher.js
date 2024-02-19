@@ -46,7 +46,6 @@ export function Switcher({data, onSwitcherChange, switcherDefault}) {
                 onChange={handleAlignment}
                 aria-label="Platform"
                 style={{
-                    borderRadius: '5em',
                     overflow: 'hidden',
                     right: '0'
                 }}

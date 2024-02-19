@@ -58,7 +58,7 @@ export function SwarmPlot({inputData}) {
     }
 
     return (
-        <div className={styles.GraphContainer}>
+        <>
             <div style={{width: '43.8em', height: '32em'}}>
                 <h2>Trends</h2>
                 <div className={styles.TabSwitcher}>
@@ -122,7 +122,7 @@ export function SwarmPlot({inputData}) {
                     }}
                 />
             </div>
-        </div>
+        </>
     );
 };
 
