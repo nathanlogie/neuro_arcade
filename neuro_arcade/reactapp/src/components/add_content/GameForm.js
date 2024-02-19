@@ -8,6 +8,7 @@ import { FaPlus } from "react-icons/fa6";
 import {motion} from "framer-motion";
 import CreatableSelect from 'react-select/creatable';
 import {requestGameTags} from "../../backendRequests";
+import {json} from "react-router-dom";
 
 //Should be synced with models.py
 let MAX_NAME_LENGTH = 64;
@@ -35,10 +36,9 @@ export function GameForm() {
     const [scoreType, setScoreType] = useState(null)
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [tags, setTags] = useState(null)
+    const [tags, setTags] = useState([])
     const [playLink, setPlayLink] = useState("");
     const [existingTags, setExistingTags] = useState([])
-
     useEffect(() => {
         requestGameTags()
             .then((tags) => {
@@ -47,17 +47,15 @@ export function GameForm() {
     }, [])
 
     let options = []
-
     existingTags.forEach((tag)=>
     {
-        console.log(tag.id)
         options.push({
             value: tag.id,
             label: tag.name
         })
     })
 
-    console.log(options)
+
     const handleImage = (event) => {
         const file = event.target.files[0];
             const acceptedFormats = ACCEPTED_IMAGE;
@@ -72,18 +70,55 @@ export function GameForm() {
     }
 
     function handleCreate(tagName){
+        let formData = new FormData()
+        formData.append("name", tagName)
+        formData.append("description", "described")
 
+
+        axios({
+            method: "post",
+            url: "http://127.0.0.1:8000/api/gameTag/",
+            data: formData,
+            headers: {"Content-Type": "multipart/form-data"},
+        }).then((response)=>{
+            console.log(response)
+            console.log(response.data)
+            options.push({
+                value: response.data.id,
+                label: response.data.name
+            })
+        }).catch()
     }
+
+
+
+        // axios.post("http://127.0.0.1:8000/api/gameTag/",
+        //     {"name": tagName, "slug": ""})
+        //     .then( response =>{
+        //         console.log("responsive")
+        //         console.log(response)
+        //         let newTag = response.data
+        //         options.push({
+        //             value: newTag.get("id"),
+        //             label: newTag.get("name")
+        //         })
+        //     })
+        //     .catch(
+        //         (error)=> {
+        //             setError("tags",
+        //             {message: "Tag Creation Unsuccessful"})})
+
+
     const handleEvalScript = (event) => {
         const file = event.target.files[0];
         const acceptedFormats = ACCEPTED_EVAL_SCRIPT;
         const fileExtension = file.name.split('.').pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
-            setError("playLink", {message: "Invalid file type provided"})
-            setPlayLink(null)
+            setError("evaluationScript", {message: "Invalid file type provided"})
+            setEvaluationScript(null)
         }
         else{
-            setPlayLink(file)
+            setEvaluationScript(file)
         }
     }
 
@@ -109,7 +144,14 @@ export function GameForm() {
         //Temporary until authentication is fulfilled
         formData.append("owner", 3);
         formData.append("play_link", playLink);
-        formData.append("tags", tags)
+
+        let finalTags = []
+        tags.forEach((tag)=>{
+            finalTags.push(tag.value)
+        })
+
+        console.log(finalTags)
+        formData.append("tags", finalTags)
 
         if (image) {
             formData.append("icon", image)
