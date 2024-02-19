@@ -95,5 +95,5 @@ export function HomePageTable({inputData}) {
 }
 
 HomePageTable.propTypes = {
-    inputData: PropTypes.object.isRequired,
+    inputData: PropTypes.array.isRequired,
 }
