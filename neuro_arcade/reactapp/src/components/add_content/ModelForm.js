@@ -4,7 +4,7 @@ import axios from "axios";
 import {motion} from "framer-motion";
 import {FaPlus} from "react-icons/fa6";
 import CreatableSelect from 'react-select/creatable';
-import {requestGameTags, requestPlayerTags} from "../../backendRequests";
+import {requestPlayerTags} from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
 
@@ -12,7 +12,7 @@ import makeAnimated from 'react-select/animated';
 let MAX_NAME_LENGTH = 64
 let MAX_DESCRIPTION_LENGTH = 1024
 
-export function ModelForm(){
+export function ModelForm() {
     const {
         register,
         handleSubmit,
@@ -160,7 +160,7 @@ export function ModelForm(){
             >
                 {isSubmitting ? "submitting model..." : "add new model"}
                 <div>
-                    <FaPlus />
+                    <FaPlus/>
                 </div>
             </motion.button>
             {errors.root && (

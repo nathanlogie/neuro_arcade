@@ -141,11 +141,10 @@ export function GameForm() {
         //     formData.append("tags", finalTags)
         // }
 
-        if(tags){
+        if (tags) {
             formData.append("tags", tags.value)
         }
 
-        console.log(tags)
 
         if (image) {
             formData.append("icon", image)
