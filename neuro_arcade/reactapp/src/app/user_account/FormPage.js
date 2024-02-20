@@ -7,6 +7,8 @@ import {ModelForm} from "../../components/add_content/ModelForm";
 import {Button} from "../../components/Button";
 import {isLoggedIn} from "../../backendRequests";
 import {Navigate} from "react-router-dom";
+import {getUserStatus} from "../../backendRequests";
+import {PageNotFound} from "../PageNotFound";
 
 /**
  * @returns {JSX.Element} add game page
@@ -16,6 +18,10 @@ export function FormPage({type}) {
 
     if (!isLoggedIn()){
         return <Navigate to={"/login"} />
+    }
+
+    if (getUserStatus()==="pending"){
+        return <PageNotFound />
     }
 
     let nav_left = (

@@ -6,7 +6,7 @@ import React, {useEffect, useState} from "react";
 import styles from '../../styles/components/TableGraph.module.css';
 import {createTheme, ThemeProvider} from "@mui/material";
 import {DataGrid} from '@mui/x-data-grid';
-import {Navigate} from "react-router-dom";
+import {PageNotFound} from "../PageNotFound";
 
 /**
  * Page for admins only
@@ -15,7 +15,7 @@ import {Navigate} from "react-router-dom";
 export function AllUsers(){
 
     if (!isLoggedIn() || !userIsAdmin()){
-        return <Navigate to={"*"} />
+        return <PageNotFound />
     }
 
     const [users, setUsers] = useState([]);

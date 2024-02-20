@@ -543,6 +543,14 @@ export function userIsAdmin() {
     return null;
 }
 
+export function getUserStatus(){
+    let user = localStorage.getItem('user');
+    if (user) {
+        return JSON.parse(user).status;
+    }
+    return null;
+}
+
 /**
  * Checks if a password is valid.
  *
