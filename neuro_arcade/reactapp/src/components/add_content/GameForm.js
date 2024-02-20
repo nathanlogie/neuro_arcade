@@ -91,8 +91,8 @@ export function GameForm() {
             setLoading(false)
 
 
-        }).catch(() =>{
-                setError( "tags", {message: "Error creating new tag"})
+        }).catch(() => {
+                setError("tags", {message: "Error creating new tag"})
             }
         )
     }
@@ -158,11 +158,16 @@ export function GameForm() {
             console.log(response);
             reset();
             setError("root", {message: "game submitted successfully"});
+            setTags([]);
         }).catch(function (response) {
             console.log(response)
             if (!response) {
                 setError("root", {message: "No response from server"});
             } else {
+                if(response.response.data.slug){
+                    setError("root", {message: "A game with that name already exists!"});
+                    return;
+                }
                 if (response.response.data.includes("IntegrityError")) {
                     setError("root", {message: "A game with that name already exists!"});
                 } else {

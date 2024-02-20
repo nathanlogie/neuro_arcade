@@ -18,7 +18,6 @@ export function ModelForm(){
     } = useForm()
 
     const [name, setName] = useState("")
-    const [aiStatus, setAiStatus] = useState("")
     const [description, setDescription] = useState("")
     const [tags, setTags] = useState("")
 
