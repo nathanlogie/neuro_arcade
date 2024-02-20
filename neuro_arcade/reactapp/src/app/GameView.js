@@ -74,31 +74,33 @@ export function GameView() {
                     <h2>Trends</h2>
                     <div className={styles.GraphSwitcher}>
                         {gameData.table_headers.length > 2 ?
-                        <Switcher
-                            data={big}
-                            onSwitcherChange={handleSwitcherChange}
-                            switcherDefault={selectedSwitcherValue}
-                            id={styles['vertical']}
-                        /> :
-                        <Switcher
-                            data={small}
-                            onSwitcherChange={handleSwitcherChange}
-                            switcherDefault={selectedSwitcherValue}
-                            id={styles['vertical']}
-                        />
-                    }
+                            <Switcher
+                                data={big}
+                                onSwitcherChange={handleSwitcherChange}
+                                switcherDefault={selectedSwitcherValue}
+                                id={styles['vertical']}
+                            /> :
+                            <Switcher
+                                data={small}
+                                onSwitcherChange={handleSwitcherChange}
+                                switcherDefault={selectedSwitcherValue}
+                                id={styles['vertical']}
+                            />
+                        }
                     </div>
-                    {selectedSwitcherValue === 'Line Chart' ? <LineC inputData={gameData}/> : <></>}
-                    {selectedSwitcherValue === 'Swarm Plot' ? <SwarmPlot inputData={gameData}/> : <></>}
-                    {selectedSwitcherValue === 'Radar Chart' ? <RadarC inputData={gameData}/> : <></>}
+                    <div className={styles.Background}>
+                        {selectedSwitcherValue === 'Line Chart' ? <LineC inputData={gameData}/> : <></>}
+                        {selectedSwitcherValue === 'Swarm Plot' ? <SwarmPlot inputData={gameData}/> : <></>}
+                        {selectedSwitcherValue === 'Radar Chart' ? <RadarC inputData={gameData}/> : <></>}
+                    </div>
                 </div>
             </div>
         </>;
     }
 
     return (
-            <>
-                <Banner size={'small'} selected={'Games'} />
+        <>
+            <Banner size={'small'} selected={'Games'} />
                 <MobileBanner/>
                 <div className={styles.MainBlock} id={styles['small']}>
                     {content}

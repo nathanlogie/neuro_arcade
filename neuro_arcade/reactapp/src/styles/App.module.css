@@ -102,6 +102,9 @@
             background-color: rgba(3, 3, 3, 0.4);
             border-radius: 0.5em;
             backdrop-filter: blur(20px);
+            .Background {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
             h2 {
                 position: absolute;
                 top: -1.5em;

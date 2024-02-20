@@ -38,7 +38,6 @@ export function LineC({inputData}) {
                     bottom: 120,
                 }}
                 style={{
-                    background: 'rgba(255,255,255,0.1)',
                     stroke: '#FFFFFF'
                 }}
             >

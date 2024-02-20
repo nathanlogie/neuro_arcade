@@ -77,7 +77,6 @@ export function SwarmPlot({inputData}) {
                     forceStrength={1}
                     simulationIterations={100}
                     theme={{
-                        'background': 'rgba(255,255,255,0.1)',
                         'text': {
                             'fill': '#CCCCCC',
                             fontFamily: 'inherit',
