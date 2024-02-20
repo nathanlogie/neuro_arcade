@@ -12,6 +12,21 @@ import makeAnimated from 'react-select/animated';
 let MAX_NAME_LENGTH = 64
 let MAX_DESCRIPTION_LENGTH = 1024
 
+const customStyles = {
+    option: provided => ({
+        ...provided,
+        color: 'black'
+    }),
+    control: provided => ({
+        ...provided,
+        color: 'black'
+    }),
+    singleValue: provided => ({
+        ...provided,
+        color: 'black'
+    })
+}
+
 export function ModelForm() {
     const {
         register,
@@ -150,6 +165,7 @@ export function ModelForm() {
                 options={options}
                 components={makeAnimated()}
                 isLoading={loading}
+                styles={customStyles}
             />
 
             <motion.button

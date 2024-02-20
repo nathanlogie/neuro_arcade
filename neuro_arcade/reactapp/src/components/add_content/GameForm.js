@@ -19,6 +19,22 @@ let ACCEPTED_SCORE_FILE = ['json'];
 let ACCEPTED_EVAL_SCRIPT = ['py'];
 let ACCEPTED_IMAGE = ['png', 'jpg', 'jpeg'];
 
+
+const customStyles = {
+    option: provided => ({
+        ...provided,
+        color: 'black'
+    }),
+    control: provided => ({
+        ...provided,
+        color: 'black'
+    }),
+    singleValue: provided => ({
+        ...provided,
+        color: 'black'
+    })
+}
+
 /**
  * @returns {JSX.Element} add new game form
  * @constructor builds add new game form
@@ -246,6 +262,7 @@ export function GameForm() {
                 options={options}
                 components={makeAnimated()}
                 isLoading={loading}
+                styles={customStyles}
             />
             {errors.tags && (
                 <div>{errors.tags.message}</div>
