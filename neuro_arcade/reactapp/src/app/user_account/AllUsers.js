@@ -1,17 +1,22 @@
 import {Banner} from "../../components/Banner";
 import {MobileBanner} from "../../components/Banner";
 import {motion} from "framer-motion";
-import {getAllUsers, updateStatus} from "../../backendRequests";
+import {getAllUsers, updateStatus, isLoggedIn, userIsAdmin} from "../../backendRequests";
 import React, {useEffect, useState} from "react";
 import styles from '../../styles/components/TableGraph.module.css';
 import {createTheme, ThemeProvider} from "@mui/material";
 import {DataGrid} from '@mui/x-data-grid';
+import {Navigate} from "react-router-dom";
 
 /**
  * Page for admins only
  * Lets admins see all users and approve new ones
  */
 export function AllUsers(){
+
+    if (!isLoggedIn() || !userIsAdmin()){
+        return <Navigate to={"*"} />
+    }
 
     const [users, setUsers] = useState([]);
 
