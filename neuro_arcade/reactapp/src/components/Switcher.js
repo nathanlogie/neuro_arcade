@@ -66,14 +66,14 @@ export function Switcher({data, onSwitcherChange, switcherDefault}) {
                                 ]}
                             style={{
                                 borderColor: alignment === header.name ? 'white' : 'transparent',
-                                borderWidth: alignment === header.name ? '0.4em': '0',
-                                padding: alignment === header.name ? '1em': '1.349em',
+                                borderWidth: '0.4em',
                                 backdropFilter: 'blur(2.5em)',
                                 backgroundColor: alignment === header.name ? 'rgba(255, 255, 255, 0.3)' : 'rgba(143,143,143,0.2)',
                                 color: '#EEEEEE',
                                 fontSize: '0.75em',
                                 fontFamily: 'inherit',
-                                fontWeight: '700'
+                                fontWeight: '700',
+                                margin: 0
                             }}>
                                 {header.name}
                         </ToggleButton>
