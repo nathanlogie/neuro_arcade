@@ -1,11 +1,14 @@
-import {Background} from "../components/Background";
 import {Banner, MobileBanner} from "../components/Banner";
 import styles from "../styles/App.module.css";
-import {useState} from "react";
+import React, {useState} from "react";
 import {login} from "../backendRequests";
 import {Navigate, Link} from "react-router-dom"
+import {NavBar} from "../components/NavBar";
+import {Button} from "../components/Button";
+import {motion} from "framer-motion";
+import { FaArrowDown } from "react-icons/fa6";
 
-export function Login(){
+export function Login() {
     // userID is either a username or an email address.
     const [userID, setUserID] = useState("");
     const [password, setPassword] = useState("");
@@ -20,41 +23,60 @@ export function Login(){
         }).catch((error) => setInvalidMessage("Invalid Details. Error: " + error.toString()))
     }
 
+    let nav_left = (
+        <Button
+            name={'home'}
+            link={'/'}
+            orientation={'left'}
+            direction={'left'}
+        />
+    );
+
     return (
         <>
-            <Background/>
-            <Banner size={'big'}/>
-            <MobileBanner size={'big'} />
-            <div className={styles.MainBlock} id={styles['small']}>
+            <Banner size={'big'} left={nav_left}/>
+            <MobileBanner/>
+            <NavBar left={nav_left}/>
+            <motion.div
+                className={styles.MainBlock}
+                id={styles['big']}
+                initial={{opacity: 0}}
+                animate={{opacity: 1}}
+                exit={{opacity: 0}}
+            >
 
-                <div className={styles.Title}>
-                    <h1>{success ? <Navigate to={'/'}/> : "Login"}</h1>
-                </div>
-                <div className={styles.Content}>
-                    <p>{ invalidMessage }</p>
+                <div className={styles.Form}>
+                    <h1>{success ? <Navigate to={'/'}/> : "Sign in"}</h1>
                     <form onSubmit={handleSubmit}>
-
-                        <p>Username: <input
+                        <h3>Username</h3>
+                        <input
                             type={"text"}
                             value={userID}
-                            placeholder={"Username or Email..."}
-                            onChange={(e) => setUserID(e.target.value)}/>
-                        </p>
-                        <p>Password: <input
+                            placeholder={"type in your email or username"}
+                            onChange={(e) => setUserID(e.target.value)}
+                        />
+                        <h3>Password</h3>
+                        <input
                             type={"password"}
                             value={password}
-                            placeholder={"Password..."}
-                            onChange={(e) => setPassword(e.target.value)}/>
-                        </p>
-                        <button type={"submit"}>LOGIN</button>
-
+                            placeholder={"..."}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <div>{invalidMessage}</div>
+                        <motion.button
+                            type={"submit"}
+                            whileHover={{scale: 1.1}}
+                            whileTap={{scale: 0.9}}
+                        >
+                            sign in
+                            <div>
+                                <FaArrowDown/>
+                            </div>
+                        </motion.button>
+                        <p>Don't have an account? <Link to='/sign_up'>Sign Up Here</Link></p>
                     </form>
-
-                    <p>Don't have an account? <Link to='/sign_up'>Sign Up Here</Link></p>
-
                 </div>
-
-            </div>
+            </motion.div>
         </>
     )
 

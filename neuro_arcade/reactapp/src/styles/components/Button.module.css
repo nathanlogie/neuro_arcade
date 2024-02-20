@@ -58,21 +58,5 @@
 @media (max-width: 20em) {
     .Button {
         scale: 75%;
-        .ButtonBlock#left {
-            left: 10%;
-            bottom: 4em;
-        }
-        .Arrow#left {
-            left: 10%;
-            bottom: 2em;
-        }
-        .ButtonBlock#right {
-            bottom: 0.5em;
-            right: 10%;
-        }
-        .Arrow#right {
-            bottom: 0;
-            right: 10%;
-        }
     }
 }

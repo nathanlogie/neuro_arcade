@@ -6,13 +6,23 @@ import {Banner, MobileBanner} from "../../components/Banner";
 import styles from "../../styles/App.module.css";
 import {motion} from "framer-motion"
 import {NavBar} from "../../components/NavBar";
-
+import { redirect } from "react-router-dom";
+import {Button} from "../../components/Button";
 
 /**
  * @returns {JSX.Element} edit about page
  * @constructor builds edit about page
  */
 export function EditAbout() {
+
+    let nav_right = (
+        <Button
+            name={'home'}
+            link={'/'}
+            orientation={'right'}
+            direction={'right'}
+        />
+    );
 
     const [aboutData, updateAboutData] = useState()
 
@@ -37,19 +47,9 @@ export function EditAbout() {
 
     return (
         <>
-            <Banner size={'big'} button_right={{
-                name: 'home',
-                link: '/',
-                orientation: 'right',
-                direction: 'right'
-            }} />
-            <NavBar  button_right={{
-                name: 'home',
-                link: '/',
-                orientation: 'right',
-                direction: 'right'
-            }} />
-            <MobileBanner  />
+            <Banner size={'big'} right={nav_right} />
+            <MobileBanner/>
+            <NavBar right={nav_right} />
             <motion.div
                 className={styles.MainBlock}
                 initial={{opacity: 0, x: -100}}

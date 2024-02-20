@@ -5,6 +5,7 @@ import {motion} from "framer-motion";
 import {useEffect, useState} from "react";
 import {getAboutData} from "../../backendRequests";
 import {Description} from "../../components/about/Description";
+import {Button} from "../../components/Button";
 import {isLoggedIn, userIsAdmin} from "../../backendRequests";
 import {EditAbout} from "./EditAbout"
 
@@ -17,6 +18,15 @@ export function AboutPage() {
     if (isLoggedIn() && userIsAdmin()){
         return <EditAbout />
     }
+
+    let nav_right = (
+        <Button
+            name={'home'}
+            link={'/'}
+            orientation={'right'}
+            direction={'right'}
+        />
+    );
 
     const [aboutData, updateAboutData] = useState()
 
@@ -56,20 +66,9 @@ export function AboutPage() {
 
     return (
         <>
-            <Banner size={'big'} button_right={{
-                name: 'home',
-                link: '/',
-                orientation: 'right',
-                direction: 'right'
-            }}/>
-            <NavBar button_right={{
-                name: 'home',
-                link: '/',
-                orientation: 'right',
-                direction: 'right'
-            }}
-            />
+            <Banner size={'big'} right={nav_right} />
             <MobileBanner />
+            <NavBar right={nav_right} />
             <motion.div
                 className={styles.MainBlock}
                 id={styles['big']}
@@ -78,16 +77,6 @@ export function AboutPage() {
                 exit={{opacity: 0, x: -100}}
             >
                 {content}
-                <NavBar button_left={{
-                    link: '',
-                    orientation: 'left'
-                }} button_right={{
-                    name: 'home',
-                    link: '/',
-                    orientation: 'right',
-                    direction: 'right'
-                }}
-                />
                 <div className={styles.MobileBannerBuffer}/>
             </motion.div>
         </>
