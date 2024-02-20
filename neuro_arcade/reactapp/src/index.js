@@ -16,6 +16,7 @@ import {PageNotFound} from "./app/PageNotFound"
 import {AnimatePresence} from 'framer-motion'
 import {Background} from "./components/Background";
 import {AuthTest} from "./app/AuthTest";
+import {AllUsers} from "./app/user_account/AllUsers"
 
 const router = createBrowserRouter([
     {
@@ -30,7 +31,11 @@ const router = createBrowserRouter([
         path: "user_account", //TODO slug for users
         element: (
             <AccountPage/>
-        ),
+        )
+    },
+    {
+        path: "user_account/all_users",
+        element: <AllUsers />
     },
     {
         path: "add_game",
