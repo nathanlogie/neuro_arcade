@@ -167,7 +167,11 @@ export function GameForm() {
                 if(response.response.data.slug){
                     setError("root", {message: "A game with that name already exists!"});
                     return;
+                } else if(response.response.data.tags){
+                    setError("root", {message: "Tag upload failed"});
+                    return;
                 }
+                if(respon)
                 if (response.response.data.includes("IntegrityError")) {
                     setError("root", {message: "A game with that name already exists!"});
                 } else {
