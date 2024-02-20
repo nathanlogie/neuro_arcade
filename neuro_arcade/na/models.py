@@ -234,4 +234,5 @@ class UserStatus(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_OPTIONS, default="pending")
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="status")
 
-
+    def __str__(self):
+        return "Status of " + self.user.username + ": " + self.status
