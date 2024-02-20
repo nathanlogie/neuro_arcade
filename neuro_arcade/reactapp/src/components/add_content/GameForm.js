@@ -37,7 +37,7 @@ export function GameForm() {
     const [scoreType, setScoreType] = useState(null)
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [tags, setTags] = useState([])
+    const [tags, setTags] = useState(null)
     const [playLink, setPlayLink] = useState("");
     const [existingTags, setExistingTags] = useState([])
     const [loading, setLoading] = useState(false)
@@ -132,18 +132,17 @@ export function GameForm() {
         formData.append("play_link", playLink);
         formData.append("slug", slugify(name));
 
-        let finalTags = []
-        tags.forEach((tag) => {
-            finalTags.push(tag.value)
-        })
+        // let tagCall = false
+        //
+        // console.log(finalTags)
+        // if (finalTags.length > 1) {
+        //     tagCall = true
+        // } else {
+        //     formData.append("tags", finalTags)
+        // }
 
-        let tagCall = false
-
-        console.log(finalTags)
-        if (finalTags.length > 1) {
-            tagCall = true
-        } else {
-            formData.append("tags", finalTags)
+        if(tags){
+            formData.append("tags", tags)
         }
 
         if (image) {
@@ -238,7 +237,6 @@ export function GameForm() {
 
             <h3>Game Tags</h3>
             <CreatableSelect
-                isMulti={true}
                 isClearable={true}
                 onChange={(newValue) => setTags(newValue)}
                 onCreateOption={handleCreate}

@@ -1,8 +1,12 @@
 import {useForm} from "react-hook-form";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {motion} from "framer-motion";
 import {FaPlus} from "react-icons/fa6";
+import CreatableSelect from 'react-select/creatable';
+import {requestGameTags, requestPlayerTags} from "../../backendRequests";
+import slugify from 'react-slugify';
+import makeAnimated from 'react-select/animated';
 
 //Should be synced up to models
 let MAX_NAME_LENGTH = 64
@@ -19,7 +23,51 @@ export function ModelForm(){
 
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
-    const [tags, setTags] = useState("")
+    const [tags, setTags] = useState(null)
+    const [existingTags, setExistingTags] = useState([])
+    const [loading, setLoading] = useState(false)
+    useEffect(() => {
+        requestPlayerTags()
+            .then((tags) => {
+                setExistingTags(tags);
+            })
+    }, [])
+
+    let options = []
+    existingTags.forEach((tag) => {
+        options.push({
+            value: tag.id,
+            label: tag.name
+        })
+    })
+
+    function handleCreate(tagName) {
+        setLoading(true)
+        let formData = new FormData()
+        formData.append("name", tagName)
+        formData.append("slug", slugify(tagName))
+        formData.append("description", "described")
+        axios({
+            method: "post",
+            url: "http://127.0.0.1:8000/api/playerTag/",
+            data: formData,
+            headers: {"Content-Type": "multipart/form-data"},
+        }).then((response) => {
+            console.log(response)
+            let newValue = {
+                value: response.data.id,
+                label: response.data.name
+            }
+            options.push(newValue)
+            tags.push(newValue)
+            setLoading(false)
+
+
+        }).catch(() => {
+                setError("tags", {message: "Error creating new tag"})
+            }
+        )
+    }
 
     const onSubmit = async (event) => {
 
@@ -31,6 +79,7 @@ export function ModelForm(){
         formData.append("user", 1);
 
         formData.append("is_ai", true);
+        formData.append("tags", tags.value);
 
         await axios({
             //I will move a lot of this stuff to backend requests to centralize it in a future merge request
@@ -42,6 +91,7 @@ export function ModelForm(){
             console.log(response);
             reset()
             setError("root", {message: "model submitted successfully"})
+            setTags(null)
         }).catch(function (response) {
             console.log(response)
             if (!response) {
@@ -92,11 +142,14 @@ export function ModelForm(){
             )}
 
             <h3> Model Tags </h3>
-            <input {...register("tags", {
-                required: false
-            })}
-                   type={"text"} placeholder={"example1, example2, example3, ..."}
-                   onChange={(event) => setTags(event.target.value)}
+            <CreatableSelect
+                isClearable={true}
+                onChange={(newValue) => setTags(newValue)}
+                onCreateOption={handleCreate}
+                value={tags}
+                options={options}
+                components={makeAnimated()}
+                isLoading={loading}
             />
 
             <motion.button
