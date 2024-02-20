@@ -142,8 +142,10 @@ export function GameForm() {
         // }
 
         if(tags){
-            formData.append("tags", tags)
+            formData.append("tags", tags.value)
         }
+
+        console.log(tags)
 
         if (image) {
             formData.append("icon", image)
@@ -162,20 +164,21 @@ export function GameForm() {
             headers: {"Content-Type": "multipart/form-data"},
         }).then(function (response) {
             console.log(response);
-            if (tagCall) {
-                formData.append("tags", finalTags)
-                formData.append("id", response.data.id)
-                axios({
-                    method: "post",
-                    url: `http://127.0.0.1:8000/api/games/add_tags`,
-                    data: formData,
-                    headers: {"Content-Type": "multipart/form-data"},
-                }).catch((response) => {
-                    console.log(response)
-                        setError("root", {message: "Error during tag upload"})
-                    }
-                )
-            }
+
+            // if (tagCall) {
+            //     formData.append("tags", finalTags)
+            //     formData.append("id", response.data.id)
+            //     axios({
+            //         method: "post",
+            //         url: `http://127.0.0.1:8000/api/games/add_tags`,
+            //         data: formData,
+            //         headers: {"Content-Type": "multipart/form-data"},
+            //     }).catch((response) => {
+            //         console.log(response)
+            //             setError("root", {message: "Error during tag upload"})
+            //         }
+            //     )
+            // }
 
 
             reset();
