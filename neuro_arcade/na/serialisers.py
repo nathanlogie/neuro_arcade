@@ -12,10 +12,11 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class GameTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = GameTag
-        fields = ['id', 'name', 'slug', 'description']
+        fields = '__all__'
 
 
 class GameSerializer(serializers.ModelSerializer):
+    tags = GameTagSerializer(read_only=True, many=True).data
 
     class Meta:
         model = Game

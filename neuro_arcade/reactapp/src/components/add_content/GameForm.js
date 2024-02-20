@@ -137,9 +137,14 @@ export function GameForm() {
             finalTags.push(tag.value)
         })
 
-        console.log(finalTags)
-        formData.append("tags", finalTags)
+        let tagCall = false
 
+        console.log(finalTags)
+        if (finalTags.length > 1) {
+            tagCall = true
+        } else {
+            formData.append("tags", finalTags)
+        }
 
         if (image) {
             formData.append("icon", image)
@@ -158,6 +163,22 @@ export function GameForm() {
             headers: {"Content-Type": "multipart/form-data"},
         }).then(function (response) {
             console.log(response);
+            if (tagCall) {
+                formData.append("tags", finalTags)
+                formData.append("id", response.data.id)
+                axios({
+                    method: "post",
+                    url: `http://127.0.0.1:8000/api/games/add_tags`,
+                    data: formData,
+                    headers: {"Content-Type": "multipart/form-data"},
+                }).catch((response) => {
+                    console.log(response)
+                        setError("root", {message: "Error during tag upload"})
+                    }
+                )
+            }
+
+
             reset();
             setError("root", {message: "game submitted successfully"});
             setTags([]);
@@ -166,21 +187,21 @@ export function GameForm() {
             if (!response) {
                 setError("root", {message: "No response from server"});
             } else {
-                if(response.response.data.slug){
+                if (response.response.data.slug) {
                     setError("root", {message: "A game with that name already exists!"});
                     return;
-                } else if(response.response.data.tags){
+                } else if (response.response.data.tags) {
                     setError("root", {message: "Tag upload failed"});
                     return;
                 }
-                if(respon)
-                if (response.response.data.includes("IntegrityError")) {
-                    setError("root", {message: "A game with that name already exists!"});
-                } else {
-                    setError("root", {
-                        message: `Something went wrong... ${response.response.data}`
-                    })
-                }
+                if (response)
+                    if (response.response.data.includes("IntegrityError")) {
+                        setError("root", {message: "A game with that name already exists!"});
+                    } else {
+                        setError("root", {
+                            message: `Something went wrong... ${response.response.data}`
+                        })
+                    }
             }
         });
     };

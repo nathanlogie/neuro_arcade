@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.middleware.csrf import get_token
 
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -439,22 +439,34 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class GameViewSet(viewsets.ModelViewSet):
-
     queryset = Game.objects.all()
     serializer_class = GameSerializer
 
-    @action(detail=True)
-    def add_tags(self, request, *args, **kwargs):
-        game = Game.objects.get()
+    @action(detail=True, methods=['patch'])
+    def add_tags(self, request, instance=None):
         data = request.data
+        game = Game.objects.get(instance)
+        if not game:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
         tags = data['tags'].split(',')
         for tag in tags:
-            game.tags.add(tag)
+            game.tags.add(GameTag.get(tag))
 
         game.save()
         return Response("Tags added", status=200)
 
+    def patch(self, request, pk):
+        data = request.data
+        game = self.get_object(pk=pk)
+        if not game:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(game, data=data, partial=True, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_200_OK, data=serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
 
 class GameTagViewSet(viewsets.ModelViewSet):
