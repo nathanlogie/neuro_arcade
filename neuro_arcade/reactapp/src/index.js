@@ -28,10 +28,6 @@ const router = createBrowserRouter([
         element: <AboutPage/>,
     },
     {
-        path: "edit_about",
-        element: <EditAbout/>
-    },
-    {
         path: "user_account", //TODO slug for users
         element: (
             <AccountPage/>

@@ -32,12 +32,8 @@ export function HomePage() {
     const [hover, setHover] = useState(false);
     const [loggedIn, setLoggedIn] = useState(isLoggedIn())
 
-    let aboutLink = '/about';
     let userAccount = ['', ''];
     if (isLoggedIn()) {
-        if (userIsAdmin()) {
-            aboutLink = '/edit_about';
-        }
         userAccount = ['user account', 'user_account'];
     }
 
@@ -132,7 +128,7 @@ export function HomePage() {
         <div onClick={() => show && !hover ? setShow(false) : null}>
             <Banner size={'big'} button_left={{
                 name: 'about',
-                link: aboutLink,
+                link: '/about',
                 orientation: 'left',
                 direction: 'left'
             }} button_right={{
@@ -152,7 +148,7 @@ export function HomePage() {
                 {content}
                 <NavBar button_left={{
                     name: 'about',
-                    link: aboutLink,
+                    link: '/about',
                     orientation: 'left',
                     direction: 'left'
                 }} button_right={{
