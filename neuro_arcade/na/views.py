@@ -380,6 +380,9 @@ def sign_up(request: Request) -> Response:
 @api_view(['POST'])
 def update_user_status(request: Request) -> Response:
 
+    if not request.data['user'] or not request.data['status']:
+        return Response(status=400, data='Missing data in request')
+
     user = User.objects.get(username=request.data['user'])
     newStatus = request.data['status']
 
@@ -391,7 +394,7 @@ def update_user_status(request: Request) -> Response:
     if status.status == newStatus:
         return Response(status=200)
     else:
-        return Response(status=400, data='Error while trying to update user status')
+        return Response(status=500, data='Error while trying to update user status')
 
 
 @api_view(['GET'])
