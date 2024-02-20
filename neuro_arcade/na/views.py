@@ -33,7 +33,7 @@ def get_game_dict(game_slug: str):
     :param game_slug: string representing the game slug
     """
     game = get_object_or_404(Game, slug=game_slug)
-    dictionary = {'game': game.serialize()}
+    dictionary = {'game': GameSerializer(game).data}
     headers, scores = game.get_score_table()
     if headers is not None and scores is not None:
         dictionary['table_headers'] = headers
@@ -99,7 +99,8 @@ def get_tags(request: Request) -> Response:
     """
     Retrieves the GameTags
     """
-    return Response([tag.serialize() for tag in GameTag.objects.all()])
+
+    return Response([GameTagSerializer(tag).data for tag in GameTag.objects.all()])
 
 
 @api_view(['GET'])
@@ -113,8 +114,7 @@ def get_games_sorted(request: Request) -> Response:
         num = int(num)
 
     game_list = get_game_list(query, wanted_tags, num)
-
-    return Response([game.serialize() for game in game_list])
+    return Response([GameSerializer(game).data for game in game_list])
 
 
 @api_view(['POST'])
