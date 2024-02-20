@@ -135,6 +135,38 @@ def validate_score_type(score_type: Any) -> Tuple[bool, Optional[str]]:
     return True, None
 
 
+def validate_score(score_type: ScoreType, score: Any) -> Tuple[bool, Optional[str]]:
+    """Takes an object parsed from json and checks it's a valid score for its type
+    Assumes score_type is already valid
+
+    Returns whether the test passed, and the error message if not"""
+
+    # Should be a dict
+    if not isinstance(score, dict):
+        return False, "Score should be a dictionary"
+
+    # All values should be defined in the score type
+    name_set = {header['name'] for header in score_type['headers']}
+    for key in score:
+        if key not in name_set:
+            return False, f"Field '{key}' should not exist"
+
+    # All defined headers should have values in range
+    for header in score_type['headers']:
+        value = score.get(header['name'])
+
+        if value is None:
+            return False, f"Field '{header['name']}' is required"
+
+        if (
+            ('min' in header and header['min'] > value)
+            or ('max' in header and header['max'] < value)
+        ):
+            return False, f"Field '{header['name']}' out of range"
+
+    return True, None
+
+
 class Game(models.Model):
     """Description of a game added to the website. """
 
@@ -285,7 +317,7 @@ class Player(models.Model):
 class Score(models.Model):
     """Scores. """
 
-    score = models.JSONField(default=default_score)
+    score = models.JSONField(default=default_score) # map of name: value
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
 

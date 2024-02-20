@@ -5,7 +5,7 @@ from django.urls import reverse
 
 # The ide will shout at you to remove the na from the import but don't
 # The na allows it to run in terminal and in the pipeline
-from na.models import Game, GameTag, Player, PlayerTag, Score, validate_score_header, validate_score_type
+from na.models import Game, GameTag, Player, PlayerTag, Score, validate_score, validate_score_header, validate_score_type
 import populate
 
 # Create your tests here.
@@ -341,6 +341,136 @@ class ScoreTypeTests(TestCase):
                 },
             ],
         })
+
+        self.assertIsNone(msg)
+        self.assertTrue(passed)
+
+
+class ScoreTests(TestCase):
+    """Tests for Score validation"""
+
+    score_type = {
+        "headers": [
+            {
+                "name": "Name",
+                "type": "int",
+                "min": 0,
+                "max": 10,
+            }
+        ]
+    }
+
+    def test_not_dict(self):
+        """Check non-dictionary scores are rejected"""
+
+        passed, msg = validate_score(self.score_type, [])
+
+        self.assertIsNotNone(msg)
+        self.assertFalse(passed)
+
+    def test_extra_key(self):
+        """Check scores with invalid fields are rejected"""
+
+        passed, msg = validate_score(
+            self.score_type,
+            {
+                "Name": 5,
+                "extra": 1,
+            },
+        )
+
+        self.assertIsNotNone(msg)
+        self.assertFalse(passed)
+
+    def test_missing_key(self):
+        """Check scores with missing fields are rejected"""
+
+        passed, msg = validate_score(
+            self.score_type,
+            {
+            },
+        )
+
+        self.assertIsNotNone(msg)
+        self.assertFalse(passed)
+
+    def test_past_min(self):
+        """Check scores with values past their minimum are rejected"""
+
+        passed, msg = validate_score(
+            self.score_type,
+            {
+                "Name": -1,
+            },
+        )
+
+        self.assertIsNotNone(msg)
+        self.assertFalse(passed)
+
+    def test_past_max(self):
+        """Check scores with values past their maximum are rejected"""
+
+        passed, msg = validate_score(
+            self.score_type,
+            {
+                "Name": 11,
+            },
+        )
+
+        self.assertIsNotNone(msg)
+        self.assertFalse(passed)
+
+    def test_valid(self):
+        """Check valid scores are accepted"""
+
+        passed, msg = validate_score(
+            self.score_type,
+            {
+                "Name": 5,
+            },
+        )
+
+        self.assertIsNone(msg)
+        self.assertTrue(passed)
+
+    def test_valid_no_min(self):
+        """Check valid scores with no minimum are accepted"""
+
+        passed, msg = validate_score(
+            {
+                "headers": [
+                    {
+                        "name": "Name",
+                        "type": "int",
+                        "max": 10,
+                    }
+                ]
+            },
+            {
+                "Name": -10,
+            },
+        )
+
+        self.assertIsNone(msg)
+        self.assertTrue(passed)
+
+    def test_valid_no_max(self):
+        """Check valid scores with no maximum are accepted"""
+
+        passed, msg = validate_score(
+            {
+                "headers": [
+                    {
+                        "name": "Name",
+                        "type": "int",
+                        "min": 0,
+                    }
+                ]
+            },
+            {
+                "Name": 20,
+            },
+        )
 
         self.assertIsNone(msg)
         self.assertTrue(passed)
