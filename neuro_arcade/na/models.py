@@ -1,4 +1,5 @@
-from typing import Dict, Iterable, List, Optional
+from enum import Enum
+from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, TypedDict, Union
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -35,6 +36,105 @@ class GameTag(models.Model):
         return self.name
 
 
+class ScoreHeader(TypedDict):
+    """Definition of one type of score a game supports"""
+
+    name: str
+    type: Literal['int', 'float']
+
+    # If present, their types must match the value of type
+    min: Optional[Union[int, float]]
+    max: Optional[Union[int, float]]
+
+
+class ScoreType(TypedDict):
+    """Definition of the types of score a game supports"""
+
+    headers: List[ScoreHeader]
+
+
+def validate_score_header(header: Any) -> Tuple[bool, Optional[str]]:
+    """Takes an object parsed from json and checks it's a valid score type
+    
+    Returns whether the test passed, and the error message if not"""
+
+    # While header is expected to be a ScoreHeader, it could be any object
+    # parsed from json so that can't actually be assumed
+
+    # Should be a dict
+    if not isinstance(header, dict):
+        return False, "Header should be a dictionary"
+
+    # Keys should be subset of pre-defined keys
+    valid_keys = {'name', 'type', 'min', 'max'}
+    for key in header.keys():
+        if key not in valid_keys:
+            return False, f"Invalid field name '{key}' - should be 'name', 'type', 'min' or 'max'"
+
+    # Name should exist and be a string
+    if 'name' not in header:
+        return False, "Field 'name' is required"
+    if not isinstance(header['name'], str):
+        return False, "Field 'name' should be a string"
+    
+    # Type should be integer or float
+    if 'type' not in header:
+        return False, "Field 'type' is required"
+    if header['type'] not in (Game.SCORE_FLOAT, Game.SCORE_INT):
+        return False, f"Invalid value for field 'type' - should be integer or float"
+
+    data_type = int if header['type'] == Game.SCORE_INT else float
+    
+    # Min and max should match type if they exist
+    if 'min' in header:
+        if not isinstance(header['min'], data_type):
+            return False, f"Invalid value for field 'min' - should be of type {header['type']}"
+    if 'max' in header:
+        if not isinstance(header['max'], data_type):
+            return False, f"Invalid value for field 'max' - should be of type {header['type']}"
+
+    # Min should be less than max if both present
+    if 'min' in header and 'max' in header:
+        if header['min'] >= header['max']:
+            return False, "Field 'min' should be less than field 'max'"
+
+    return True, None
+
+
+def validate_score_type(score_type: Any) -> Tuple[bool, Optional[str]]:
+    """Takes an object parsed from json and checks it's a valid score type
+    
+    Returns whether the test passed, and the error message if not"""
+
+    # While score_type is expected to be a ScoreType, it could be any object
+    # parsed from json so that can't actually be assumed
+
+    # Should be a dict
+    if not isinstance(score_type, dict):
+        return False, "Score type should be a dictionary"
+
+    # Only root element should be headers
+    for key in score_type:
+        if key != 'headers':
+            return False, f"Invalid field name '{key}', only field should be 'headers'"
+    if 'headers' not in score_type:
+        return False, "Field 'headers' is required"
+
+    # Headers should be a list
+    if not isinstance(score_type['headers'], list):
+        return False, "Headers should be a list"
+
+    # TODO: require at least 1 header?
+
+    # Headers should be valid
+    for i, d in enumerate(score_type['headers']):
+        passed, msg = validate_score_header(d)
+        if not passed:
+            return False, f"Error in header {i+1}: {msg}"
+    
+    return True, None
+
+
 class Game(models.Model):
     """Description of a game added to the website. """
 
@@ -60,7 +160,7 @@ class Game(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     icon = models.ImageField(upload_to=ICON_SUBDIR, blank=True)
     tags = models.ManyToManyField(GameTag, blank=True)
-    score_type = models.JSONField(default=default_score_type)
+    score_type: ScoreType = models.JSONField(default=default_score_type)
     play_link = models.URLField()
     evaluation_script = models.FileField(upload_to=EVALUATION_SUBDIR)
     priority = models.IntegerField(default=0)
