@@ -443,6 +443,19 @@ class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
 
+    @action(detail=True)
+    def add_tags(self, request, *args, **kwargs):
+        game = Game.objects.get()
+        data = request.data
+
+        tags = data['tags'].split(',')
+        for tag in tags:
+            game.tags.add(tag)
+
+        game.save()
+        return Response("Tags added", status=200)
+
+
 
 class GameTagViewSet(viewsets.ModelViewSet):
     queryset = GameTag.objects.all()
