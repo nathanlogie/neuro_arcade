@@ -73,7 +73,7 @@ export function Login() {
                                 <FaArrowDown/>
                             </div>
                         </motion.button>
-                        <p>Don't have an account? <Link to='/sign_up'>Sign Up Here</Link></p>
+                        <p>Don't have an account? <Link to='/sign_up'>Sign up here...</Link></p>
                     </form>
                 </div>
             </motion.div>
