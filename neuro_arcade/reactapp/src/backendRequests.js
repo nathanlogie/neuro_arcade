@@ -578,7 +578,7 @@ export async function signupNewUser(userName, email, password) {
     // validating the password on client side:
     // Note: this doesn't mean that the password is not also going to be checked server side.
     if (!passwordValidator(password))
-        throw new Error('Password is not valid!')
+        throw new Error('Invalid Password. Password must be at least 8 characters.')
 
     // the username should not pass a test for being an email address:
     if (emailRegex.test(userName))

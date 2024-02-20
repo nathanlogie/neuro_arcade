@@ -6,10 +6,12 @@ import {Card} from '../../components/Card';
 import { FaGamepad } from "react-icons/fa6";
 import { TbBoxModel } from "react-icons/tb";
 import {motion} from "framer-motion";
+import {Button} from "../../components/Button";
+import {Link, Navigate, useNavigate} from "react-router-dom";
+import React, {useState} from "react";
+import {isLoggedIn, logout} from "../../backendRequests";
 import {getUser} from "../../backendRequests";
 import {userIsAdmin} from "../../backendRequests";
-import {Link} from "react-router-dom"
-import {useState} from "react";
 
 
 /**
@@ -17,6 +19,26 @@ import {useState} from "react";
  * @constructor builds add content page
  */
 export function AccountPage() {
+
+    const [loggedIn, setLoggedIn] = useState(isLoggedIn());
+
+    const navigate = useNavigate();
+    function onLogout(e) {
+        e.preventDefault();
+        logout();
+        setLoggedIn(false);
+        navigate('/');
+    }
+
+    let nav_left = (
+        <Button
+            name={'home'}
+            link={'/'}
+            orientation={'left'}
+            direction={'left'}
+        />
+    );
+
 
     const [user, setUser] = useState(getUser())
 
@@ -31,27 +53,9 @@ export function AccountPage() {
 
     return (
         <>
-            <Banner size={'big'} button_left={{
-                name: 'home',
-                link: '/',
-                orientation: 'left',
-                direction: 'left'
-            }} button_right={{
-                link: '',
-                orientation: 'right'
-            }} />
-            <NavBar button_left={{
-                name: 'home',
-                link: 'home',
-                orientation: 'left',
-                direction: 'left'
-            }} button_right={{
-                link: '...',
-                direction: 'right'
-            }}
-            />
+            <Banner size={'big'} left={nav_left} />
             <MobileBanner/>
-
+            <NavBar left={nav_left} />
             <motion.div
                 className={styles.MainBlock}
                 id={styles['big']}
@@ -60,6 +64,9 @@ export function AccountPage() {
                 exit={{opacity: 0, x: 100}}
             >
                 <div className={styles.Content} id={styles['small']}>
+                    <button onClick={onLogout}>Logout</button>
+                </div>
+                <div className={styles.Side}>
                     <div className={styles.Title}>
                         <h1>Add Content</h1>
                     </div>
@@ -67,10 +74,8 @@ export function AccountPage() {
                         {user.status === "pending" ? pendingUser : regularContent }
                     </div>
                 </div>
-                <div className={styles.Side}>
-                </div>
             </motion.div>
-            <div className={styles.MobileBannerBuffer} />
+            <div className={styles.MobileBannerBuffer}/>
         </>
     );
 }

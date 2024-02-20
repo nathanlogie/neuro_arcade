@@ -27,7 +27,7 @@
 
 #home {
     height: fit-content;
-    margin: 5em 0 2em;
+    margin: 4em auto 2em;
 }
 
 .GraphContainer {
@@ -38,6 +38,12 @@
         top: 0.5em;
         width: 100%;
         z-index: 2;
+    }
+}
+
+@media(max-width: 78em) {
+    #home {
+        margin: 1em auto 0;
     }
 }
 
