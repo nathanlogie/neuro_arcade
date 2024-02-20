@@ -469,7 +469,6 @@ export function getUser() {
     return JSON.parse(user_str);
 }
 
-
 /**
  * Gets all users
  * All regular users should have a status on sign up
@@ -501,7 +500,6 @@ export async function getAllUsers() {
     })
 }
 
-
 /**
  * change user status
  *
@@ -524,7 +522,6 @@ export async function updateStatus(user, newStatus){
             console.log(error);
             throw error;
         })
-
 }
 
 /**
