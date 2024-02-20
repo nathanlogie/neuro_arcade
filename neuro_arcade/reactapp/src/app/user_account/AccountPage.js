@@ -18,13 +18,14 @@ import {isLoggedIn, logout} from "../../backendRequests";
  */
 export function AccountPage() {
 
-    const [loggedIn, setLoggedIn] = useState(isLoggedIn());
+    if (!isLoggedIn()){
+        return <Navigate to={"/login"} />
+    }
 
     const navigate = useNavigate();
     function onLogout(e) {
         e.preventDefault();
         logout();
-        setLoggedIn(false);
         navigate('/');
     }
 

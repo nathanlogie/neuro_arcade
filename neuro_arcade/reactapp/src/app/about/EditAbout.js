@@ -6,7 +6,6 @@ import {Banner, MobileBanner} from "../../components/Banner";
 import styles from "../../styles/App.module.css";
 import {motion} from "framer-motion"
 import {NavBar} from "../../components/NavBar";
-import { redirect } from "react-router-dom";
 import {Button} from "../../components/Button";
 
 /**

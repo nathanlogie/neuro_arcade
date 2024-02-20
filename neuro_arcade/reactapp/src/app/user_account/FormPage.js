@@ -5,12 +5,18 @@ import {NavBar} from "../../components/NavBar";
 import {motion} from "framer-motion";
 import {ModelForm} from "../../components/add_content/ModelForm";
 import {Button} from "../../components/Button";
+import {isLoggedIn} from "../../backendRequests";
+import {Navigate} from "react-router-dom";
 
 /**
  * @returns {JSX.Element} add game page
  * @constructor builds add game page
  */
 export function FormPage({type}) {
+
+    if (!isLoggedIn()){
+        return <Navigate to={"/login"} />
+    }
 
     let nav_left = (
         <Button

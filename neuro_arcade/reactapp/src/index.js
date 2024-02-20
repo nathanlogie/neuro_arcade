@@ -12,7 +12,6 @@ import {GameView} from "./app/GameView";
 import {SignUp} from "./app/SignUp";
 import {Login} from "./app/Login";
 import {AllPlayers} from './app/AllPlayers';
-import {EditAbout} from "./app/about/EditAbout";
 import {PageNotFound} from "./app/PageNotFound"
 import {AnimatePresence} from 'framer-motion'
 import {Background} from "./components/Background";
