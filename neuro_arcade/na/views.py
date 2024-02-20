@@ -10,7 +10,7 @@ from django.middleware.csrf import get_token
 
 from rest_framework import viewsets
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -439,6 +439,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class GameViewSet(viewsets.ModelViewSet):
+
     queryset = Game.objects.all()
     serializer_class = GameSerializer
 

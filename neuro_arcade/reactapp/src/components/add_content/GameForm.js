@@ -124,13 +124,14 @@ export function GameForm() {
     const onSubmit = async (event) => {
 
 
-        const formData = new FormData();
+        let formData = new FormData();
         formData.append("name", name);
         formData.append("description", description);
         //Temporary until authentication is fulfilled
         formData.append("owner", 3);
         formData.append("play_link", playLink);
         formData.append("slug", slugify(name));
+
         let finalTags = []
         tags.forEach((tag) => {
             finalTags.push(tag.value)
@@ -138,6 +139,7 @@ export function GameForm() {
 
         console.log(finalTags)
         formData.append("tags", finalTags)
+
 
         if (image) {
             formData.append("icon", image)
