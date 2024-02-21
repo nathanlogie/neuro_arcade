@@ -571,7 +571,8 @@ export async function login(userID, password) {
                 token: response.data.token,
                 name: response.data.username,
                 email: response.data.email,
-                is_admin: response.data.is_admin === true
+                is_admin: response.data.is_admin === true,
+                id: response.data.id,
             };
             localStorage.setItem("user", JSON.stringify(user_data));
             return response;

@@ -332,6 +332,7 @@ def login(request: Request) -> Response:
         'username': user.username,
         'email': user.email,
         'is_admin': user.is_superuser,
+        'id': user.id,
         'token': token.key,
     }
 
