@@ -20,7 +20,7 @@ from django.conf import settings
 
 from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
 import json
-from na.models import Game, GameTag, Player
+from na.models import Game, GameTag, Player, UserStatus
 
 
 # ------------------
@@ -333,7 +333,10 @@ def login(request: Request) -> Response:
         'email': user.email,
         'is_admin': user.is_superuser,
         'token': token.key,
+        'status': None,
     }
+    if not user.is_superuser:
+        response_data['status'] = user.status.status
 
     return Response(status=200, data=response_data)
 
@@ -358,6 +361,7 @@ def sign_up(request: Request) -> Response:
 
     # creating a new User in the DB:
     new_user = User.objects.create_user(username=username, email=email, password=password)
+    status = UserStatus.objects.create(user=new_user)
 
     if new_user is None:
         return Response(status=500, data='Error creating new user.')
@@ -371,6 +375,26 @@ def sign_up(request: Request) -> Response:
     )
 
     return Response(status=200)
+
+
+@api_view(['POST'])
+def update_user_status(request: Request) -> Response:
+
+    if not request.data['user'] or not request.data['status']:
+        return Response(status=400, data='Missing data in request')
+
+    user = User.objects.get(username=request.data['user'])
+    newStatus = request.data['status']
+
+    status = UserStatus.objects.get(user=user)
+    status.status = newStatus
+
+    status.save()
+
+    if status.status == newStatus:
+        return Response(status=200)
+    else:
+        return Response(status=500, data='Error while trying to update user status')
 
 
 @api_view(['GET'])

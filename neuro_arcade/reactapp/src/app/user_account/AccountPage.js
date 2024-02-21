@@ -10,6 +10,8 @@ import {Button} from "../../components/Button";
 import {Link, Navigate, useNavigate} from "react-router-dom";
 import React, {useState} from "react";
 import {isLoggedIn, logout} from "../../backendRequests";
+import {getUser} from "../../backendRequests";
+import {userIsAdmin} from "../../backendRequests";
 
 
 /**
@@ -37,6 +39,18 @@ export function AccountPage() {
         />
     );
 
+
+    const [user, setUser] = useState(getUser())
+
+    const pendingUser = <p>Your account is still pending. Once an admin approves you can post models and games.</p>
+    const regularContent =
+        <>
+            <Card link={'/add_game'} text={'New Game'} icon={<FaGamepad />} />
+            <Card link={'/add_model'} text={'New Model'} icon={<TbBoxModel />} />
+
+            { user && userIsAdmin() ? <Link to='all_users'>ALL USERS</Link> : null}
+        </>
+
     return (
         <>
             <Banner size={'big'} left={nav_left} />
@@ -57,8 +71,7 @@ export function AccountPage() {
                         <h1>Add Content</h1>
                     </div>
                     <div className={styles.ContentBlock}>
-                        <Card link={'/add_game'} text={'New Game'} icon={<FaGamepad/>}/>
-                        <Card link={'/add_model'} text={'New Model'} icon={<TbBoxModel/>}/>
+                        {user.status === "pending" ? pendingUser : regularContent }
                     </div>
                 </div>
             </motion.div>
