@@ -10,9 +10,6 @@ import {requestGameTags, requestModelsRanked} from "../backendRequests";
 import {motion} from "framer-motion"
 import {useEffect, useState} from "react";
 import { IoFilter } from "react-icons/io5";
-import {Link} from "react-router-dom";
-import {logout} from "../backendRequests";
-import {userIsAdmin} from "../backendRequests";
 import {isLoggedIn} from "../backendRequests";
 import {Card} from "../components/Card";
 import { FaRegUserCircle } from "react-icons/fa";
@@ -55,12 +52,6 @@ export function HomePage() {
             />
             </div>
         );
-    }
-
-    function onLogout(e) {
-        e.preventDefault();
-        logout();
-        setLoggedIn(false);
     }
 
     // Fetch the data tags on load

@@ -4,7 +4,7 @@ import './styles/index.css';
 import {HomePage} from "./app/HomePage";
 import {AboutPage} from './app/about/AboutPage';
 import reportWebVitals from './app/reportWebVitals';
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
 import {AccountPage} from "./app/user_account/AccountPage";
 import {FormPage} from "./app/user_account/FormPage";
 import {AllGames} from "./app/AllGames";
@@ -17,6 +17,30 @@ import {AnimatePresence} from 'framer-motion'
 import {Background} from "./components/Background";
 import {AuthTest} from "./app/AuthTest";
 import {AllUsers} from "./app/user_account/AllUsers"
+import {isLoggedIn, getUserStatus, userIsAdmin} from "./backendRequests";
+import {EditAbout} from "./app/about/EditAbout";
+
+let about = <AboutPage />;
+let addGame = <PageNotFound />;
+let addModel = <PageNotFound />;
+let allUsers = <PageNotFound />;
+let userAccount = <Navigate to={'/login'} />
+
+if (isLoggedIn()){
+    userAccount = <AccountPage />
+    if (userIsAdmin()) {
+        about = <EditAbout />;
+        allUsers = <AllUsers />
+    }
+
+    if (getUserStatus()==="approved" || userIsAdmin()){
+        addGame = <FormPage type={'game'} />
+        addModel = <FormPage type={'model'} />
+    }
+
+}
+
+
 
 const router = createBrowserRouter([
     {
@@ -25,25 +49,25 @@ const router = createBrowserRouter([
     },
     {
         path: "about",
-        element: <AboutPage/>,
+        element: about,
     },
     {
         path: "user_account", //TODO slug for users
         element: (
-            <AccountPage/>
+            userAccount
         )
     },
     {
         path: "user_account/all_users",
-        element: <AllUsers />
+        element: allUsers
     },
     {
         path: "add_game",
-        element: <FormPage type={'game'} />
+        element: addGame
     },
     {
         path: "add_model",
-        element: <FormPage type={'model'} />
+        element: addModel
     },
     {
         path: 'all_games/:game_slug',
