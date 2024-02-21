@@ -53,9 +53,7 @@ const router = createBrowserRouter([
     },
     {
         path: "user_account", //TODO slug for users
-        element: (
-            userAccount
-        )
+        element: userAccount
     },
     {
         path: "user_account/all_users",
