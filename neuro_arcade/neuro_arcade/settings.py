@@ -14,8 +14,19 @@ import os
 from corsheaders.defaults import default_headers
 from pathlib import Path
 
-# TODO: change this to the URL of the website
-WEBSITE_URL = "localhost:3000"
+IS_ON_SERVER = os.getenv('NEURO_ARCADE')
+
+if IS_ON_SERVER is not None:
+    # We are on the production server:
+    DEBUG = False
+    WEBSITE_URL = "134.122.101.180"
+    SECRET_KEY = os.getenv('NEURO_ARCADE_SECRET_KEY')
+else:
+    # We are on a development server:
+    DEBUG = True
+    WEBSITE_URL = "localhost:3000"
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = 'django-insecure-4#($c-j6(9ujy#i&&gj)&umiojdi_-aa8u3x2$!qqh%xj(e@@k'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,17 +39,7 @@ REACT_BUILD_DIR = os.path.join(REACT_DIR, 'build')
 REACT_STATIC_DIR = os.path.join(REACT_BUILD_DIR, 'static')
 REACT_MEDIA_ROOT = os.path.join(REACT_STATIC_DIR, 'media')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-4#($c-j6(9ujy#i&&gj)&umiojdi_-aa8u3x2$!qqh%xj(e@@k'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ["sh08.pythonanywhere.com",
-                 "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = [WEBSITE_URL, "127.0.0.1", "localhost"]
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_PRIVATE_NETWORK = True  # idk what this does
@@ -47,7 +48,8 @@ CORS_ALLOWED_ORIGINS = [
     "https://localhost:3000",
     "http://locahost:8000",
     "https://localhost:8000",
-    "https://" + WEBSITE_URL
+    "https://" + WEBSITE_URL,
+    "https://" + WEBSITE_URL + ":80",
 ]
 CORS_ALLOWED_ORIGIN_REGEXES = [
     'http://localhost:3000/*.',
@@ -66,7 +68,8 @@ CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'  # on client: 'X-CSRFToken'
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://" + WEBSITE_URL
+    "https://" + WEBSITE_URL,
+    "https://" + WEBSITE_URL + ":80",
 ]
 
 REST_USE_JWT = True
