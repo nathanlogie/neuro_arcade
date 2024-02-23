@@ -21,12 +21,17 @@ if IS_ON_SERVER is not None:
     DEBUG = False
     WEBSITE_URL = "134.122.101.180"
     SECRET_KEY = os.getenv('NEURO_ARCADE_SECRET_KEY')
+    ALLOWED_HOSTS = [
+        WEBSITE_URL,
+        WEBSITE_URL + ":8000",  # not sure which one is required here
+    ]
 else:
     # We are on a development server:
     DEBUG = True
     WEBSITE_URL = "localhost:3000"
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = 'django-insecure-4#($c-j6(9ujy#i&&gj)&umiojdi_-aa8u3x2$!qqh%xj(e@@k'
+    ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,8 +43,6 @@ REACT_DIR = os.path.join(BASE_DIR, 'reactapp')
 REACT_BUILD_DIR = os.path.join(REACT_DIR, 'build')
 REACT_STATIC_DIR = os.path.join(REACT_BUILD_DIR, 'static')
 REACT_MEDIA_ROOT = os.path.join(REACT_STATIC_DIR, 'media')
-
-ALLOWED_HOSTS = [WEBSITE_URL, "127.0.0.1", "localhost"]
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_PRIVATE_NETWORK = True  # idk what this does
