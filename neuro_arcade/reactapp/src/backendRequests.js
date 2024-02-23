@@ -685,3 +685,24 @@ export async function requestPlayer(playerName) {
             throw error;
         })
 }
+
+/**
+ * Requests the data associated with a player.
+ *
+ * @param {string} playerName - slug of the player name
+ *
+ * @return {Scores} response data
+ *
+ * @throws Error when the request is rejected.
+ */
+export async function requestPlayerScores(playerName) {
+    const url = API_ROOT + '/players/' + playerName + '/score/'
+    return await axios.get(url)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        })
+}
