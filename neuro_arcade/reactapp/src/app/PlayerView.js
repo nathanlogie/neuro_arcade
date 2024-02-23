@@ -14,6 +14,7 @@ export function PlayerView() {
     let [loading, setLoading] = useState(true);
     let [playerData, setPlayerData] = useState({});
     useEffect(() => {
+        setLoading(true);
         requestPlayer(playerSlug)
             .then(g => {
                 setPlayerData(g);
