@@ -137,7 +137,7 @@ export function GameForm() {
         formData.append("play_link", playLink);
         formData.append("slug", slugify(name));
 
-        if(tags){
+        if(tags.length===1){
             formData.append("tags", tags[0].value)
         }
 
