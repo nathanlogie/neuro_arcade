@@ -20,12 +20,14 @@ export function PlayerView() {
                 setLoading(false);
             })
     }, []);
+
+    let tag_text = playerData.tags ? playerData.tags.join(", ") : "";
     
     return (
         <div>
             <h1>{playerData.name}</h1>
             <p>{playerData.description}</p>
-            <p>The user for this player is: {playerData.user}</p>
+            <p>The tags for this player are: {tag_text}</p>
         </div>
     );
 }
