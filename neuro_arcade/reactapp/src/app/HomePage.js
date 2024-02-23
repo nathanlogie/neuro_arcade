@@ -10,9 +10,6 @@ import {requestGameTags, requestModelsRanked} from "../backendRequests";
 import {motion} from "framer-motion"
 import {useEffect, useState} from "react";
 import { IoFilter } from "react-icons/io5";
-import {Link} from "react-router-dom";
-import {logout} from "../backendRequests";
-import {userIsAdmin} from "../backendRequests";
 import {isLoggedIn} from "../backendRequests";
 import {Card} from "../components/Card";
 import { FaRegUserCircle } from "react-icons/fa";
@@ -35,12 +32,10 @@ export function HomePage() {
     const [hover, setHover] = useState(false);
     const [loggedIn, setLoggedIn] = useState(isLoggedIn());
 
-    let aboutLink = '/about';
-
     let nav_left = (
         <Button
             name={'about'}
-            link={aboutLink}
+            link={'/about'}
             orientation={'left'}
             direction={'left'}
         />
@@ -51,9 +46,6 @@ export function HomePage() {
     );
 
     if (isLoggedIn()) {
-        if (userIsAdmin()) {
-            aboutLink = '/edit_about';
-        }
         nav_right = (
             <div className={styles.NavBuffer}>
             <Card id={'nav'} link={'user_account'} text={'user'} icon={<FaRegUserCircle/>} //TODO signed in user profile display

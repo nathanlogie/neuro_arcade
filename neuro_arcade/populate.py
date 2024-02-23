@@ -687,6 +687,7 @@ def add_user(data: Dict) -> User:
         user.groups.add(group)
 
     user.save()
+    userStatus = UserStatus.objects.get_or_create(user=user)
 
     return user
 
@@ -789,6 +790,7 @@ def populate():
     for data in groups:
         add_group(data)
     for data in users:
+        data["status"] = "pending"
         add_user(data)
     for data in players:
         add_player(data)
