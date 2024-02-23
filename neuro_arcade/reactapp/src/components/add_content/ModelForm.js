@@ -38,7 +38,7 @@ export function ModelForm() {
 
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
-    const [tags, setTags] = useState(null)
+    const [tags, setTags] = useState([])
     const [existingTags, setExistingTags] = useState([])
     const [options, setOptions] = useState([])
 
@@ -93,7 +93,9 @@ export function ModelForm() {
         formData.append("user", 1);
 
         formData.append("is_ai", true);
-        formData.append("tags", tags.value);
+        if(tags){
+            formData.append("tags", tags[0].value);
+        }
 
         await axios({
             //I will move a lot of this stuff to backend requests to centralize it in a future merge request
@@ -110,15 +112,22 @@ export function ModelForm() {
             console.log(response)
             if (!response) {
                 setError("root", {message: "No response from server"});
-
             } else {
-                if (response.response.data.user.includes("IntegrityError")) {
-                    setError("root", {message: "A game with that name already exists!"});
-                } else {
-                    setError("root", {
-                        message: `Something went wrong... ${response.response.data}`
-                    })
+                if (response.response.data.slug) {
+                    setError("root", {message: "A Model with that name already exists!"});
+                    return;
+                } else if (response.response.data.tags) {
+                    setError("root", {message: "Tag upload failed"});
+                    return;
                 }
+                if (response)
+                    if (response.response.data.includes("IntegrityError")) {
+                        setError("root", {message: "A Model with that name already exists!"});
+                    } else {
+                        setError("root", {
+                            message: `Something went wrong... ${response.response.data}`
+                        })
+                    }
             }
         });
     }
