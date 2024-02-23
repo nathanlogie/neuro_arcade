@@ -93,7 +93,7 @@ export function ModelForm() {
         formData.append("user", 1);
 
         formData.append("is_ai", true);
-        if(tags){
+        if(tags.length === 1){
             formData.append("tags", tags[0].value);
         }
 
