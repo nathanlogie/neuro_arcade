@@ -52,7 +52,7 @@ export function GameView() {
 
     return (
             <>
-                <Banner size={'small'} state={'Games'}/>
+                <Banner size={'small'} selected={'Games'} />
                 <MobileBanner/>
                 <div className={styles.MainBlock} id={styles['small']}>
                     {content}

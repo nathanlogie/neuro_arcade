@@ -25,7 +25,13 @@
         height: 100%;
         grid-template-rows: min-content;
         grid-auto-rows: min-content;
-        grid-template-columns: repeat(auto-fit, minmax(7.5em, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(7em, 1fr));
         gap: 0;
+    }
+}
+
+@media (max-width: 30em) {
+    .CardGrid {
+        grid-template-columns: repeat(auto-fit, minmax(6em, 1fr));
     }
 }

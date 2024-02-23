@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {postPublications} from "../../backendRequests";
 import { Message } from 'primereact/message';
+import {getAboutData} from "../../backendRequests";
 
 /**
  * @param publications from backendRequests.js
@@ -51,7 +52,8 @@ export function PublicationsForm ({publications}) {
 
     function handleCancel(e) {
         e.preventDefault()
-        setDynamicPublications(publications)
+        getAboutData()
+            .then(data => setDynamicPublications(data.publications))
         setEditMode(!editMode)
     }
 

@@ -470,6 +470,61 @@ export function getUser() {
 }
 
 /**
+ * Gets all users
+ * All regular users should have a status on sign up
+ * But admins don't and hence will be marked as admin
+ *
+ * @return {Object} user array on success
+ * @throws error otherwise
+ */
+export async function getAllUsers() {
+    const url = API_ROOT + '/api/users/';
+    return await axios.get(url).then((response) => {
+        return(response.data.map(function(user) {
+            let status = "";
+            if (user.status) {
+                status = user.status.status;
+            }
+            else{
+                status = "Admin";
+            }
+            return ({
+                username: user.username,
+                email: user.email,
+                status: status
+            });
+        }))
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    })
+}
+
+/**
+ * change user status
+ *
+ * @param {String} user - username
+ * @param {String} newStatus - status to update
+ *
+ * @return {Promise} promise if status was successfully updated
+ *
+ * @throws error otherwise
+ */
+export async function updateStatus(user, newStatus){
+    const url = API_ROOT + '/update_status/';
+
+    await axios.post(url, {user: user, status: newStatus})
+        .then( function (response) {
+                return response;
+            }
+        )
+        .catch(function(error){
+            console.log(error);
+            throw error;
+        })
+}
+
+/**
  * Returns true if the user is logged in.
  */
 export function isLoggedIn() {
@@ -484,6 +539,14 @@ export function userIsAdmin() {
     let user = localStorage.getItem('user');
     if (user) {
         return JSON.parse(user).is_admin;
+    }
+    return null;
+}
+
+export function getUserStatus(){
+    let user = localStorage.getItem('user');
+    if (user) {
+        return JSON.parse(user).status;
     }
     return null;
 }
@@ -520,7 +583,7 @@ export async function signupNewUser(userName, email, password) {
     // validating the password on client side:
     // Note: this doesn't mean that the password is not also going to be checked server side.
     if (!passwordValidator(password))
-        throw new Error('Password is not valid!')
+        throw new Error('Invalid Password. Password must be at least 8 characters.')
 
     // the username should not pass a test for being an email address:
     if (emailRegex.test(userName))
@@ -571,8 +634,21 @@ export async function login(userID, password) {
                 token: response.data.token,
                 name: response.data.username,
                 email: response.data.email,
-                is_admin: response.data.is_admin === true
+                is_admin: response.data.is_admin === true,
+                status: null
             };
+
+            if (!user_data.is_admin){
+                user_data.status = response.data.status;
+            }
+            else{
+                user_data.status = "admin"
+            }
+
+            if (user_data.status === "blocked"){
+                throw new Error("Your account has been blocked.")
+            }
+
             localStorage.setItem("user", JSON.stringify(user_data));
             return response;
     }).catch((error) => {
