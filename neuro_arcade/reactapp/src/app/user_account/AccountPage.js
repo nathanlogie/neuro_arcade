@@ -7,9 +7,9 @@ import { FaGamepad } from "react-icons/fa6";
 import { TbBoxModel } from "react-icons/tb";
 import {motion} from "framer-motion";
 import {Button} from "../../components/Button";
-import {Link, Navigate, useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import React, {useState} from "react";
-import {isLoggedIn, logout} from "../../backendRequests";
+import {logout} from "../../backendRequests";
 import {getUser} from "../../backendRequests";
 import {userIsAdmin} from "../../backendRequests";
 
@@ -20,13 +20,10 @@ import {userIsAdmin} from "../../backendRequests";
  */
 export function AccountPage() {
 
-    const [loggedIn, setLoggedIn] = useState(isLoggedIn());
-
     const navigate = useNavigate();
     function onLogout(e) {
         e.preventDefault();
         logout();
-        setLoggedIn(false);
         navigate('/');
     }
 
