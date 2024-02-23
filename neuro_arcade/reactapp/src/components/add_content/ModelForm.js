@@ -40,7 +40,8 @@ export function ModelForm() {
     const [description, setDescription] = useState("")
     const [tags, setTags] = useState(null)
     const [existingTags, setExistingTags] = useState([])
-    const [loading, setLoading] = useState(false)
+    const [options, setOptions] = useState([])
+
     useEffect(() => {
         requestPlayerTags()
             .then((tags) => {
@@ -48,7 +49,6 @@ export function ModelForm() {
             })
     }, [])
 
-    let options = []
     existingTags.forEach((tag) => {
         options.push({
             value: tag.id,
@@ -57,7 +57,6 @@ export function ModelForm() {
     })
 
     function handleCreate(tagName) {
-        setLoading(true)
         let formData = new FormData()
         formData.append("name", tagName)
         formData.append("slug", slugify(tagName))
@@ -73,9 +72,9 @@ export function ModelForm() {
                 value: response.data.id,
                 label: response.data.name
             }
-            options.push(newValue)
-            tags.push(newValue)
-            setLoading(false)
+            setOptions((prev) => [...prev, newValue]);
+            setTags([])
+            setTags([newValue])
 
 
         }).catch(() => {
@@ -159,13 +158,13 @@ export function ModelForm() {
             <h3> Model Tags </h3>
             <CreatableSelect
                 isClearable={true}
-                onChange={(newValue) => setTags(newValue)}
+                onChange={(newValue) => setTags([newValue])}
                 onCreateOption={handleCreate}
                 value={tags}
                 options={options}
                 components={makeAnimated()}
-                isLoading={loading}
                 styles={customStyles}
+                placeholder={"Search..."}
             />
 
             <motion.button

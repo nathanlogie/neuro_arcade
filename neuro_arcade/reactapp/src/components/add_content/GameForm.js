@@ -47,7 +47,6 @@ export function GameForm() {
     const [tags, setTags] = useState([])
     const [playLink, setPlayLink] = useState("");
     const [existingTags, setExistingTags] = useState([])
-    const [loading, setLoading] = useState(false)
     const [options, setOptions] = useState([])
 
     useEffect(() => {
@@ -93,9 +92,9 @@ export function GameForm() {
                 value: response.data.id,
                 label: response.data.name
             }
-            setOptions([...options, newValue ])
+            setOptions((prev) => [...prev, newValue]);
             setTags([])
-            tags.push(newValue)
+            setTags([newValue])
 
         }).catch(() => {
                 setError("tags", {message: "Error creating new tag"})
@@ -243,8 +242,8 @@ export function GameForm() {
                 value={tags}
                 options={options}
                 components={makeAnimated()}
-                isLoading={loading}
                 styles={customStyles}
+                placeholder={"Search..."}
             />
             {errors.tags && (
                 <div>{errors.tags.message}</div>
