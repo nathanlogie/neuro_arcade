@@ -5,8 +5,8 @@ import {useEffect, useState} from "react";
 
 /**
  *
- * @returns {JSX.Element} game view page
- * @constructor builds game view page
+ * @returns {JSX.Element} player view page
+ * @constructor builds player view page
  */
 export function PlayerView() {
     // see: https://reactrouter.com/en/main/start/concepts#data-access
