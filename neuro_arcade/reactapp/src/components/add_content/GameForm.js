@@ -19,21 +19,12 @@ let ACCEPTED_SCORE_FILE = ['json'];
 let ACCEPTED_EVAL_SCRIPT = ['py'];
 let ACCEPTED_IMAGE = ['png', 'jpg', 'jpeg'];
 
-
 const customStyles = {
-    option: provided => ({
-        ...provided,
-        color: 'black'
-    }),
-    control: provided => ({
-        ...provided,
-        color: 'black'
-    }),
-    singleValue: provided => ({
-        ...provided,
-        color: 'black'
-    })
+    option: provided => ({...provided, color: 'black'}),
+    control: provided => ({...provided, color: 'black'}),
+    singleValue: provided => ({...provided, color: 'black'})
 }
+
 
 /**
  * @returns {JSX.Element} add new game form
@@ -53,10 +44,12 @@ export function GameForm() {
     const [scoreType, setScoreType] = useState(null)
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [tags, setTags] = useState(null)
+    const [tags, setTags] = useState([])
     const [playLink, setPlayLink] = useState("");
     const [existingTags, setExistingTags] = useState([])
     const [loading, setLoading] = useState(false)
+    const [options, setOptions] = useState([])
+
     useEffect(() => {
         requestGameTags()
             .then((tags) => {
@@ -64,7 +57,6 @@ export function GameForm() {
             })
     }, [])
 
-    let options = []
     existingTags.forEach((tag) => {
         options.push({
             value: tag.id,
@@ -86,11 +78,10 @@ export function GameForm() {
     }
 
     function handleCreate(tagName) {
-        setLoading(true)
         let formData = new FormData()
         formData.append("name", tagName)
         formData.append("slug", slugify(tagName))
-        formData.append("description", "described")
+        formData.append("description", "default description")
         axios({
             method: "post",
             url: "http://127.0.0.1:8000/api/gameTag/",
@@ -102,10 +93,9 @@ export function GameForm() {
                 value: response.data.id,
                 label: response.data.name
             }
-            options.push(newValue)
+            setOptions([...options, newValue ])
+            setTags([])
             tags.push(newValue)
-            setLoading(false)
-
 
         }).catch(() => {
                 setError("tags", {message: "Error creating new tag"})
@@ -148,19 +138,11 @@ export function GameForm() {
         formData.append("play_link", playLink);
         formData.append("slug", slugify(name));
 
-        // let tagCall = false
-        //
-        // console.log(finalTags)
-        // if (finalTags.length > 1) {
-        //     tagCall = true
-        // } else {
-        //     formData.append("tags", finalTags)
-        // }
-
-        if (tags) {
-            formData.append("tags", tags.value)
+        if(tags){
+            formData.append("tags", tags[0].value)
         }
 
+        console.log(tags)
 
         if (image) {
             formData.append("icon", image)
@@ -256,7 +238,7 @@ export function GameForm() {
             <h3>Game Tags</h3>
             <CreatableSelect
                 isClearable={true}
-                onChange={(newValue) => setTags(newValue)}
+                onChange={(newValue) => setTags([newValue])}
                 onCreateOption={handleCreate}
                 value={tags}
                 options={options}
