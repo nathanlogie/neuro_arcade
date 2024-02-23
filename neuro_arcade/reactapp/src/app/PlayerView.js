@@ -57,6 +57,7 @@ export function PlayerView() {
     let [playerData, setPlayerData] = useState({});
     let [playerScores, setPlayerScores] = useState([]);
     useEffect(() => {
+        setLoading(true);
         requestPlayer(playerSlug)
             .then(data => {
                 setPlayerData(data);
