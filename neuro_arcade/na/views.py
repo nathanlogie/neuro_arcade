@@ -456,21 +456,20 @@ def get_model_rankings(request: Request) -> Response:
 
     return Response(status=200, data=data)
 
+
 @api_view(['GET'])
 def get_player(request: Request, player_name_slug: str) -> Response:
     """
     Retrieve Player Information
     """
-    try:
-        player = get_object_or_404(Player, slug=player_name_slug)
-        player_data = PlayerSerializer(player).data
+    player = get_object_or_404(Player, slug=player_name_slug)
+    player_data = PlayerSerializer(player).data
 
-        tag_names = [tag.name for tag in player.tags.all()]
+    tag_names = [tag.name for tag in player.tags.all()]
 
-        player_data['tags'] = tag_names
-        return Response(player_data)
-    except:
-        return Response(status=404, data='Player not found!')
+    player_data['tags'] = tag_names
+    return Response(player_data)
+
 
 
 class UserViewSet(viewsets.ModelViewSet):
