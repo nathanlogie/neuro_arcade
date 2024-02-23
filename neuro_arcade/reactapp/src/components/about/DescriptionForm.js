@@ -2,6 +2,7 @@ import {Editor} from "primereact/editor";
 import {postDescription} from "../../backendRequests";
 import {useState} from "react";
 import {Description} from "./Description";
+import {getAboutData} from "../../backendRequests";
 
 /**
  * @param description from backendRequests.js
@@ -17,11 +18,10 @@ export function DescriptionForm ({description}) {
     }
 
     function editDescription(e) {
-
         e.preventDefault()
-
+        getAboutData()
+            .then(data => setNewDescription(data.description))
         setDisplayTextEdit(!displayTextEdit);
-
     }
 
     function onSave(e) {

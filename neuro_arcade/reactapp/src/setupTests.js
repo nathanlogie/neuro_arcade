@@ -1,13 +1,25 @@
 import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 // Components with Links inside need to be wrapped in a router
-global.renderWithRouter = (html) => {
+global.renderWithRouter = (html, extra) => {
     return render(
         <MemoryRouter>
-            {html}
+            <Routes>
+                <Route path="" element={html} />
+                {extra || ""}
+            </Routes>
         </MemoryRouter>
     );
+}
+
+// Prevents expected exceptions printing to console
+global.silentThrow = (fn) => {
+    return () => {
+        let consoleError = jest.spyOn(console, "error").mockImplementation(() => {});
+        fn();
+        consoleError.mockRestore();
+    }
 }
 
 // jest-dom adds custom jest matchers for asserting on DOM nodes.

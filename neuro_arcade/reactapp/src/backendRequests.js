@@ -247,8 +247,6 @@ export async function requestPlayerTags() {
 /**
  * Requests a sorted list of games.
  *
- * @param query {string} instance of Reacts URLSearchParams, which you should get from useSearchParams()
- *
  * @return {Game[]} response data
  *
  * @throws Error when request is rejected
@@ -472,6 +470,61 @@ export function getUser() {
 }
 
 /**
+ * Gets all users
+ * All regular users should have a status on sign up
+ * But admins don't and hence will be marked as admin
+ *
+ * @return {Object} user array on success
+ * @throws error otherwise
+ */
+export async function getAllUsers() {
+    const url = API_ROOT + '/api/users/';
+    return await axios.get(url).then((response) => {
+        return(response.data.map(function(user) {
+            let status = "";
+            if (user.status) {
+                status = user.status.status;
+            }
+            else{
+                status = "Admin";
+            }
+            return ({
+                username: user.username,
+                email: user.email,
+                status: status
+            });
+        }))
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    })
+}
+
+/**
+ * change user status
+ *
+ * @param {String} user - username
+ * @param {String} newStatus - status to update
+ *
+ * @return {Promise} promise if status was successfully updated
+ *
+ * @throws error otherwise
+ */
+export async function updateStatus(user, newStatus){
+    const url = API_ROOT + '/update_status/';
+
+    await axios.post(url, {user: user, status: newStatus})
+        .then( function (response) {
+                return response;
+            }
+        )
+        .catch(function(error){
+            console.log(error);
+            throw error;
+        })
+}
+
+/**
  * Returns true if the user is logged in.
  */
 export function isLoggedIn() {
@@ -486,6 +539,14 @@ export function userIsAdmin() {
     let user = localStorage.getItem('user');
     if (user) {
         return JSON.parse(user).is_admin;
+    }
+    return null;
+}
+
+export function getUserStatus(){
+    let user = localStorage.getItem('user');
+    if (user) {
+        return JSON.parse(user).status;
     }
     return null;
 }
@@ -517,11 +578,16 @@ function passwordValidator(password) {
  */
 export async function signupNewUser(userName, email, password) {
     const url = API_ROOT + '/sign_up/';
+    const emailRegex = new RegExp('[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}');
 
     // validating the password on client side:
     // Note: this doesn't mean that the password is not also going to be checked server side.
     if (!passwordValidator(password))
-        throw new Error('Password is not valid!')
+        throw new Error('Invalid Password. Password must be at least 8 characters.')
+
+    // the username should not pass a test for being an email address:
+    if (emailRegex.test(userName))
+        throw new Error('Username cannot be a valid email address!')
 
     // sending the request:
     return await axios.post(url, {
@@ -539,31 +605,50 @@ export async function signupNewUser(userName, email, password) {
 
 /**
  * Sends a login requests. The user data associated is stored on local storage, and it can be acquired
- * by doing `localStorage.getItem("user")`.
+ * by doing `localStorage.getItem("user")`. Either the email or username need to be provided.
  *
- * @param {string} userName - name of the user
- * @param {string} email - email address of the user
+ * @param {string} userID - either the username or email of the user
  * @param {string} password - the password in plaintext
  *
- * @throws Error login error
+ * @throws Error login error or if neither email nor username wasn't provided
  *
- * @return {Object} resposne if successful
+ * @return {Promise} promise of response if successful
  */
-export async function login(userName, email, password) {
+export async function login(userID, password) {
     const url = API_ROOT + '/login/';
+    const emailRegex = new RegExp('[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}');
+    let data;
+
+    if (emailRegex.test(userID)) {
+        // userID is considered to be an email address
+        data = {'email': userID, 'password': password};
+    } else {
+        // userID is considered to be a username
+        data = {'username': userID, 'password': password};
+    }
+
     // sending the request:
-    return await axios.post(url, {
-        'username': userName,
-        'email': email,
-        'password': password,
-    }, await getHeaders('POST'))
+    return await axios.post(url, data, await getHeaders('POST'))
         .then((response) => {
             let user_data = {
                 token: response.data.token,
-                name: userName,
-                email: email,
-                is_admin: response.data.is_admin === true
+                name: response.data.username,
+                email: response.data.email,
+                is_admin: response.data.is_admin === true,
+                status: null
             };
+
+            if (!user_data.is_admin){
+                user_data.status = response.data.status;
+            }
+            else{
+                user_data.status = "admin"
+            }
+
+            if (user_data.status === "blocked"){
+                throw new Error("Your account has been blocked.")
+            }
+
             localStorage.setItem("user", JSON.stringify(user_data));
             return response;
     }).catch((error) => {

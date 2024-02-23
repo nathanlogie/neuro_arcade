@@ -3,14 +3,12 @@ import os
 
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from django.http import HttpRequest
+from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.middleware.csrf import get_token
-from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework import viewsets
-from rest_framework.authtoken import views as rest_views
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -22,7 +20,7 @@ from django.conf import settings
 
 from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
 import json
-from na.models import Game, GameTag, Player
+from na.models import Game, GameTag, Player, UserStatus
 
 
 # ------------------
@@ -35,7 +33,7 @@ def get_game_dict(game_slug: str):
     :param game_slug: string representing the game slug
     """
     game = get_object_or_404(Game, slug=game_slug)
-    dictionary = {'game': game.serialize()}
+    dictionary = {'game': GameSerializer(game).data}
     headers, scores = game.get_score_table()
     if headers is not None and scores is not None:
         dictionary['table_headers'] = headers
@@ -118,7 +116,8 @@ def get_tags(request: Request) -> Response:
     """
     Retrieves the GameTags
     """
-    return Response([tag.serialize() for tag in GameTag.objects.all()])
+
+    return Response([GameTagSerializer(tag).data for tag in GameTag.objects.all()])
 
 
 @api_view(['GET'])
@@ -132,8 +131,7 @@ def get_games_sorted(request: Request) -> Response:
         num = int(num)
 
     game_list = get_game_list(query, wanted_tags, num)
-
-    return Response([game.serialize() for game in game_list])
+    return Response([GameSerializer(game).data for game in game_list])
 
 
 @api_view(['POST'])
@@ -324,17 +322,40 @@ def delete_player(request: Request) -> Response:
     return Response(status=200, data='Player successfully deleted!')
 
 
-@csrf_exempt  # Needs to not check for a CSRF token due to django shenanigans. Should not be a security problem.
-def login(request: HttpRequest) -> Response:
-    if request.method == 'POST':
-        response = rest_views.obtain_auth_token(request)
+@api_view(['POST'])
+def login(request: Request) -> Response:
+    username = request.data.get('username')
+    email = request.data.get('email')
+    password = request.data.get('password')
+    user = None
+    if username is not None:
+        # login with username
+        user = authenticate(username=username, password=password)
+    if username is None and email is not None:
+        # login with email
+        # Note that the authenticate function does not work with email.
+        # get a user associated with the email
+        maybe_user = User.objects.get(email=email)
+        if maybe_user is not None:
+            # check the password
+            if maybe_user.check_password(password):
+                # email and password are good, set user
+                user = maybe_user
+    if user is None:
+        return Response(status=403, data="Wrong credentials provided.")
 
-        # sending back if the user is admin or not
-        user_id = Token.objects.get(key=response.data['token']).user_id
-        user = User.objects.get(id=user_id)
-        response.data['is_admin'] = user.is_superuser
+    token = Token.objects.get_or_create(user=user)[0]
+    response_data = {
+        'username': user.username,
+        'email': user.email,
+        'is_admin': user.is_superuser,
+        'token': token.key,
+        'status': None,
+    }
+    if not user.is_superuser:
+        response_data['status'] = user.status.status
 
-        return response
+    return Response(status=200, data=response_data)
 
 
 @api_view(['POST'])
@@ -357,11 +378,40 @@ def sign_up(request: Request) -> Response:
 
     # creating a new User in the DB:
     new_user = User.objects.create_user(username=username, email=email, password=password)
+    status = UserStatus.objects.create(user=new_user)
 
-    if new_user is not None:
-        return Response(status=200)  # sending a success response back
+    if new_user is None:
+        return Response(status=500, data='Error creating new user.')
+
+    # creating a human player associated with the User:
+    Player.objects.create(  # Todo: can this fail? If it can, handle the error.
+        name=username,
+        is_ai=False,
+        user=new_user,
+        description=("Human player of " + username + ".")
+    )
+
+    return Response(status=200)
+
+
+@api_view(['POST'])
+def update_user_status(request: Request) -> Response:
+
+    if not request.data['user'] or not request.data['status']:
+        return Response(status=400, data='Missing data in request')
+
+    user = User.objects.get(username=request.data['user'])
+    newStatus = request.data['status']
+
+    status = UserStatus.objects.get(user=user)
+    status.status = newStatus
+
+    status.save()
+
+    if status.status == newStatus:
+        return Response(status=200)
     else:
-        return Response(status=400, data='Error creating new user.')
+        return Response(status=500, data='Error while trying to update user status')
 
 
 @api_view(['GET'])

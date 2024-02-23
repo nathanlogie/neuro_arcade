@@ -3,14 +3,28 @@ import {Link} from "react-router-dom";
 import {motion} from "framer-motion";
 
 /**
+ * Interface for objects displayable in a Card
+ * @typedef {Object} CardSubject
+ * @property {string} name
+ * @property {string} slug - appended to linkPrefix to make URL
+ * @property {string} icon - URL
+ */
+
+/**
  * Component for rendering a card with a game's name and icon
  * Can be clicked to visit the game's view page
  * @param {Object} props
- * @param {Object} props.subject - subject data to render
- * @param {string} props.linkPrefix - base url to append the game's slug to
+ *
+ * @param {CardSubject?} props.subject - subject data to render
+ * @param {string?} props.linkPrefix - base url to append the game's slug to
+ * 
+ * @param {string?} props.link - full URL
+ * @param {string?} props.text
+ * @param {string?} props.icon - full URL
+ * 
  * @returns 
  */
-export function Card ({subject, linkPrefix, link, text, icon}) {
+export function Card ({subject, linkPrefix, link, text, icon, id}) {
     // Extract subject information
     if (subject) {
         link = linkPrefix + subject.slug;
@@ -24,8 +38,10 @@ export function Card ({subject, linkPrefix, link, text, icon}) {
             <motion.div
                 whileHover={{scale: 1.05}}
                 whileTap={{scale: 0.95}}
+                className={styles.Card}
+                id={styles[id]}
             >
-                <Link className={styles.Card} to={link}>
+                <Link to={link}>
                     <div className={styles.Icon}>
                         {icon}
                     </div>

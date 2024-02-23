@@ -27,10 +27,10 @@ class ModelTests(TestCase):
     def test_game(self):
         testGame = self.create_game()
         self.assertTrue(isinstance(testGame, Game))
-        self.assertEquals(testGame.slug, slugify(testGame.name))
-        self.assertEquals(str(testGame), testGame.name)
+        self.assertEqual(testGame.slug, slugify(testGame.name))
+        self.assertEqual(str(testGame), testGame.name)
         self.assertTrue(isinstance(testGame.owner, User))
-        self.assertEquals(testGame.score_type, {"headers": []})
+        self.assertEqual(testGame.score_type, {"headers": []})
 
     def create_gameTag(self) -> GameTag:
         return GameTag.objects.create(
@@ -41,9 +41,9 @@ class ModelTests(TestCase):
     def test_gameTag(self):
         testTag = self.create_gameTag()
         self.assertTrue(isinstance(testTag, GameTag))
-        self.assertEquals(testTag.slug, slugify(testTag.name))
-        self.assertEquals(testTag.name, str(testTag))
-        self.assertEquals(testTag.name, "TestGameTag")
+        self.assertEqual(testTag.slug, slugify(testTag.name))
+        self.assertEqual(testTag.name, str(testTag))
+        self.assertEqual(testTag.name, "TestGameTag")
 
     def create_playerTag(self) -> PlayerTag:
         return PlayerTag.objects.create(
@@ -54,7 +54,7 @@ class ModelTests(TestCase):
     def test_playerTag(self):
         testTag = self.create_playerTag()
         self.assertTrue(isinstance(testTag, PlayerTag))
-        self.assertEquals(testTag.name, str(testTag))
+        self.assertEqual(testTag.name, str(testTag))
 
     def create_player(self) -> Player:
         return Player.objects.create(
@@ -66,9 +66,9 @@ class ModelTests(TestCase):
     def test_player(self):
         testPlayer = self.create_player()
         self.assertTrue(isinstance(testPlayer, Player))
-        self.assertEquals(testPlayer.slug, slugify(testPlayer.name))
-        self.assertEquals(testPlayer.name, str(testPlayer))
-        self.assertEquals(bool, type(testPlayer.is_ai))
+        self.assertEqual(testPlayer.slug, slugify(testPlayer.name))
+        self.assertEqual(testPlayer.name, str(testPlayer))
+        self.assertEqual(bool, type(testPlayer.is_ai))
         self.assertIsNone(testPlayer.user)
 
     def create_score(self) -> Score:
@@ -82,7 +82,7 @@ class ModelTests(TestCase):
         self.assertIsInstance(testScore, Score)
         self.assertIsInstance(testScore.player, Player)
         self.assertIsInstance(testScore.game, Game)
-        self.assertEquals(str(testScore), "Tester's score at TestGame")
+        self.assertEqual(str(testScore), "Tester's score at TestGame")
 
 
 class PopulationScriptTests(TestCase):
