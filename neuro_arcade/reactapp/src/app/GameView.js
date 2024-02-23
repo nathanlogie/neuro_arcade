@@ -2,7 +2,6 @@ import {useNavigate, useParams} from "react-router-dom";
 import {requestGame} from "../backendRequests";
 import styles from "../styles/App.module.css";
 import {Table} from "../components/game/Table";
-import {LineC} from "../components/game/LineC";
 import {RadarC} from "../components/game/RadarC";
 import {SwarmPlot} from "../components/game/SwarmPlot";
 import React, {useEffect, useState} from "react";
@@ -20,7 +19,6 @@ export function GameView() {
     let [loading, setLoading] = useState(true);
     let [gameData, setGameData] = useState({});
     let type_count = 0;
-    let graph;
 
     useEffect(() => {
         requestGame(gameSlug)
@@ -31,22 +29,14 @@ export function GameView() {
             })
     }, []);
 
-    const small = {
+    const graphHeaders = {
         table_headers: [
-            { name: 'Line Chart' },
-            { name: 'Swarm Plot' }
-        ],
-    };
-
-    const big = {
-        table_headers: [
-            { name: 'Line Chart' },
             { name: 'Swarm Plot' },
             { name: 'Radar Chart' },
         ],
     };
 
-    const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState('Line Chart');
+    const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState('Swarm Plot');
 
     const handleSwitcherChange = (selectedValue) => {
         setSelectedSwitcherValue(selectedValue);
@@ -75,21 +65,14 @@ export function GameView() {
                     <div className={styles.GraphSwitcher}>
                         {gameData.table_headers.length > 2 ?
                             <Switcher
-                                data={big}
+                                data={graphHeaders}
                                 onSwitcherChange={handleSwitcherChange}
                                 switcherDefault={selectedSwitcherValue}
                                 id={styles['vertical']}
-                            /> :
-                            <Switcher
-                                data={small}
-                                onSwitcherChange={handleSwitcherChange}
-                                switcherDefault={selectedSwitcherValue}
-                                id={styles['vertical']}
-                            />
+                            /> : <></>
                         }
                     </div>
                     <div className={styles.Background}>
-                        {selectedSwitcherValue === 'Line Chart' ? <LineC inputData={gameData}/> : <></>}
                         {selectedSwitcherValue === 'Swarm Plot' ? <SwarmPlot inputData={gameData}/> : <></>}
                         {selectedSwitcherValue === 'Radar Chart' ? <RadarC inputData={gameData}/> : <></>}
                     </div>
