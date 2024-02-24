@@ -1,11 +1,15 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import axios from 'axios';
-import { FaImage } from "react-icons/fa6";
-import { LuFileJson } from "react-icons/lu";
-import { FaPython } from "react-icons/fa6";
-import { FaPlus } from "react-icons/fa6";
+import {FaImage} from "react-icons/fa6";
+import {LuFileJson} from "react-icons/lu";
+import {FaPython} from "react-icons/fa6";
+import {FaPlus} from "react-icons/fa6";
 import {motion} from "framer-motion";
+import CreatableSelect from 'react-select/creatable';
+import {requestGameTags} from "../../backendRequests";
+import slugify from 'react-slugify';
+import makeAnimated from 'react-select/animated';
 
 //Should be synced with models.py
 let MAX_NAME_LENGTH = 64;
@@ -14,6 +18,13 @@ let MAX_DESCRIPTION_LENGTH = 1024;
 let ACCEPTED_SCORE_FILE = ['json'];
 let ACCEPTED_EVAL_SCRIPT = ['py'];
 let ACCEPTED_IMAGE = ['png', 'jpg', 'jpeg'];
+
+const customStyles = {
+    option: provided => ({...provided, color: 'black'}),
+    control: provided => ({...provided, color: 'black'}),
+    singleValue: provided => ({...provided, color: 'black'})
+}
+
 
 /**
  * @returns {JSX.Element} add new game form
@@ -33,45 +44,101 @@ export function GameForm() {
     const [scoreType, setScoreType] = useState(null)
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [tags, setTags] = useState("");
+    const [tags, setTags] = useState([])
     const [playLink, setPlayLink] = useState("");
+    const [existingTags, setExistingTags] = useState([])
+    const [options, setOptions] = useState([])
+
+    useEffect(() => {
+        requestGameTags()
+            .then((tags) => {
+                setExistingTags(tags);
+            })
+    }, [])
+
+    existingTags.forEach((tag) => {
+        options.push({
+            value: tag.id,
+            label: tag.name
+        })
+    })
+
 
     const handleImage = (event) => {
         const file = event.target.files[0];
-        if (file) {
-            setImage(file);
+        const acceptedFormats = ACCEPTED_IMAGE;
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        if (!acceptedFormats.includes(fileExtension)) {
+            setError("root", {message: "Invalid file type provided"})
+            setImage(null)
         } else {
-            setImage(null);
+            setImage(file)
         }
+    }
+
+    function handleCreate(tagName) {
+        let formData = new FormData()
+        formData.append("name", tagName)
+        formData.append("slug", slugify(tagName))
+        formData.append("description", "default description")
+        axios({
+            method: "post",
+            url: "http://127.0.0.1:8000/api/gameTag/",
+            data: formData,
+            headers: {"Content-Type": "multipart/form-data"},
+        }).then((response) => {
+            console.log(response)
+            let newValue = {
+                value: response.data.id,
+                label: response.data.name
+            }
+            setOptions((prev) => [...prev, newValue]);
+            setTags((prev) => [...prev, newValue]);
+
+        }).catch(() => {
+                setError("tags", {message: "Error creating new tag"})
+            }
+        )
     }
 
     const handleEvalScript = (event) => {
         const file = event.target.files[0];
-        if (file) {
-            setEvaluationScript(file);
+        const acceptedFormats = ACCEPTED_EVAL_SCRIPT;
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        if (!acceptedFormats.includes(fileExtension)) {
+            setError("evaluationScript", {message: "Invalid file type provided"})
+            setEvaluationScript(null)
         } else {
-            setEvaluationScript(null);
+            setEvaluationScript(file)
         }
     }
 
     const handleScores = (event) => {
-        const file = event.target.files[0]
-        if (file) {
-            setScoreType(file)
-        } else {
+        const file = event.target.files[0];
+        const acceptedFormats = ACCEPTED_SCORE_FILE;
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        if (!acceptedFormats.includes(fileExtension)) {
+            setError("scoreType", {message: "Invalid file type provided"})
             setScoreType(null)
+        } else {
+            setScoreType(file)
         }
     }
 
     const onSubmit = async (event) => {
 
 
-        const formData = new FormData();
+        let formData = new FormData();
         formData.append("name", name);
         formData.append("description", description);
         //Temporary until authentication is fulfilled
         formData.append("owner", 3);
         formData.append("play_link", playLink);
+        formData.append("slug", slugify(name));
+
+
+
+        console.log(tags)
 
         if (image) {
             formData.append("icon", image)
@@ -90,20 +157,46 @@ export function GameForm() {
             headers: {"Content-Type": "multipart/form-data"},
         }).then(function (response) {
             console.log(response);
+
+            if (tags.length !== 0) {
+                const finalTagIDs = tags.map((tag) => tag.value);
+                formData.append("tags", finalTagIDs)
+                axios({
+                    method: "post",
+                    url: `http://127.0.0.1:8000/api/games/${response.data.id}/add_tags/`,
+                    data: formData,
+                    headers: {"Content-Type": "multipart/form-data"},
+                }).catch((response) => {
+                    console.log(response)
+                        setError("root", {message: "Error during tag upload"})
+                    }
+                )
+            }
+
+
             reset();
             setError("root", {message: "game submitted successfully"});
+            setTags([]);
         }).catch(function (response) {
             console.log(response)
             if (!response) {
                 setError("root", {message: "No response from server"});
             } else {
-                if (response.response.data.includes("IntegrityError")) {
+                if (response.response.data.slug) {
                     setError("root", {message: "A game with that name already exists!"});
-                } else {
-                    setError("root", {
-                        message: `Something went wrong... ${response.response.data}`
-                    })
+                    return;
+                } else if (response.response.data.tags) {
+                    setError("root", {message: "Tag upload failed"});
+                    return;
                 }
+                if (response)
+                    if (response.response.data.includes("IntegrityError")) {
+                        setError("root", {message: "A game with that name already exists!"});
+                    } else {
+                        setError("root", {
+                            message: `Something went wrong... ${response.response.data}`
+                        })
+                    }
             }
         });
     };
@@ -139,19 +232,28 @@ export function GameForm() {
             )}
 
             <h3>Game Tags</h3>
-            <input {...register("tags", {
-                required: false
-            })} type={"text"} placeholder={"example1, example2, example3, ..."}
-                   onChange={(event) => setTags(event.target.value)}
+            <CreatableSelect
+                isClearable
+                isMulti
+                onChange={(newValue) => setTags(newValue)}
+                onCreateOption={handleCreate}
+                value={tags}
+                options={options}
+                components={makeAnimated()}
+                styles={customStyles}
+                placeholder={"Search..."}
             />
+            {errors.tags && (
+                <div>{errors.tags.message}</div>
+            )}
 
             <h3>Play Link</h3>
             <input {...register("playLink", {
                 required: "A Play link must be provided",
-                validate: (value) =>{
-                    try{
+                validate: (value) => {
+                    try {
                         let url = new URL(value)
-                    } catch(error){
+                    } catch (error) {
                         return "Invalid URL Provided"
                     }
                     return true
@@ -178,14 +280,7 @@ export function GameForm() {
                         </label>
                         <input id={'icon'} {...register("icon", {
                             required: false,
-                            validate: (value) => {
-                                const acceptedFormats = ACCEPTED_IMAGE;
-                                const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
-                                if (!acceptedFormats.includes(fileExtension)) {
-                                    return "Error: Invalid IMG"
-                                }
-                                return true;
-                            }
+
                         })} type={"file"} accept={"image/*"} onChange={handleImage}/>
                     </motion.div>
                 </div>
@@ -204,15 +299,7 @@ export function GameForm() {
                             </div>
                         </label>
                         <input id={'score'} {...register("scoreTypes", {
-                            required: "Score types must be uploaded",
-                            validate: (value) => {
-                                const acceptedFormats = ACCEPTED_SCORE_FILE;
-                                const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
-                                if (!acceptedFormats.includes(fileExtension)) {
-                                    return `Error: Invalid file type provided ${fileExtension}`
-                                }
-                                return true;
-                            }
+                            required: "Score types must be uploaded"
                         })} type={"file"} accept={".json"} onChange={handleScores}
                         />
                         {errors.scoreTypes && (
@@ -235,15 +322,7 @@ export function GameForm() {
                             </div>
                         </label>
                         <input id={'script'} {...register("evaluationScript", {
-                            required: "An Evaluation Script must be uploaded",
-                            validate: (value) => {
-                                const acceptedFormats = ACCEPTED_EVAL_SCRIPT;
-                                const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
-                                if (!acceptedFormats.includes(fileExtension)) {
-                                    return "Error: Invalid file type provided"
-                                }
-                                return true;
-                            }
+                            required: "An Evaluation Script must be uploaded"
                         })} type={"file"} accept={".py"} onChange={handleEvalScript}
                         />
                         {errors.evaluationScript && (
@@ -261,7 +340,7 @@ export function GameForm() {
             >
                 {isSubmitting ? "submitting game..." : "add new game"}
                 <div>
-                    <FaPlus />
+                    <FaPlus/>
                 </div>
             </motion.button>
             {errors.root && (
