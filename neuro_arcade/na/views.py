@@ -379,7 +379,6 @@ def sign_up(request: Request) -> Response:
 
 @api_view(['POST'])
 def update_user_status(request: Request) -> Response:
-
     if not request.data['user'] or not request.data['status']:
         return Response(status=400, data='Missing data in request')
 
@@ -466,16 +465,16 @@ class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
 
-    @action(detail=True, methods=['patch'])
-    def add_tags(self, request, instance=None):
+    @action(detail=True, methods=['post'])
+    def add_tags(self, request, pk=None):
         data = request.data
-        game = Game.objects.get(instance)
+        game = self.get_object()
         if not game:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         tags = data['tags'].split(',')
         for tag in tags:
-            game.tags.add(GameTag.get(tag))
+            game.tags.add(GameTag.objects.get(id=tag))
 
         game.save()
         return Response("Tags added", status=200)
@@ -506,3 +505,17 @@ class PlayerTagViewSet(viewsets.ModelViewSet):
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
+
+    @action(detail=True, methods=['post'])
+    def add_tags(self, request, pk=None):
+        data = request.data
+        player = self.get_object()
+        if not player:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        tags = data['tags'].split(',')
+        for tag in tags:
+            player.tags.add(PlayerTag.objects.get(id=tag))
+
+        player.save()
+        return Response("Tags added", status=200)

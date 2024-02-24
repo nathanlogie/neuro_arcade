@@ -93,9 +93,6 @@ export function ModelForm() {
         formData.append("user", 1);
 
         formData.append("is_ai", true);
-        if(tags.length === 1){
-            formData.append("tags", tags[0].value);
-        }
 
         await axios({
             //I will move a lot of this stuff to backend requests to centralize it in a future merge request
@@ -105,6 +102,21 @@ export function ModelForm() {
             headers: {"Content-Type": "multipart/form-data"},
         }).then(function (response) {
             console.log(response);
+
+            if (tags) {
+                const finalTagIDs = tags.map((tag) => tag.value);
+                formData.append("tags", finalTagIDs)
+                axios({
+                    method: "post",
+                    url: `http://127.0.0.1:8000/api/players/${response.data.id}/add_tags/`,
+                    data: formData,
+                    headers: {"Content-Type": "multipart/form-data"},
+                }).catch((response) => {
+                    console.log(response)
+                        setError("root", {message: "Error during tag upload"})
+                    }
+                )
+            }
             reset()
             setError("root", {message: "model submitted successfully"})
             setTags(null)
@@ -167,7 +179,7 @@ export function ModelForm() {
             <h3> Model Tags </h3>
             <CreatableSelect
                 isClearable={true}
-                onChange={(newValue) => setTags([newValue])}
+                onChange={(newValue) => setTags([...tags, newValue])}
                 onCreateOption={handleCreate}
                 value={tags}
                 options={options}

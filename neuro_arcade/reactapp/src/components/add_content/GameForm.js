@@ -161,20 +161,20 @@ export function GameForm() {
         }).then(function (response) {
             console.log(response);
 
-            // if (tagCall) {
-            //     formData.append("tags", finalTags)
-            //     formData.append("id", response.data.id)
-            //     axios({
-            //         method: "post",
-            //         url: `http://127.0.0.1:8000/api/games/add_tags`,
-            //         data: formData,
-            //         headers: {"Content-Type": "multipart/form-data"},
-            //     }).catch((response) => {
-            //         console.log(response)
-            //             setError("root", {message: "Error during tag upload"})
-            //         }
-            //     )
-            // }
+            if (tags) {
+                const finalTagIDs = tags.map((tag) => tag.value);
+                formData.append("tags", finalTagIDs)
+                axios({
+                    method: "post",
+                    url: `http://127.0.0.1:8000/api/games/${response.data.id}/add_tags/`,
+                    data: formData,
+                    headers: {"Content-Type": "multipart/form-data"},
+                }).catch((response) => {
+                    console.log(response)
+                        setError("root", {message: "Error during tag upload"})
+                    }
+                )
+            }
 
 
             reset();
@@ -237,7 +237,7 @@ export function GameForm() {
             <h3>Game Tags</h3>
             <CreatableSelect
                 isClearable={true}
-                onChange={(newValue) => setTags([newValue])}
+                onChange={(newValue) => setTags([...tags, newValue])}
                 onCreateOption={handleCreate}
                 value={tags}
                 options={options}
