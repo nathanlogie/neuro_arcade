@@ -6,8 +6,6 @@ import {Link} from "react-router-dom";
 import {motion} from "framer-motion";
 import {FaBan, FaPencilAlt, FaSave} from "react-icons/fa";
 import {FaPlus, FaTrash} from "react-icons/fa6";
-import {TbSettingsCancel} from "react-icons/tb";
-import {TiCancel} from "react-icons/ti";
 
 /**
  * @param publications from backendRequests.js

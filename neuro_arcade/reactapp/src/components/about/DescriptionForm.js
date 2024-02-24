@@ -1,8 +1,10 @@
 import {Editor} from "primereact/editor";
 import {postDescription} from "../../backendRequests";
-import {useState} from "react";
+import React, {useState} from "react";
 import {Description} from "./Description";
 import {getAboutData} from "../../backendRequests";
+import {motion} from "framer-motion";
+import {FaBan, FaPencilAlt} from "react-icons/fa";
 
 /**
  * @param description from backendRequests.js
@@ -48,9 +50,24 @@ export function DescriptionForm ({description}) {
     return (
         <>
             {displayTextEdit ? edit(): <Description description={newDescription} /> }
-            <button id = "edit" onClick= {editDescription}>
-                {displayTextEdit ? "Cancel": "Edit"}
-            </button>
+            <motion.button
+                id = {"edit"}
+                onClick= {editDescription}
+                whileHover={{scale: 1.1}}
+                whileTap={{scale: 0.9}}
+            >
+                {displayTextEdit ? <>
+                    cancel
+                    <div>
+                        <FaBan/>
+                    </div>
+                </> : <>
+                    edit
+                    <div>
+                        <FaPencilAlt/>
+                    </div>
+                </>}
+            </motion.button>
         </>
     )
 
