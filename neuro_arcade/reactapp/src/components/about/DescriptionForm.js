@@ -56,6 +56,33 @@ export function DescriptionForm ({description}) {
                 }}
                 onTextChange= {update}
                 />
+            </>
+        )
+    }
+
+    return (
+        <>
+            {displayTextEdit ? edit() : <Description description={newDescription}/>}
+            <motion.button
+                id={styles['edit']}
+                onClick={editDescription}
+                whileHover={{scale: 1.1}}
+                whileTap={{scale: 0.9}}
+            >
+                {displayTextEdit ? <>
+                    cancel
+                    <div>
+                    <FaBan/>
+                    </div>
+                </> : <>
+                    edit
+                    <div>
+                        <FaPencilAlt/>
+                    </div>
+                </>
+                }
+            </motion.button>
+            {displayTextEdit ?
                 <motion.button
                     onClick={onSave}
                     whileHover={{scale: 1.1}}
@@ -66,32 +93,8 @@ export function DescriptionForm ({description}) {
                     <div>
                         <FaSave/>
                     </div>
-                </motion.button>
-            </>
-        )
-    }
-
-    return (
-        <>
-            {displayTextEdit ? edit(): <Description description={newDescription} /> }
-            <motion.button
-                id = {styles['edit']}
-                onClick= {editDescription}
-                whileHover={{scale: 1.1}}
-                whileTap={{scale: 0.9}}
-            >
-                {displayTextEdit ? <>
-                    cancel
-                    <div>
-                        <FaBan/>
-                    </div>
-                </> : <>
-                    edit
-                    <div>
-                        <FaPencilAlt/>
-                    </div>
-                </>}
-            </motion.button>
+                </motion.button> : <></>
+            }
         </>
     )
 

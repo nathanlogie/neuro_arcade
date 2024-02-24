@@ -88,18 +88,6 @@ export function PublicationsForm ({publications}) {
                 <li>
                     <li>
                         <motion.button
-                            onClick={onSave}
-                            whileHover={{scale: 1.1}}
-                            whileTap={{scale: 0.9}}
-                        >
-                            save
-                            <div>
-                                <FaSave/>
-                            </div>
-                        </motion.button>
-                    </li>
-                    <li>
-                        <motion.button
                             onClick={handleCancel}
                             whileHover={{scale: 1.1}}
                             whileTap={{scale: 0.9}}
@@ -107,6 +95,18 @@ export function PublicationsForm ({publications}) {
                             cancel
                             <div>
                                 <FaBan/>
+                            </div>
+                        </motion.button>
+                    </li>
+                    <li>
+                        <motion.button
+                            onClick={onSave}
+                            whileHover={{scale: 1.1}}
+                            whileTap={{scale: 0.9}}
+                        >
+                            save
+                            <div>
+                                <FaSave/>
                             </div>
                         </motion.button>
                     </li>
