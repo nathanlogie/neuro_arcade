@@ -1,4 +1,3 @@
-from enum import Enum
 from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, TypedDict, Union
 
 from django.contrib.auth.models import User
