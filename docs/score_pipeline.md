@@ -17,7 +17,7 @@ of some target objects.
 
 One way that this data can be sent in is through the site's API. This is
 generally intended to be used for sending of results as soon as a play of the
-game finishes. For example, example, a game may be hosted for human players on
+game finishes. For example, a game may be hosted for human players on
 external website with results immediately being sent to the API on completion.
 These results may be anonymous, or may be linked to a player through the site's
 authentication system.
