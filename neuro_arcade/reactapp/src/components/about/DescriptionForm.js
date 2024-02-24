@@ -39,7 +39,22 @@ export function DescriptionForm ({description}) {
                 <Editor
                 name="description"
                 value={newDescription}
-                style={{ height: '320px' }}
+                style={{
+                    border: 'none',
+                    borderRadius: '0 0 0.5em 0.5em',
+                    backgroundColor: 'rgba(3, 3, 3, 0.4)',
+                    backdropFilter: 'blur(20px)',
+                    fontFamily: 'inherit',
+                    padding: '2em',
+                    height: '50em'
+                }}
+                pt={{
+                    toolbar: { style: {
+                            backgroundColor: 'rgba(255,255,255,0.1)',
+                            border: 'none',
+                            backdropFilter: 'blur(20px)'
+                    }}
+                }}
                 onTextChange= {update}
                 />
                 <motion.button
