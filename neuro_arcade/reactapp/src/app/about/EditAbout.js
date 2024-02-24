@@ -38,6 +38,10 @@ export function EditAbout() {
             <div className={styles.Content}>
                 <div className={styles.ContentBlock}>
                     <DescriptionForm description={aboutData.description}/>
+                </div>
+            </div>
+            <div className={styles.Side}>
+                <div className={styles.Publications}>
                     <PublicationsForm publications={aboutData.publications}/>
                 </div>
             </div>

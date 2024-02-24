@@ -2,6 +2,8 @@ import { useState } from "react";
 import {postPublications} from "../../backendRequests";
 import { Message } from 'primereact/message';
 import {getAboutData} from "../../backendRequests";
+import styles from "../../styles/components/Button.module.css";
+import {Link} from "react-router-dom";
 
 /**
  * @param publications from backendRequests.js
@@ -71,9 +73,30 @@ export function PublicationsForm ({publications}) {
 
         return (
             <>
-                {dynamicPublications.map((publication, i) => (
-                    <li key={i}>{ publication.link ? (<a href={publication.link}>{publication.title} - {publication.author}</a>) : (<>{publication.title} - {publication.author}</>)}</li>
-                ))}
+                <h2>Publications</h2>
+                <div>
+                    <li key={0}>
+                        <span>
+                            <div><strong>Title</strong></div>
+                            <div><strong>Author</strong></div>
+                        </span>
+                    </li>
+                    {dynamicPublications.map((publication, i) => (
+                        <li key={i + 1}> {publication.link ?
+                            (
+                                <Link to={publication.link}>
+                                        <label>{publication.title}</label>
+                                        <label>{publication.author}</label>
+                                    </Link>
+                            ) : (
+                                <span>
+                                    <label>{publication.title}</label>
+                                    <label>{publication.author}</label>
+                                </span>
+                            )}
+                        </li>
+                    ))}
+                </div>
             </>
         )
 
@@ -104,7 +127,7 @@ export function PublicationsForm ({publications}) {
 
     return (
         <>
-            { valid ? null : <Message style={{border: 'solid darkred', borderWidth: '1px', color: 'red'}} severity="error" text="Missing Fields" />}
+            { valid ? null : <Message severity="error" text="Missing Fields" />}
             { editMode ? editPublications() : displayPublications() }
             { editMode ? editButtons() : regularButtons() }
         </>

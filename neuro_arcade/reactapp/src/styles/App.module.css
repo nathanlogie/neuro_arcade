@@ -9,7 +9,7 @@
     gap: 3em;
     .Content {
         padding: 3em;
-        width: 80em;
+        width: 40em;
         display: flex;
         flex-wrap: wrap;
         overflow: hidden;
@@ -60,10 +60,7 @@
             left: 2em;
         }
     }
-    .Content#small {
-        width: 40em;
-    }
-    #AllGames {
+    #big {
         width: 70em;
         padding: 2em 0;
     }
@@ -82,6 +79,61 @@
         .ContentBlock {
             display: flex;
             justify-content: center;
+        }
+        .Publications {
+            position: relative;
+            background-color: rgba(3, 3, 3, 0.4);
+            border-radius: 0.5em;
+            backdrop-filter: blur(20px);
+            height: 30em;
+            width: max-content;
+            margin-top: 3em;
+            list-style-type: none;
+            & h2 {
+                position: absolute;
+                top: -1.5em;
+                left: 1em;
+                font-size: 1.75em;
+            }
+            & div {
+                display: flex;
+                flex-direction: column;
+                margin: 2em;
+                width: 25em;
+                align-items: flex-start;
+                overflow-y: auto;
+                height: 26em;
+            }
+            & a, span {
+                width: 23em;
+                height: max-content;
+                border-bottom: solid rgba(255, 255, 255, 0.2);
+                border-width: 1px;
+                display: flex;
+                align-items: center;
+                text-align: left;
+                padding: 0.75em 1em;
+                cursor: pointer;
+                gap: 2em;
+                justify-content: space-between;
+                text-decoration: none;
+                color: #FFFFFF;
+                & label {
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    cursor: pointer;
+                }
+                & div {
+                    margin: 0;
+                    height: max-content;
+                    width: 50%;
+                    align-items: center;
+                }
+            }
+            & a:hover, span:hover {
+                background-color: rgba(255, 255, 255, 0.15);
+            }
         }
     }
     .DataBlock {

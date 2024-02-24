@@ -42,7 +42,7 @@ export function AllGames() {
                     onTagChange={setSelectedTags}
                 />
             </div>
-            <div className={styles.Content} id={styles['AllGames']}>
+            <div className={styles.Content} id={styles['big']}>
                 <h1>All Games</h1>
                 <GameGrid
                     textQuery={textQuery}

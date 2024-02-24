@@ -83,7 +83,7 @@ export function HomePage() {
                 animate={{opacity: 1}}
                 exit={{opacity: 0}}
             >
-                <div className={styles.Content} id={styles['small']}>
+                <div className={styles.Content}>
                     <div className={styles.Title}>
                         <h1>Featured games</h1>
                         <motion.div

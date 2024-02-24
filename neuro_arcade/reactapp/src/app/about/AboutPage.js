@@ -45,22 +45,21 @@ export function AboutPage() {
                 <div className={styles.Content}>
 
                     <div className={styles.ContentBlock}>
-
                         <Description description={aboutData.description}/>
-                        <h2>Publications</h2>
-                        <ul>
-                            {publications}
-                        </ul>
-
                     </div>
                 </div>
-                <div className={styles.Side}></div>
-            </>;
+            <div className={styles.Side}>
+                <ul>
+                    <h2>Publications</h2>
+                    {publications}
+                </ul>
+            </div>
+        </>;
     }
 
     return (
         <>
-            <Banner size={'big'} right={nav_right} />
+            <Banner size={'big'} right={nav_right}/>
             <MobileBanner />
             <NavBar right={nav_right} />
             <motion.div
