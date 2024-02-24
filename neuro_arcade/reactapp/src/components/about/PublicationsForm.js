@@ -1,9 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {postPublications} from "../../backendRequests";
 import { Message } from 'primereact/message';
 import {getAboutData} from "../../backendRequests";
-import styles from "../../styles/components/Button.module.css";
 import {Link} from "react-router-dom";
+import {motion} from "framer-motion";
+import { FaPencilAlt } from "react-icons/fa";
 
 /**
  * @param publications from backendRequests.js
@@ -26,14 +27,23 @@ export function PublicationsForm ({publications}) {
     function regularButtons() {
         return (
             <>
-                <button onClick={ () => setEditMode(!editMode) }>EDIT</button>
+                <motion.button
+                    type={"submit"}
+                    whileHover={{scale: 1.1}}
+                    whileTap={{scale: 0.9}}
+                >
+                    edit
+                    <div>
+                        <FaPencilAlt/>
+                    </div>
+                </motion.button>
             </>
         )
     }
 
-    function addFormFields(e){
+    function addFormFields(e) {
         e.preventDefault()
-        setDynamicPublications([...dynamicPublications, {title:"", author:"", link: ""}])
+        setDynamicPublications([...dynamicPublications, {title: "", author: "", link: ""}])
     }
 
     async function onSave(e) {
@@ -74,7 +84,7 @@ export function PublicationsForm ({publications}) {
         return (
             <>
                 <h2>Publications</h2>
-                <div>
+                <main>
                     <li key={0}>
                         <span>
                             <div><strong>Title</strong></div>
@@ -96,7 +106,7 @@ export function PublicationsForm ({publications}) {
                             )}
                         </li>
                     ))}
-                </div>
+                </main>
             </>
         )
 

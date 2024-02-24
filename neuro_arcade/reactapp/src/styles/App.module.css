@@ -89,13 +89,16 @@
             width: max-content;
             margin-top: 3em;
             list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 2em;
             & h2 {
                 position: absolute;
                 top: -1.5em;
                 left: 1em;
                 font-size: 1.75em;
             }
-            & div {
+            & main {
                 display: flex;
                 flex-direction: column;
                 margin: 2em;
@@ -133,6 +136,9 @@
             }
             & a:hover, span:hover {
                 background-color: rgba(255, 255, 255, 0.15);
+            }
+            button {
+
             }
         }
     }
@@ -236,44 +242,45 @@
                     }
                 }
             }
-            button {
-                position: relative;
-                width: max-content;
-                left: 0.5em;
-                height: 2em;
-                border-radius: 0.75em;
-                margin: 1em auto;
-                outline: none;
-                border: none;
-                background-color: #D14081;
-                font-family: inherit;
-                color: #FFFFFF;
-                font-weight: 600;
-                font-size: 1.25em;
-                cursor: pointer;
-                padding: 0 1em 0 2em;
-                & div {
-                    position: absolute;
-                    top: -0.5em;
-                    left: -1.5em;
-                    width: 3em;
-                    height: 3em;
-                    border-radius: 3em;
-                    background-color: rgba(255, 255, 255, 0.72);
-                    color: #41584C;
-                    backdrop-filter: blur(5px);
-                }
-                & div > * {
-                    height: 100%;
-                    width: 40%;
-                }
-            }
             p {
                 & a {
                     color: #79FFB7;
                 }
             }
         }
+    }
+}
+
+button {
+    position: relative;
+    width: max-content;
+    left: 0.5em;
+    height: 2em;
+    border-radius: 0.75em;
+    margin: 1em auto;
+    outline: none;
+    border: none;
+    background-color: #D14081;
+    font-family: inherit;
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 1.25em;
+    cursor: pointer;
+    padding: 0 1em 0 2em;
+    & div {
+        position: absolute;
+        top: -0.5em;
+        left: -1.5em;
+        width: 3em;
+        height: 3em;
+        border-radius: 3em;
+        background-color: rgba(255, 255, 255, 0.72);
+        color: #41584C;
+        backdrop-filter: blur(5px);
+    }
+    & div > * {
+        height: 100%;
+        width: 40%;
     }
 }
 
