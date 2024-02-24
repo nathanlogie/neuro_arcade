@@ -7,7 +7,7 @@ import {Button} from "../components/Button";
 import {TagFilter} from "../components/TagFilter";
 import {HomePageTable} from "../components/HomePageTable";
 import {requestGameTags, requestModelsRanked} from "../backendRequests";
-import {motion} from "framer-motion"
+import {motion} from "framer-motion";
 import {useEffect, useState} from "react";
 import { IoFilter } from "react-icons/io5";
 import {isLoggedIn} from "../backendRequests";

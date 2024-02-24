@@ -13,14 +13,18 @@
         display: flex;
         flex-wrap: wrap;
         overflow: hidden;
+        justify-content: center;
         .Title {
             display: flex;
+            align-items: center;
+            gap: 1em;
+            padding: 1em;
+            width: 100%;
             & h1 {
-                position: relative;
                 text-align: left;
                 margin: 0;
                 width: max-content;
-                padding: 1em 0.5em 1em 0;
+                padding-bottom: 0.15em;
             }
             .FilterButton {
                 width: 2em;
@@ -33,7 +37,6 @@
                 font-weight: 900;
                 line-height: 2.5em;
                 box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-                margin: auto 0;
                 cursor: pointer;
             }
         }
@@ -264,11 +267,43 @@
         display: flex;
         overflow-x: auto;
         gap: 3em;
+        justify-content: center;
         .Graphs {
-            display: flex;
-            flex-direction: column;
-            gap: 2em;
-            margin-right: auto;
+            padding: 2em 0;
+            height: 31em;
+            width: fit-content;
+            position: relative;
+            background-color: rgba(3, 3, 3, 0.4);
+            border-radius: 0.5em;
+            backdrop-filter: blur(20px);
+            .Background {
+                background: linear-gradient(270deg, rgba(255, 255, 255, 0.10) 0%, rgba(217, 217, 217, 0.00) 100%);
+            }
+            h2 {
+                position: absolute;
+                top: -1.5em;
+                left: 1em;
+                font-size: 1.75em;
+            }
+            .GraphSwitcher {
+                position: absolute;
+                top: 2em;
+                right: -12em;
+                border-radius: 0;
+                * {
+                    display: flex;
+                    flex-direction: column;
+                    #start {
+                        border-radius: 0 2em 0 0;
+                    }
+                    #end {
+                        border-radius: 0 0 2em 0;
+                    }
+                    * {
+                        width: 12em;
+                    }
+                }
+            }
         }
     }
     .Form {
