@@ -93,8 +93,7 @@ export function GameForm() {
                 label: response.data.name
             }
             setOptions((prev) => [...prev, newValue]);
-            setTags([])
-            setTags([newValue])
+            setTags((prev) => [...prev, newValue]);
 
         }).catch(() => {
                 setError("tags", {message: "Error creating new tag"})

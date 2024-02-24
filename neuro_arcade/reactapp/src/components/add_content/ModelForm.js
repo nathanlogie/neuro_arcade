@@ -73,8 +73,8 @@ export function ModelForm() {
                 label: response.data.name
             }
             setOptions((prev) => [...prev, newValue]);
-            setTags([])
-            setTags([newValue])
+            setTags((prev) => [...prev, newValue]);
+
 
 
         }).catch(() => {
