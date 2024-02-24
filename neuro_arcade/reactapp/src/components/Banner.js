@@ -56,7 +56,7 @@ export function Banner({size, left, right, selected}) {
                 id={styles['small']}>
                     <Button
                         name={'back'}
-                        link={'../'}
+                        link={-1}
                         direction={'up'}
                         orientation={'left'}
                     />

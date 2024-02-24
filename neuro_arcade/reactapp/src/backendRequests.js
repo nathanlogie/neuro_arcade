@@ -459,7 +459,7 @@ export async function postPublications(publications){
 /**
  * Gets the current user associate with this session. Returns null if user is not logged in.
  *
- * @return {{token, name, email, is_admin} | null} user object {token, name, email, is_admin} or null
+ * @return {{token, name, email, is_admin, id} | null} user object {token, name, email, is_admin, id} or null
  */
 export function getUser() {
     let user_str = localStorage.getItem("user");
@@ -635,6 +635,7 @@ export async function login(userID, password) {
                 name: response.data.username,
                 email: response.data.email,
                 is_admin: response.data.is_admin === true,
+                id: response.data.id,
                 status: null
             };
 
@@ -676,27 +677,6 @@ export function logout() {
  */
 export async function requestPlayer(playerName) {
     const url = API_ROOT + '/players/' + playerName + '/data/'
-    return await axios.get(url)
-        .then((response) => {
-            return response.data;
-        })
-        .catch((error) => {
-            console.log(error);
-            throw error;
-        })
-}
-
-/**
- * Requests the data associated with a player.
- *
- * @param {string} playerName - slug of the player name
- *
- * @return {Scores} response data
- *
- * @throws Error when the request is rejected.
- */
-export async function requestPlayerScores(playerName) {
-    const url = API_ROOT + '/players/' + playerName + '/score/'
     return await axios.get(url)
         .then((response) => {
             return response.data;
