@@ -332,6 +332,7 @@ def login(request: Request) -> Response:
         'username': user.username,
         'email': user.email,
         'is_admin': user.is_superuser,
+        'id': user.id,
         'token': token.key,
         'status': None,
     }
@@ -455,6 +456,21 @@ def get_model_rankings(request: Request) -> Response:
     data.sort(key=lambda d: -d['overall_score'])
 
     return Response(status=200, data=data)
+
+
+@api_view(['GET'])
+def get_player(request: Request, player_name_slug: str) -> Response:
+    """
+    Retrieve Player Information
+    """
+    player = get_object_or_404(Player, slug=player_name_slug)
+    player_data = PlayerSerializer(player).data
+
+    tag_names = [tag.name for tag in player.tags.all()]
+
+    player_data['tags'] = tag_names
+    return Response(player_data)
+
 
 
 class UserViewSet(viewsets.ModelViewSet):
