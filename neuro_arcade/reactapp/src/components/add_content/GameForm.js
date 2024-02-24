@@ -236,8 +236,9 @@ export function GameForm() {
 
             <h3>Game Tags</h3>
             <CreatableSelect
-                isClearable={true}
-                onChange={(newValue) => setTags([...tags, newValue])}
+                isClearable
+                isMulti
+                onChange={(newValue) => setTags(newValue)}
                 onCreateOption={handleCreate}
                 value={tags}
                 options={options}

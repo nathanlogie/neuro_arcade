@@ -38,7 +38,7 @@ export function ModelForm() {
 
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
-    const [tags, setTags] = useState([])
+    let [tags, setTags] = useState([])
     const [existingTags, setExistingTags] = useState([])
     const [options, setOptions] = useState([])
 
@@ -178,8 +178,9 @@ export function ModelForm() {
 
             <h3> Model Tags </h3>
             <CreatableSelect
+                isMulti
                 isClearable={true}
-                onChange={(newValue) => setTags([...tags, newValue])}
+                onChange={(newValue) => setTags(newValue)}
                 onCreateOption={handleCreate}
                 value={tags}
                 options={options}
