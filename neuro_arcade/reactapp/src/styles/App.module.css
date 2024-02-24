@@ -137,7 +137,36 @@
                 background-color: rgba(255, 255, 255, 0.15);
             }
             button {
-
+                position: relative;
+                width: max-content;
+                left: 0.5em;
+                height: 2em;
+                border-radius: 0.75em;
+                margin: 1em auto;
+                outline: none;
+                border: none;
+                background-color: #D14081;
+                font-family: inherit;
+                color: #FFFFFF;
+                font-weight: 600;
+                font-size: 1.25em;
+                cursor: pointer;
+                padding: 0 1em 0 2em;
+                & div {
+                    position: absolute;
+                    top: -0.5em;
+                    left: -1.5em;
+                    width: 3em;
+                    height: 3em;
+                    border-radius: 3em;
+                    background-color: rgba(255, 255, 255, 0.72);
+                    color: #41584C;
+                    backdrop-filter: blur(5px);
+                }
+                & div > * {
+                    height: 100%;
+                    width: 40%;
+                }
             }
         }
     }
@@ -167,6 +196,38 @@
             top: -1.4em;
         }
         & form {
+            button {
+                position: relative;
+                width: max-content;
+                left: 0.5em;
+                height: 2em;
+                border-radius: 0.75em;
+                margin: 1em auto;
+                outline: none;
+                border: none;
+                background-color: #D14081;
+                font-family: inherit;
+                color: #FFFFFF;
+                font-weight: 600;
+                font-size: 1.25em;
+                cursor: pointer;
+                padding: 0 1em 0 2em;
+                & div {
+                    position: absolute;
+                    top: -0.5em;
+                    left: -1.5em;
+                    width: 3em;
+                    height: 3em;
+                    border-radius: 3em;
+                    background-color: rgba(255, 255, 255, 0.72);
+                    color: #41584C;
+                    backdrop-filter: blur(5px);
+                }
+                & div > * {
+                    height: 100%;
+                    width: 40%;
+                }
+            }
             display: flex;
             flex-direction: column;
             & h3 {
@@ -247,39 +308,6 @@
                 }
             }
         }
-    }
-}
-
-button {
-    position: relative;
-    width: max-content;
-    left: 0.5em;
-    height: 2em;
-    border-radius: 0.75em;
-    margin: 1em auto;
-    outline: none;
-    border: none;
-    background-color: #D14081;
-    font-family: inherit;
-    color: #FFFFFF;
-    font-weight: 600;
-    font-size: 1.25em;
-    cursor: pointer;
-    padding: 0 1em 0 2em;
-    & div {
-        position: absolute;
-        top: -0.5em;
-        left: -1.5em;
-        width: 3em;
-        height: 3em;
-        border-radius: 3em;
-        background-color: rgba(255, 255, 255, 0.72);
-        color: #41584C;
-        backdrop-filter: blur(5px);
-    }
-    & div > * {
-        height: 100%;
-        width: 40%;
     }
 }
 
