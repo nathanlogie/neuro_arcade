@@ -116,7 +116,6 @@ export function PublicationsForm ({publications}) {
     }
 
     function displayPublications() {
-
         return (
             <>
                 <h2>Publications</h2>
