@@ -480,9 +480,7 @@ def get_player_scores(request: Request, player_name_slug: str) -> Response:
     """
     try:
         player = Player.objects.get(slug=player_name_slug)
-        print("YAY")
     except Player.DoesNotExist:
-        print("BOO")
         return Response(status=400)
     
     scores = Score.objects.filter(player=player)
