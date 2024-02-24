@@ -103,7 +103,7 @@ export function ModelForm() {
         }).then(function (response) {
             console.log(response);
 
-            if (tags) {
+            if (tags.length !== 0) {
                 const finalTagIDs = tags.map((tag) => tag.value);
                 formData.append("tags", finalTagIDs)
                 axios({

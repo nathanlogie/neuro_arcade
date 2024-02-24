@@ -136,9 +136,7 @@ export function GameForm() {
         formData.append("play_link", playLink);
         formData.append("slug", slugify(name));
 
-        if(tags.length===1){
-            formData.append("tags", tags[0].value)
-        }
+
 
         console.log(tags)
 
@@ -160,7 +158,7 @@ export function GameForm() {
         }).then(function (response) {
             console.log(response);
 
-            if (tags) {
+            if (tags.length !== 0) {
                 const finalTagIDs = tags.map((tag) => tag.value);
                 formData.append("tags", finalTagIDs)
                 axios({
