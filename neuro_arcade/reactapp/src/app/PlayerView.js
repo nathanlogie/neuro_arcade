@@ -48,7 +48,7 @@ export function PlayerView() {
                 animate={{opacity: 1}}
                 exit={{opacity: 0}}
             >
-                <div className={styles.Content}>
+                <div className={styles.Content} id={styles['small']}>
                     <div className={styles.Title}>
                         <h1>{playerData.name}</h1>
                     </div>
@@ -57,7 +57,7 @@ export function PlayerView() {
                         <p>The tags for this player are: {tag_text}</p>
                     </div>
                 </div>
-                <div className={styles.DataBlock}>
+                <div className={styles.Side}>          
                     <PlayerViewTable inputData={playerScores}/>
                 </div>
             </motion.div>
