@@ -459,7 +459,7 @@ export async function postPublications(publications){
 /**
  * Gets the current user associate with this session. Returns null if user is not logged in.
  *
- * @return {{token, name, email, is_admin} | null} user object {token, name, email, is_admin} or null
+ * @return {{token, name, email, is_admin, id} | null} user object {token, name, email, is_admin, id} or null
  */
 export function getUser() {
     let user_str = localStorage.getItem("user");
@@ -635,6 +635,7 @@ export async function login(userID, password) {
                 name: response.data.username,
                 email: response.data.email,
                 is_admin: response.data.is_admin === true,
+                id: response.data.id,
                 status: null
             };
 
