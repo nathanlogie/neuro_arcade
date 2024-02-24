@@ -1,10 +1,22 @@
-.TableContainer, .GraphContainer {
+.TabSwitcher {
+    position: absolute;
+    top: 0.5em;
+    width: 100%;
+    z-index: 2;
+}
+
+.TableContainer {
     position: relative;
     background-color: rgba(3, 3, 3, 0.4);
     border-radius: 0.5em;
     backdrop-filter: blur(20px);
+    padding: 2em;
+    width: fit-content;
+    height: 30.75em;
     .TabSwitcher {
-        position: absolute;
+        right: 0;
+        top: -2em;
+        width: fit-content;
     }
     h2 {
         position: absolute;
@@ -14,31 +26,9 @@
     }
 }
 
-.TableContainer {
-    padding: 2em;
-    width: fit-content;
-    height: 32em;
-    margin-left: auto;
-    .TabSwitcher {
-        right: 0;
-        top: -2em;
-    }
-}
-
 #home {
     height: fit-content;
     margin: 4em auto 2em;
-}
-
-.GraphContainer {
-    padding: 2em 0;
-    height: 32em;
-    width: fit-content;
-    .TabSwitcher {
-        top: 0.5em;
-        width: 100%;
-        z-index: 2;
-    }
 }
 
 @media(max-width: 78em) {
@@ -48,7 +38,7 @@
 }
 
 @media (max-width: 50em) {
-    .TableContainer, .GraphContainer {
+    .TableContainer {
         margin-left: auto;
         margin-right: auto;
     }
