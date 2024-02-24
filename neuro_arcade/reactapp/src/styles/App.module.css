@@ -85,7 +85,6 @@
             background-color: rgba(3, 3, 3, 0.4);
             border-radius: 0.5em;
             backdrop-filter: blur(20px);
-            height: 30em;
             width: max-content;
             margin-top: 3em;
             list-style-type: none;
@@ -105,7 +104,6 @@
                 width: 25em;
                 align-items: flex-start;
                 overflow-y: auto;
-                height: 26em;
             }
             & a, span {
                 width: 23em;
@@ -117,10 +115,30 @@
                 text-align: left;
                 padding: 0.75em 1em;
                 cursor: pointer;
-                gap: 2em;
+                gap: 1em;
                 justify-content: space-between;
                 text-decoration: none;
                 color: #FFFFFF;
+                & section {
+                    display: flex;
+                    flex-direction: column;
+                    width: max-content;
+                    gap: 1em;
+                    & input {
+                        width: 19em;
+                        height: 3em;
+                        border-radius: 0.5em;
+                        padding: 0 1em;
+                        background-color: rgba(255, 255, 255, 0.2);
+                        color: #FFFFFF;
+                        font-family: inherit;
+                        outline: none;
+                        border: none;
+                    }
+                    & input::placeholder {
+                        color: #BBBBBB;
+                    }
+                }
                 & label {
                     text-overflow: ellipsis;
                     white-space: nowrap;
@@ -132,9 +150,30 @@
                     width: 50%;
                     text-align: center;
                 }
+                & button {
+                    background-color: rgba(255,255,255,0);
+                    padding: 0;
+                    width: max-content;
+                    height: max-content;
+                    margin: 0 1em 0 0;
+
+                    & div {
+                        position: inherit;
+                        left: 0;
+                        top: 0;
+                    }
+                }
             }
             & a:hover, span:hover {
                 background-color: rgba(255, 255, 255, 0.15);
+            }
+            & li {
+                display: flex;
+                justify-content: center;
+                & li {
+                    width: max-content;
+                    margin: 1em 1.5em 0 1.5em;
+                }
             }
             button {
                 position: relative;
@@ -149,7 +188,7 @@
                 font-family: inherit;
                 color: #FFFFFF;
                 font-weight: 600;
-                font-size: 1.25em;
+                font-size: 1em;
                 cursor: pointer;
                 padding: 0 1em 0 2em;
                 & div {

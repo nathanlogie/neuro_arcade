@@ -4,7 +4,10 @@ import { Message } from 'primereact/message';
 import {getAboutData} from "../../backendRequests";
 import {Link} from "react-router-dom";
 import {motion} from "framer-motion";
-import { FaPencilAlt } from "react-icons/fa";
+import {FaBan, FaPencilAlt, FaSave} from "react-icons/fa";
+import {FaPlus, FaTrash} from "react-icons/fa6";
+import {TbSettingsCancel} from "react-icons/tb";
+import {TiCancel} from "react-icons/ti";
 
 /**
  * @param publications from backendRequests.js
@@ -26,9 +29,9 @@ export function PublicationsForm ({publications}) {
 
     function regularButtons() {
         return (
-            <>
+            <li>
                 <motion.button
-                    type={"submit"}
+                    onClick={ () => setEditMode(!editMode) }
                     whileHover={{scale: 1.1}}
                     whileTap={{scale: 0.9}}
                 >
@@ -37,7 +40,7 @@ export function PublicationsForm ({publications}) {
                         <FaPencilAlt/>
                     </div>
                 </motion.button>
-            </>
+            </li>
         )
     }
 
@@ -72,14 +75,49 @@ export function PublicationsForm ({publications}) {
     function editButtons() {
         return (
             <>
-                <li><button onClick={addFormFields}>ADD NEW</button></li>
-                <li><button onClick={onSave}>SAVE</button></li>
-                <li><button onClick={handleCancel}>CANCEL</button></li>
+                <li>
+                    <motion.button
+                        onClick={addFormFields}
+                        whileHover={{scale: 1.1}}
+                        whileTap={{scale: 0.9}}
+                    >
+                        add new
+                        <div>
+                            <FaPlus/>
+                        </div>
+                    </motion.button>
+                </li>
+                <li>
+                    <li>
+                        <motion.button
+                            onClick={onSave}
+                            whileHover={{scale: 1.1}}
+                            whileTap={{scale: 0.9}}
+                        >
+                            save
+                            <div>
+                                <FaSave/>
+                            </div>
+                        </motion.button>
+                    </li>
+                    <li>
+                        <motion.button
+                            onClick={handleCancel}
+                            whileHover={{scale: 1.1}}
+                            whileTap={{scale: 0.9}}
+                        >
+                            cancel
+                            <div>
+                                <FaBan/>
+                            </div>
+                        </motion.button>
+                    </li>
+                </li>
             </>
         )
     }
 
-    function displayPublications(){
+    function displayPublications() {
 
         return (
             <>
@@ -122,24 +160,39 @@ export function PublicationsForm ({publications}) {
 
         return (
             <>
-                { dynamicPublications.map( (p,i) => (
-
-                    <div key={i}>
-                        <li><input type ={"text"} value={p.title} placeholder={"Title..."} onChange={ (e) =>handleChange(i, "title", e.target.value)}/></li>
-                        <li><input type ={"text"} value={p.author} placeholder={"Author..."} onChange={ (e) => handleChange(i, "author", e.target.value)}/></li>
-                        <li><input type={"url"} value={p.link} placeholder={"Link..."} onChange={ (e) => handleChange(i, "link", e.target.value)}/></li>
-                        <button onClick={() => removePublication(i)}>DELETE</button>
-                    </div>
-                ))}
+                <h2>Publications</h2>
+                <main>
+                    {dynamicPublications.map((p, i) => (
+                        <span key={i}>
+                            <section>
+                                 <label><input type={"text"} value={p.title} placeholder={"Title..."}
+                                               onChange={(e) => handleChange(i, "title", e.target.value)}/></label>
+                                <label><input type={"text"} value={p.author} placeholder={"Author..."}
+                                              onChange={(e) => handleChange(i, "author", e.target.value)}/></label>
+                                <label><input type={"url"} value={p.link} placeholder={"Link..."}
+                                              onChange={(e) => handleChange(i, "link", e.target.value)}/></label>
+                            </section>
+                            <motion.button
+                                onClick={() => removePublication(i)}
+                                whileHover={{scale: 1.1}}
+                                whileTap={{scale: 0.9}}
+                            >
+                                <div>
+                                    <FaTrash/>
+                                </div>
+                            </motion.button>
+                        </span>
+                    ))}
+                </main>
             </>
         )
     }
 
     return (
         <>
-            { valid ? null : <Message severity="error" text="Missing Fields" />}
-            { editMode ? editPublications() : displayPublications() }
-            { editMode ? editButtons() : regularButtons() }
+        {valid ? null : <Message severity="error" text="Missing Fields"/>}
+            {editMode ? editPublications() : displayPublications()}
+            {editMode ? editButtons() : regularButtons()}
         </>
     )
 
