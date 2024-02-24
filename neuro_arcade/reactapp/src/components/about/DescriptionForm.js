@@ -37,11 +37,12 @@ export function DescriptionForm ({description}) {
 
     function edit() {
         return (
-            <PrimeReactProvider>
+            <>
                 <Editor
                 name="description"
                 value={newDescription}
                 pt={{
+                    toolbar: {className: styles.Toolbar},
                     content: { style: {
                             border: 'none',
                             borderRadius: '0 0 0.5em 0.5em',
@@ -51,14 +52,7 @@ export function DescriptionForm ({description}) {
                             padding: '2em',
                             height: '50em',
                             position: 'relative'
-                    }},
-                    toolbar: { style: {
-                            backgroundColor: 'rgba(255,255,255,0.1)',
-                            border: 'none',
-                            backdropFilter: 'blur(20px)',
-                            borderRadius: '0.5em 0.5em 0 0',
-                    }},
-                    formats: {className: styles.Toolbar}
+                    }}
                 }}
                 onTextChange= {update}
                 />
@@ -73,7 +67,7 @@ export function DescriptionForm ({description}) {
                         <FaSave/>
                     </div>
                 </motion.button>
-            </PrimeReactProvider>
+            </>
         )
     }
 
