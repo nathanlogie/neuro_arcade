@@ -12,13 +12,14 @@ import {GameView} from "./app/GameView";
 import {SignUp} from "./app/SignUp";
 import {Login} from "./app/Login";
 import {AllPlayers} from './app/AllPlayers';
+import {PlayerView} from './app/PlayerView';
+import { EditAbout } from "./app/about/EditAbout";
 import {PageNotFound} from "./app/PageNotFound"
 import {AnimatePresence} from 'framer-motion'
 import {Background} from "./components/Background";
 import {AuthTest} from "./app/AuthTest";
 import {AllUsers} from "./app/user_account/AllUsers"
 import {isLoggedIn, getUserStatus, userIsAdmin} from "./backendRequests";
-import {EditAbout} from "./app/about/EditAbout";
 
 let about = <AboutPage />;
 let addGame = <PageNotFound />;
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
     {
         path: "all_players",
         element: <AllPlayers/>
+    },
+    {
+        path: "all_players/:player_slug",
+        element: <PlayerView/>
     },
     {
         path: "*",

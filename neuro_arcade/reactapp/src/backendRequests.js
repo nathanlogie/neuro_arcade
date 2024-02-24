@@ -665,3 +665,23 @@ export function logout() {
     localStorage.removeItem("user");
 }
 
+/**
+ * Requests the data associated with a player.
+ *
+ * @param {string} playerName - slug of the player name
+ *
+ * @return {Player} response data
+ *
+ * @throws Error when the request is rejected.
+ */
+export async function requestPlayer(playerName) {
+    const url = API_ROOT + '/players/' + playerName + '/data/'
+    return await axios.get(url)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        })
+}
