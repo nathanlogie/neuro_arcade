@@ -4,6 +4,7 @@ import styles from "../styles/App.module.css";
 import {useEffect, useState} from "react";
 import { PlayerViewTable } from "../components/PlayerViewTable";
 import {Banner, MobileBanner} from "../components/Banner";
+import {motion} from "framer-motion";
 
 /**
  *
@@ -39,32 +40,34 @@ export function PlayerView() {
 
     let content = <>...</>;
     if(!loading){
-        content = <>
-            <div className={styles.Content}>
-                <h1>{playerData.name}</h1>
-                <div className={styles.ContentBlock}>
-                    <p>
-                        <img src="https://loremflickr.com/500/500" alt={'image'} // TODO add query for image here
-                        />
-                        {playerData.description}
-                    </p>
-                    <p>
-                        The tags for this player are: {tag_text}
-                    </p>
+        content = 
+            <motion.div
+                className={styles.MainBlock}
+                id={styles['small']}
+                initial={{opacity: 0}}
+                animate={{opacity: 1}}
+                exit={{opacity: 0}}
+            >
+                <div className={styles.Content}>
+                    <div className={styles.Title}>
+                        <h1>{playerData.name}</h1>
+                    </div>
+                    <div className={styles.ContentBlock}>
+                        <p>{playerData.description}</p>
+                        <p>The tags for this player are: {tag_text}</p>
+                    </div>
                 </div>
-            </div>
-            <div className={styles.DataBlock}>
-                <PlayerViewTable inputData={playerScores}/>
-            </div>
-        </>;
+                <div className={styles.DataBlock}>
+                    <PlayerViewTable inputData={playerScores}/>
+                </div>
+            </motion.div>
     }
-    return (
+
+    return(
         <>
-            <Banner size={'small'} selected={'Games'} />
+            <Banner size={'small'} selected={'Players'}/>
             <MobileBanner/>
-            <div className={styles.MainBlock} id={styles['small']}>
-                {content}
-            </div>
+            {content}
         </>
     );
 }
