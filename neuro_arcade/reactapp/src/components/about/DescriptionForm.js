@@ -5,6 +5,8 @@ import {Description} from "./Description";
 import {getAboutData} from "../../backendRequests";
 import {motion} from "framer-motion";
 import {FaBan, FaPencilAlt, FaSave} from "react-icons/fa";
+import {PrimeReactProvider} from "primereact/api";
+import styles from '../../styles/App.module.css';
 
 /**
  * @param description from backendRequests.js
@@ -35,25 +37,28 @@ export function DescriptionForm ({description}) {
 
     function edit() {
         return (
-            <>
+            <PrimeReactProvider>
                 <Editor
                 name="description"
                 value={newDescription}
-                style={{
-                    border: 'none',
-                    borderRadius: '0 0 0.5em 0.5em',
-                    backgroundColor: 'rgba(3, 3, 3, 0.4)',
-                    backdropFilter: 'blur(20px)',
-                    fontFamily: 'inherit',
-                    padding: '2em',
-                    height: '50em'
-                }}
                 pt={{
+                    content: { style: {
+                            border: 'none',
+                            borderRadius: '0 0 0.5em 0.5em',
+                            backgroundColor: 'rgba(3, 3, 3, 0.4)',
+                            backdropFilter: 'blur(20px)',
+                            fontFamily: 'inherit',
+                            padding: '2em',
+                            height: '50em',
+                            position: 'relative'
+                    }},
                     toolbar: { style: {
                             backgroundColor: 'rgba(255,255,255,0.1)',
                             border: 'none',
-                            backdropFilter: 'blur(20px)'
-                    }}
+                            backdropFilter: 'blur(20px)',
+                            borderRadius: '0.5em 0.5em 0 0',
+                    }},
+                    formats: {className: styles.Toolbar}
                 }}
                 onTextChange= {update}
                 />
@@ -61,13 +66,14 @@ export function DescriptionForm ({description}) {
                     onClick={onSave}
                     whileHover={{scale: 1.1}}
                     whileTap={{scale: 0.9}}
+                    id={styles['save']}
                 >
                     save
                     <div>
                         <FaSave/>
                     </div>
                 </motion.button>
-            </>
+            </PrimeReactProvider>
         )
     }
 
@@ -75,7 +81,7 @@ export function DescriptionForm ({description}) {
         <>
             {displayTextEdit ? edit(): <Description description={newDescription} /> }
             <motion.button
-                id = {"edit"}
+                id = {styles['edit']}
                 onClick= {editDescription}
                 whileHover={{scale: 1.1}}
                 whileTap={{scale: 0.9}}

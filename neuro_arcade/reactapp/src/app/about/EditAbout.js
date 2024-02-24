@@ -35,7 +35,7 @@ export function EditAbout() {
     let content = <>...</>;
     if (aboutData) {
         content = <>
-            <div className={styles.Content}>
+            <div className={styles.Content} id={styles['big']}>
                 <div className={styles.ContentBlock}>
                     <DescriptionForm description={aboutData.description}/>
                 </div>
