@@ -55,7 +55,7 @@ export function AllGames() {
 
     return (
         <>
-            <Banner size={'small'} state={'Games'}/>
+            <Banner size={'small'} selected={'Games'}/>
             <MobileBanner/>
             <motion.div
                 className={styles.MainBlock}

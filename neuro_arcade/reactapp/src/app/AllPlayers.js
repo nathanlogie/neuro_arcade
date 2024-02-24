@@ -90,7 +90,7 @@ export function AllPlayers() {
 
     return (
         <>
-            <Banner size={'small'} state={'Players'}/>
+            <Banner size={'small'} selected={'Players'} />
             <MobileBanner/>
             <motion.div
                 className={styles.MainBlock}

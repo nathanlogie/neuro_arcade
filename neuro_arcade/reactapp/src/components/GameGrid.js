@@ -13,7 +13,7 @@ import {useEffect, useState} from "react";
  * @param {string} props.id - element id for styling
  */
 export function GameGrid({textQuery='', tagQuery=[], num=0, id}) {
-    let [isLoading, setLoading] = useState(true);
+    let [loading, setLoading] = useState(true);
     let [games, setGames] = useState([]);
 
     // Fetch games from server on initial load
@@ -26,12 +26,8 @@ export function GameGrid({textQuery='', tagQuery=[], num=0, id}) {
     }, []);
 
     // Display waiting message while waiting on server, then show games
-    if (isLoading) {
-        return (
-            <div className={styles.CardGrid}>
-                Loading...
-            </div>
-        )
+    if (loading) {
+        return null;
     } else {
         return <CardGrid
             subjects={games}

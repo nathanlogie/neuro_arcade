@@ -7,12 +7,15 @@ from django.template.defaultfilters import slugify
 
 MAX_SCORE_VALUE_SIZE = 256
 
+
 # functions for setting default fields:
 def default_score_type():
     return {"headers": []}
 
+
 def default_score():
     return []
+
 
 class GameTag(models.Model):
     """Category for a game. """
@@ -27,13 +30,6 @@ class GameTag(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(GameTag, self).save(*args, **kwargs)
-
-    def serialize(self):
-        return {
-            'name': self.name,
-            'slug': self.slug,
-            'description': self.description
-        }
 
     def __str__(self):
         return self.name
@@ -139,27 +135,6 @@ class Game(models.Model):
 
         return ret
 
-    def serialize(self):
-        d = {
-            'name': str(self.name),
-            'slug': str(self.slug),
-            'description': str(self.description),
-            # TODO make this give you a web URL, instead of a local filepath
-            # 'icon': str(game.icon.path),
-            'tags': [tag.slug for tag in self.tags.all()],
-            'score_type': self.score_type,
-            'play_link': str(self.play_link),
-        }
-        # TODO serialise evaluation script and game owner fields
-
-        # if game.evaluation_script is not None:
-        #     d['evaluation_script'] = str(game.evaluation_script.path)
-        # else:
-        #     d['evaluation_script'] = 'None'
-        # 'owner': str(game.owner)
-
-        return d
-
     def __str__(self):
         return self.name
 
@@ -228,3 +203,20 @@ class RawScore(models.Model):
 
     def __str__(self):
         return "RawScore for game " + self.game.name + ": " + self.upload_date.__str__()
+
+
+class UserStatus(models.Model):
+    """ Status of users
+    Can be approved, blocked or pending """
+
+    STATUS_OPTIONS = [
+        ("approved", "Approved"),
+        ("blocked", "Blocked"),
+        ("pending", "Pending")
+    ]
+
+    status = models.CharField(max_length=10, choices=STATUS_OPTIONS, default="pending")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="status")
+
+    def __str__(self):
+        return "Status of " + self.user.username + ": " + self.status
