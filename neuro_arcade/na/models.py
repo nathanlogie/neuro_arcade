@@ -7,12 +7,15 @@ from django.template.defaultfilters import slugify
 
 MAX_SCORE_VALUE_SIZE = 256
 
+
 # functions for setting default fields:
 def default_score_type():
     return {"headers": []}
 
+
 def default_score():
     return []
+
 
 class GameTag(models.Model):
     """Category for a game. """
@@ -188,3 +191,20 @@ class Score(models.Model):
 
     def __str__(self):
         return self.player.name + "'s score at " + self.game.name
+
+
+class UserStatus(models.Model):
+    """ Status of users
+    Can be approved, blocked or pending """
+
+    STATUS_OPTIONS = [
+        ("approved", "Approved"),
+        ("blocked", "Blocked"),
+        ("pending", "Pending")
+    ]
+
+    status = models.CharField(max_length=10, choices=STATUS_OPTIONS, default="pending")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="status")
+
+    def __str__(self):
+        return "Status of " + self.user.username + ": " + self.status

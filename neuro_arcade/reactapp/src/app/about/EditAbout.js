@@ -1,12 +1,11 @@
 import {useState, useEffect} from 'react';
 import {DescriptionForm} from "../../components/about/DescriptionForm"
 import {PublicationsForm} from "../../components/about/PublicationsForm"
-import {getAboutData, isLoggedIn, userIsAdmin} from "../../backendRequests";
+import {getAboutData} from "../../backendRequests";
 import {Banner, MobileBanner} from "../../components/Banner";
 import styles from "../../styles/App.module.css";
 import {motion} from "framer-motion"
 import {NavBar} from "../../components/NavBar";
-import { redirect } from "react-router-dom";
 import {Button} from "../../components/Button";
 
 /**
@@ -23,13 +22,6 @@ export function EditAbout() {
             direction={'right'}
         />
     );
-
-    // todo do this:
-    // redirect if user is not logged in
-    // if (!isLoggedIn())
-    //     redirect("/login/");
-    // if (!userIsAdmin())
-    //     return (<p>Only Admins can edit this page!</p>);
 
     const [aboutData, updateAboutData] = useState()
 
