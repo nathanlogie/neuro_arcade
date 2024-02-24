@@ -472,6 +472,33 @@ def get_player(request: Request, player_name_slug: str) -> Response:
     return Response(player_data)
 
 
+@api_view(['GET'])
+def get_player_scores(request: Request, player_name_slug: str) -> Response:
+    """
+    Retrieve all scores made by players
+    """
+    try:
+        player = Player.objects.get(slug=player_name_slug)
+        print("YAY")
+    except Player.DoesNotExist:
+        print("BOO")
+        return Response(status=400)
+    
+    scores = Score.objects.filter(player=player)
+
+    scores_data = []
+    for score in scores:
+        score_data = {
+            'game_name': score.game.name,
+            'value': score.score
+        }
+        scores_data.append(score_data)
+
+
+    return Response(scores_data)
+
+
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
