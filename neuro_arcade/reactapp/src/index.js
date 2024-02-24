@@ -19,18 +19,21 @@ import {AuthTest} from "./app/AuthTest";
 import {AllUsers} from "./app/user_account/AllUsers"
 import {isLoggedIn, getUserStatus, userIsAdmin} from "./backendRequests";
 import {EditAbout} from "./app/about/EditAbout";
+import {GameRanking} from "./app/user_account/GameRanking"
 
 let about = <AboutPage />;
 let addGame = <PageNotFound />;
 let addModel = <PageNotFound />;
 let allUsers = <PageNotFound />;
 let userAccount = <Navigate to={'/login'} />
+let gameRanking = <PageNotFound />
 
 if (isLoggedIn()){
     userAccount = <AccountPage />
     if (userIsAdmin()) {
         about = <EditAbout />;
         allUsers = <AllUsers />
+        gameRanking = <GameRanking />
     }
 
     if (getUserStatus()==="approved" || userIsAdmin()){
@@ -90,6 +93,10 @@ const router = createBrowserRouter([
     {
         path: "all_players",
         element: <AllPlayers/>
+    },
+    {
+        path: "user_account/game_ranking",
+        element: gameRanking
     },
     {
         path: "*",
