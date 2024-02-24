@@ -4,7 +4,7 @@ import React, {useState} from "react";
 import {Description} from "./Description";
 import {getAboutData} from "../../backendRequests";
 import {motion} from "framer-motion";
-import {FaBan, FaPencilAlt} from "react-icons/fa";
+import {FaBan, FaPencilAlt, FaSave} from "react-icons/fa";
 
 /**
  * @param description from backendRequests.js
@@ -42,7 +42,16 @@ export function DescriptionForm ({description}) {
                 style={{ height: '320px' }}
                 onTextChange= {update}
                 />
-                <button onClick={onSave}>Save</button>
+                <motion.button
+                    onClick={onSave}
+                    whileHover={{scale: 1.1}}
+                    whileTap={{scale: 0.9}}
+                >
+                    save
+                    <div>
+                        <FaSave/>
+                    </div>
+                </motion.button>
             </>
         )
     }

@@ -47,7 +47,7 @@
                 left: 0.5em;
                 height: 2em;
                 border-radius: 0.75em;
-                margin: 1em auto;
+                margin: 2em 2em;
                 outline: none;
                 border: none;
                 background-color: #D14081;
@@ -57,7 +57,6 @@
                 font-size: 1em;
                 cursor: pointer;
                 padding: 0 1em 0 2em;
-
                 & div {
                     position: absolute;
                     top: -0.5em;
