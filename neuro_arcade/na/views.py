@@ -10,7 +10,7 @@ from django.middleware.csrf import get_token
 
 from rest_framework import viewsets
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -379,7 +379,6 @@ def sign_up(request: Request) -> Response:
 
 @api_view(['POST'])
 def update_user_status(request: Request) -> Response:
-
     if not request.data['user'] or not request.data['status']:
         return Response(status=400, data='Missing data in request')
 
@@ -465,6 +464,25 @@ class UserViewSet(viewsets.ModelViewSet):
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
+
+    @action(detail=True, methods=['POST'])
+    def update_ranking(self, request, pk=None):
+        new_ranking = request.body
+        game = self.get_object()
+
+        if not game:
+            return Response(status=404, data='Game does not exist')
+
+        try:
+            game.priority = new_ranking
+        except:
+            return Response(status=500, data='Unknown server error occurred')
+
+        game.save()
+
+        print("SUCCESS! Game: ", game.id, "\tPriority: ", game.priority)
+
+        return Response(status=200, data='Ranking updated successfully!')
 
 
 class GameTagViewSet(viewsets.ModelViewSet):

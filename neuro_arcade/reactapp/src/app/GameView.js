@@ -20,11 +20,6 @@ export function GameView() {
     let gameSlug = useParams().game_slug;
     let [loading, setLoading] = useState(true);
     let [gameData, setGameData] = useState({});
-    let [showRating, setShowRating] = useState(false)
-
-    // if (isLoggedIn() && userIsAdmin()){
-    //     setShowRating(true);
-    // }
 
     useEffect(() => {
         requestGame(gameSlug)
@@ -32,7 +27,7 @@ export function GameView() {
                 setGameData(g);
                 setLoading(false);
             })
-    }, [gameSlug]);
+    }, []);
 
 
     let content = <>...</>;
@@ -46,7 +41,7 @@ export function GameView() {
                         />
                         {gameData.game.description}
                     </p>
-                    { isLoggedIn() && userIsAdmin() ? <AdminRanking game={gameSlug}/> : null}
+                    <AdminRanking game={gameData.game.id} rating={gameData.game.priority}/>
                 </div>
             </div>
             <div className={styles.DataBlock}>

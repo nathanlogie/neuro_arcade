@@ -665,3 +665,22 @@ export function logout() {
     localStorage.removeItem("user");
 }
 
+/**
+ * Posts Admin Ranking to model
+ * @Param {Integer} gameID: ID of game to be ranked
+ * @Param {Float} ranking: ranking of new game
+ * @returns Reponse
+ */
+export async function postAdminRanking(gameID, ranking){
+    const url = API_ROOT + `/api/games/${gameID}/update_ranking/`
+
+    await axios.post(url, ranking*10)
+        .then((response) => {
+            return response;
+    })
+        .catch((error) => {
+            console.log(error);
+        })
+
+}
+
