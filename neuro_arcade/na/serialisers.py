@@ -40,4 +40,4 @@ class PlayerTagSerializer(serializers.ModelSerializer):
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Player
-        fields = ['id', 'name', 'slug', 'is_ai', 'user', 'description', 'tags']
+        fields = ['id', 'name', 'slug', 'is_ai', 'user', 'description', 'tags', 'icon']
