@@ -7,10 +7,10 @@ import CreatableSelect from 'react-select/creatable';
 import {requestPlayerTags, getUser} from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
+import {get_description_length, get_name_length} from "./variableHelper,js";
 
-//Should be synced up to models
-let MAX_NAME_LENGTH = 64
-let MAX_DESCRIPTION_LENGTH = 1024
+let MAX_NAME_LENGTH = get_name_length()
+let MAX_DESCRIPTION_LENGTH = get_description_length()
 
 const customStyles = {
     option: provided => ({

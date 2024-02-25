@@ -11,13 +11,20 @@ import {requestGameTags, getUser} from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
 
-//Should be synced with models.py
-let MAX_NAME_LENGTH = 64;
-let MAX_DESCRIPTION_LENGTH = 1024;
+import {
+    get_description_length,
+    get_eval_extension,
+    get_image_extension,
+    get_name_length,
+    get_score_extension
+} from "./variableHelper,js";
 
-let ACCEPTED_SCORE_FILE = ['json'];
-let ACCEPTED_EVAL_SCRIPT = ['py'];
-let ACCEPTED_IMAGE = ['png', 'jpg', 'jpeg'];
+let MAX_NAME_LENGTH = get_name_length()
+let MAX_DESCRIPTION_LENGTH = get_description_length()
+
+let ACCEPTED_SCORE_FILE = get_score_extension();
+let ACCEPTED_EVAL_SCRIPT = get_eval_extension();
+let ACCEPTED_IMAGE = get_image_extension();
 
 const customStyles = {
     option: provided => ({...provided, color: 'black'}),
