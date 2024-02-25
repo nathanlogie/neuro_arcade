@@ -137,7 +137,7 @@ export function GameForm() {
         formData.append("owner", user);
         formData.append("play_link", playLink);
         formData.append("slug", slugify(name));
-        
+
 
         if (image) {
             formData.append("icon", image)

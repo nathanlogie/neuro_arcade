@@ -4,7 +4,7 @@ import axios from "axios";
 import {motion} from "framer-motion";
 import {FaPlus} from "react-icons/fa6";
 import CreatableSelect from 'react-select/creatable';
-import {requestPlayerTags} from "../../backendRequests";
+import {requestPlayerTags, getUser} from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
 
@@ -41,12 +41,15 @@ export function ModelForm() {
     let [tags, setTags] = useState([])
     const [existingTags, setExistingTags] = useState([])
     const [options, setOptions] = useState([])
+    const [user, setUser] = useState(null)
+
 
     useEffect(() => {
         requestPlayerTags()
             .then((tags) => {
                 setExistingTags(tags);
             })
+        setUser(getUser().id);
     }, [])
 
     existingTags.forEach((tag) => {
@@ -76,7 +79,6 @@ export function ModelForm() {
             setTags((prev) => [...prev, newValue]);
 
 
-
         }).catch(() => {
                 setError("tags", {message: "Error creating new tag"})
             }
@@ -88,10 +90,7 @@ export function ModelForm() {
         const formData = new FormData();
         formData.append("name", name);
         formData.append("description", description);
-
-        //Again temporary until authentication is done
-        formData.append("user", 1);
-
+        formData.append("user", user);
         formData.append("is_ai", true);
 
         await axios({
@@ -112,7 +111,7 @@ export function ModelForm() {
                     data: formData,
                     headers: {"Content-Type": "multipart/form-data"},
                 }).catch((response) => {
-                    console.log(response)
+                        console.log(response)
                         setError("root", {message: "Error during tag upload"})
                     }
                 )
