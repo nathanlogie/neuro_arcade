@@ -7,7 +7,7 @@ import CreatableSelect from 'react-select/creatable';
 import {requestPlayerTags, getUser} from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
-import {get_description_length, get_name_length} from "./variableHelper,js";
+import {get_description_length, get_name_length} from "./variableHelper";
 
 let MAX_NAME_LENGTH = get_name_length()
 let MAX_DESCRIPTION_LENGTH = get_description_length()

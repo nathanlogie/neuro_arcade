@@ -17,7 +17,7 @@ import {
     get_image_extension,
     get_name_length,
     get_score_extension
-} from "./variableHelper,js";
+} from "./variableHelper";
 
 let MAX_NAME_LENGTH = get_name_length()
 let MAX_DESCRIPTION_LENGTH = get_description_length()
