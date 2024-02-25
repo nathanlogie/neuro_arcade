@@ -20,6 +20,7 @@ import {Background} from "./components/Background";
 import {AuthTest} from "./app/AuthTest";
 import {AllUsers} from "./app/user_account/AllUsers"
 import {isLoggedIn, getUserStatus, userIsAdmin} from "./backendRequests";
+import {GameUpdateForm} from "./components/add_content/UpdateGameForm";
 
 let about = <AboutPage />;
 let addGame = <PageNotFound />;
@@ -95,6 +96,10 @@ const router = createBrowserRouter([
     {
         path: "all_players/:player_slug",
         element: <PlayerView/>
+    },
+    {
+        path: "all_games/:game_slug/edit",
+        element: <GameUpdateForm/>
     },
     {
         path: "*",
