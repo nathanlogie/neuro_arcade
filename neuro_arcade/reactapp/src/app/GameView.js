@@ -7,6 +7,8 @@ import {RadarC} from "../components/game/RadarC";
 import {SwarmPlot} from "../components/game/SwarmPlot";
 import {useEffect, useState} from "react";
 import {Banner, MobileBanner} from "../components/Banner";
+import {isLoggedIn, userIsAdmin} from "../backendRequests";
+import {AdminRanking} from "../components/AdminRanking";
 
 /**
  *
@@ -18,13 +20,20 @@ export function GameView() {
     let gameSlug = useParams().game_slug;
     let [loading, setLoading] = useState(true);
     let [gameData, setGameData] = useState({});
+    let [showRating, setShowRating] = useState(false)
+
+    // if (isLoggedIn() && userIsAdmin()){
+    //     setShowRating(true);
+    // }
+
     useEffect(() => {
         requestGame(gameSlug)
             .then(g => {
                 setGameData(g);
                 setLoading(false);
             })
-    }, []);
+    }, [gameSlug]);
+
 
     let content = <>...</>;
     if (!loading) {
@@ -37,6 +46,7 @@ export function GameView() {
                         />
                         {gameData.game.description}
                     </p>
+                    { isLoggedIn() && userIsAdmin() ? <AdminRanking game={gameSlug}/> : null}
                 </div>
             </div>
             <div className={styles.DataBlock}>

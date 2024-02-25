@@ -31,7 +31,6 @@ if (isLoggedIn()){
     if (userIsAdmin()) {
         about = <EditAbout />;
         allUsers = <AllUsers />
-        gameRanking = <GameRanking />
     }
 
     if (getUserStatus()==="approved" || userIsAdmin()){
