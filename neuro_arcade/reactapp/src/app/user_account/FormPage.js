@@ -5,6 +5,7 @@ import {NavBar} from "../../components/NavBar";
 import {motion} from "framer-motion";
 import {ModelForm} from "../../components/add_content/ModelForm";
 import {Button} from "../../components/Button";
+import {GameUpdateForm} from "../../components/add_content/UpdateGameForm";
 
 /**
  * @returns {JSX.Element} add game page
@@ -26,7 +27,10 @@ export function FormPage({type}) {
         form = <GameForm/>;
     } else if (type === 'model') {
         form  = <ModelForm/>
-    } else {
+    } else if (type==='gameUpdate'){
+        form = <GameUpdateForm/>
+    }
+    else {
         throw('invalid form type');
     }
 

@@ -27,6 +27,7 @@ let addGame = <PageNotFound />;
 let addModel = <PageNotFound />;
 let allUsers = <PageNotFound />;
 let userAccount = <Navigate to={'/login'} />
+let updateGame = <PageNotFound/>;
 
 if (isLoggedIn()){
     userAccount = <AccountPage />
@@ -38,6 +39,7 @@ if (isLoggedIn()){
     if (getUserStatus()==="approved" || userIsAdmin()){
         addGame = <FormPage type={'game'} />
         addModel = <FormPage type={'model'} />
+        updateGame = <FormPage type={'gameUpdate'} />
     }
 
 }
@@ -99,7 +101,7 @@ const router = createBrowserRouter([
     },
     {
         path: "all_games/:game_slug/edit",
-        element: <GameUpdateForm/>
+        element: updateGame
     },
     {
         path: "*",
