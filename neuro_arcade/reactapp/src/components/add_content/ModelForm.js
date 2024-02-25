@@ -14,7 +14,7 @@ let MAX_DESCRIPTION_LENGTH = 1024
 
 const customStyles = {
     option: provided => ({...provided, color: 'white'}),
-    control: provided => ({...provided, color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.2)', border: 'none', borderRadius: '0.5em'}),
+    control: provided => ({...provided, color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.2)', border: 'none', borderRadius: '0.5em', marginBottom: '1em'}),
     valueContainer: provided => ({...provided, height: 'max-content'}),
     placeholder: provided => ({...provided, color: '#CCCCCC', textAlign: 'left', fontSize: '0.9em', paddingLeft: '1em'}),
     input: provided => ({...provided, color: '#FFFFFF', paddingLeft: '1em', fontSize: '0.9em'}),
