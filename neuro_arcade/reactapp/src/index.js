@@ -20,7 +20,6 @@ import {Background} from "./components/Background";
 import {AuthTest} from "./app/AuthTest";
 import {AllUsers} from "./app/user_account/AllUsers"
 import {isLoggedIn, getUserStatus, userIsAdmin} from "./backendRequests";
-import {GameUpdateForm} from "./components/add_content/UpdateGameForm";
 
 let about = <AboutPage />;
 let addGame = <PageNotFound />;
