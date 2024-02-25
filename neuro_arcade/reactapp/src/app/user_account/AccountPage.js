@@ -5,7 +5,6 @@ import {MobileBanner} from "../../components/Banner";
 import {Card} from '../../components/Card';
 import { FaGamepad } from "react-icons/fa6";
 import { TbBoxModel } from "react-icons/tb";
-import { GiConsoleController } from "react-icons/gi";
 import {motion} from "framer-motion";
 import {Button} from "../../components/Button";
 import {Link, useNavigate} from "react-router-dom";
@@ -46,11 +45,7 @@ export function AccountPage() {
             <Card link={'/add_game'} text={'New Game'} icon={<FaGamepad />} />
             <Card link={'/add_model'} text={'New Model'} icon={<TbBoxModel />} />
 
-            { user && userIsAdmin() ?
-                <>
-                    <Link to='all_users'>ALL USERS</Link>
-                    <Card link={'game_ranking'} text={'Game Rankings'} icon={<GiConsoleController />} />
-                </> : null}
+            { user && userIsAdmin() ? <Link to='all_users'>ALL USERS</Link> : null}
         </>
 
     return (
