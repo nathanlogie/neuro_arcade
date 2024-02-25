@@ -58,13 +58,15 @@ export function GameUpdateForm() {
     const [options, setOptions] = useState([])
     const [existingTags, setExistingTags] = useState([])
     const [currentValues, setCurrentValues] = useState(null)
-    let gameSlug = useParams().game_slug;
+
+
+    const gameSlug = useParams().game_slug;
 
 
     useEffect(() => {
         requestGame(gameSlug)
             .then((currentData) => {
-                setCurrentValues(currentData);
+                setCurrentValues(currentData.game);
             })
         requestGameTags()
             .then((tags) => {
@@ -78,6 +80,8 @@ export function GameUpdateForm() {
             label: tag.name
         })
     })
+
+    console.log(currentValues)
 
     function handleReset(){
         reset({
@@ -152,7 +156,7 @@ export function GameUpdateForm() {
         }
     }
 
-    const onSubmit = async (event) => {
+    const onUpdate = async (event) => {
 
         let formData = new FormData();
         formData.append("name", name);
@@ -224,9 +228,10 @@ export function GameUpdateForm() {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <h3>Name</h3>
-            <input {...register("name", {
+        <form>
+            <h3> {currentValues.name} </h3>
+            {/*<h3>Name</h3>*/}
+            <input  {...register("name", {
                 required: "Name is required",
                 maxLength: {
                     value: MAX_NAME_LENGTH,
@@ -355,12 +360,12 @@ export function GameUpdateForm() {
             </span>
 
             <motion.button
-                disabled={isSubmitting}
                 type={"submit"}
                 whileHover={{scale: 1.1}}
                 whileTap={{scale: 0.9}}
+                onSubmit={handleSubmit(onUpdate)}
             >
-                {isSubmitting ? "submitting game..." : "add new game"}
+                {"Save Changes"}
                 <div>
                     <FaPlus/>
                 </div>
