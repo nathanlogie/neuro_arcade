@@ -488,6 +488,8 @@ class GameViewSet(viewsets.ModelViewSet):
         if not game:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
+        game.tags.clear()
+
         tags = data['tags'].split(',')
         for tag in tags:
             game.tags.add(GameTag.objects.get(id=tag))
@@ -500,6 +502,9 @@ class GameViewSet(viewsets.ModelViewSet):
         game = self.get_object(pk=pk)
         if not game:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+        if data['tags']:
+            self.add_tags(request)
 
         serializer = self.get_serializer(game, data=data, partial=True, many=True)
         if serializer.is_valid():
@@ -529,9 +534,26 @@ class PlayerViewSet(viewsets.ModelViewSet):
         if not player:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
+        player.tags.clear()
         tags = data['tags'].split(',')
         for tag in tags:
             player.tags.add(PlayerTag.objects.get(id=tag))
 
         player.save()
         return Response("Tags added", status=200)
+
+    def patch(self, request, pk):
+        data = request.data
+
+        player = self.get_object(pk=pk)
+        if not player:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        if data['tags']:
+            self.add_tags(request)
+
+        serializer = self.get_serializer(player, data=data, partial=True, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_200_OK, data=serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
