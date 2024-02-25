@@ -216,8 +216,14 @@
                     }
                 }
             }
-            & a:hover, span:hover {
-                background-color: rgba(255, 255, 255, 0.15);
+            & span {
+                cursor: unset;
+            }
+            & a:hover {
+                background-color: rgba(255, 255, 255, 0.125);
+            }
+            span:hover {
+                background-color: rgba(255, 255, 255, 0.05);
             }
             & li {
                 display: flex;
