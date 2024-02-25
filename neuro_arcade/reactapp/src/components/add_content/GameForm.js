@@ -7,7 +7,7 @@ import {FaPython} from "react-icons/fa6";
 import {FaPlus} from "react-icons/fa6";
 import {motion} from "framer-motion";
 import CreatableSelect from 'react-select/creatable';
-import {requestGameTags} from "../../backendRequests";
+import {requestGameTags, getUser} from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
 
@@ -46,14 +46,17 @@ export function GameForm() {
     const [description, setDescription] = useState("");
     const [tags, setTags] = useState([])
     const [playLink, setPlayLink] = useState("");
-    const [existingTags, setExistingTags] = useState([])
     const [options, setOptions] = useState([])
+    const [existingTags, setExistingTags] = useState([])
+    const [user, setUser] = useState(null)
+
 
     useEffect(() => {
         requestGameTags()
             .then((tags) => {
                 setExistingTags(tags);
             })
+        setUser(getUser().id);
     }, [])
 
     existingTags.forEach((tag) => {
@@ -131,14 +134,10 @@ export function GameForm() {
         let formData = new FormData();
         formData.append("name", name);
         formData.append("description", description);
-        //Temporary until authentication is fulfilled
-        formData.append("owner", 3);
+        formData.append("owner", user);
         formData.append("play_link", playLink);
         formData.append("slug", slugify(name));
-
-
-
-        console.log(tags)
+        
 
         if (image) {
             formData.append("icon", image)
@@ -167,7 +166,7 @@ export function GameForm() {
                     data: formData,
                     headers: {"Content-Type": "multipart/form-data"},
                 }).catch((response) => {
-                    console.log(response)
+                        console.log(response)
                         setError("root", {message: "Error during tag upload"})
                     }
                 )
