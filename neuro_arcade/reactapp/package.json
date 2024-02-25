@@ -30,6 +30,8 @@
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.21.3",
     "react-scripts": "5.0.1",
+    "react-select": "^5.8.0",
+    "react-slugify": "^3.0.3",
     "recharts": "^2.12.0",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
