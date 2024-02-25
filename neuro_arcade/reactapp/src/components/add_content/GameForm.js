@@ -10,6 +10,7 @@ import CreatableSelect from 'react-select/creatable';
 import {requestGameTags} from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
+import styles from '../../styles/App.module.css';
 
 //Should be synced with models.py
 let MAX_NAME_LENGTH = 64;
@@ -20,9 +21,15 @@ let ACCEPTED_EVAL_SCRIPT = ['py'];
 let ACCEPTED_IMAGE = ['png', 'jpg', 'jpeg'];
 
 const customStyles = {
-    option: provided => ({...provided, color: 'black'}),
-    control: provided => ({...provided, color: 'black'}),
-    singleValue: provided => ({...provided, color: 'black'})
+    option: provided => ({...provided, color: 'white'}),
+    control: provided => ({...provided, color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.2)', border: 'none', borderRadius: '0.5em'}),
+    valueContainer: provided => ({...provided, height: 'max-content'}),
+    placeholder: provided => ({...provided, color: '#CCCCCC', textAlign: 'left', fontSize: '0.9em', paddingLeft: '1em'}),
+    input: provided => ({...provided, color: '#FFFFFF', paddingLeft: '1em', fontSize: '0.9em'}),
+    multiValue: provided => ({...provided, backgroundColor: 'rgba(0,0,0,0.2)', color: 'white', borderRadius: '0.5em'}),
+    multiValueLabel: provided => ({...provided, color: 'white'}),
+    multiValueRemove: provided => ({...provided, borderRadius: '0.5em'}),
+    menu: provided => ({...provided, borderRadius: '0.5em'})
 }
 
 
@@ -241,7 +248,24 @@ export function GameForm() {
                 options={options}
                 components={makeAnimated()}
                 styles={customStyles}
+                classNames={{
+                    menu: () => styles.MenuList
+                }}
                 placeholder={"Search..."}
+                theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                        ...theme.colors,
+                        primary25: 'rgba(255,255,255,0.3)',
+                        primary: 'white',
+                        neutral0: 'rgba(48,49,56,0.8)',
+                        neutral20: 'white',
+                        neutral40: '#BBBBBB',
+                        neutral60: '#CCCCCC',
+                        neutral80: '#AAAAAA',
+                        primary50: 'rgba(209,64,129,0.3)'
+                    },
+                })}
             />
             {errors.tags && (
                 <div>{errors.tags.message}</div>
