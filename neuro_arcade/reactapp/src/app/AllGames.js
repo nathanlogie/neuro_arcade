@@ -7,6 +7,7 @@ import {useEffect, useState} from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import {motion} from "framer-motion";
 import {IoFilter} from "react-icons/io5";
+import { useSearchParam } from "../urlHelpers";
 
 /**
  * @returns {JSX.Element} all games page
@@ -15,7 +16,7 @@ import {IoFilter} from "react-icons/io5";
 export function AllGames() {
     // name query for sorting the already fetched games
     // can be changed freely, as it only affect data displayed on the client
-    let [textQuery, setTextQuery] = useState('');
+    let [textQuery, setTextQuery] = useSearchParam('query', '');
     let [tags, setTags] = useState([]);
     let [selectedTags, setSelectedTags] = useState([]);
     let [loading, setLoading] = useState(true);
