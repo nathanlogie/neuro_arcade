@@ -397,10 +397,6 @@
     }
 }
 
-.MenuList {
-    backdrop-filter: blur(20px);
-}
-
 ::-webkit-scrollbar {
   width: 20px;
 }

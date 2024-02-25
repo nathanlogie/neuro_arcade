@@ -10,7 +10,6 @@ import CreatableSelect from 'react-select/creatable';
 import {requestGameTags} from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
-import styles from '../../styles/App.module.css';
 
 //Should be synced with models.py
 let MAX_NAME_LENGTH = 64;
@@ -29,7 +28,7 @@ const customStyles = {
     multiValue: provided => ({...provided, backgroundColor: 'rgba(0,0,0,0.2)', color: 'white', borderRadius: '0.5em'}),
     multiValueLabel: provided => ({...provided, color: 'white'}),
     multiValueRemove: provided => ({...provided, borderRadius: '0.5em'}),
-    menu: provided => ({...provided, borderRadius: '0.5em'})
+    menu: provided => ({...provided, borderRadius: '0.5em', position: 'relative'})
 }
 
 
@@ -248,9 +247,6 @@ export function GameForm() {
                 options={options}
                 components={makeAnimated()}
                 styles={customStyles}
-                classNames={{
-                    menu: () => styles.MenuList
-                }}
                 placeholder={"Search..."}
                 theme={(theme) => ({
                     ...theme,
@@ -258,7 +254,7 @@ export function GameForm() {
                         ...theme.colors,
                         primary25: 'rgba(255,255,255,0.3)',
                         primary: 'white',
-                        neutral0: 'rgba(48,49,56,0.8)',
+                        neutral0: 'rgba(255, 255, 255, 0.1)',
                         neutral20: 'white',
                         neutral40: '#BBBBBB',
                         neutral60: '#CCCCCC',
