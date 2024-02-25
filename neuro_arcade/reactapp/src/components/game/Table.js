@@ -107,7 +107,6 @@ export function Table({inputData}) {
                         '& .MuiDataGrid-cell:hover': {
                           color: 'white',
                         },
-                        height: '34.05em',
                         width: '33em',
                         fontFamily: 'inherit'
                     }}

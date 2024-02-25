@@ -1,14 +1,33 @@
 import {useForm} from "react-hook-form";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {motion} from "framer-motion";
 import {FaPlus} from "react-icons/fa6";
+import CreatableSelect from 'react-select/creatable';
+import {requestPlayerTags} from "../../backendRequests";
+import slugify from 'react-slugify';
+import makeAnimated from 'react-select/animated';
 
 //Should be synced up to models
 let MAX_NAME_LENGTH = 64
 let MAX_DESCRIPTION_LENGTH = 1024
 
-export function ModelForm(){
+const customStyles = {
+    option: provided => ({
+        ...provided,
+        color: 'black'
+    }),
+    control: provided => ({
+        ...provided,
+        color: 'black'
+    }),
+    singleValue: provided => ({
+        ...provided,
+        color: 'black'
+    })
+}
+
+export function ModelForm() {
     const {
         register,
         handleSubmit,
@@ -18,9 +37,51 @@ export function ModelForm(){
     } = useForm()
 
     const [name, setName] = useState("")
-    const [aiStatus, setAiStatus] = useState("")
     const [description, setDescription] = useState("")
-    const [tags, setTags] = useState("")
+    let [tags, setTags] = useState([])
+    const [existingTags, setExistingTags] = useState([])
+    const [options, setOptions] = useState([])
+
+    useEffect(() => {
+        requestPlayerTags()
+            .then((tags) => {
+                setExistingTags(tags);
+            })
+    }, [])
+
+    existingTags.forEach((tag) => {
+        options.push({
+            value: tag.id,
+            label: tag.name
+        })
+    })
+
+    function handleCreate(tagName) {
+        let formData = new FormData()
+        formData.append("name", tagName)
+        formData.append("slug", slugify(tagName))
+        formData.append("description", "described")
+        axios({
+            method: "post",
+            url: "http://127.0.0.1:8000/api/playerTag/",
+            data: formData,
+            headers: {"Content-Type": "multipart/form-data"},
+        }).then((response) => {
+            console.log(response)
+            let newValue = {
+                value: response.data.id,
+                label: response.data.name
+            }
+            setOptions((prev) => [...prev, newValue]);
+            setTags((prev) => [...prev, newValue]);
+
+
+
+        }).catch(() => {
+                setError("tags", {message: "Error creating new tag"})
+            }
+        )
+    }
 
     const onSubmit = async (event) => {
 
@@ -41,21 +102,44 @@ export function ModelForm(){
             headers: {"Content-Type": "multipart/form-data"},
         }).then(function (response) {
             console.log(response);
+
+            if (tags.length !== 0) {
+                const finalTagIDs = tags.map((tag) => tag.value);
+                formData.append("tags", finalTagIDs)
+                axios({
+                    method: "post",
+                    url: `http://127.0.0.1:8000/api/players/${response.data.id}/add_tags/`,
+                    data: formData,
+                    headers: {"Content-Type": "multipart/form-data"},
+                }).catch((response) => {
+                    console.log(response)
+                        setError("root", {message: "Error during tag upload"})
+                    }
+                )
+            }
             reset()
             setError("root", {message: "model submitted successfully"})
+            setTags(null)
         }).catch(function (response) {
             console.log(response)
             if (!response) {
                 setError("root", {message: "No response from server"});
-
             } else {
-                if (response.response.data.user.includes("IntegrityError")) {
-                    setError("root", {message: "A game with that name already exists!"});
-                } else {
-                    setError("root", {
-                        message: `Something went wrong... ${response.response.data}`
-                    })
+                if (response.response.data.slug) {
+                    setError("root", {message: "A Model with that name already exists!"});
+                    return;
+                } else if (response.response.data.tags) {
+                    setError("root", {message: "Tag upload failed"});
+                    return;
                 }
+                if (response)
+                    if (response.response.data.includes("IntegrityError")) {
+                        setError("root", {message: "A Model with that name already exists!"});
+                    } else {
+                        setError("root", {
+                            message: `Something went wrong... ${response.response.data}`
+                        })
+                    }
             }
         });
     }
@@ -93,11 +177,16 @@ export function ModelForm(){
             )}
 
             <h3> Model Tags </h3>
-            <input {...register("tags", {
-                required: false
-            })}
-                   type={"text"} placeholder={"example1, example2, example3, ..."}
-                   onChange={(event) => setTags(event.target.value)}
+            <CreatableSelect
+                isMulti
+                isClearable={true}
+                onChange={(newValue) => setTags(newValue)}
+                onCreateOption={handleCreate}
+                value={tags}
+                options={options}
+                components={makeAnimated()}
+                styles={customStyles}
+                placeholder={"Search..."}
             />
 
             <motion.button
@@ -108,7 +197,7 @@ export function ModelForm(){
             >
                 {isSubmitting ? "submitting model..." : "add new model"}
                 <div>
-                    <FaPlus />
+                    <FaPlus/>
                 </div>
             </motion.button>
             {errors.root && (
