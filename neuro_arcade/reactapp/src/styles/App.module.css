@@ -450,7 +450,8 @@
 .MobileBannerBuffer {
     position: relative;
     display: none;
-    height: 7em;
+    width: 100%;
+    height: 8em;
 }
 
 .MainBlock#big {
@@ -484,6 +485,7 @@
         }
         .Side {
             width: 100%;
+            padding-bottom: 3em;
         }
     }
     .MobileBannerBuffer {

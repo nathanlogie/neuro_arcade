@@ -37,6 +37,12 @@
     }
 }
 
+@media(max-width: 50em) {
+    .TableContainer {
+        scale: 0.9;
+    }
+}
+
 @media (max-width: 50em) {
     .TableContainer {
         margin-left: auto;

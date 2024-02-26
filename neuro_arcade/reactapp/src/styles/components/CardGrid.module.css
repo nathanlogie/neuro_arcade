@@ -11,3 +11,9 @@
 #AppGrid {
     justify-content: flex-start;
 }
+
+@media(max-width: 50em) {
+    .CardGrid {
+        gap: 0;
+    }
+}

@@ -254,7 +254,7 @@ export function GameForm() {
                         ...theme.colors,
                         primary25: 'rgba(255,255,255,0.3)',
                         primary: 'white',
-                        neutral0: 'rgba(255, 255, 255, 0.1)',
+                        neutral0: 'rgba(255,255,255,0.075)',
                         neutral20: 'white',
                         neutral40: '#BBBBBB',
                         neutral60: '#CCCCCC',
