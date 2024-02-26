@@ -60,7 +60,7 @@ export function AllGames() {
         content = <>
             <div className={styles.Side}>
                 <div className={styles.Search}>
-                    <input onChange={e => setTextQuery(e.target.value)} placeholder="search..."/>
+                    <input onChange={e => setTextQuery(e.target.value)} defaultValue={textQuery} placeholder="search..."/>
                     <div className={styles.SearchIcon}>
                         <FaMagnifyingGlass/>
                     </div>
