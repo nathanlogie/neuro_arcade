@@ -19,7 +19,7 @@ import {
 } from "./variableHelper";
 
 let header = getHeaders("POST")
-header.headers['Content-Type'] = "multipart/form-data"
+// header.headers['Content-Type'] = "multipart/form-data"
 
 const customStyles = {
     option: provided => ({...provided, color: 'black'}),
@@ -211,7 +211,7 @@ export function GameForm() {
                 required: "Name is required",
                 maxLength: {
                     value: MAX_NAME_LENGTH_GAME,
-                    message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH})`,
+                    message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH_GAME})`,
                 }
             })} type={"text"} placeholder={"game name"}
                    onChange={(event) => setName(event.target.value)}
@@ -225,7 +225,7 @@ export function GameForm() {
                 required: "A description is required",
                 maxLength: {
                     value: MAX_DESCRIPTION_LENGTH_GAME,
-                    message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})`,
+                    message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH_GAME})`,
                 }
             })} type={"text"} placeholder={"This game measures..."}
                    onChange={(event) => setDescription(event.target.value)}

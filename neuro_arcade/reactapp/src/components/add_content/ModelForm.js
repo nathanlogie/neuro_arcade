@@ -10,7 +10,7 @@ import makeAnimated from 'react-select/animated';
 import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION} from "./variableHelper";
 
 let header = getHeaders("POST")
-header.headers['Content-Type'] = "multipart/form-data"
+// header.headers['Content-Type'] = "multipart/form-data"
 
 
 const customStyles = {
@@ -151,7 +151,7 @@ export function ModelForm() {
                 required: "Name is required",
                 maxLength: {
                     value: MAX_NAME_LENGTH_MODEL,
-                    message: `Maximum name length has been exceeded (${MAX_NAME_LENGTH})`
+                    message: `Maximum name length has been exceeded (${MAX_NAME_LENGTH_MODEL})`
                 }
             })}
                    type={"text"} placeholder={"model name"}
@@ -166,7 +166,7 @@ export function ModelForm() {
                 required: false,
                 maxLength: {
                     value: MAX_DESCRIPTION_LENGTH_MODEL,
-                    message: "Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})"
+                    message: `Maximum description length has been exceeded (${MAX_NAME_LENGTH_MODEL}`
                 }
             })}
                    type={"text"} placeholder={"This model was designed to..."}
