@@ -123,7 +123,6 @@
         flex-direction: column;
         align-items: center;
         overflow: hidden;
-        margin-bottom: 3em;
         .Switcher {
             box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
             border-radius: 3em;
@@ -448,7 +447,7 @@
     position: relative;
     display: none;
     width: 100%;
-    height: 10em;
+    height: 7em;
 }
 
 .MainBlock#big {
@@ -490,7 +489,6 @@
         }
         .Side {
             width: 100%;
-            padding-bottom: 3em;
             .Publications {
                 margin-top: 1em;
             }
