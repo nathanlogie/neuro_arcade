@@ -113,10 +113,6 @@ users = [
 
 game_tags = [
     {
-        'name': "Featured",
-        'description': "The current featured games",
-    },
-    {
         'name': "Tracking Games",
         'description': "Games that involve tracking an object",
     },
@@ -168,7 +164,7 @@ games = [
         'description': "A game where you deal with a number of varying shapes",
         'owner': "kangaroo14",
         'icon': "example.png",
-        'tags': ["Tracking Games", "High AI Score", "Featured"],
+        'tags': ["Tracking Games", "High AI Score"],
         'score_type': "{collected_coins: {max: 100, type: int}}",
         'priority': 100
     },
@@ -177,7 +173,7 @@ games = [
         'description': "A game where objects fly through the air and you have to select the correct object",
         'owner': "hippo88",
         'icon': "example.png",
-        'tags': ["Judgement Games", "High Human Player Score", "Featured"],
+        'tags': ["Judgement Games", "High Human Player Score"],
         'score_type': "{collected_points: {max: 20, type: int}}",
         'priority': 90
     },
@@ -186,7 +182,7 @@ games = [
         'description': "A game where you have to keep track of flying objects that soemtimes go behind a barrier",
         'owner': "kangaroo14",
         'icon': "example.png",
-        'tags': ["Tracking Games", "High AI Score", "Featured"],
+        'tags': ["Tracking Games", "High AI Score"],
         'score_type': "{collected_points: {max: 100.0, type: float}}",
         'priority': 80
     },
@@ -222,7 +218,7 @@ games = [
         'description': "A game where you need to correctly time jumps to get through small spaces",
         'owner': "duck44",
         'icon': "example.png",
-        'tags': ["Reflex Games", "Timing Games", "Featured"],
+        'tags': ["Reflex Games", "Timing Games"],
         'score_type': "{collected_points: {max: 10000, type: int}}",
         'priority': 100
     },
@@ -250,7 +246,7 @@ games = [
                        "requires memory",
         'owner': "kangaroo14",
         'icon': "example.png",
-        'tags': ["Reflex Games", "Pattern Recognition Games", "Memory Games", "Timing Games", "Featured"],
+        'tags': ["Reflex Games", "Pattern Recognition Games", "Memory Games", "Timing Games"],
         'score_type': "{attempt_made: {max: 100, type: int}}",
         'priority': 100
     },
@@ -277,7 +273,7 @@ games = [
         'description': "A game where you need to get the longest snake possible without crashing",
         'owner': "panda22",
         'icon': "example.png",
-        'tags': ["Strategic Games", "Puzzle Games", "Featured"],
+        'tags': ["Strategic Games", "Puzzle Games"],
         'score_type': "{collected_points: {max: 200, type: int}}",
         'priority': 85
     },
@@ -286,7 +282,7 @@ games = [
         'description': "A game where you need to memorise the pattern",
         'owner': "giraffe10",
         'icon': "example.png",
-        'tags': ["Memory Games", "Pattern Recognition Games", "Featured"],
+        'tags': ["Memory Games", "Pattern Recognition Games"],
         'score_type': "{collected_points: {max: 25, type: int}}",
         'priority': 95
     },
@@ -313,7 +309,7 @@ games = [
         'description': "A game where you need to find the four sets of connections between a set of words",
         'owner': "duck44",
         'icon': "example.png",
-        'tags': ["Pattern Recognition Games", "Featured", "High Human Player Score"],
+        'tags': ["Pattern Recognition Games", "High Human Player Score"],
         'score_type': "{time_taken: {max: 600.0, type: float}}",
         'priority': 100
     },

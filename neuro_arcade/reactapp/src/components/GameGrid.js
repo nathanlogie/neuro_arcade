@@ -25,6 +25,8 @@ export function GameGrid({textQuery='', tagQuery=[], num=0, id}) {
             })
     }, []);
 
+    games.sort((a,b) => b.priority-a.priority)
+
     // Display waiting message while waiting on server, then show games
     if (loading) {
         return null;

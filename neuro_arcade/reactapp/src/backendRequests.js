@@ -203,7 +203,6 @@ export async function requestGame(gameName) {
             return response.data;
         })
         .catch((error) => {
-            console.log("ERROR");
             console.log(error);
             throw error;
         })
@@ -245,10 +244,6 @@ export async function requestPlayerTags() {
         })
 }
 
-function sortByRank(a, b){
-    return b.priority - a.priority;
-}
-
 /**
  * Requests a sorted list of games.
  *
@@ -259,7 +254,7 @@ function sortByRank(a, b){
 export async function requestGames() {
     const url = API_ROOT + '/api/games/';
     return await axios.get(url).then((response) => {
-        return response.data.sort(sortByRank);
+        return response.data;
     }).catch((error) => {
         console.log(error);
         throw error;

@@ -488,23 +488,13 @@ class GameViewSet(viewsets.ModelViewSet):
     """
     @action(detail=True, methods=['POST'])
     def update_ranking(self, request, pk=None):
-        new_ranking = request.body
+        new_ranking = int(request.body)
         game = self.get_object()
 
         if not game:
             return Response(status=404, data='Game does not exist')
 
-        try:
-            game.priority = new_ranking
-        except:
-            return Response(status=500, data='Unknown server error occurred')
-
-        featured_tag = GameTag.objects.get(slug='featured')
-        if int(new_ranking) > 75:
-            game.tags.add(featured_tag)
-        else:
-            if featured_tag in game.tags.all():
-                game.tags.remove(featured_tag)
+        game.priority = new_ranking
 
         game.save()
 

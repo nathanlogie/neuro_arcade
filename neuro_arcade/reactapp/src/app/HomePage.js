@@ -21,7 +21,6 @@ import { FaRegUserCircle } from "react-icons/fa";
 export function HomePage() {
 
     let [tags, setTags] = useState([]);
-    let [forcedTags, setForcedTags] = useState([]);
     let [selectedTags, setSelectedTags] = useState([]);
     let [loadingTags, setLoadingTags] = useState(true);
 
@@ -59,7 +58,6 @@ export function HomePage() {
         requestGameTags()
             .then((tags) => {
                 setTags(tags.filter((tag) => tag.slug != 'featured'));
-                setForcedTags(tags.filter((tag) => tag.slug == 'featured'));
                 setLoadingTags(false);
             })
     }, [])
@@ -85,7 +83,7 @@ export function HomePage() {
             >
                 <div className={styles.Content} id={styles['small']}>
                     <div className={styles.Title}>
-                        <h1>Featured games</h1>
+                        <h1>Top Games</h1>
                         <motion.div
                             className={styles.FilterButton} onClick={() => setShow(!show)}
                             whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}
@@ -104,7 +102,6 @@ export function HomePage() {
                         num={8}
                         tagQuery={
                             tags.filter((tag, i) => selectedTags[i])
-                                .concat(forcedTags)
                                 .map((tag) => tag.id)
                         }
                     />

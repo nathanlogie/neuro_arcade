@@ -13,15 +13,8 @@ export function AdminRanking({game, rating}){
     const [value, setValue] = useState(rating/10)
 
     async function handleChange(e, newValue) {
-        setValue(newValue)
-        await postAdminRanking(game, newValue)
-            .then((response) => {
-                    console.log(response);
-                }
-            )
-            .catch((error) => {
-                console.log(error);
-            })
+        setValue(newValue);
+        await postAdminRanking(game, newValue);
     }
 
     return (
