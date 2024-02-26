@@ -161,7 +161,7 @@ async function getCSRFToken() {
  *
  * @return Axios Request Config
  */
-async function getHeaders(method, authenticated=false) {
+export async function getHeaders(method, authenticated=false) {
     let config = {
         credentials: 'include',
         method: method,

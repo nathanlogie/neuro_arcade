@@ -4,10 +4,13 @@ import axios from "axios";
 import {motion} from "framer-motion";
 import {FaPlus} from "react-icons/fa6";
 import CreatableSelect from 'react-select/creatable';
-import {requestPlayerTags, getUser} from "../../backendRequests";
+import {requestPlayerTags, getUser, getHeaders} from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
 import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION} from "./variableHelper";
+
+let header = getHeaders("POST")
+header.headers['Content-Type'] = "multipart/form-data"
 
 
 const customStyles = {
@@ -66,7 +69,7 @@ export function ModelForm() {
             method: "post",
             url: "http://127.0.0.1:8000/api/playerTag/",
             data: formData,
-            headers: {"Content-Type": "multipart/form-data"},
+            headers: header,
         }).then((response) => {
             console.log(response)
             let newValue = {
@@ -107,7 +110,7 @@ export function ModelForm() {
                     method: "post",
                     url: `http://127.0.0.1:8000/api/players/${response.data.id}/add_tags/`,
                     data: formData,
-                    headers: {"Content-Type": "multipart/form-data"},
+                    headers: header,
                 }).catch((response) => {
                         console.log(response)
                         setError("root", {message: "Error during tag upload"})
