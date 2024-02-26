@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import { PlayerViewTable } from "../components/PlayerViewTable";
 import {Banner, MobileBanner} from "../components/Banner";
 import {motion} from "framer-motion";
+import { set } from "lodash";
 
 /**
  *
@@ -13,33 +14,29 @@ import {motion} from "framer-motion";
  */
 export function PlayerView() {
     let playerSlug = useParams().player_slug;
-    let [loading, setLoading] = useState(true);
+    let [loadingPlayer, setLoadingPlayer] = useState(true);
     let [playerData, setPlayerData] = useState({});
+
+    let [loadingScores, setLoadingScores] = useState(true);
     let [playerScores, setPlayerScores] = useState([]);
     useEffect(() => {
-        setLoading(true);
         requestPlayer(playerSlug)
             .then(data => {
                 setPlayerData(data);
-                setLoading(false);
+                setLoadingPlayer(false);
             })
-            .catch(error => {
-                console.error('Error fetching player data:', error);
-            });
 
         requestPlayerScores(playerSlug)
             .then(scores => {
                 setPlayerScores(scores);
+                setLoadingScores(false);
             })
-            .catch(error => {
-                console.error('Error fetching player scores:', error);
-            });
     }, []);
 
     let tag_text = playerData.tags ? playerData.tags.join(", ") : "";
 
     let content = <>...</>;
-    if(!loading){
+    if(!loadingPlayer && !loadingScores){
         content = 
             <motion.div
                 className={styles.MainBlock}
@@ -53,8 +50,11 @@ export function PlayerView() {
                         <h1>{playerData.name}</h1>
                     </div>
                     <div className={styles.ContentBlock}>
+                        <img src="https://loremflickr.com/500/500" alt={'image'} // TODO add query for image here
+                        />
                         <p>{playerData.description}</p>
-                        <p>The tags for this player are: {tag_text}</p>
+                        <p>User: {playerData.user}</p>
+                        <p>Tags: {tag_text}</p>
                     </div>
                 </div>
                 <div className={styles.Side}>          

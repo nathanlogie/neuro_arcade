@@ -41,7 +41,7 @@ export function PlayerViewTable({inputData}) {
     const scoreTypes = new Set();
     /**
      * iterates through inputData and then iterates through its value. It then adds the score type to the set in lowercase
-     * @param entry {Element from inputData} 
+     * @param entry {Object} 
      */
     inputData.forEach(function(entry) {
         const value = entry.value;
@@ -132,11 +132,11 @@ export function PlayerViewTable({inputData}) {
                     initialState={{
                         pagination: {
                             paginationModel: {
-                                pageSize: 5,
+                                pageSize: 8,
                             },
                         },
                     }}
-                    pageSizeOptions={[5]}
+                    pageSizeOptions={[8]}
                     disableRowSelectionOnClick
                 />
             </ThemeProvider>

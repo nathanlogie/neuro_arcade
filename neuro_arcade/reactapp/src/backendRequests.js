@@ -688,7 +688,7 @@ export async function requestPlayer(playerName) {
 }
 
 /**
- * Requests the data associated with a player.
+ * Requests the scores associated with a player.
  *
  * @param {string} playerName - slug of the player name
  *
