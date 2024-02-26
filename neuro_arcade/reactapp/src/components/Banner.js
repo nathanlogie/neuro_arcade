@@ -56,19 +56,23 @@ export function Banner({size, left, right, selected}) {
                 <div
                     className={styles.Banner}
                     id={styles['small']}>
-                    <Button
-                        name={'back'}
-                        link={-1}
-                        direction={'up'}
-                        orientation={'left'}
-                    />
-                    <Logo size={size}/>
-                    <div className={styles.TabSwitcher}>
-                        <Switcher
-                            data={switcher_labels}
-                            onSwitcherChange={handleSwitcherChange}
-                            switcherDefault={selectedSwitcherValue}
+                    <div className={styles.Buffer}>
+                        <Button
+                            name={'back'}
+                            link={-1}
+                            direction={'up'}
+                            orientation={'left'}
                         />
+                    </div>
+                    <Logo size={size}/>
+                    <div className={styles.Buffer}>
+                        <div className={styles.TabSwitcher}>
+                            <Switcher
+                                data={switcher_labels}
+                                onSwitcherChange={handleSwitcherChange}
+                                switcherDefault={selectedSwitcherValue}
+                            />
+                        </div>
                     </div>
                 </div>
                 <NavBar
