@@ -1,5 +1,5 @@
 import styles from '../styles/components/CardGrid.module.css'
-import {GameTagKey, requestGames, requestSortedGames} from "../backendRequests";
+import {GameTagKey, requestGames} from "../backendRequests";
 import {CardGrid} from './CardGrid';
 import {useEffect, useState} from "react";
 
