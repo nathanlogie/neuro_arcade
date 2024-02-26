@@ -123,6 +123,7 @@
         flex-direction: column;
         align-items: center;
         overflow: hidden;
+        margin-bottom: 3em;
         .Switcher {
             box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
             border-radius: 3em;
@@ -465,7 +466,7 @@
     }
 }
 
-@media (max-width: 75em) {
+@media (max-width: 90em) {
     .MainBlock {
         margin: 0;
         gap: 0;
@@ -480,9 +481,12 @@
                 margin: 0 1em;
                 width: calc(100% - 2em) !important;
             }
-        }
-        & h1 {
-            font-size: 1.5em;
+            .Title {
+                padding-left: 10em;
+                & h1 {
+                    font-size: 1.5em;
+                }
+            }
         }
         .Side {
             width: 100%;
@@ -497,8 +501,23 @@
     }
 }
 
+@media (max-width: 75em) {
+    .MainBlock {
+        .Content {
+            .Title {
+                padding-left: 3em;
+            }
+        }
+    }
+}
+
 @media (max-width: 50em) {
     .MainBlock {
+        .Content {
+            .Title {
+                padding-left: unset;
+            }
+        }
         .DataBlock {
             padding: 0 2em;
             display: block;
@@ -515,6 +534,9 @@
 
 @media (max-width: 30em) {
     .Content {
+        .Title {
+            justify-content: center;
+        }
         .ContentBlock {
             & p {
                 display: flex;

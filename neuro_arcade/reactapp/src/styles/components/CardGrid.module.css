@@ -17,9 +17,3 @@
         gap: 1em;
     }
 }
-
-@media(max-width: 20em) {
-    .CardGrid {
-        gap: 0.5em;
-    }
-}
