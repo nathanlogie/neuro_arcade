@@ -203,6 +203,7 @@ export async function requestGame(gameName) {
             return response.data;
         })
         .catch((error) => {
+            console.log("ERROR");
             console.log(error);
             throw error;
         })
@@ -244,6 +245,10 @@ export async function requestPlayerTags() {
         })
 }
 
+function sortByRank(a, b){
+    return b.priority - a.priority;
+}
+
 /**
  * Requests a sorted list of games.
  *
@@ -254,7 +259,7 @@ export async function requestPlayerTags() {
 export async function requestGames() {
     const url = API_ROOT + '/api/games/';
     return await axios.get(url).then((response) => {
-        return response.data;
+        return response.data.sort(sortByRank);
     }).catch((error) => {
         console.log(error);
         throw error;
@@ -689,9 +694,13 @@ export async function requestPlayer(playerName) {
 
 /**
  * Posts Admin Ranking to model
+ *
  * @Param {Integer} gameID: ID of game to be ranked
  * @Param {Float} ranking: ranking of new game
- * @returns Reponse
+ *
+ * @returns Response success response
+ *
+ * @throws error otherwise
  */
 export async function postAdminRanking(gameID, ranking){
     const url = API_ROOT + `/api/games/${gameID}/update_ranking/`
@@ -702,6 +711,7 @@ export async function postAdminRanking(gameID, ranking){
     })
         .catch((error) => {
             console.log(error);
+            throw error;
         })
 
 }

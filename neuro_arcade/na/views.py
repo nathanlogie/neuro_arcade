@@ -481,6 +481,11 @@ class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
 
+    """ 
+    Action on a game when ranking is updated
+    Changes Tag to featured if ranking is above 75
+    Returns success response if ranking updated
+    """
     @action(detail=True, methods=['POST'])
     def update_ranking(self, request, pk=None):
         new_ranking = request.body
@@ -494,9 +499,14 @@ class GameViewSet(viewsets.ModelViewSet):
         except:
             return Response(status=500, data='Unknown server error occurred')
 
-        game.save()
+        featured_tag = GameTag.objects.get(slug='featured')
+        if int(new_ranking) > 75:
+            game.tags.add(featured_tag)
+        else:
+            if featured_tag in game.tags.all():
+                game.tags.remove(featured_tag)
 
-        print("SUCCESS! Game: ", game.id, "\tPriority: ", game.priority)
+        game.save()
 
         return Response(status=200, data='Ranking updated successfully!')
 

@@ -3,6 +3,12 @@ import Typography from '@mui/material/Typography';
 import {useState} from "react";
 import {postAdminRanking, isLoggedIn, userIsAdmin} from "../backendRequests";
 
+/**
+ *
+ * @param game - id of game to rank
+ * @param rating - current ranking of the game
+ * @returns {JSX.Element}
+ */
 export function AdminRanking({game, rating}){
 
     const [value, setValue] = useState(rating/10)
@@ -21,7 +27,7 @@ export function AdminRanking({game, rating}){
 
     return (
         <>
-              <Typography component="legend">Admin Ranking</Typography>
+            <Typography component="legend">Admin Ranking</Typography>
             {isLoggedIn() && userIsAdmin() ?
                 <Rating
                     name="half-rating customized-10"

@@ -97,6 +97,10 @@ const router = createBrowserRouter([
         element: <PlayerView/>
     },
     {
+        path: "all_games/:game_slug/edit",
+        element: <FormPage type={'gameUpdate'} />
+    },
+    {
         path: "*",
         element: <PageNotFound />
     }

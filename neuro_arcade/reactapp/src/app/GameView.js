@@ -8,7 +8,6 @@ import React, {useEffect, useState} from "react";
 import {Banner, MobileBanner} from "../components/Banner";
 import {Switcher} from "../components/Switcher";
 import {motion} from "framer-motion";
-import {isLoggedIn, userIsAdmin} from "../backendRequests";
 import {AdminRanking} from "../components/AdminRanking";
 
 /**

@@ -100,15 +100,6 @@ export function HomePage() {
                         onMouseOver={() => setHover(true)}
                         onMouseOut={() => setHover(false)}
                     />
-                    {/*
-                        The featured tag is always applied, so that's put in the query for server-side
-                        filtering
-                        TODO: CardGrid should probably abstract the query
-                        TODO: only the first 8 featured games will be requested, so when additional tags are applied
-                        there may be less than 8 games shown even if other valid ones exist. Either tag filtering should
-                        be done server-side (resulting in a request on every check/uncheck), or num filtering should be
-                        done locally
-                    */}
                     <GameGrid
                         num={8}
                         tagQuery={
