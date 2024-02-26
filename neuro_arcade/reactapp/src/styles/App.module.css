@@ -268,7 +268,7 @@
         }
     }
     .DataBlock {
-        padding: 0 3em 3em 3em;
+        padding: 0 3em;
         width: 100%;
         display: flex;
         overflow-x: auto;

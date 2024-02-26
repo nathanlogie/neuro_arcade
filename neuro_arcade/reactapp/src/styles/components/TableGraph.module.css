@@ -28,7 +28,7 @@
 
 #home {
     height: fit-content;
-    margin: 4em auto 2em;
+    margin: 6em auto 2em;
 }
 
 @media(max-width: 78em) {
