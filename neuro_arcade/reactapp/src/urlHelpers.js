@@ -34,7 +34,10 @@ export function useSearchParam(name, defaultVal, decoder=null) {
 
     function setter(val) {
         setSearchParams((params) => {
-            params.set(name, val);
+            if (val === defaultVal)
+                params.delete(name)
+            else
+                params.set(name, val);
             return params;
         });
     };
