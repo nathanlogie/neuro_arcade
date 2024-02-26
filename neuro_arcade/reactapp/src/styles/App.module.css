@@ -282,6 +282,7 @@
             background-color: rgba(3, 3, 3, 0.4);
             border-radius: 0.5em;
             backdrop-filter: blur(20px);
+            margin-top: 3em;
             .Background {
                 background: linear-gradient(270deg, rgba(255, 255, 255, 0.10) 0%, rgba(217, 217, 217, 0.00) 100%);
             }

@@ -8,6 +8,8 @@ import React, {useEffect, useState} from "react";
 import {Banner, MobileBanner} from "../components/Banner";
 import {Switcher} from "../components/Switcher";
 import {motion} from "framer-motion";
+import { MdBubbleChart } from "react-icons/md";
+import {AiOutlineRadarChart} from "react-icons/ai";
 
 /**
  *
@@ -30,14 +32,17 @@ export function GameView() {
             })
     }, []);
 
+    const swarm = <MdBubbleChart/>;
+    const radar = <AiOutlineRadarChart/>;
+
     const graphHeaders = {
         table_headers: [
-            { name: 'Swarm Plot' },
-            { name: 'Radar Chart' },
+            { name: swarm },
+            { name: radar },
         ],
     };
 
-    const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState('Swarm Plot');
+    const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(swarm);
 
     const handleSwitcherChange = (selectedValue) => {
         setSelectedSwitcherValue(selectedValue);
@@ -81,8 +86,8 @@ export function GameView() {
                             }
                         </div>
                         <div className={styles.Background}>
-                            {selectedSwitcherValue === 'Swarm Plot' ? <SwarmPlot inputData={gameData}/> : <></>}
-                            {selectedSwitcherValue === 'Radar Chart' ? <RadarC inputData={gameData}/> : <></>}
+                            {selectedSwitcherValue.type.toString() === swarm.type.toString() ? <SwarmPlot inputData={gameData}/> : <></>}
+                            {selectedSwitcherValue.type.toString() === radar.type.toString() ? <RadarC inputData={gameData}/> : <></>}
                         </div>
                     </div>
                 </div>
