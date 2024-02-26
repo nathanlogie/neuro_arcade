@@ -32,10 +32,15 @@ export function AllGames() {
             })
     }, [])
 
+    function onTagChange(selection) {
+        setSelectedTags(tags.filter((tag, i) => selection[i]).map((tag) => tag.slug))
+    }
+
     const smallTagFilter =
         <TagFilter
-            onTagChange={setSelectedTags}
+            onTagChange={onTagChange}
             tags={tags.map((tag) => tag.name)}
+            initialTicks={tags.map((tag) => selectedTags.includes(tag.slug))}
             id={show ? 'all' : 'invisible'}
             onMouseOver={() => setHover(true)}
             onMouseOut={() => setHover(false)}
@@ -43,8 +48,9 @@ export function AllGames() {
 
     const largeTagFilter =
         <TagFilter
-            onTagChange={setSelectedTags}
+            onTagChange={onTagChange}
             tags={tags.map((tag) => tag.name)}
+            initialTicks={tags.map((tag) => selectedTags.includes(tag.slug))}
             onMouseOver={() => setHover(true)}
             onMouseOut={() => setHover(false)}
         />;
@@ -74,7 +80,7 @@ export function AllGames() {
                 {smallTagFilter}
                 <GameGrid
                     textQuery={textQuery}
-                    tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)}
+                    tagQuery={tags.filter((tag) => selectedTags.includes(tag.slug)).map((tag) => tag.id)}
                 />
             </div>
         </>
