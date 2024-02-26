@@ -57,13 +57,13 @@ export function GameView() {
                 <div className={styles.Content}>
                     <div className={styles.Title}>
                         <h1>{gameData.game.name}</h1>
+                        <AdminRanking game={gameData.game.id} rating={gameData.game.priority}/>
                     </div>
                     <div className={styles.ContentBlock}>
                         <p>
                             <img src="https://loremflickr.com/500/500" alt={'image'} // TODO add query for image here
                             />
                             {gameData.game.description}
-                            <AdminRanking game={gameData.game.id} rating={gameData.game.priority}/>
                         </p>
                     </div>
                 </div>

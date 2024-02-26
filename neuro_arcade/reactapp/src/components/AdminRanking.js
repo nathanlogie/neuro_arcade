@@ -1,5 +1,4 @@
 import Rating from '@mui/material/Rating';
-import Typography from '@mui/material/Typography';
 import {useState} from "react";
 import {postAdminRanking, isLoggedIn, userIsAdmin} from "../backendRequests";
 
@@ -27,7 +26,6 @@ export function AdminRanking({game, rating}){
 
     return (
         <>
-            <Typography component="legend">Admin Ranking</Typography>
             {isLoggedIn() && userIsAdmin() ?
                 <Rating
                     name="half-rating customized-10"
