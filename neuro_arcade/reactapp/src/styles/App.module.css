@@ -539,6 +539,9 @@
     .Gradient {
         visibility: hidden;
     }
+    #save {
+        margin-top: 0 !important;
+    }
 }
 
 .Search {
