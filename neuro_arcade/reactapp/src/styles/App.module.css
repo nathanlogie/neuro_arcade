@@ -440,18 +440,11 @@
     }
 }
 
-.NavBuffer {
-    display: flex;
-    justify-content: center;
-    width: 14em;
-    margin: 0 auto;
-}
-
 .MobileBannerBuffer {
     position: relative;
     display: none;
     width: 100%;
-    height: 8em;
+    height: 5em;
 }
 
 .MainBlock#big {
@@ -477,7 +470,7 @@
         max-height: calc(100dvh - 14.5em);
         .Content {
             width: 100%;
-            padding: 2em;
+            padding: 1em;
             margin: 0;
         }
         & h1 {

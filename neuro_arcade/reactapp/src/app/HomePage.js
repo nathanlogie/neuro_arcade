@@ -47,10 +47,8 @@ export function HomePage() {
 
     if (isLoggedIn()) {
         nav_right = (
-            <div className={styles.NavBuffer}>
             <Card id={'nav'} link={'user_account'} text={'user'} icon={<FaRegUserCircle/>} //TODO signed in user profile display
             />
-            </div>
         );
     }
 

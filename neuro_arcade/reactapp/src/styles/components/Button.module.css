@@ -34,17 +34,14 @@
 }
 .ButtonBlock#left {
     padding: 0.5rem 1rem 0.5rem 3rem;
-    left: 10%;
+    margin-left: 1.5em;
 }
 .ButtonBlock#right {
     padding: 0.5rem 3rem 0.5rem 1rem;
-    right: 10%;
-}
-.Arrow#left {
-    left: -1em;
+    margin-right: 1.5em;
 }
 .Arrow#right {
-    right: -1em;
+    right: 0;
 }
 
 @media (max-width: 50em) {

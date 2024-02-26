@@ -10,6 +10,8 @@
     height: 10em;
     .Buffer {
         width: 50%;
+        justify-content: center;
+        display: flex;
     }
 }
 
@@ -19,14 +21,14 @@
     }
 }
 
-@media (max-width: 25em) {
-    .Buffer {
-        width: 6.75em;
-        * {
-            margin: 0;
-        }
-    }
+@media (max-width: 50em) {
     .NavBar {
-        height: 10em;
+        justify-content: space-around;
+    }
+}
+
+@media (max-width: 25em) {
+    .NavBar {
+        height: 7em;
     }
 }
