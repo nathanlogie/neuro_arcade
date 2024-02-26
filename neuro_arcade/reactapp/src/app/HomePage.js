@@ -83,7 +83,7 @@ export function HomePage() {
             >
                 <div className={styles.Content} id={styles['small']}>
                     <div className={styles.Title}>
-                        <h1>Top Games</h1>
+                        <h1>Featured Games</h1>
                         <motion.div
                             className={styles.FilterButton} onClick={() => setShow(!show)}
                             whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}
