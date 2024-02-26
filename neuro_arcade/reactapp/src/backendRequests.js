@@ -705,7 +705,7 @@ export async function requestPlayer(playerName) {
 export async function postAdminRanking(gameID, ranking){
     const url = API_ROOT + `/api/games/${gameID}/update_ranking/`
 
-    await axios.post(url, ranking*10)
+    await axios.post(url, ranking*10, getHeaders('POST'))
         .then((response) => {
             return response;
     })
