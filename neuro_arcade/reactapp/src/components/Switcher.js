@@ -38,7 +38,7 @@ export function Switcher({data, onSwitcherChange, switcherDefault}) {
     };
 
     const checkifSelected = (alignment, name) => {
-        if ((alignment === name && typeof name === 'string') || (alignment.type === name.type && typeof name !== 'string')) {
+        if ((typeof name === 'string' && alignment === name) || (typeof name === 'object' && alignment.type === name.type)) {
             return true
         }
     }
