@@ -4,13 +4,11 @@ import axios from "axios";
 import {motion} from "framer-motion";
 import {FaPlus} from "react-icons/fa6";
 import CreatableSelect from 'react-select/creatable';
-import {requestPlayerTags, getUser, getHeaders} from "../../backendRequests";
+import {requestPlayerTags, getUser, getHeaders, requestGameTags} from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
 import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION} from "./variableHelper";
 
-let header = getHeaders("POST")
-// header.headers['Content-Type'] = "multipart/form-data"
 
 
 const customStyles = {
@@ -49,8 +47,14 @@ export function ModelForm() {
         requestPlayerTags()
             .then((tags) => {
                 setExistingTags(tags);
+                setUser(getUser().id);
+                getHeaders("POST")
+                    .then((header)=>{
+                        header.headers["Content-Type"] = "multipart/form-data";
+                        setHeader(header);
+                    })
             })
-        setUser(getUser().id);
+
     }, [])
 
     existingTags.forEach((tag) => {

@@ -18,9 +18,6 @@ import {
     EVAL_EXTENSION
 } from "./variableHelper";
 
-let header = getHeaders("POST")
-// header.headers['Content-Type'] = "multipart/form-data"
-
 const customStyles = {
     option: provided => ({...provided, color: 'black'}),
     control: provided => ({...provided, color: 'black'}),
@@ -51,14 +48,20 @@ export function GameForm() {
     const [options, setOptions] = useState([])
     const [existingTags, setExistingTags] = useState([])
     const [user, setUser] = useState(null)
-
+    const [header, setHeader] = useState(null)
 
     useEffect(() => {
         requestGameTags()
             .then((tags) => {
                 setExistingTags(tags);
+                setUser(getUser().id);
+                getHeaders("POST")
+                    .then((header)=>{
+                        header.headers["Content-Type"] = "multipart/form-data";
+                        setHeader(header);
+                    })
             })
-        setUser(getUser().id);
+
     }, [])
 
     existingTags.forEach((tag) => {
