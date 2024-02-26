@@ -9,9 +9,9 @@ import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
 import {get_description_length, get_name_length, get_image_extension} from "./variableHelper";
 
-let MAX_NAME_LENGTH = get_name_length()
-let MAX_DESCRIPTION_LENGTH = get_description_length()
-let ACCEPTED_IMAGE = get_image_extension();
+const MAX_NAME_LENGTH = get_name_length();
+const MAX_DESCRIPTION_LENGTH = get_description_length();
+const ACCEPTED_IMAGE = get_image_extension();
 
 const customStyles = {
     option: provided => ({
