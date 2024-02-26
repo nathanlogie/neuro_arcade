@@ -202,7 +202,9 @@ class RawScore(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "RawScore for game " + self.game.name + ": " + self.upload_date.__str__()
+        return ("RawScore for game " + self.game.name +
+                " by player " + self.player.name +
+                ": " + self.upload_date.__str__())
 
 
 class UserStatus(models.Model):
