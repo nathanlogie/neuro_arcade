@@ -139,7 +139,7 @@
             border-radius: 0.5em;
             backdrop-filter: blur(20px);
             width: max-content;
-            margin-top: 7em;
+            margin: 7em auto 0;
             list-style-type: none;
             display: flex;
             flex-direction: column;
@@ -268,7 +268,7 @@
         }
     }
     .DataBlock {
-        padding: 3em 3em 0 3em;
+        padding: 0 3em 3em 3em;
         width: 100%;
         display: flex;
         overflow-x: auto;
@@ -499,6 +499,9 @@
         .DataBlock {
             padding: 0 2em;
             display: block;
+            .Publications {
+                scale: 0.9;
+            }
         }
     }
 }

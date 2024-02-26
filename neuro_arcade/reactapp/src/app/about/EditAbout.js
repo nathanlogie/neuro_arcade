@@ -41,8 +41,10 @@ export function EditAbout() {
                 </div>
             </div>
             <div className={styles.Side}>
-                <div className={styles.Publications}>
-                    <PublicationsForm publications={aboutData.publications}/>
+                <div className={styles.DataBlock}>
+                    <div className={styles.Publications}>
+                        <PublicationsForm publications={aboutData.publications}/>
+                    </div>
                 </div>
             </div>
         </>
@@ -50,7 +52,7 @@ export function EditAbout() {
 
     return (
         <>
-            <Banner size={'big'} right={nav_right} />
+            <Banner size={'big'} right={nav_right}/>
             <MobileBanner/>
             <NavBar right={nav_right} />
             <motion.div
