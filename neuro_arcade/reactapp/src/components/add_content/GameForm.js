@@ -19,7 +19,12 @@ import {
     EVAL_EXTENSION
 } from "./variableHelper";
 
+let MAX_NAME_LENGTH = get_name_length()
+let MAX_DESCRIPTION_LENGTH = get_description_length()
 
+let ACCEPTED_SCORE_FILE = get_score_extension();
+let ACCEPTED_EVAL_SCRIPT = get_eval_extension();
+let ACCEPTED_IMAGE = get_image_extension();
 
 const customStyles = {
     option: provided => ({...provided, color: 'black'}),
