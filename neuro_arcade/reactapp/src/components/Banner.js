@@ -4,6 +4,7 @@ import {Logo} from "./Logo";
 import React from "react";
 import {Switcher} from "./Switcher";
 import { useNavigate } from 'react-router-dom';
+import {NavBar} from "./NavBar";
 
 /**
  * @param size height
@@ -51,9 +52,10 @@ export function Banner({size, left, right, selected}) {
         );
     } else {
         return (
-            <div
-                className={styles.Banner}
-                id={styles['small']}>
+            <>
+                <div
+                    className={styles.Banner}
+                    id={styles['small']}>
                     <Button
                         name={'back'}
                         link={-1}
@@ -68,7 +70,25 @@ export function Banner({size, left, right, selected}) {
                             switcherDefault={selectedSwitcherValue}
                         />
                     </div>
-            </div>
+                </div>
+                <NavBar
+                    left={
+                        <Button
+                            name={'back'}
+                            link={-1}
+                            direction={'up'}
+                            orientation={'left'}
+                        />
+                    }
+                    right={
+                        <Switcher
+                            data={switcher_labels}
+                            onSwitcherChange={handleSwitcherChange}
+                            switcherDefault={selectedSwitcherValue}
+                        />
+                    }
+                />
+            </>
         );
     }
 }
@@ -79,11 +99,13 @@ export function Banner({size, left, right, selected}) {
  */
 export function MobileBanner() {
     return (
+        <>
             <div
                 className={styles.MobileBanner}
                 id={styles['small']}
             >
                 <Logo size={'small'}/>
             </div>
-        );
+        </>
+    );
 }

@@ -77,7 +77,7 @@ export function RadarC({inputData}) {
   return (
       <>
         <h2>Trends</h2>
-        <RadarChart outerRadius={150} width={688} height={492} data={data}>
+        <RadarChart outerRadius={150} width={608} height={492} data={data}>
           <PolarGrid/>
           <PolarAngleAxis dataKey="data_type"/>
           <Radar name="Average AI Score" dataKey="average_ai" stroke="#D14081" fill="#D14081" fillOpacity={0.4}/>

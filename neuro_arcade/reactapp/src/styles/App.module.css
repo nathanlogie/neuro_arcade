@@ -273,7 +273,6 @@
         display: flex;
         overflow-x: auto;
         gap: 3em;
-        justify-content: center;
         .Graphs {
             padding: 2em 0;
             height: 31em;
@@ -282,7 +281,7 @@
             background-color: rgba(3, 3, 3, 0.4);
             border-radius: 0.5em;
             backdrop-filter: blur(20px);
-            margin-top: 3em;
+            margin: 3em auto 0 0;
             .Background {
                 background: linear-gradient(270deg, rgba(255, 255, 255, 0.10) 0%, rgba(217, 217, 217, 0.00) 100%);
             }
@@ -448,7 +447,7 @@
     position: relative;
     display: none;
     width: 100%;
-    height: 5em;
+    height: 10em;
 }
 
 .MainBlock#big {
@@ -506,6 +505,22 @@
             .Publications {
                 scale: 0.9;
             }
+            .Graphs {
+                scale: 0.9;
+                margin: auto;
+            }
+        }
+    }
+}
+
+@media (max-width: 30em) {
+    .Content {
+        .ContentBlock {
+            & p {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
         }
     }
 }
@@ -537,12 +552,6 @@
 }
 
 @media (max-width: 20em) {
-    #hexagon {
-        visibility: hidden;
-    }
-    .Gradient {
-        visibility: hidden;
-    }
     #save {
         margin-top: 0 !important;
     }

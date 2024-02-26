@@ -10,6 +10,7 @@ import {Switcher} from "../components/Switcher";
 import {motion} from "framer-motion";
 import { MdBubbleChart } from "react-icons/md";
 import {AiOutlineRadarChart} from "react-icons/ai";
+import {NavBar} from "../components/NavBar";
 
 /**
  *
@@ -86,11 +87,14 @@ export function GameView() {
                             }
                         </div>
                         <div className={styles.Background}>
-                            {selectedSwitcherValue.type.toString() === swarm.type.toString() ? <SwarmPlot inputData={gameData}/> : <></>}
-                            {selectedSwitcherValue.type.toString() === radar.type.toString() ? <RadarC inputData={gameData}/> : <></>}
+                            {selectedSwitcherValue.type.toString() === swarm.type.toString() ?
+                                <SwarmPlot inputData={gameData}/> : <></>}
+                            {selectedSwitcherValue.type.toString() === radar.type.toString() ?
+                                <RadarC inputData={gameData}/> : <></>}
                         </div>
                     </div>
                 </div>
+                <div className={styles.MobileBannerBuffer}/>
             </motion.div>;
     }
 
