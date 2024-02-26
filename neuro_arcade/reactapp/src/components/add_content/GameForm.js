@@ -12,19 +12,14 @@ import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
 
 import {
-    get_description_length,
-    get_eval_extension,
-    get_image_extension,
-    get_name_length,
-    get_score_extension
+    MAX_NAME_LENGTH_GAME,
+    MAX_DESCRIPTION_LENGTH_GAME,
+    IMAGE_EXTENSION,
+    SCORE_EXTENSION,
+    EVAL_EXTENSION
 } from "./variableHelper";
 
-let MAX_NAME_LENGTH = get_name_length()
-let MAX_DESCRIPTION_LENGTH = get_description_length()
 
-let ACCEPTED_SCORE_FILE = get_score_extension();
-let ACCEPTED_EVAL_SCRIPT = get_eval_extension();
-let ACCEPTED_IMAGE = get_image_extension();
 
 const customStyles = {
     option: provided => ({...provided, color: 'black'}),
@@ -76,7 +71,7 @@ export function GameForm() {
 
     const handleImage = (event) => {
         const file = event.target.files[0];
-        const acceptedFormats = ACCEPTED_IMAGE;
+        const acceptedFormats = IMAGE_EXTENSION;
         const fileExtension = file.name.split('.').pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
             setError("root", {message: "Invalid file type provided"})
@@ -113,7 +108,7 @@ export function GameForm() {
 
     const handleEvalScript = (event) => {
         const file = event.target.files[0];
-        const acceptedFormats = ACCEPTED_EVAL_SCRIPT;
+        const acceptedFormats = EVAL_EXTENSION;
         const fileExtension = file.name.split('.').pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
             setError("evaluationScript", {message: "Invalid file type provided"})
@@ -125,7 +120,7 @@ export function GameForm() {
 
     const handleScores = (event) => {
         const file = event.target.files[0];
-        const acceptedFormats = ACCEPTED_SCORE_FILE;
+        const acceptedFormats = SCORE_EXTENSION;
         const fileExtension = file.name.split('.').pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
             setError("scoreType", {message: "Invalid file type provided"})
@@ -213,7 +208,7 @@ export function GameForm() {
             <input {...register("name", {
                 required: "Name is required",
                 maxLength: {
-                    value: MAX_NAME_LENGTH,
+                    value: MAX_NAME_LENGTH_GAME,
                     message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH})`,
                 }
             })} type={"text"} placeholder={"game name"}
@@ -227,7 +222,7 @@ export function GameForm() {
             <input {...register("description", {
                 required: "A description is required",
                 maxLength: {
-                    value: MAX_DESCRIPTION_LENGTH,
+                    value: MAX_DESCRIPTION_LENGTH_GAME,
                     message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})`,
                 }
             })} type={"text"} placeholder={"This game measures..."}

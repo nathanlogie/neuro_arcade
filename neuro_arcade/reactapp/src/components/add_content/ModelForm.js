@@ -7,10 +7,8 @@ import CreatableSelect from 'react-select/creatable';
 import {requestPlayerTags, getUser} from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
-import {get_description_length, get_name_length} from "./variableHelper";
+import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION} from "./variableHelper";
 
-let MAX_NAME_LENGTH = get_name_length()
-let MAX_DESCRIPTION_LENGTH = get_description_length()
 
 const customStyles = {
     option: provided => ({
@@ -149,7 +147,7 @@ export function ModelForm() {
             <input {...register("name", {
                 required: "Name is required",
                 maxLength: {
-                    value: MAX_NAME_LENGTH,
+                    value: MAX_NAME_LENGTH_MODEL,
                     message: `Maximum name length has been exceeded (${MAX_NAME_LENGTH})`
                 }
             })}
@@ -164,7 +162,7 @@ export function ModelForm() {
             <input {...register("description", {
                 required: false,
                 maxLength: {
-                    value: MAX_DESCRIPTION_LENGTH,
+                    value: MAX_DESCRIPTION_LENGTH_MODEL,
                     message: "Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})"
                 }
             })}
