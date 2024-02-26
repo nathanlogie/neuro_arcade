@@ -60,3 +60,17 @@
 #invisible {
     display: none;
 }
+
+@media(max-width: 78em) {
+    #home {
+        left: 0;
+        margin-left: 16em;
+        margin-top: 3.75em;
+    }
+}
+
+@media (max-width: 50em) {
+    #home {
+        margin-left: 2em;
+    }
+}
