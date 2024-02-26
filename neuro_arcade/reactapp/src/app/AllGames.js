@@ -6,6 +6,7 @@ import {requestGameTags} from "../backendRequests";
 import {useEffect, useState} from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import {motion} from "framer-motion";
+import {IoFilter} from "react-icons/io5";
 
 /**
  * @returns {JSX.Element} all games page
@@ -19,6 +20,9 @@ export function AllGames() {
     let [selectedTags, setSelectedTags] = useState([]);
     let [loading, setLoading] = useState(true);
 
+    const [show, setShow] = useState(false);
+    const [hover, setHover] = useState(false);
+
     useEffect(() => {
         requestGameTags()
             .then((tags) => {
@@ -26,6 +30,15 @@ export function AllGames() {
                 setLoading(false);
             })
     }, [])
+
+    const tagFilter =
+        <TagFilter
+            onTagChange={setSelectedTags}
+            tags={tags.map((tag) => tag.name)}
+            id={show ? 'all' : 'invisible'}
+            onMouseOver={() => setHover(true)}
+            onMouseOut={() => setHover(false)}
+        />;
 
     let content = <>...</>;
     if (!loading) {
@@ -37,15 +50,18 @@ export function AllGames() {
                         <FaMagnifyingGlass/>
                     </div>
                 </div>
-                <TagFilter
-                    tags={tags.map((tag) => tag.name)}
-                    onTagChange={setSelectedTags}
-                />
             </div>
             <div className={styles.Content} id={styles['big']}>
                 <div className={styles.Title}>
                     <h1>All Games</h1>
+                    <motion.div
+                        className={styles.FilterButton} id={styles['all']} onClick={() => setShow(!show)}
+                        whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}
+                    >
+                        <IoFilter/>
+                    </motion.div>
                 </div>
+                {tagFilter}
                 <GameGrid
                     textQuery={textQuery}
                     tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)}

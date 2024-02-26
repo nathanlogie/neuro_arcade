@@ -17,7 +17,7 @@
 }
 
 .TabSwitcher > * > * > * {
-    width: 15em;
+    width: 10em;
 }
 
 @media (max-width: 50em) {

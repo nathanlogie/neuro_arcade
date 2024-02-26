@@ -42,7 +42,7 @@
     }
 }
 
-#home {
+#home, #all {
     position: fixed;
     margin-top: 4.25em;
     margin-left: 12em;
@@ -56,13 +56,17 @@
         margin: 1em 0.5em;
     }
 }
+#all {
+    margin-left: -12.5em;
+    margin-top: 3.5em;
+}
 
 #invisible {
     display: none;
 }
 
 @media(max-width: 78em) {
-    #home {
+    #home, #all {
         left: 0;
         margin-left: 16em;
         margin-top: 3.75em;
@@ -70,7 +74,7 @@
 }
 
 @media (max-width: 50em) {
-    #home {
+    #home, #all {
         margin-left: 2em;
     }
 }

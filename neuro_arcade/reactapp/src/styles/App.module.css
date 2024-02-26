@@ -118,7 +118,6 @@
         padding: 2em;
     }
     .Side {
-        width: 32.5em;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -154,12 +153,12 @@
                 display: flex;
                 flex-direction: column;
                 margin: 2em;
-                width: 25em;
+                width: max-content;
                 align-items: flex-start;
                 overflow-y: auto;
             }
             & a, span {
-                width: 23em;
+                width: 15em;
                 height: max-content;
                 border-bottom: solid rgba(255, 255, 255, 0.2);
                 border-width: 1px;
@@ -459,13 +458,19 @@
     max-height: calc(100dvh - 9em);
 }
 
-@media(max-width: 85em) {
+@media(max-width: 81em) {
     .MainBlock {
         gap: 0;
+        .Side {
+            .Publications {
+                margin-top: 1em;
+            }
+            padding-bottom: 3em;
+        }
     }
 }
 
-@media (max-width: 90em) {
+@media (max-width: 75em) {
     .MainBlock {
         margin: 0;
         gap: 0;
@@ -481,31 +486,25 @@
                 width: calc(100% - 2em) !important;
             }
             .Title {
-                padding-left: 10em;
                 & h1 {
                     font-size: 1.5em;
+                }
+                .FilterButton#all {
+                    display: block;
+                }
+            }
+            .Content {
+                .Title {
+                    padding-left: 3em;
                 }
             }
         }
         .Side {
-            width: 100%;
-            .Publications {
-                margin-top: 1em;
-            }
+            padding-bottom: 0;
         }
     }
     .MobileBannerBuffer {
         display: block;
-    }
-}
-
-@media (max-width: 75em) {
-    .MainBlock {
-        .Content {
-            .Title {
-                padding-left: 3em;
-            }
-        }
     }
 }
 
@@ -579,7 +578,7 @@
 
 .Search {
     position: relative;
-    margin: 3em 0;
+    margin: 3em 0 0 0;
     height: 5em;
     width: 20em;
     .SearchIcon {

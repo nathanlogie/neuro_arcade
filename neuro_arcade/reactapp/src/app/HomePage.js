@@ -30,6 +30,7 @@ export function HomePage() {
 
     const [show, setShow] = useState(false);
     const [hover, setHover] = useState(false);
+
     const [loggedIn, setLoggedIn] = useState(isLoggedIn());
 
     let nav_left = (
