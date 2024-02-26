@@ -7,7 +7,7 @@ import {useEffect, useState} from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import {motion} from "framer-motion";
 import {IoFilter} from "react-icons/io5";
-import { useSearchParam } from "../urlHelpers";
+import { useArraySearchParam, useSearchParam } from "../urlHelpers";
 
 /**
  * @returns {JSX.Element} all games page
@@ -18,7 +18,7 @@ export function AllGames() {
     // can be changed freely, as it only affect data displayed on the client
     let [textQuery, setTextQuery] = useSearchParam('query', '');
     let [tags, setTags] = useState([]);
-    let [selectedTags, setSelectedTags] = useState([]);
+    let [selectedTags, setSelectedTags] = useArraySearchParam('tags');
     let [loading, setLoading] = useState(true);
 
     const [show, setShow] = useState(false);
