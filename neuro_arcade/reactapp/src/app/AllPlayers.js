@@ -22,25 +22,22 @@ export function AllPlayers() {
     let [selectedTags, setSelectedTags] = useArraySearchParam('tags');
     let [loading, setLoading] = useState(true);
 
-    let modes = [PlayerGridMode.ALL, PlayerGridMode.HUMAN, PlayerGridMode.AI];
-    let [modeIdx, setModeIdx] = useState(0);
-
-    const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState('all');
+    const [selectedSwitcherValue, setSelectedSwitcherValue] = useSearchParam('mode', 'all');
 
     /**
-     * @param selectedValue {string}
+     * Converts a mode's display name into the enum used by PlayerGrid
+     * 
+     * TODO: this is hacky, Switcher's API should probably be refactored to some extent
+     * 
+     * @param {string} displayName 
+     * @returns {PlayerGridMode} mode
      */
-    const handleSwitcherChange = (selectedValue) => {
-        setSelectedSwitcherValue(selectedValue);
-        if (selectedValue === 'AI Platforms') {
-            setModeIdx(2);
-        }
-        if (selectedValue === 'Humans') {
-            setModeIdx(1);
-        }
-        if (selectedValue === 'all') {
-            setModeIdx(0);
-        }
+    function convertModeName(displayName) {
+        if (displayName == 'AI Platforms')
+            return PlayerGridMode.AI;
+        if (displayName == 'Humans')
+            return PlayerGridMode.HUMAN;
+        return PlayerGridMode.ALL;
     }
 
     const switcher_labels = {
@@ -97,7 +94,7 @@ export function AllPlayers() {
                 <div className={styles.Switcher}>
                     <Switcher
                         data={switcher_labels}
-                        onSwitcherChange={handleSwitcherChange}
+                        onSwitcherChange={setSelectedSwitcherValue}
                         switcherDefault={selectedSwitcherValue}
                     />
                 </div>
@@ -115,7 +112,7 @@ export function AllPlayers() {
                 </div>
                 {smallTagFilter}
                 <PlayerGrid
-                    mode={modes[modeIdx]}
+                    mode={convertModeName(selectedSwitcherValue)}
                     textQuery={textQuery}
                     tagQuery={tags.filter((tag) => selectedTags.includes(tag.slug)).map((tag) => tag.id)}
                 />
