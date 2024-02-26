@@ -8,6 +8,7 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import {Switcher} from "../components/Switcher";
 import {motion} from "framer-motion";
 import {IoFilter} from "react-icons/io5";
+import { useArraySearchParam, useSearchParam } from "../urlHelpers";
 
 /**
  * @returns {JSX.Element} all players page
@@ -16,9 +17,9 @@ import {IoFilter} from "react-icons/io5";
 export function AllPlayers() {
     // name query for sorting the already fetched players
     // can be changed freely, as it only affect data displayed on the client
-    let [textQuery, setTextQuery] = useState('');
+    let [textQuery, setTextQuery] = useSearchParam('query', '');
     let [tags, setTags] = useState([]);
-    let [selectedTags, setSelectedTags] = useState([]);
+    let [selectedTags, setSelectedTags] = useArraySearchParam('tags');
     let [loading, setLoading] = useState(true);
 
     let modes = [PlayerGridMode.ALL, PlayerGridMode.HUMAN, PlayerGridMode.AI];
@@ -60,9 +61,14 @@ export function AllPlayers() {
             })
     }, [])
 
+    function onTagChange(selection) {
+        setSelectedTags(tags.filter((tag, i) => selection[i]).map((tag) => tag.slug))
+    }
+
     const smallTagFilter =
         <TagFilter
-            onTagChange={setSelectedTags}
+            onTagChange={onTagChange}
+            initialTicks={tags.map((tag) => selectedTags.includes(tag.slug))}
             tags={tags.map((tag) => tag.name)}
             id={show ? 'all' : 'invisible'}
             onMouseOver={() => setHover(true)}
@@ -71,7 +77,8 @@ export function AllPlayers() {
 
     const largeTagFilter =
         <TagFilter
-            onTagChange={setSelectedTags}
+            onTagChange={onTagChange}
+            initialTicks={tags.map((tag) => selectedTags.includes(tag.slug))}
             tags={tags.map((tag) => tag.name)}
             onMouseOver={() => setHover(true)}
             onMouseOut={() => setHover(false)}
@@ -82,7 +89,7 @@ export function AllPlayers() {
         content = <>
             <div className={styles.Side}>
                 <div className={styles.Search}>
-                    <input onChange={e => setTextQuery(e.target.value)} placeholder="search..."/>
+                    <input onChange={e => setTextQuery(e.target.value)} defaultValue={textQuery} placeholder="search..."/>
                     <div className={styles.SearchIcon}>
                         <FaMagnifyingGlass/>
                     </div>
@@ -110,7 +117,7 @@ export function AllPlayers() {
                 <PlayerGrid
                     mode={modes[modeIdx]}
                     textQuery={textQuery}
-                    tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)}
+                    tagQuery={tags.filter((tag) => selectedTags.includes(tag.slug)).map((tag) => tag.id)}
                 />
             </div>
         </>;
