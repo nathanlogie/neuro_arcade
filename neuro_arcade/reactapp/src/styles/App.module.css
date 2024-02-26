@@ -113,9 +113,9 @@
             left: 2em;
         }
     }
-    #big {
-        width: 60em;
-        padding: 2em 0;
+    .Content#big {
+        width: 50em;
+        padding: 2em;
     }
     .Side {
         width: 32.5em;
@@ -139,7 +139,7 @@
             border-radius: 0.5em;
             backdrop-filter: blur(20px);
             width: max-content;
-            margin-top: 3em;
+            margin-top: 7em;
             list-style-type: none;
             display: flex;
             flex-direction: column;
@@ -449,6 +449,7 @@
 
 .MainBlock#big {
     max-height: calc(100dvh - 13.5em);
+    gap: 0;
 }
 
 .MainBlock#small {
@@ -470,8 +471,12 @@
         max-height: calc(100dvh - 14.5em);
         .Content {
             width: 100%;
-            padding: 1em;
+            padding: 2em !important;
             margin: 0;
+            & p {
+                margin: 0 1em;
+                width: calc(100% - 2em) !important;
+            }
         }
         & h1 {
             font-size: 1.5em;
@@ -479,6 +484,9 @@
         .Side {
             width: 100%;
             padding-bottom: 3em;
+            .Publications {
+                margin-top: 1em;
+            }
         }
     }
     .MobileBannerBuffer {

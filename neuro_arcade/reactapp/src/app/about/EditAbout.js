@@ -55,11 +55,13 @@ export function EditAbout() {
             <NavBar right={nav_right} />
             <motion.div
                 className={styles.MainBlock}
+                id={styles['big']}
                 initial={{opacity: 0, x: -100}}
                 animate={{opacity: 1, x: 0}}
                 exit={{opacity: 0, x: -100}}
             >
                 {content}
+                <div className={styles.MobileBannerBuffer}/>
             </motion.div>
         </>
     );
