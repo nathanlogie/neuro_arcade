@@ -10,7 +10,6 @@ import makeAnimated from 'react-select/animated';
 import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION} from "./variableHelper";
 
 
-
 const customStyles = {
     option: provided => ({
         ...provided,
@@ -213,7 +212,7 @@ export function ModelForm() {
 
             <span>
                 <div>
-                    <h3>Game Icon</h3>
+                    <h3>Model Icon</h3>
                     <motion.div
                         whileHover={{scale: 1.1}}
                         whileTap={{scale: 0.9}}
