@@ -690,8 +690,8 @@ export async function requestPlayer(playerName) {
 /**
  * Posts Admin Ranking to model
  *
- * @Param {Integer} gameID: ID of game to be ranked
- * @Param {Float} ranking: ranking of new game
+ * @param {int} gameID - ID of game to be ranked
+ * @param {float} ranking - ranking of new game
  *
  * @returns Response success response
  *
@@ -700,7 +700,7 @@ export async function requestPlayer(playerName) {
 export async function postAdminRanking(gameID, ranking){
     const url = API_ROOT + `/api/games/${gameID}/update_ranking/`
 
-    await axios.post(url, ranking*10, getHeaders('POST'))
+    await axios.post(url, ranking*10, getHeaders('POST', true))
         .then((response) => {
             return response;
     })
