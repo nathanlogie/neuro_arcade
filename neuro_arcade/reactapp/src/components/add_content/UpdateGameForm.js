@@ -120,6 +120,26 @@ export function GameUpdateForm() {
         handleTagReset()
     }
 
+    function handleDelete(){
+        if (currentValues.user !== getUser().id && !getUser().is_admin) {
+            setError("root", {
+                message: "You do not have permissions to edit this game"
+            })
+            return;
+        }
+
+        let url = `${API_ROOT}/api/games/${currentValues.id}/`
+        axios.delete(url).then((response)=>{
+                navigate("/all_games/")
+        }
+        ).catch(()=> {
+                setError("root", {
+                    message: "Could not delete game"
+                })
+            }
+        )
+    }
+
 
     const handleImage = (event) => {
         const file = event.target.files[0];
@@ -189,6 +209,7 @@ export function GameUpdateForm() {
             setError("root", {
                 message: "You do not have permissions to edit this game"
             })
+            return;
         }
 
         let formData = new FormData();
@@ -404,7 +425,6 @@ export function GameUpdateForm() {
             </span>
 
                 <motion.button
-                    type={"submit"}
                     whileHover={{scale: 1.1}}
                     whileTap={{scale: 0.9}}
                 >
@@ -416,9 +436,19 @@ export function GameUpdateForm() {
                 <motion.button
                     whileHover={{scale: 1.1}}
                     whileTap={{scale: 0.9}}
-                    onSubmit={handleReset}
+                    onClick={handleSubmit(handleReset)}
                 >
                     {"RESET"}
+                    <div>
+                        <FaPlus/>
+                    </div>
+                </motion.button>
+                <motion.button
+                    whileHover={{scale: 1.1}}
+                    whileTap={{scale: 0.9}}
+                    onClick={handleSubmit(handleDelete)}
+                >
+                    {"Delete Game"}
                     <div>
                         <FaPlus/>
                     </div>
