@@ -215,7 +215,12 @@ export function GameUpdateForm() {
                 reset();
                 setError("root", {message: "game updated successfully"});
                 setTags([]);
-                navigate(`/all_games/${slugify(name)}`)
+                if(name!==""){
+                    navigate(`/all_games/${slugify(name)}`)
+                } else{
+                    navigate(`/all_games/${currentValues.slug}`)
+                }
+
             }).catch(function (response) {
                 console.log(response)
                 if (!response) {
