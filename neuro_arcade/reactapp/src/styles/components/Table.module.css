@@ -42,11 +42,12 @@
 @media(max-width: 50em) {
     .TableContainer {
         scale: 0.9;
+        margin: auto;
     }
 }
 
-@media (max-width: 50em) {
+@media (max-width: 30em) {
     .TableContainer {
-        margin: auto;
+        scale: 0.7;
     }
 }

@@ -547,6 +547,16 @@
             }
         }
     }
+    .Side {
+        .Search {
+            width: 15em;
+        }
+    }
+    .DataBlock {
+        .Graphs {
+            scale: 0.7 !important;
+        }
+    }
 }
 
 #start {

@@ -2,7 +2,7 @@ import React from 'react';
 import {ResponsiveSwarmPlot} from '@nivo/swarmplot';
 import {Switcher} from '../Switcher';
 import PropTypes from 'prop-types';
-import styles from '../../styles/components/TableGraph.module.css';
+import styles from '../../styles/components/Table.module.css';
 
 /**
  * @param inputData {Object}
