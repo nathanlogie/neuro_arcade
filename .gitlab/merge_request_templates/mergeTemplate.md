@@ -3,7 +3,7 @@
 - [ ] Tests for the changes have been added (for bug fixes/features)
 - [ ] Docs have been added/updated (for bug fixes/features)
 - [ ] Code follows the wiki's Code Style Guide
-- [ ] Code has been formatted correctly through use of `npm run format`
+- [ ] The Code has been formatted correctly through the use of `npm run format`
 - [ ] 2 reviewers have been randomly assigned:
     - Familiar with the area of code: @
     - Any: @
