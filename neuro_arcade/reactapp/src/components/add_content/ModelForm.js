@@ -4,7 +4,7 @@ import axios from "axios";
 import {motion} from "framer-motion";
 import {FaImage, FaPlus} from "react-icons/fa6";
 import CreatableSelect from 'react-select/creatable';
-import {requestPlayerTags, getUser, getHeaders, requestGameTags} from "../../backendRequests";
+import {requestPlayerTags, getUser, getHeaders, API_ROOT} from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
 import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION} from "./variableHelper";
@@ -84,7 +84,7 @@ export function ModelForm() {
         formData.append("description", "described")
         axios({
             method: "post",
-            url: "http://127.0.0.1:8000/api/playerTag/",
+            url: `${API_ROOT}/api/playerTag/`,
             data: formData,
             headers: header,
         }).then((response) => {
@@ -117,7 +117,7 @@ export function ModelForm() {
         await axios({
             //I will move a lot of this stuff to backend requests to centralize it in a future merge request
             method: "post",
-            url: "http://127.0.0.1:8000/api/players/",
+            url: `${API_ROOT}/api/players/`,
             data: formData,
             headers: {"Content-Type": "multipart/form-data"},
         }).then(function (response) {
@@ -128,7 +128,7 @@ export function ModelForm() {
                 formData.append("tags", finalTagIDs)
                 axios({
                     method: "post",
-                    url: `http://127.0.0.1:8000/api/players/${response.data.id}/add_tags/`,
+                    url: `${API_ROOT}/api/players/${response.data.id}/add_tags/`,
                     data: formData,
                     headers: header,
                 }).catch((response) => {

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_ROOT = "http://localhost:8000"
+export const API_ROOT = "http://localhost:8000"
 /**
  * This file contains functions that request or upload data from/to the backend
  */

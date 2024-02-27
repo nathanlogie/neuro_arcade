@@ -7,7 +7,7 @@ import {FaPython} from "react-icons/fa6";
 import {FaPlus} from "react-icons/fa6";
 import {motion} from "framer-motion";
 import CreatableSelect from 'react-select/creatable';
-import {requestGameTags, getUser, getHeaders} from "../../backendRequests";
+import {requestGameTags, getUser, getHeaders, API_ROOT} from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
 import {
@@ -93,7 +93,7 @@ export function GameForm() {
         header.headers['Content-Type'] = "multipart/form-data"
         axios({
             method: "post",
-            url: "http://127.0.0.1:8000/api/gameTag/",
+            url: `${API_ROOT}/api/gameTag`,
             data: formData,
             headers: header
         }).then((response) => {
@@ -158,7 +158,7 @@ export function GameForm() {
 
         await axios({
             method: "post",
-            url: "http://127.0.0.1:8000/api/games/",
+            url: `${API_ROOT}/api/games/`,
             data: formData,
             headers: header,
         }).then(function (response) {
@@ -169,7 +169,7 @@ export function GameForm() {
                 formData.append("tags", finalTagIDs)
                 axios({
                     method: "post",
-                    url: `http://127.0.0.1:8000/api/games/${response.data.id}/add_tags/`,
+                    url: `${API_ROOT}/api/games/${response.data.id}/add_tags/`,
                     data: formData,
                     headers: {"Content-Type": "multipart/form-data"},
                 }).catch((response) => {
