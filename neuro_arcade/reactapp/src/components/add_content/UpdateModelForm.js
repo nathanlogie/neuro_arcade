@@ -37,7 +37,7 @@ const customStyles = {
     menu: provided => ({...provided, borderRadius: '0.5em', position: 'relative'})
 }
 
-export function ModelForm() {
+export function ModelUpdateForm() {
     const {
         register,
         handleSubmit,
@@ -85,12 +85,23 @@ export function ModelForm() {
         })
     })
 
+
+
     function handleTagReset() {
         options.forEach((option) => {
             if (currentValues.tags.includes(option.value)) {
                 tags.push(option)
             }
         })
+    }
+
+    function handleReset() {
+        reset({
+            name: currentValues.name,
+            description: currentValues.description,
+        })
+        setImageURL(`${API_ROOT}/${currentValues.icon}`);
+        handleTagReset()
     }
 
     const handleImage = (event) => {
@@ -131,44 +142,55 @@ export function ModelForm() {
         )
     }
 
-    const onSubmit = async (event) => {
+    const onUpdate = async () => {
 
-        const formData = new FormData();
-        formData.append("name", name);
-        formData.append("description", description);
-        formData.append("user", user);
-        formData.append("is_ai", true);
+        if (currentValues.user !== getUser().id && !getUser().is_admin) {
+            setError("root", {
+                message: "You do not have permissions to edit this game"
+            })
+            return;
+        }
+
+        let formData = new FormData();
+        if (name !== "") {
+            formData.append("name", name);
+            formData.append("slug", slugify(name));
+        }
+        if (description !== "") {
+            formData.append("description", description);
+        }
+
         if (image) {
             formData.append("icon", image)
         }
+       let url = `${API_ROOT}/api/players/${currentValues.id}/`;
+        if(formData.entries().next().done){
+            setError("root", {
+                message: "No changes detected"
+            })
+            return;
+        }
 
-        await axios({
-            //I will move a lot of this stuff to backend requests to centralize it in a future merge request
-            method: "post",
-            url: `${API_ROOT}/api/players/`,
-            data: formData,
-            headers: {"Content-Type": "multipart/form-data"},
-        }).then(function (response) {
+
+            await axios.patch(url, formData, header).then(function (response) {
             console.log(response);
 
-            if (tags.length !== 0) {
-                const finalTagIDs = tags.map((tag) => tag.value);
-                formData.append("tags", finalTagIDs)
-                axios({
-                    method: "post",
-                    url: `${API_ROOT}/api/players/${response.data.id}/add_tags/`,
-                    data: formData,
-                    headers: header,
-                }).catch((response) => {
-                        console.log(response)
-                        setError("root", {message: "Error during tag upload"})
-                    }
-                )
-            }
+                if (tags.length !== 0) {
+                    const finalTagIDs = tags.map((tag) => tag.value);
+                    formData.append("tags", finalTagIDs)
+                    let url = `${API_ROOT}/api/players/${response.data.id}/add_tags/`;
+                    axios.post(url, formData, header)
+                        .catch((response) => {
+                                console.log(response)
+                                setError("root", {message: "Error during tag change"})
+                            }
+                        )
+                }
             reset()
             setImage(null)
             setError("root", {message: "model submitted successfully"})
             setTags(null)
+
         }).catch(function (response) {
             console.log(response)
             if (!response) {

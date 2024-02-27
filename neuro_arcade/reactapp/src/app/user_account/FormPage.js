@@ -6,6 +6,7 @@ import {motion} from "framer-motion";
 import {ModelForm} from "../../components/add_content/ModelForm";
 import {Button} from "../../components/Button";
 import {GameUpdateForm} from "../../components/add_content/UpdateGameForm";
+import {ModelUpdateForm} from "../../components/add_content/UpdateModelForm";
 
 /**
  * @returns {JSX.Element} add game page
@@ -33,6 +34,11 @@ export function FormPage({type}) {
     } else if (type==='gameUpdate'){
         form = <GameUpdateForm/>
         title = "Update Game"
+    }
+    else if (type=='modelUpdate'){
+        form = <ModelUpdateForm/>
+        title="Update Model"
+
     }
     else {
         throw('invalid form type');

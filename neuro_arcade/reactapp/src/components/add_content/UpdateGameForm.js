@@ -235,9 +235,16 @@ export function GameUpdateForm() {
             formData.append("scoreType", scoreType)
         }
 
-        console.log(header)
 
         let url = `${API_ROOT}/api/games/${currentValues.id}/`;
+
+        if(formData.entries().next().done){
+            setError("root", {
+                message: "No changes detected"
+            })
+            return;
+        }
+
         await axios.patch(url, formData, header)
             .then(function (response) {
                 console.log(response);

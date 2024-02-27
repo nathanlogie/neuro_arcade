@@ -27,6 +27,7 @@ let addModel = <PageNotFound />;
 let allUsers = <PageNotFound />;
 let userAccount = <Navigate to={'/login'} />
 let updateGame = <PageNotFound/>;
+let updateModel = <PageNotFound/>
 
 if (isLoggedIn()){
     userAccount = <AccountPage />
@@ -39,6 +40,7 @@ if (isLoggedIn()){
         addGame = <FormPage type={'game'} />
         addModel = <FormPage type={'model'} />
         updateGame = <FormPage type={'gameUpdate'} />
+        updateModel = <FormPage type={'modelUpdate'}/>
     }
 
 }
