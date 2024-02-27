@@ -40,6 +40,9 @@ def main():
     with open('volume/input.txt', 'r') as f:
         data = f.read()
 
+    # todo: rather than running an arbitrary function, maybe run it as main?
+    #  the example file in /neuro_arcade/static/population/evaluation_functions/example.py
+    #  starts executing outside a function (inside an if __name__==`__main__`)
     output = evaluation.evaluation(data)
 
     print(output)
