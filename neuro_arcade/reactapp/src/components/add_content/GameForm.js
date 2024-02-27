@@ -7,17 +7,16 @@ import {FaPython} from "react-icons/fa6";
 import {FaPlus} from "react-icons/fa6";
 import {motion} from "framer-motion";
 import CreatableSelect from 'react-select/creatable';
-import {requestGameTags} from "../../backendRequests";
+import {requestGameTags, getUser, getHeaders, API_ROOT} from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
-
-//Should be synced with models.py
-let MAX_NAME_LENGTH = 64;
-let MAX_DESCRIPTION_LENGTH = 1024;
-
-let ACCEPTED_SCORE_FILE = ['json'];
-let ACCEPTED_EVAL_SCRIPT = ['py'];
-let ACCEPTED_IMAGE = ['png', 'jpg', 'jpeg'];
+import {
+    MAX_NAME_LENGTH_GAME,
+    MAX_DESCRIPTION_LENGTH_GAME,
+    IMAGE_EXTENSION,
+    SCORE_EXTENSION,
+    EVAL_EXTENSION
+} from "./variableHelper";
 
 const customStyles = {
     option: provided => ({...provided, color: 'white'}),
@@ -52,13 +51,21 @@ export function GameForm() {
     const [description, setDescription] = useState("");
     const [tags, setTags] = useState([])
     const [playLink, setPlayLink] = useState("");
-    const [existingTags, setExistingTags] = useState([])
     const [options, setOptions] = useState([])
+    const [existingTags, setExistingTags] = useState([])
+    const [user, setUser] = useState(null)
+    const [header, setHeader] = useState(null)
 
     useEffect(() => {
         requestGameTags()
             .then((tags) => {
                 setExistingTags(tags);
+                setUser(getUser().id);
+            })
+        getHeaders("POST", true)
+            .then((header) => {
+                header.headers["Content-Type"] = "multipart/form-data";
+                setHeader(header);
             })
     }, [])
 
@@ -72,7 +79,7 @@ export function GameForm() {
 
     const handleImage = (event) => {
         const file = event.target.files[0];
-        const acceptedFormats = ACCEPTED_IMAGE;
+        const acceptedFormats = IMAGE_EXTENSION;
         const fileExtension = file.name.split('.').pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
             setError("root", {message: "Invalid file type provided"})
@@ -82,17 +89,16 @@ export function GameForm() {
         }
     }
 
-    function handleCreate(tagName) {
-        let formData = new FormData()
-        formData.append("name", tagName)
-        formData.append("slug", slugify(tagName))
-        formData.append("description", "default description")
-        axios({
-            method: "post",
-            url: "http://127.0.0.1:8000/api/gameTag/",
-            data: formData,
-            headers: {"Content-Type": "multipart/form-data"},
-        }).then((response) => {
+    async function handleCreate(tagName) {
+        let formData = new FormData();
+        let url = `${API_ROOT}/api/gameTag`;
+        formData.append("name", tagName);
+        formData.append("slug", slugify(tagName));
+        formData.append("description", "default description");
+        await axios.post(url,
+            formData,
+            header
+        ).then((response) => {
             console.log(response)
             let newValue = {
                 value: response.data.id,
@@ -109,7 +115,7 @@ export function GameForm() {
 
     const handleEvalScript = (event) => {
         const file = event.target.files[0];
-        const acceptedFormats = ACCEPTED_EVAL_SCRIPT;
+        const acceptedFormats = EVAL_EXTENSION;
         const fileExtension = file.name.split('.').pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
             setError("evaluationScript", {message: "Invalid file type provided"})
@@ -121,7 +127,7 @@ export function GameForm() {
 
     const handleScores = (event) => {
         const file = event.target.files[0];
-        const acceptedFormats = ACCEPTED_SCORE_FILE;
+        const acceptedFormats = SCORE_EXTENSION;
         const fileExtension = file.name.split('.').pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
             setError("scoreType", {message: "Invalid file type provided"})
@@ -137,14 +143,10 @@ export function GameForm() {
         let formData = new FormData();
         formData.append("name", name);
         formData.append("description", description);
-        //Temporary until authentication is fulfilled
-        formData.append("owner", 3);
+        formData.append("owner", user);
         formData.append("play_link", playLink);
         formData.append("slug", slugify(name));
 
-
-
-        console.log(tags)
 
         if (image) {
             formData.append("icon", image)
@@ -156,55 +158,51 @@ export function GameForm() {
             formData.append("scoreType", scoreType)
         }
 
-        await axios({
-            method: "post",
-            url: "http://127.0.0.1:8000/api/games/",
-            data: formData,
-            headers: {"Content-Type": "multipart/form-data"},
-        }).then(function (response) {
-            console.log(response);
+        console.log(header)
 
-            if (tags.length !== 0) {
-                const finalTagIDs = tags.map((tag) => tag.value);
-                formData.append("tags", finalTagIDs)
-                axios({
-                    method: "post",
-                    url: `http://127.0.0.1:8000/api/games/${response.data.id}/add_tags/`,
-                    data: formData,
-                    headers: {"Content-Type": "multipart/form-data"},
-                }).catch((response) => {
-                    console.log(response)
-                        setError("root", {message: "Error during tag upload"})
-                    }
-                )
-            }
+        let url = `${API_ROOT}/api/games/`;
+        await axios.post(url, formData, header)
+            .then(function (response) {
+                console.log(response);
 
-
-            reset();
-            setError("root", {message: "game submitted successfully"});
-            setTags([]);
-        }).catch(function (response) {
-            console.log(response)
-            if (!response) {
-                setError("root", {message: "No response from server"});
-            } else {
-                if (response.response.data.slug) {
-                    setError("root", {message: "A game with that name already exists!"});
-                    return;
-                } else if (response.response.data.tags) {
-                    setError("root", {message: "Tag upload failed"});
-                    return;
+                if (tags.length !== 0) {
+                    const finalTagIDs = tags.map((tag) => tag.value);
+                    formData.append("tags", finalTagIDs)
+                    let url = `${API_ROOT}/api/games/${response.data.id}/add_tags/`;
+                    axios.post(url, formData, header)
+                        .catch((response) => {
+                                console.log(response)
+                                setError("root", {message: "Error during tag upload"})
+                            }
+                        )
                 }
-                if (response)
-                    if (response.response.data.includes("IntegrityError")) {
+
+                reset();
+                setError("root", {message: "game submitted successfully"});
+                setTags([]);
+            }).catch(function (response) {
+                console.log(response)
+                if (!response) {
+                    setError("root", {message: "No response from server"});
+                } else {
+                    // todo: TypeError here: response.response doesn't exist here
+                    if (response.response.data.slug) {
                         setError("root", {message: "A game with that name already exists!"});
-                    } else {
-                        setError("root", {
-                            message: `Something went wrong... ${response.response.data}`
-                        })
+                        return;
+                    } else if (response.response.data.tags) {
+                        setError("root", {message: "Tag upload failed"});
+                        return;
                     }
-            }
-        });
+                    if (response)
+                        if (response.response.data.includes("IntegrityError")) {
+                            setError("root", {message: "A game with that name already exists!"});
+                        } else {
+                            setError("root", {
+                                message: `Something went wrong... ${response.response.data}`
+                            })
+                        }
+                }
+            });
     };
 
     return (
@@ -213,8 +211,8 @@ export function GameForm() {
             <input {...register("name", {
                 required: "Name is required",
                 maxLength: {
-                    value: MAX_NAME_LENGTH,
-                    message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH})`,
+                    value: MAX_NAME_LENGTH_GAME,
+                    message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH_GAME})`,
                 }
             })} type={"text"} placeholder={"game name"}
                    onChange={(event) => setName(event.target.value)}
@@ -227,8 +225,8 @@ export function GameForm() {
             <input {...register("description", {
                 required: "A description is required",
                 maxLength: {
-                    value: MAX_DESCRIPTION_LENGTH,
-                    message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})`,
+                    value: MAX_DESCRIPTION_LENGTH_GAME,
+                    message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH_GAME})`,
                 }
             })} type={"text"} placeholder={"This game measures..."}
                    onChange={(event) => setDescription(event.target.value)}
