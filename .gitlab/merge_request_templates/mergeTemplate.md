@@ -8,7 +8,7 @@
     - Familiar with the area of code: @
     - Any: @
 
-**What kind of change does this merge request introduce? If this is a feature, please explain the  behaviour change ** (Bug fix, feature, docs update, ...)
+**What kind of change does this merge request introduce? If this is a feature, please explain the  behaviour change** (Bug fix, feature, docs update, ...)
 
 
 
