@@ -18,7 +18,7 @@ import {
     SCORE_EXTENSION,
     EVAL_EXTENSION
 } from "./variableHelper";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const customStyles = {
     option: provided => ({...provided, color: 'white'}),
@@ -41,7 +41,7 @@ export function GameUpdateForm() {
     const {
         register,
         handleSubmit,
-        formState: {errors, isSubmitting, touchedFields},
+        formState: {errors, touchedFields},
         setError,
         reset,
     } = useForm();
@@ -54,13 +54,14 @@ export function GameUpdateForm() {
     const [description, setDescription] = useState("");
     const [tags, setTags] = useState([])
     const [playLink, setPlayLink] = useState("");
-    const [options, setOptions] = useState([])
-    const [existingTags, setExistingTags] = useState([])
-    const [currentValues, setCurrentValues] = useState(null)
-    const [loading, setLoading] = useState(true)
-    const [imageURL, setImageURL] = useState(null)
-    const [header, setHeader] = useState(null)
+    const [options, setOptions] = useState([]);
+    const [existingTags, setExistingTags] = useState([]);
+    const [currentValues, setCurrentValues] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [imageURL, setImageURL] = useState(null);
+    const [header, setHeader] = useState(null);
     const gameSlug = useParams().game_slug;
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -122,7 +123,7 @@ export function GameUpdateForm() {
 
     async function handleCreate(tagName) {
         let formData = new FormData();
-        let url = `${API_ROOT}/api/gameTag`;
+        let url = `${API_ROOT}/api/gameTag/`;
         formData.append("name", tagName);
         formData.append("slug", slugify(tagName));
         formData.append("description", "default description");
@@ -169,13 +170,18 @@ export function GameUpdateForm() {
     }
 
     const onUpdate = async (event) => {
-
-
+        console.log("PATCHING")
         let formData = new FormData();
-        formData.append("name", name);
-        formData.append("description", description);
-        formData.append("play_link", playLink);
-        formData.append("slug", slugify(name));
+        if(name!==""){
+            formData.append("name", name);
+            formData.append("slug", slugify(name));
+        }
+        if(description!==""){
+            formData.append("description", description);
+        }
+        if(playLink!==""){
+            formData.append("play_link", playLink);
+        }
 
 
         if (image) {
@@ -190,7 +196,7 @@ export function GameUpdateForm() {
 
         console.log(header)
 
-        let url = `${API_ROOT}/api/games/${currentValues.id}`;
+        let url = `${API_ROOT}/api/games/${currentValues.id}/`;
         await axios.patch(url, formData, header)
             .then(function (response) {
                 console.log(response);
@@ -202,14 +208,14 @@ export function GameUpdateForm() {
                     axios.post(url, formData, header)
                         .catch((response) => {
                                 console.log(response)
-                                setError("root", {message: "Error during tag upload"})
+                                setError("root", {message: "Error during tag change"})
                             }
                         )
                 }
-
                 reset();
-                setError("root", {message: "game submitted successfully"});
+                setError("root", {message: "game updated successfully"});
                 setTags([]);
+                navigate(`/all_games/${slugify(name)}`)
             }).catch(function (response) {
                 console.log(response)
                 if (!response) {
@@ -219,7 +225,7 @@ export function GameUpdateForm() {
                         setError("root", {message: "A game with that name already exists!"});
                         return;
                     } else if (response.response.data.tags) {
-                        setError("root", {message: "Tag upload failed"});
+                        setError("root", {message: "Tag update failed"});
                         return;
                     }
                     if (response)
@@ -238,7 +244,7 @@ export function GameUpdateForm() {
 
     if (!loading) {
         return (
-            <form>
+            <form onSubmit={handleSubmit(onUpdate)}>
                 <h3> {currentValues.name} </h3>
                 <input  {...register("name", {
                     maxLength: {
@@ -376,7 +382,6 @@ export function GameUpdateForm() {
                     type={"submit"}
                     whileHover={{scale: 1.1}}
                     whileTap={{scale: 0.9}}
-                    onSubmit={handleSubmit(onUpdate)}
                 >
                     {"Save Changes"}
                     <div>

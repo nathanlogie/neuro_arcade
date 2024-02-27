@@ -174,7 +174,7 @@ export async function getHeaders(method, authenticated=false) {
     if (authenticated) {
         config.headers.Authorization = `Token ${getUser().token}`;
     }
-    if (method.toUpperCase() === 'POST') {
+    if (method.toUpperCase() === 'POST' || method.toUpperCase()==="PATCH") {
         config.headers['X-CSRFToken'] = await getCSRFToken();
     }
     return config;
