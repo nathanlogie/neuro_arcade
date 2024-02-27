@@ -1,8 +1,12 @@
 import {Editor} from "primereact/editor";
 import {postDescription} from "../../backendRequests";
-import {useState} from "react";
+import React, {useState} from "react";
 import {Description} from "./Description";
 import {getAboutData} from "../../backendRequests";
+import {motion} from "framer-motion";
+import {FaBan, FaPencilAlt, FaSave} from "react-icons/fa";
+import {PrimeReactProvider} from "primereact/api";
+import styles from '../../styles/App.module.css';
 
 /**
  * @param description from backendRequests.js
@@ -37,20 +41,60 @@ export function DescriptionForm ({description}) {
                 <Editor
                 name="description"
                 value={newDescription}
-                style={{ height: '320px' }}
+                pt={{
+                    toolbar: {className: styles.Toolbar},
+                    content: { style: {
+                            border: 'none',
+                            borderRadius: '0 0 0.5em 0.5em',
+                            backgroundColor: 'rgba(3, 3, 3, 0.4)',
+                            backdropFilter: 'blur(20px)',
+                            fontFamily: 'inherit',
+                            padding: '2em',
+                            height: '50em',
+                            position: 'relative'
+                    }}
+                }}
                 onTextChange= {update}
                 />
-                <button onClick={onSave}>Save</button>
             </>
         )
     }
 
     return (
         <>
-            {displayTextEdit ? edit(): <Description description={newDescription} /> }
-            <button id = "edit" onClick= {editDescription}>
-                {displayTextEdit ? "Cancel": "Edit"}
-            </button>
+            {displayTextEdit ? edit() : <Description description={newDescription}/>}
+            <motion.button
+                id={styles['edit']}
+                onClick={editDescription}
+                whileHover={{scale: 1.1}}
+                whileTap={{scale: 0.9}}
+            >
+                {displayTextEdit ? <>
+                    cancel
+                    <div>
+                    <FaBan/>
+                    </div>
+                </> : <>
+                    edit
+                    <div>
+                        <FaPencilAlt/>
+                    </div>
+                </>
+                }
+            </motion.button>
+            {displayTextEdit ?
+                <motion.button
+                    onClick={onSave}
+                    whileHover={{scale: 1.1}}
+                    whileTap={{scale: 0.9}}
+                    id={styles['save']}
+                >
+                    save
+                    <div>
+                        <FaSave/>
+                    </div>
+                </motion.button> : <></>
+            }
         </>
     )
 
