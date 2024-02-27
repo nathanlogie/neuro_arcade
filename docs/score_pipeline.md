@@ -6,8 +6,8 @@ and admins of the site.
 
 ## Data input
 
-The Neuro Arcade server receives raw result data, which are the outputs of a
-game when either a human or an AI model plays it.
+The Neuro Arcade server receives unprocessed result data, which are the outputs
+of a game when either a human or an AI model plays it.
 
 Result data must be in json format (one json file per run of a game), but other
 than that there are no requirements on how it is structured - it's only read
@@ -22,13 +22,13 @@ external website with results immediately being sent to the API on completion.
 These results may be anonymous, or may be linked to a player through the site's
 authentication system.
 
-Owners of AI models also have the option to batch-upload the result data from
-their models playing a game through the site's interface.
+Owners of AI models also have the option to batch-upload the unprocessed result
+data from their models playing a game through the site's interface.
 
 ## Data processing
 
-When result data has been received, it's added to a queue. This queue is
-periodically processed into score data, using evaluation scripts.
+When unprocessed result data has been received, it's added to a queue. This
+queue is periodically processed into score data, using evaluation scripts.
 
 Evaluation scripts are per-game python scripts uploaded by the owners of games
 which take in one set of result data for a game and output one or more numeric
@@ -72,7 +72,7 @@ For example:
 ## Evaluation script format
 
 Evaluation scripts should be python files which take a single argument (path
-to the result data json file) and print the scores to the console.
+to the unprocessed result data json file) and print the scores to the console.
 
 ### Output format
 
@@ -89,8 +89,8 @@ to their values. For example,
 If the script exits with an error code other than 0, or the output printed
 isn't valid (either can't be parsed as json, or doesn't fall within the
 constraints of the game's score type), then the score will not be saved. The
-error will be logged for game admins to check, along with the result data which
-triggered it.
+error will be logged for game admins to check, along with the unprocessed
+result data which triggered it.
 
 TODO - time limit for scripts
 
@@ -117,9 +117,9 @@ The scores generated here are what is used to display the tables and charts on t
 
 ## Glossary
 
-| Term              | Definition |
-|-------------------|------------|
-| Result data       | Raw data, the output of a game |
-| Score             | The output of an evaluation script |
-| Score Type        | A json format defining the possible score outputs of an evaluation script |
-| Evaluation script | A game-owner provided python script which converts result data from the game into scores |
+| Term               | Definition |
+|--------------------|------------|
+| Unprocessed Result | Raw data, the output of a game |
+| Score              | The output of an evaluation script |
+| Score Type         | A json format defining the possible score outputs of an evaluation script |
+| Evaluation Script  | A game-owner provided python script which converts result data from the game into scores |
