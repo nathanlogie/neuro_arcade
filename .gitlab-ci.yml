@@ -2,6 +2,7 @@ stages:          # List of stages for jobs, and their order of execution
   - build
   - django
   - react
+image: stgit.dcs.gla.ac.uk:5050/2660097h/sh08-docker:1
 
 variables:
   PYTHON_VERSION: "3.11.5"
@@ -11,31 +12,26 @@ variables:
   MYSQL_PASSWORD: $MYSQL_PASS
 
 django-build-job:
-  image: python:latest
   stage: build
   before_script:
-  - python -m venv venv
-  - source venv/bin/activate
-  - pip install -r requirements.txt
+  - python3 -m pip install -r requirements.txt
   script:
-    - python neuro_arcade/manage.py makemigrations --check
-    - python neuro_arcade/manage.py migrate
-    - python neuro_arcade/manage.py check
+    - python3 neuro_arcade/manage.py makemigrations --check
+    - python3 neuro_arcade/manage.py migrate
+    - python3 neuro_arcade/manage.py check
 
 unit-test-job: 
-  image: python:latest
   before_script:
-  - python -m venv venv
+  - python3 -m venv venv
   - source venv/bin/activate
   - pip install -r requirements.txt
   stage: django
   script:
     - cd neuro_arcade
-    - python manage.py test
+    - python3 manage.py test
 
 unit-test-r-job:
   stage: react
-  image: node:latest
   before_script:
     - cd neuro_arcade
     - cd reactapp
