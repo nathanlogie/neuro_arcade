@@ -46,6 +46,10 @@ const customStyles = {
     menu: provided => ({...provided, borderRadius: '0.5em', position: 'relative'})
 }
 
+/**
+ * @returns {JSX.Element} update existing model form
+ * @constructor builds update existing model form
+ */
 export function ModelUpdateForm() {
     const {
         register,
@@ -55,16 +59,16 @@ export function ModelUpdateForm() {
         reset
     } = useForm()
 
-    const [name, setName] = useState("")
-    const [description, setDescription] = useState("")
-    let [tags, setTags] = useState([])
-    const [existingTags, setExistingTags] = useState([])
-    const [options, setOptions] = useState([])
-    const [image, setImage] = useState(null)
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
+    let [tags, setTags] = useState([]);
+    const [existingTags, setExistingTags] = useState([]);
+    const [options, setOptions] = useState([]);
+    const [image, setImage] = useState(null);
     const player_name = useParams().player_slug;
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
     const [currentValues, setCurrentValues] = useState(null);
-    const [header, setHeader] = useState(null)
+    const [header, setHeader] = useState(null);
     const [imageURL, setImageURL] = useState(null);
     const navigate = useNavigate();
 
@@ -78,7 +82,7 @@ export function ModelUpdateForm() {
                     requestPlayerTags()
                         .then((tags) => {
                             setExistingTags(tags);
-                            setLoading(false)
+                            setLoading(false);
                         })
                 })
             })
@@ -95,7 +99,7 @@ export function ModelUpdateForm() {
     function handleTagReset() {
         options.forEach((option) => {
             if (currentValues.tags.includes(option.value)) {
-                tags.push(option)
+                tags.push(option);
             }
         })
     }
@@ -106,7 +110,7 @@ export function ModelUpdateForm() {
             description: currentValues.description,
         })
         setImageURL(`${API_ROOT}/${currentValues.icon}`);
-        handleTagReset()
+        handleTagReset();
     }
 
     const handleImage = (event) => {
@@ -114,15 +118,15 @@ export function ModelUpdateForm() {
         const acceptedFormats = IMAGE_EXTENSION;
         const fileExtension = file.name.split('.').pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
-            setError("root", {message: "Invalid file type provided"})
-            setImage(null)
+            setError("root", {message: "Invalid file type provided"});
+            setImage(null);
         } else {
-            setImage(file)
+            setImage(file);
         }
     }
 
     async function handleCreate(tagName) {
-        let formData = new FormData()
+        let formData = new FormData();
         let url = `${API_ROOT}/api/playerTag/`;
 
         formData.append("name", tagName);
@@ -132,7 +136,7 @@ export function ModelUpdateForm() {
             formData,
             header
         ).then((response) => {
-            console.log(response)
+            console.log(response);
             let newValue = {
                 value: response.data.id,
                 label: response.data.name
@@ -141,7 +145,7 @@ export function ModelUpdateForm() {
             setTags((prev) => [...prev, newValue]);
 
         }).catch(() => {
-                setError("tags", {message: "Error creating new tag"})
+                setError("tags", {message: "Error creating new tag"});
             }
         )
     }
