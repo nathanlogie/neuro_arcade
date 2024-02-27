@@ -7,7 +7,7 @@ import {FaPython} from "react-icons/fa6";
 import {FaPlus} from "react-icons/fa6";
 import {motion} from "framer-motion";
 import CreatableSelect from 'react-select/creatable';
-import {requestGameTags, requestGame} from "../../backendRequests";
+import {requestGameTags, requestGame, API_ROOT} from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
 
@@ -58,7 +58,7 @@ export function GameUpdateForm() {
     const [existingTags, setExistingTags] = useState([])
     const [currentValues, setCurrentValues] = useState(null)
     const [loading, setLoading] = useState(true)
-
+    const [imageURL, setImageURL] = useState(null)
     const gameSlug = useParams().game_slug;
 
 
@@ -69,6 +69,7 @@ export function GameUpdateForm() {
                 requestGameTags()
                     .then((tags) => {
                         setExistingTags(tags);
+                        setImageURL(`${API_ROOT}/${currentData.game.icon}`)
                         setLoading(false)
                         console.log(currentValues)
                     })
@@ -84,7 +85,15 @@ export function GameUpdateForm() {
         })
     })
 
-    console.log(currentValues)
+    function handleTagReset(){
+        options.forEach((option)=>{
+            if(currentValues.tags.includes(option.value)){
+                tags.push(option)
+            }
+        })
+    }
+
+
 
     function handleReset() {
         reset({
@@ -92,6 +101,8 @@ export function GameUpdateForm() {
             description: currentValues.description,
             playLink: currentValues.play_link
         })
+        setImageURL(currentValues.icon)
+        handleTagReset()
     }
 
 
@@ -102,8 +113,11 @@ export function GameUpdateForm() {
         if (!acceptedFormats.includes(fileExtension)) {
             setError("root", {message: "Invalid file type provided"})
             setImage(null)
+            setImageURL(null)
+            setImageURL(`${API_ROOT}/${currentValues.icon}`)
         } else {
             setImage(file)
+            setImageURL(URL.createObjectURL(file))
         }
     }
 
@@ -227,6 +241,8 @@ export function GameUpdateForm() {
         });
     };
 
+    handleTagReset();
+
     if (!loading) {
         return (
             <form>
@@ -260,6 +276,7 @@ export function GameUpdateForm() {
                 <CreatableSelect
                     isClearable
                     isMulti
+                    defaultValue={currentValues.tags}
                     onChange={(newValue) => setTags(newValue)}
                     onCreateOption={handleCreate}
                     value={tags}
@@ -288,6 +305,7 @@ export function GameUpdateForm() {
                     <div>{errors.playLink.message}</div>
                 )}
 
+
                 <span>
                 <div>
                     <h3>Game Icon</h3>
@@ -308,7 +326,12 @@ export function GameUpdateForm() {
 
                         })} type={"file"} accept={"image/*"} onChange={handleImage}/>
                     </motion.div>
+                    <h2>Current image</h2>
+                    <img src={imageURL} alt='icon'/>
                 </div>
+
+
+
                 <div>
                     <h3>Score Types</h3>
                     <motion.div
@@ -346,8 +369,7 @@ export function GameUpdateForm() {
                                 <FaPython/>
                             </div>
                         </label>
-                        <input id={'script'} {...register("evaluationScript", {
-                        })} type={"file"} accept={".py"}
+                        <input id={'script'} {...register("evaluationScript", {})} type={"file"} accept={".py"}
                                onChange={handleEvalScript}
                         />
                         {errors.evaluationScript && (
