@@ -23,12 +23,16 @@ export function FormPage({type}) {
     );
 
     let form;
+    let title;
     if (type === 'game') {
         form = <GameForm/>;
+        title = "Add Game"
     } else if (type === 'model') {
         form  = <ModelForm/>
+        title = "Add Model"
     } else if (type==='gameUpdate'){
         form = <GameUpdateForm/>
+        title = "Update Game"
     }
     else {
         throw('invalid form type');
@@ -47,7 +51,7 @@ export function FormPage({type}) {
                 exit={{opacity: 0}}
             >
                 <div className={styles.Form}>
-                    <h1 className={styles.Header}>Add {type}</h1>
+                    <h1 className={styles.Header}>{title}</h1>
                     {form}
                 </div>
             </motion.div>

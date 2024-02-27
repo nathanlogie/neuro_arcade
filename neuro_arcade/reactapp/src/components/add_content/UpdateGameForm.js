@@ -69,7 +69,8 @@ export function GameUpdateForm() {
             .then((currentData) => {
                 setCurrentValues(currentData.game);
                 getHeaders("PATCH", true).then((header)=>{
-                    setHeader(header)
+                    header.headers["Content-Type"] = "multipart/form-data";
+                    setHeader(header);
                     requestGameTags()
                         .then((tags) => {
                             setExistingTags(tags);
@@ -170,7 +171,12 @@ export function GameUpdateForm() {
     }
 
     const onUpdate = async (event) => {
-        console.log("PATCHING")
+        if(currentValues.user!==getUser().id && !getUser().is_admin){
+            setError("root", {
+                message: "You do not have permissions to edit this game"
+            })
+        }
+
         let formData = new FormData();
         if(name!==""){
             formData.append("name", name);
