@@ -101,6 +101,10 @@ const router = createBrowserRouter([
         element: <PlayerView/>
     },
     {
+        path: "all_players/:player_slug/edit",
+        element: updateModel
+    },
+    {
         path: "all_games/:game_slug/edit",
         element: updateGame
     },

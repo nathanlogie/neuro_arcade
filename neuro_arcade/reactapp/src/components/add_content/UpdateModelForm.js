@@ -10,8 +10,6 @@ import {
     getHeaders,
     API_ROOT,
     requestPlayer,
-    requestGame,
-    requestGameTags
 } from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
@@ -19,10 +17,8 @@ import {
     MAX_DESCRIPTION_LENGTH_MODEL,
     MAX_NAME_LENGTH_MODEL,
     IMAGE_EXTENSION,
-    MAX_NAME_LENGTH_GAME, MAX_DESCRIPTION_LENGTH_GAME
 } from "./variableHelper";
 import {useNavigate, useParams} from "react-router-dom";
-import {LuFileJson} from "react-icons/lu";
 
 
 const customStyles = {
@@ -58,21 +54,19 @@ export function ModelUpdateForm() {
     const [currentValues, setCurrentValues] = useState(null);
     const [header, setHeader] = useState(null)
     const [imageURL, setImageURL] = useState(null);
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         requestPlayer(player_name)
             .then((currentData) => {
-                setCurrentValues(currentData.game);
+                setCurrentValues(currentData);
                 getHeaders("PATCH", true).then((header) => {
                     header.headers["Content-Type"] = "multipart/form-data";
                     setHeader(header);
                     requestPlayerTags()
                         .then((tags) => {
                             setExistingTags(tags);
-                            setImageURL(`${API_ROOT}/${currentData.game.icon}`)
                             setLoading(false)
-                            console.log(currentValues)
                         })
                 })
             })
@@ -84,6 +78,8 @@ export function ModelUpdateForm() {
             label: tag.name
         })
     })
+
+
 
 
 
@@ -106,7 +102,7 @@ export function ModelUpdateForm() {
 
     const handleImage = (event) => {
         const file = event.target.files[0];
-        const acceptedFormats = ACCEPTED_IMAGE;
+        const acceptedFormats = IMAGE_EXTENSION;
         const fileExtension = file.name.split('.').pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
             setError("root", {message: "Invalid file type provided"})
@@ -127,7 +123,6 @@ export function ModelUpdateForm() {
             data: formData,
             headers: header,
         }).then((response) => {
-            console.log(response)
             let newValue = {
                 value: response.data.id,
                 label: response.data.name
@@ -138,6 +133,26 @@ export function ModelUpdateForm() {
 
         }).catch(() => {
                 setError("tags", {message: "Error creating new tag"})
+            }
+        )
+    }
+
+    function handleDelete(){
+        if (currentValues.user !== getUser().id && !getUser().is_admin) {
+            setError("root", {
+                message: "You do not have permissions to edit this game"
+            })
+            return;
+        }
+
+        let url = `${API_ROOT}/api/players/${currentValues.id}/`
+        axios.delete(url).then((response)=>{
+                navigate("/all_players/")
+            }
+        ).catch(()=> {
+                setError("root", {
+                    message: "Could not delete model"
+                })
             }
         )
     }
@@ -173,7 +188,6 @@ export function ModelUpdateForm() {
 
 
             await axios.patch(url, formData, header).then(function (response) {
-            console.log(response);
 
                 if (tags.length !== 0) {
                     const finalTagIDs = tags.map((tag) => tag.value);
@@ -188,11 +202,16 @@ export function ModelUpdateForm() {
                 }
             reset()
             setImage(null)
-            setError("root", {message: "model submitted successfully"})
+            setError("root", {message: "model updated successfully"})
             setTags(null)
+            if(name===""){
+                navigate(`/all_players/${currentValues.slug}`)
+            }
+            else{
+                navigate(`/all_players/${slugify(name)}`)
+            }
 
         }).catch(function (response) {
-            console.log(response)
             if (!response) {
                 setError("root", {message: "No response from server"});
             } else {
@@ -221,8 +240,8 @@ export function ModelUpdateForm() {
                 <h3> {currentValues.name} </h3>
                 <input  {...register("name", {
                     maxLength: {
-                        value: MAX_NAME_LENGTH_GAME,
-                        message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH_GAME})`,
+                        value: MAX_NAME_LENGTH_MODEL,
+                        message: `Maximum model title length has been exceeded (${MAX_NAME_LENGTH_MODEL})`,
                     }
                 })} type={"text"} placeholder={"game name"} defaultValue={currentValues.name}
                         onChange={(event) => setName(event.target.value)}
@@ -234,8 +253,8 @@ export function ModelUpdateForm() {
                 <h3>Description</h3>
                 <input {...register("description", {
                     maxLength: {
-                        value: MAX_DESCRIPTION_LENGTH_GAME,
-                        message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH_GAME})`,
+                        value: MAX_DESCRIPTION_LENGTH_MODEL,
+                        message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH_MODEL})`,
                     }
                 })} type={"text"} placeholder={"This game measures..."} defaultValue={currentValues.description}
                        onChange={(event) => setDescription(event.target.value)}
@@ -244,7 +263,7 @@ export function ModelUpdateForm() {
                     <div>{errors.description.message}</div>
                 )}
 
-                <h3>Game Tags</h3>
+                <h3>Model Tags</h3>
                 <CreatableSelect
                     isClearable
                     isMulti
@@ -260,23 +279,6 @@ export function ModelUpdateForm() {
                 {errors.tags && (
                     <div>{errors.tags.message}</div>
                 )}
-
-                <h3>Play Link</h3>
-                <input {...register("playLink", {
-                    validate: (value) => {
-                        try {
-                            let url = new URL(value)
-                        } catch (error) {
-                            return "Invalid URL Provided"
-                        }
-                        return true
-                    }
-                })} type={"text"} placeholder={"https://link"} defaultValue={currentValues.play_link}
-                       onChange={(event) => setPlayLink(event.target.value)}/>
-                {errors.playLink && (
-                    <div>{errors.playLink.message}</div>
-                )}
-
 
                 <span>
                 <div>
