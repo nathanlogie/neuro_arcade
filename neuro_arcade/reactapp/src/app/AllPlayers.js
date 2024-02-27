@@ -84,7 +84,6 @@ export function AllPlayers() {
                     mode={modes[modeIdx]}
                     textQuery={textQuery}
                     tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)}
-                    id={'AppGrid'}
                 />
             </div>
         </>;

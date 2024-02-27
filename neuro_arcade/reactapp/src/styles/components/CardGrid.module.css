@@ -8,10 +8,6 @@
     padding: 2em 0;
 }
 
-#AppGrid {
-    justify-content: flex-start;
-}
-
 @media(max-width: 50em) {
     .CardGrid {
         gap: 1em;

@@ -31,11 +31,19 @@ export function AllGames() {
             })
     }, [])
 
-    const tagFilter =
+    const smallTagFilter =
         <TagFilter
             onTagChange={setSelectedTags}
             tags={tags.map((tag) => tag.name)}
             id={show ? 'all' : 'invisible'}
+            onMouseOver={() => setHover(true)}
+            onMouseOut={() => setHover(false)}
+        />;
+
+    const largeTagFilter =
+        <TagFilter
+            onTagChange={setSelectedTags}
+            tags={tags.map((tag) => tag.name)}
             onMouseOver={() => setHover(true)}
             onMouseOut={() => setHover(false)}
         />;
@@ -50,6 +58,7 @@ export function AllGames() {
                         <FaMagnifyingGlass/>
                     </div>
                 </div>
+                {largeTagFilter}
             </div>
             <div className={styles.Content} id={styles['big']}>
                 <div className={styles.Title}>
@@ -61,11 +70,10 @@ export function AllGames() {
                         <IoFilter/>
                     </motion.div>
                 </div>
-                {tagFilter}
+                {smallTagFilter}
                 <GameGrid
                     textQuery={textQuery}
                     tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)}
-                    id={'AppGrid'}
                 />
             </div>
         </>
@@ -83,6 +91,7 @@ export function AllGames() {
                 exit={{opacity: 0, y: -100}}
             >
                 {content}
+                <div className={styles.MobileBannerBuffer}></div>
             </motion.div>
         </>
     );
