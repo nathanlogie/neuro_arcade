@@ -62,11 +62,8 @@ export function GameForm() {
                 setExistingTags(tags);
                 setUser(getUser().id);
             })
-        getHeaders("POST", true)
-            .then((header) => {
-                header.headers["Content-Type"] = "multipart/form-data";
-                setHeader(header);
-            })
+        getHeaders("POST", true, "multipart/form-data")
+            .then((header) => setHeader(header))
     }, [])
 
     existingTags.forEach((tag) => {

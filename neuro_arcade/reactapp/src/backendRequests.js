@@ -158,17 +158,18 @@ async function getCSRFToken() {
  * Set authenticated to true to send the authentication token as well.
  *
  * @param {string} method HTTP method (so like GET, POST etc.)
- * @param {boolean} authenticated
+ * @param {boolean} authenticated (defaults to false)
+ * @param {string} contentType (defaults to 'application/json')
  *
  * @return Axios Request Config
  */
-export async function getHeaders(method, authenticated=false) {
+export async function getHeaders(method, authenticated=false, contentType='application/json') {
     let config = {
         credentials: 'include',
         method: method,
         mode: 'same-origin',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': contentType,
         },
     }
     if (authenticated) {
