@@ -503,9 +503,6 @@ class GameViewSet(viewsets.ModelViewSet):
         if not game:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        if data['tags']:
-            self.add_tags(request)
-
         serializer = self.get_serializer(game, data=data, partial=True, many=True)
         if serializer.is_valid():
             serializer.save()
@@ -548,9 +545,6 @@ class PlayerViewSet(viewsets.ModelViewSet):
         player = self.get_object(pk=pk)
         if not player:
             return Response(status=status.HTTP_404_NOT_FOUND)
-
-        if data['tags']:
-            self.add_tags(request)
 
         serializer = self.get_serializer(player, data=data, partial=True, many=True)
         if serializer.is_valid():
