@@ -166,6 +166,8 @@ class Player(models.Model):
 
     MAX_PLAYER_NAME_LENGTH = 64
     MAX_PLAYER_DESCRIPTION_LENGTH = 1024
+    PROFILE_SUBDIR = 'profile_pics'
+
 
     name = models.CharField(max_length=MAX_PLAYER_NAME_LENGTH)
     slug = models.SlugField(unique=True, null=True)
@@ -173,6 +175,7 @@ class Player(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     description = models.TextField(max_length=MAX_PLAYER_DESCRIPTION_LENGTH, default='')
     tags = models.ManyToManyField(PlayerTag, blank=True)
+    icon = models.ImageField(upload_to=PROFILE_SUBDIR, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)

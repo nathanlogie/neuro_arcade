@@ -2,7 +2,7 @@ import {useForm} from "react-hook-form";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {motion} from "framer-motion";
-import {FaPlus} from "react-icons/fa6";
+import {FaImage, FaPlus} from "react-icons/fa6";
 import CreatableSelect from 'react-select/creatable';
 import {requestPlayerTags, getUser, getHeaders, requestGameTags} from "../../backendRequests";
 import slugify from 'react-slugify';
@@ -41,6 +41,8 @@ export function ModelForm() {
     const [existingTags, setExistingTags] = useState([])
     const [options, setOptions] = useState([])
     const [user, setUser] = useState(null)
+    const [image, setImage] = useState(null)
+
 
 
     useEffect(() => {
@@ -63,6 +65,18 @@ export function ModelForm() {
             label: tag.name
         })
     })
+
+    const handleImage = (event) => {
+        const file = event.target.files[0];
+        const acceptedFormats = ACCEPTED_IMAGE;
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        if (!acceptedFormats.includes(fileExtension)) {
+            setError("root", {message: "Invalid file type provided"})
+            setImage(null)
+        } else {
+            setImage(file)
+        }
+    }
 
     function handleCreate(tagName) {
         let formData = new FormData()
@@ -97,6 +111,9 @@ export function ModelForm() {
         formData.append("description", description);
         formData.append("user", user);
         formData.append("is_ai", true);
+        if (image) {
+            formData.append("icon", image)
+        }
 
         await axios({
             //I will move a lot of this stuff to backend requests to centralize it in a future merge request
@@ -122,6 +139,7 @@ export function ModelForm() {
                 )
             }
             reset()
+            setImage(null)
             setError("root", {message: "model submitted successfully"})
             setTags(null)
         }).catch(function (response) {
@@ -193,6 +211,29 @@ export function ModelForm() {
                 placeholder={"Search..."}
             />
 
+            <span>
+                <div>
+                    <h3>Game Icon</h3>
+                    <motion.div
+                        whileHover={{scale: 1.1}}
+                        whileTap={{scale: 0.9}}
+                    >
+                        <label htmlFor={'icon'}>
+                            <p>
+                                {image ? image.name : 'No file chosen'}
+                            </p>
+                            <div>
+                                <FaImage/>
+                            </div>
+                        </label>
+                        <input id={'icon'} {...register("icon", {
+                            required: false,
+
+                        })} type={"file"} accept={"image/*"} onChange={handleImage}/>
+                    </motion.div>
+                </div>
+            </span>
+
             <motion.button
                 disabled={isSubmitting}
                 type={"submit"}
@@ -204,9 +245,9 @@ export function ModelForm() {
                     <FaPlus/>
                 </div>
             </motion.button>
-            {errors.root && (
-                <div>{errors.root.message}</div>
-            )}
+                {errors.root && (
+                    <div>{errors.root.message}</div>
+                )}
         </form>
-    )
+)
 }

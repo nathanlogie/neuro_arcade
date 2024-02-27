@@ -91,6 +91,7 @@ const API_ROOT = "http://localhost:8000"
  * @property {string} user
  * @property {string} description
  * @property {PlayerTagKey[]} tags
+ * @property {image} icon
  */
 
 /**
