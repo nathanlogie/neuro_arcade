@@ -7,10 +7,9 @@ import {FaPython} from "react-icons/fa6";
 import {FaPlus} from "react-icons/fa6";
 import {motion} from "framer-motion";
 import CreatableSelect from 'react-select/creatable';
-import {requestGameTags, getUser} from "../../backendRequests";
+import {requestGameTags, getUser, getHeaders} from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
-
 import {
     MAX_NAME_LENGTH_GAME,
     MAX_DESCRIPTION_LENGTH_GAME,
@@ -18,13 +17,6 @@ import {
     SCORE_EXTENSION,
     EVAL_EXTENSION
 } from "./variableHelper";
-
-const MAX_NAME_LENGTH = get_name_length();
-const MAX_DESCRIPTION_LENGTH = get_description_length();
-
-const ACCEPTED_SCORE_FILE = get_score_extension();
-const ACCEPTED_EVAL_SCRIPT = get_eval_extension();
-const ACCEPTED_IMAGE = get_image_extension();
 
 const customStyles = {
     option: provided => ({...provided, color: 'black'}),
@@ -56,14 +48,20 @@ export function GameForm() {
     const [options, setOptions] = useState([])
     const [existingTags, setExistingTags] = useState([])
     const [user, setUser] = useState(null)
-
+    const [header, setHeader] = useState(null)
 
     useEffect(() => {
         requestGameTags()
             .then((tags) => {
                 setExistingTags(tags);
+                setUser(getUser().id);
+                getHeaders("POST")
+                    .then((header)=>{
+                        header.headers["Content-Type"] = "multipart/form-data";
+                        setHeader(header);
+                    })
             })
-        setUser(getUser().id);
+
     }, [])
 
     existingTags.forEach((tag) => {
@@ -91,11 +89,13 @@ export function GameForm() {
         formData.append("name", tagName)
         formData.append("slug", slugify(tagName))
         formData.append("description", "default description")
+        let header = getHeaders("POST")
+        header.headers['Content-Type'] = "multipart/form-data"
         axios({
             method: "post",
             url: "http://127.0.0.1:8000/api/gameTag/",
             data: formData,
-            headers: {"Content-Type": "multipart/form-data"},
+            headers: header
         }).then((response) => {
             console.log(response)
             let newValue = {
@@ -160,7 +160,7 @@ export function GameForm() {
             method: "post",
             url: "http://127.0.0.1:8000/api/games/",
             data: formData,
-            headers: {"Content-Type": "multipart/form-data"},
+            headers: header,
         }).then(function (response) {
             console.log(response);
 
@@ -214,7 +214,7 @@ export function GameForm() {
                 required: "Name is required",
                 maxLength: {
                     value: MAX_NAME_LENGTH_GAME,
-                    message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH})`,
+                    message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH_GAME})`,
                 }
             })} type={"text"} placeholder={"game name"}
                    onChange={(event) => setName(event.target.value)}
@@ -228,7 +228,7 @@ export function GameForm() {
                 required: "A description is required",
                 maxLength: {
                     value: MAX_DESCRIPTION_LENGTH_GAME,
-                    message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})`,
+                    message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH_GAME})`,
                 }
             })} type={"text"} placeholder={"This game measures..."}
                    onChange={(event) => setDescription(event.target.value)}

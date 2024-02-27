@@ -4,10 +4,11 @@ import axios from "axios";
 import {motion} from "framer-motion";
 import {FaImage, FaPlus} from "react-icons/fa6";
 import CreatableSelect from 'react-select/creatable';
-import {requestPlayerTags, getUser} from "../../backendRequests";
+import {requestPlayerTags, getUser, getHeaders, requestGameTags} from "../../backendRequests";
 import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
 import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION} from "./variableHelper";
+
 
 
 const customStyles = {
@@ -48,8 +49,14 @@ export function ModelForm() {
         requestPlayerTags()
             .then((tags) => {
                 setExistingTags(tags);
+                setUser(getUser().id);
+                getHeaders("POST")
+                    .then((header)=>{
+                        header.headers["Content-Type"] = "multipart/form-data";
+                        setHeader(header);
+                    })
             })
-        setUser(getUser().id);
+
     }, [])
 
     existingTags.forEach((tag) => {
@@ -80,7 +87,7 @@ export function ModelForm() {
             method: "post",
             url: "http://127.0.0.1:8000/api/playerTag/",
             data: formData,
-            headers: {"Content-Type": "multipart/form-data"},
+            headers: header,
         }).then((response) => {
             console.log(response)
             let newValue = {
@@ -124,7 +131,7 @@ export function ModelForm() {
                     method: "post",
                     url: `http://127.0.0.1:8000/api/players/${response.data.id}/add_tags/`,
                     data: formData,
-                    headers: {"Content-Type": "multipart/form-data"},
+                    headers: header,
                 }).catch((response) => {
                         console.log(response)
                         setError("root", {message: "Error during tag upload"})
@@ -166,7 +173,7 @@ export function ModelForm() {
                 required: "Name is required",
                 maxLength: {
                     value: MAX_NAME_LENGTH_MODEL,
-                    message: `Maximum name length has been exceeded (${MAX_NAME_LENGTH})`
+                    message: `Maximum name length has been exceeded (${MAX_NAME_LENGTH_MODEL})`
                 }
             })}
                    type={"text"} placeholder={"model name"}
@@ -181,7 +188,7 @@ export function ModelForm() {
                 required: false,
                 maxLength: {
                     value: MAX_DESCRIPTION_LENGTH_MODEL,
-                    message: "Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})"
+                    message: `Maximum description length has been exceeded (${MAX_NAME_LENGTH_MODEL}`
                 }
             })}
                    type={"text"} placeholder={"This model was designed to..."}
