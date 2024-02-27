@@ -467,7 +467,10 @@ def get_player(request: Request, player_name_slug: str) -> Response:
 
     tag_names = [tag.name for tag in player.tags.all()]
 
+    username = player.user.username
+
     player_data['tags'] = tag_names
+    player_data['user'] = username
     return Response(player_data)
 
 
@@ -476,10 +479,7 @@ def get_player_scores(request: Request, player_name_slug: str) -> Response:
     """
     Retrieve all scores made by players
     """
-    try:
-        player = Player.objects.get(slug=player_name_slug)
-    except Player.DoesNotExist:
-        return Response(status=400)
+    player = get_object_or_404(Player, slug=player_name_slug)
     
     scores = Score.objects.filter(player=player)
 
