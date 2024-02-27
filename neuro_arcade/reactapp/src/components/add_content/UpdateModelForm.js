@@ -338,7 +338,7 @@ export function ModelUpdateForm() {
                     whileTap={{scale: 0.9}}
                     onClick={handleSubmit(handleDelete)}
                 >
-                    {"Delete Game"}
+                    {"Delete Model"}
                     <div>
                         <FaPlus/>
                     </div>
