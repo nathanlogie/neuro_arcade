@@ -21,27 +21,33 @@ import {AuthTest} from "./app/AuthTest";
 import {AllUsers} from "./app/user_account/AllUsers"
 import {isLoggedIn, getUserStatus, userIsAdmin} from "./backendRequests";
 
-let about = <AboutPage />;
-let addGame = <PageNotFound />;
-let addModel = <PageNotFound />;
-let allUsers = <PageNotFound />;
-let userAccount = <Navigate to={'/login'} />
-
-if (isLoggedIn()){
-    userAccount = <AccountPage />
-    if (userIsAdmin()) {
-        about = <EditAbout />;
-        allUsers = <AllUsers />
+export function LoginRoutes({children}){
+    if (!isLoggedIn()){
+        return <Navigate to={'/login'} />
     }
+    return children;
+};
 
-    if (getUserStatus()==="approved" || userIsAdmin()){
-        addGame = <FormPage type={'game'} />
-        addModel = <FormPage type={'model'} />
+export function ApprovedRoutes({children}){
+    if((!isLoggedIn() || getUserStatus()!=='approved') && !userIsAdmin()){
+        return <PageNotFound />
     }
-
+    return children;
 }
 
+export function AdminRoutes({children}){
+    if (!userIsAdmin()){
+        return <PageNotFound />
+    }
+    return children;
+}
 
+export function EditRoute({children}){
+    if (isLoggedIn() && userIsAdmin()){
+        return <EditAbout />
+    }
+    return children;
+}
 
 const router = createBrowserRouter([
     {
@@ -50,23 +56,38 @@ const router = createBrowserRouter([
     },
     {
         path: "about",
-        element: about,
+        element:
+            <EditRoute>
+                <AboutPage/>
+            </EditRoute>
     },
     {
         path: "user_account", //TODO slug for users
-        element: userAccount
+        element:
+            <LoginRoutes>
+                <AccountPage />
+            </LoginRoutes>
     },
     {
         path: "user_account/all_users",
-        element: allUsers
+        element:
+            <AdminRoutes>
+                <AllUsers />
+            </AdminRoutes>
     },
     {
         path: "add_game",
-        element: addGame
+        element:
+            <ApprovedRoutes>
+                <FormPage type={'game'}/>
+            </ApprovedRoutes>
     },
     {
         path: "add_model",
-        element: addModel
+        element:
+            <ApprovedRoutes>
+                <FormPage type={'model'}/>
+            </ApprovedRoutes>
     },
     {
         path: 'all_games/:game_slug',
