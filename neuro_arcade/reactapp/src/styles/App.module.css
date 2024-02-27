@@ -126,6 +126,7 @@
         align-items: center;
         overflow: hidden;
         .Switcher {
+            margin: 2em 0;
             box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
             border-radius: 3em;
             background-color: rgba(255, 255, 255, 0.1);
@@ -496,11 +497,12 @@
                     display: block;
                 }
             }
-            .Content {
-                .Title {
-                    padding-left: 3em;
-                }
+            .Title {
+                padding-left: 3em;
             }
+        }
+        .Content#big {
+            padding: 0 2em !important;
         }
         .Side {
             padding-bottom: 0;
@@ -611,7 +613,7 @@
         padding: 0.75em 1em;
         border: none;
         outline: none;
-        background-color: rgba(255, 255, 255, 0.25);
+        background-color: rgba(255, 255, 255, 0.2);
         backdrop-filter: blur(5px);
         color: #ffffff;
         font-family: inherit;

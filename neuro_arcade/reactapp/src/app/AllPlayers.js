@@ -7,6 +7,7 @@ import React, {useEffect, useState} from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import {Switcher} from "../components/Switcher";
 import {motion} from "framer-motion";
+import {IoFilter} from "react-icons/io5";
 
 /**
  * @returns {JSX.Element} all players page
@@ -48,6 +49,8 @@ export function AllPlayers() {
             { name: 'Humans' }
         ],
     }
+    const [show, setShow] = useState(false);
+    const [hover, setHover] = useState(false);
 
     useEffect(() => {
         requestPlayerTags()
@@ -56,6 +59,23 @@ export function AllPlayers() {
                 setLoading(false);
             })
     }, [])
+
+    const smallTagFilter =
+        <TagFilter
+            onTagChange={setSelectedTags}
+            tags={tags.map((tag) => tag.name)}
+            id={show ? 'all' : 'invisible'}
+            onMouseOver={() => setHover(true)}
+            onMouseOut={() => setHover(false)}
+        />;
+
+    const largeTagFilter =
+        <TagFilter
+            onTagChange={setSelectedTags}
+            tags={tags.map((tag) => tag.name)}
+            onMouseOver={() => setHover(true)}
+            onMouseOut={() => setHover(false)}
+        />;
 
     let content = <>...</>;
     if (!loading) {
@@ -74,12 +94,19 @@ export function AllPlayers() {
                         switcherDefault={selectedSwitcherValue}
                     />
                 </div>
-                <TagFilter tags={tags.map((tag) => tag.name)} onTagChange={setSelectedTags}/>
+                {largeTagFilter}
             </div>
             <div className={styles.Content} id={styles['big']}>
                 <div className={styles.Title}>
                     <h1>All Players</h1>
+                    <motion.div
+                        className={styles.FilterButton} id={styles['all']} onClick={() => setShow(!show)}
+                        whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}
+                    >
+                        <IoFilter/>
+                    </motion.div>
                 </div>
+                {smallTagFilter}
                 <PlayerGrid
                     mode={modes[modeIdx]}
                     textQuery={textQuery}
