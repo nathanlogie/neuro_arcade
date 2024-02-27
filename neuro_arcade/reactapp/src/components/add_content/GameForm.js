@@ -55,13 +55,12 @@ export function GameForm() {
             .then((tags) => {
                 setExistingTags(tags);
                 setUser(getUser().id);
-                getHeaders("POST")
-                    .then((header)=>{
-                        header.headers["Content-Type"] = "multipart/form-data";
-                        setHeader(header);
-                    })
             })
-
+        getHeaders("POST", true)
+            .then((header) => {
+                header.headers["Content-Type"] = "multipart/form-data";
+                setHeader(header);
+            })
     }, [])
 
     existingTags.forEach((tag) => {
@@ -84,17 +83,16 @@ export function GameForm() {
         }
     }
 
-    function handleCreate(tagName) {
-        let formData = new FormData()
-        formData.append("name", tagName)
-        formData.append("slug", slugify(tagName))
-        formData.append("description", "default description")
-        axios({
-            method: "post",
-            url: `${API_ROOT}/api/gameTag`,
-            data: formData,
-            headers: header,
-        }).then((response) => {
+    async function handleCreate(tagName) {
+        let formData = new FormData();
+        let url = `${API_ROOT}/api/gameTag`;
+        formData.append("name", tagName);
+        formData.append("slug", slugify(tagName));
+        formData.append("description", "default description");
+        await axios.post(url,
+            formData,
+            header
+        ).then((response) => {
             console.log(response)
             let newValue = {
                 value: response.data.id,
@@ -156,55 +154,49 @@ export function GameForm() {
 
         console.log(header)
 
-        await axios({
-            method: "post",
-            url: `${API_ROOT}/api/games/`,
-            data: formData,
-            headers: header,
-        }).then(function (response) {
-            console.log(response);
+        let url = `${API_ROOT}/api/games/`;
+        await axios.post(url, formData, header)
+            .then(function (response) {
+                console.log(response);
 
-            if (tags.length !== 0) {
-                const finalTagIDs = tags.map((tag) => tag.value);
-                formData.append("tags", finalTagIDs)
-                axios({
-                    method: "post",
-                    url: `${API_ROOT}/api/games/${response.data.id}/add_tags/`,
-                    data: formData,
-                    headers: header,
-                }).catch((response) => {
-                        console.log(response)
-                        setError("root", {message: "Error during tag upload"})
-                    }
-                )
-            }
-
-
-            reset();
-            setError("root", {message: "game submitted successfully"});
-            setTags([]);
-        }).catch(function (response) {
-            console.log(response)
-            if (!response) {
-                setError("root", {message: "No response from server"});
-            } else {
-                if (response.response.data.slug) {
-                    setError("root", {message: "A game with that name already exists!"});
-                    return;
-                } else if (response.response.data.tags) {
-                    setError("root", {message: "Tag upload failed"});
-                    return;
+                if (tags.length !== 0) {
+                    const finalTagIDs = tags.map((tag) => tag.value);
+                    formData.append("tags", finalTagIDs)
+                    let url = `${API_ROOT}/api/games/${response.data.id}/add_tags/`;
+                    axios.post(url, formData, header)
+                        .catch((response) => {
+                                console.log(response)
+                                setError("root", {message: "Error during tag upload"})
+                            }
+                        )
                 }
-                if (response)
-                    if (response.response.data.includes("IntegrityError")) {
+
+                reset();
+                setError("root", {message: "game submitted successfully"});
+                setTags([]);
+            }).catch(function (response) {
+                console.log(response)
+                if (!response) {
+                    setError("root", {message: "No response from server"});
+                } else {
+                    // todo: TypeError here: response.response doesn't exist here
+                    if (response.response.data.slug) {
                         setError("root", {message: "A game with that name already exists!"});
-                    } else {
-                        setError("root", {
-                            message: `Something went wrong... ${response.response.data}`
-                        })
+                        return;
+                    } else if (response.response.data.tags) {
+                        setError("root", {message: "Tag upload failed"});
+                        return;
                     }
-            }
-        });
+                    if (response)
+                        if (response.response.data.includes("IntegrityError")) {
+                            setError("root", {message: "A game with that name already exists!"});
+                        } else {
+                            setError("root", {
+                                message: `Something went wrong... ${response.response.data}`
+                            })
+                        }
+                }
+            });
     };
 
     return (
