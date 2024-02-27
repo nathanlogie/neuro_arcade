@@ -74,17 +74,17 @@ export function ModelForm() {
         }
     }
 
-    function handleCreate(tagName) {
+    async function handleCreate(tagName) {
         let formData = new FormData()
-        formData.append("name", tagName)
-        formData.append("slug", slugify(tagName))
-        formData.append("description", "described")
-        axios({
-            method: "post",
-            url: `${API_ROOT}/api/playerTag/`,
-            data: formData,
-            headers: header,
-        }).then((response) => {
+        let url = `${API_ROOT}/api/playerTag/`;
+
+        formData.append("name", tagName);
+        formData.append("slug", slugify(tagName));
+        formData.append("description", "default description");
+        await axios.post(url,
+            formData,
+            header
+        ).then((response) => {
             console.log(response)
             let newValue = {
                 value: response.data.id,
@@ -92,7 +92,6 @@ export function ModelForm() {
             }
             setOptions((prev) => [...prev, newValue]);
             setTags((prev) => [...prev, newValue]);
-
 
         }).catch(() => {
                 setError("tags", {message: "Error creating new tag"})
@@ -110,14 +109,11 @@ export function ModelForm() {
         if (image) {
             formData.append("icon", image)
         }
+        let url = `${API_ROOT}/api/players/`
 
-        await axios({
-            //I will move a lot of this stuff to backend requests to centralize it in a future merge request
-            method: "post",
-            url: `${API_ROOT}/api/players/`,
-            data: formData,
-            headers: {"Content-Type": "multipart/form-data"},
-        }).then(function (response) {
+        await axios.post(url, formData, header)
+
+        .then(function (response) {
             console.log(response);
 
             if (tags.length !== 0) {

@@ -60,7 +60,6 @@ export function ModelUpdateForm() {
     let [tags, setTags] = useState([])
     const [existingTags, setExistingTags] = useState([])
     const [options, setOptions] = useState([])
-    const [user, setUser] = useState(null)
     const [image, setImage] = useState(null)
     const player_name = useParams().player_slug;
     const [loading, setLoading] = useState(true)
