@@ -122,24 +122,24 @@ export function ModelUpdateForm() {
         }
     }
 
-    function handleCreate(tagName) {
+    async function handleCreate(tagName) {
         let formData = new FormData()
-        formData.append("name", tagName)
-        formData.append("slug", slugify(tagName))
-        formData.append("description", "described")
-        axios({
-            method: "post",
-            url: `${API_ROOT}/api/playerTag/`,
-            data: formData,
-            headers: header,
-        }).then((response) => {
+        let url = `${API_ROOT}/api/playerTag/`;
+
+        formData.append("name", tagName);
+        formData.append("slug", slugify(tagName));
+        formData.append("description", "default description");
+        await axios.post(url,
+            formData,
+            header
+        ).then((response) => {
+            console.log(response)
             let newValue = {
                 value: response.data.id,
                 label: response.data.name
             }
             setOptions((prev) => [...prev, newValue]);
             setTags((prev) => [...prev, newValue]);
-
 
         }).catch(() => {
                 setError("tags", {message: "Error creating new tag"})
