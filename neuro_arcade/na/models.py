@@ -193,7 +193,7 @@ class Score(models.Model):
         return self.player.name + "'s score at " + self.game.name
 
 
-class RawScore(models.Model):
+class UnprocessedResults(models.Model):
     """Scores that have yet to be processed by evaluation scripts. """
 
     upload_date = models.DateTimeField(auto_now_add=True)
@@ -202,7 +202,7 @@ class RawScore(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
 
     def __str__(self):
-        return ("RawScore for game " + self.game.name +
+        return ("UnprocessedResults for game " + self.game.name +
                 " by player " + self.player.name +
                 ": " + self.upload_date.__str__())
 

@@ -395,8 +395,8 @@ export async function postGameScore(gameName, playerIdentification, scoreData) {
 }
 
 /**
- * Uploads raw score data to be processed.
- * Corresponds to na.views.post_raw_score in django.
+ * Uploads Unprocessed Result data to be processed.
+ * Corresponds to na.views.post_unprocessed_result in django.
  * User needs to be authenticated.
  *
  * @param {any} content - will be converted to string before upload
@@ -407,8 +407,8 @@ export async function postGameScore(gameName, playerIdentification, scoreData) {
  *
  * @throws {Error | UserNotAuthenticatedError} when the request is rejected or when the user is not logged in.
  */
-export async function postRawScore(content, game_slug, player_name) {
-    const url = API_ROOT + '/upload/raw_score/';
+export async function postUnprocessedResults(content, game_slug, player_name) {
+    const url = API_ROOT + '/upload/unprocessed_result/';
 
     if (!isLoggedIn())
         throw UserNotAuthenticatedError()

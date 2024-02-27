@@ -18,7 +18,7 @@ from rest_framework.response import Response
 from django.conf import settings
 
 from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
-from na.models import Game, GameTag, Player, UserStatus, PlayerTag, RawScore
+from na.models import Game, GameTag, Player, UserStatus, PlayerTag, UnprocessedResults
 
 import json
 
@@ -472,7 +472,7 @@ def get_player(request: Request, player_name_slug: str) -> Response:
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def post_raw_score(request: Request) -> Response:
+def post_unprocessed_result(request: Request) -> Response:
     """
     Upload of raw score that will need to be evaluated. User needs to be authenticated.
     Request format: {
@@ -514,7 +514,7 @@ def post_raw_score(request: Request) -> Response:
                         data='Provided player/model is not owned by the authenticated user! ' +
                              'You can not upload scores attributed to a Player/Model that\'s not associated with the user')
     # finally, creating the raw score object
-    new_raw_score = RawScore.objects.create(game=game_obj, player=player_obj, content=content)
+    new_raw_score = UnprocessedResults.objects.create(game=game_obj, player=player_obj, content=content)
     # checking the raw score was actually created
     if new_raw_score is None:
         return Response(status=500,

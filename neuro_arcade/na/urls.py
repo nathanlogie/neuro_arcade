@@ -19,7 +19,7 @@ urlpatterns = [
     path('csrf/', views.csrf, name='csrf'),
     path('ping/', views.ping, name='ping'),
     path('model_rankings/', views.get_model_rankings, name='get_model_rankings'),
-    path('upload/raw_score/', views.post_raw_score, name='post_raw_score'),
+    path('upload/unprocessed_result/', views.post_unprocessed_result, name='post_unprocessed_result'),
     path('players/<slug:player_name_slug>/data/', views.get_player, name='get_player'),
     path('update_status/', views.update_user_status, name='update_user_status'),
 ]
