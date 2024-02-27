@@ -28,7 +28,7 @@ def main():
     output = subprocess.run(['sh', 'docker_run.sh'], capture_output=True)
 
     print('return code:', output.returncode)
-    print('stdout: ', output.stdout)
+    print('stdout: ', output.stdout.decode())
 
     # todo parse docker_run output and insert it into the DB
     #  maybe by using the neuro_arcade API?
