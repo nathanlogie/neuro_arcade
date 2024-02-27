@@ -21,6 +21,11 @@ import {AuthTest} from "./app/AuthTest";
 import {AllUsers} from "./app/user_account/AllUsers"
 import {isLoggedIn, getUserStatus, userIsAdmin} from "./backendRequests";
 
+/**
+ * Protected routes for routes that only require a login
+ * @param children - The JSX Element returned if the user is logged in
+ * @returns {React.JSX.Element|*} - Returns child element if logged in, otherwise redirects to login
+ */
 export function LoginRoutes({children}){
     if (!isLoggedIn()){
         return <Navigate to={'/login'} />
@@ -28,6 +33,12 @@ export function LoginRoutes({children}){
     return children;
 };
 
+/**
+ * Protected routes for routes that require an approved user
+ * @param children - The JSX Element returned if the user is approved or is an admin
+ * @returns {React.JSX.Element|*} - Returns child element if user is approved
+ * or is an admin, otherwise returns PageNotFound component
+ */
 export function ApprovedRoutes({children}){
     if((!isLoggedIn() || getUserStatus()!=='approved') && !userIsAdmin()){
         return <PageNotFound />
@@ -35,6 +46,11 @@ export function ApprovedRoutes({children}){
     return children;
 }
 
+/**
+ * Protected routes for routes that require an admin
+ * @param children - The JSX Element returned if the user is an admin
+ * @returns {React.JSX.Element|*} - Returns child element if an admin, otherwise returns PageNotFound
+ */
 export function AdminRoutes({children}){
     if (!userIsAdmin()){
         return <PageNotFound />
@@ -42,6 +58,11 @@ export function AdminRoutes({children}){
     return children;
 }
 
+/**
+ * Protected routes for routes that require an admin
+ * @param children - The JSX Element returned if the user is not an admin
+ * @returns {React.JSX.Element|*} - Returns child element if user is not an admin, returns EditAbout otherwise
+ */
 export function EditRoute({children}){
     if (isLoggedIn() && userIsAdmin()){
         return <EditAbout />
