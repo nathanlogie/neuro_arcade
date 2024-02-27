@@ -89,13 +89,11 @@ export function GameForm() {
         formData.append("name", tagName)
         formData.append("slug", slugify(tagName))
         formData.append("description", "default description")
-        let header = getHeaders("POST")
-        header.headers['Content-Type'] = "multipart/form-data"
         axios({
             method: "post",
             url: `${API_ROOT}/api/gameTag`,
             data: formData,
-            headers: header
+            headers: header,
         }).then((response) => {
             console.log(response)
             let newValue = {
@@ -156,6 +154,8 @@ export function GameForm() {
             formData.append("scoreType", scoreType)
         }
 
+        console.log(header)
+
         await axios({
             method: "post",
             url: `${API_ROOT}/api/games/`,
@@ -171,7 +171,7 @@ export function GameForm() {
                     method: "post",
                     url: `${API_ROOT}/api/games/${response.data.id}/add_tags/`,
                     data: formData,
-                    headers: {"Content-Type": "multipart/form-data"},
+                    headers: header,
                 }).catch((response) => {
                         console.log(response)
                         setError("root", {message: "Error during tag upload"})
