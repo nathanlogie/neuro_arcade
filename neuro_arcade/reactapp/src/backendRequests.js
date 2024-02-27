@@ -690,8 +690,8 @@ export async function requestPlayer(playerName) {
 /**
  * Posts Admin Ranking to model
  *
- * @Param {Integer} gameID: ID of game to be ranked
- * @Param {Float} ranking: ranking of new game
+ * @param {int} gameID - ID of game to be ranked
+ * @param {float} ranking - ranking of new game
  *
  * @returns Response success response
  *
