@@ -12,25 +12,24 @@ import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
 
 import {
-    get_description_length,
-    get_eval_extension,
-    get_image_extension,
-    get_name_length,
-    get_score_extension
+    MAX_NAME_LENGTH_GAME,
+    MAX_DESCRIPTION_LENGTH_GAME,
+    IMAGE_EXTENSION,
+    SCORE_EXTENSION,
+    EVAL_EXTENSION
 } from "./variableHelper";
 import {useParams} from "react-router-dom";
 
-let MAX_NAME_LENGTH = get_name_length()
-let MAX_DESCRIPTION_LENGTH = get_description_length()
-
-let ACCEPTED_SCORE_FILE = get_score_extension();
-let ACCEPTED_EVAL_SCRIPT = get_eval_extension();
-let ACCEPTED_IMAGE = get_image_extension();
-
 const customStyles = {
-    option: provided => ({...provided, color: 'black'}),
-    control: provided => ({...provided, color: 'black'}),
-    singleValue: provided => ({...provided, color: 'black'})
+    option: provided => ({...provided, color: 'white'}),
+    control: provided => ({...provided, color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.2)', border: 'none', borderRadius: '0.5em'}),
+    valueContainer: provided => ({...provided, height: 'max-content'}),
+    placeholder: provided => ({...provided, color: '#CCCCCC', textAlign: 'left', fontSize: '0.9em', paddingLeft: '1em'}),
+    input: provided => ({...provided, color: '#FFFFFF', paddingLeft: '1em', fontSize: '0.9em'}),
+    multiValue: provided => ({...provided, backgroundColor: 'rgba(0,0,0,0.2)', color: 'white', borderRadius: '0.5em'}),
+    multiValueLabel: provided => ({...provided, color: 'white'}),
+    multiValueRemove: provided => ({...provided, borderRadius: '0.5em'}),
+    menu: provided => ({...provided, borderRadius: '0.5em', position: 'relative'})
 }
 
 
@@ -58,7 +57,7 @@ export function GameUpdateForm() {
     const [options, setOptions] = useState([])
     const [existingTags, setExistingTags] = useState([])
     const [currentValues, setCurrentValues] = useState(null)
-
+    const [loading, setLoading] = useState(true)
 
     const gameSlug = useParams().game_slug;
 
@@ -67,11 +66,15 @@ export function GameUpdateForm() {
         requestGame(gameSlug)
             .then((currentData) => {
                 setCurrentValues(currentData.game);
+                requestGameTags()
+                    .then((tags) => {
+                        setExistingTags(tags);
+                        setLoading(false)
+                        console.log(currentValues)
+                    })
             })
-        requestGameTags()
-            .then((tags) => {
-                setExistingTags(tags);
-            })
+
+
     }, [])
 
     existingTags.forEach((tag) => {
@@ -83,21 +86,18 @@ export function GameUpdateForm() {
 
     console.log(currentValues)
 
-    function handleReset(){
+    function handleReset() {
         reset({
             name: currentValues.name,
             description: currentValues.description,
             playLink: currentValues.play_link
         })
-        setEvaluationScript(currentValues.evaluation_script)
-        setScoreType(currentValues.score_type)
-        setImage(currentValues.icon)
     }
 
 
     const handleImage = (event) => {
         const file = event.target.files[0];
-        const acceptedFormats = ACCEPTED_IMAGE;
+        const acceptedFormats = IMAGE_EXTENSION;
         const fileExtension = file.name.split('.').pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
             setError("root", {message: "Invalid file type provided"})
@@ -134,7 +134,7 @@ export function GameUpdateForm() {
 
     const handleEvalScript = (event) => {
         const file = event.target.files[0];
-        const acceptedFormats = ACCEPTED_EVAL_SCRIPT;
+        const acceptedFormats = EVAL_EXTENSION;
         const fileExtension = file.name.split('.').pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
             setError("evaluationScript", {message: "Invalid file type provided"})
@@ -146,7 +146,7 @@ export function GameUpdateForm() {
 
     const handleScores = (event) => {
         const file = event.target.files[0];
-        const acceptedFormats = ACCEPTED_SCORE_FILE;
+        const acceptedFormats = SCORE_EXTENSION;
         const fileExtension = file.name.split('.').pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
             setError("scoreType", {message: "Invalid file type provided"})
@@ -227,70 +227,68 @@ export function GameUpdateForm() {
         });
     };
 
-    return (
-        <form>
-            <h3> {currentValues.name} </h3>
-            {/*<h3>Name</h3>*/}
-            <input  {...register("name", {
-                required: "Name is required",
-                maxLength: {
-                    value: MAX_NAME_LENGTH,
-                    message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH})`,
-                }
-            })} type={"text"} placeholder={"game name"}
-                   onChange={(event) => setName(event.target.value)}
-            />
-            {errors.name && (
-                <div>{errors.name.message}</div>
-            )}
-
-            <h3>Description</h3>
-            <input {...register("description", {
-                required: "A description is required",
-                maxLength: {
-                    value: MAX_DESCRIPTION_LENGTH,
-                    message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH})`,
-                }
-            })} type={"text"} placeholder={"This game measures..."}
-                   onChange={(event) => setDescription(event.target.value)}
-            />
-            {errors.description && (
-                <div>{errors.description.message}</div>
-            )}
-
-            <h3>Game Tags</h3>
-            <CreatableSelect
-                isClearable
-                isMulti
-                onChange={(newValue) => setTags(newValue)}
-                onCreateOption={handleCreate}
-                value={tags}
-                options={options}
-                components={makeAnimated()}
-                styles={customStyles}
-                placeholder={"Search..."}
-            />
-            {errors.tags && (
-                <div>{errors.tags.message}</div>
-            )}
-
-            <h3>Play Link</h3>
-            <input {...register("playLink", {
-                required: "A Play link must be provided",
-                validate: (value) => {
-                    try {
-                        let url = new URL(value)
-                    } catch (error) {
-                        return "Invalid URL Provided"
+    if (!loading) {
+        return (
+            <form>
+                <h3> {currentValues.name} </h3>
+                <input  {...register("name", {
+                    maxLength: {
+                        value: MAX_NAME_LENGTH_GAME,
+                        message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH_GAME})`,
                     }
-                    return true
-                }
-            })} type={"text"} placeholder={"https://link"} onChange={(event) => setPlayLink(event.target.value)}/>
-            {errors.playLink && (
-                <div>{errors.playLink.message}</div>
-            )}
+                })} type={"text"} placeholder={"game name"} defaultValue={currentValues.name}
+                        onChange={(event) => setName(event.target.value)}
+                />
+                {errors.name && (
+                    <div>{errors.name.message}</div>
+                )}
 
-            <span>
+                <h3>Description</h3>
+                <input {...register("description", {
+                    maxLength: {
+                        value: MAX_DESCRIPTION_LENGTH_GAME,
+                        message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH_GAME})`,
+                    }
+                })} type={"text"} placeholder={"This game measures..."} defaultValue={currentValues.description}
+                       onChange={(event) => setDescription(event.target.value)}
+                />
+                {errors.description && (
+                    <div>{errors.description.message}</div>
+                )}
+
+                <h3>Game Tags</h3>
+                <CreatableSelect
+                    isClearable
+                    isMulti
+                    onChange={(newValue) => setTags(newValue)}
+                    onCreateOption={handleCreate}
+                    value={tags}
+                    options={options}
+                    components={makeAnimated()}
+                    styles={customStyles}
+                    placeholder={"Search..."}
+                />
+                {errors.tags && (
+                    <div>{errors.tags.message}</div>
+                )}
+
+                <h3>Play Link</h3>
+                <input {...register("playLink", {
+                    validate: (value) => {
+                        try {
+                            let url = new URL(value)
+                        } catch (error) {
+                            return "Invalid URL Provided"
+                        }
+                        return true
+                    }
+                })} type={"text"} placeholder={"https://link"} defaultValue={currentValues.play_link}
+                       onChange={(event) => setPlayLink(event.target.value)}/>
+                {errors.playLink && (
+                    <div>{errors.playLink.message}</div>
+                )}
+
+                <span>
                 <div>
                     <h3>Game Icon</h3>
                     <motion.div
@@ -325,9 +323,9 @@ export function GameUpdateForm() {
                                 <LuFileJson/>
                             </div>
                         </label>
-                        <input id={'score'} {...register("scoreTypes", {
-                            required: "Score types must be uploaded"
-                        })} type={"file"} accept={".json"} onChange={handleScores}
+                        <input id={'score'} {...register("scoreTypes")
+                        } type={"file"} accept={".json"}
+                               onChange={handleScores}
                         />
                         {errors.scoreTypes && (
                             <div>{errors.scoreTypes.message}</div>
@@ -349,8 +347,8 @@ export function GameUpdateForm() {
                             </div>
                         </label>
                         <input id={'script'} {...register("evaluationScript", {
-                            required: "An Evaluation Script must be uploaded"
-                        })} type={"file"} accept={".py"} onChange={handleEvalScript}
+                        })} type={"file"} accept={".py"}
+                               onChange={handleEvalScript}
                         />
                         {errors.evaluationScript && (
                             <div>{errors.evaluationScript.message}</div>
@@ -359,30 +357,37 @@ export function GameUpdateForm() {
                 </div>
             </span>
 
-            <motion.button
-                type={"submit"}
-                whileHover={{scale: 1.1}}
-                whileTap={{scale: 0.9}}
-                onSubmit={handleSubmit(onUpdate)}
-            >
-                {"Save Changes"}
-                <div>
-                    <FaPlus/>
-                </div>
-            </motion.button>
-            <motion.button
-                whileHover={{scale: 1.1}}
-                whileTap={{scale: 0.9}}
-                onSubmit={handleReset}
-            >
-                {"RESET"}
-                <div>
-                    <FaPlus/>
-                </div>
-            </motion.button>
-            {errors.root && (
-                <div>{errors.root.message}</div>
-            )}
-        </form>
-    );
+                <motion.button
+                    type={"submit"}
+                    whileHover={{scale: 1.1}}
+                    whileTap={{scale: 0.9}}
+                    onSubmit={handleSubmit(onUpdate)}
+                >
+                    {"Save Changes"}
+                    <div>
+                        <FaPlus/>
+                    </div>
+                </motion.button>
+                <motion.button
+                    whileHover={{scale: 1.1}}
+                    whileTap={{scale: 0.9}}
+                    onSubmit={handleReset}
+                >
+                    {"RESET"}
+                    <div>
+                        <FaPlus/>
+                    </div>
+                </motion.button>
+                {errors.root && (
+                    <div>{errors.root.message}</div>
+                )}
+            </form>
+        );
+    } else {
+        return (
+            <div>
+                Loading...
+            </div>
+        )
+    }
 }
