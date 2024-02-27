@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.middleware.csrf import get_token
 
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, permissions
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -471,15 +471,16 @@ def get_player(request: Request, player_name_slug: str) -> Response:
     return Response(player_data)
 
 
-
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     @action(detail=True, methods=['post'])
     def add_tags(self, request, pk=None):
@@ -497,6 +498,7 @@ class GameViewSet(viewsets.ModelViewSet):
         game.save()
         return Response("Tags added", status=200)
 
+    @action(detail=True)
     def patch(self, request, pk):
         data = request.data
         game = self.get_object(pk=pk)
@@ -513,16 +515,19 @@ class GameViewSet(viewsets.ModelViewSet):
 class GameTagViewSet(viewsets.ModelViewSet):
     queryset = GameTag.objects.all()
     serializer_class = GameTagSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class PlayerTagViewSet(viewsets.ModelViewSet):
     queryset = PlayerTag.objects.all()
     serializer_class = PlayerTagSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     @action(detail=True, methods=['post'])
     def add_tags(self, request, pk=None):
@@ -539,6 +544,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
         player.save()
         return Response("Tags added", status=200)
 
+    @action(detail=True)
     def patch(self, request, pk):
         data = request.data
 
