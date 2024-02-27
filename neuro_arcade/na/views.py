@@ -483,7 +483,6 @@ class GameViewSet(viewsets.ModelViewSet):
 
     """ 
     Action on a game when ranking is updated
-    Changes Tag to featured if ranking is above 75
     Returns success response if ranking updated
     """
 
