@@ -486,6 +486,8 @@ class GameViewSet(viewsets.ModelViewSet):
     Changes Tag to featured if ranking is above 75
     Returns success response if ranking updated
     """
+
+    @permission_classes([IsAdminUser])
     @action(detail=True, methods=['POST'])
     def update_ranking(self, request, pk=None):
         new_ranking = int(request.body)
