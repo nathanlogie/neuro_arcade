@@ -698,9 +698,9 @@ export async function requestPlayer(playerName) {
  * @throws error otherwise
  */
 export async function postAdminRanking(gameID, ranking){
-    const url = API_ROOT + `/api/games/${gameID}/update_ranking/`
+    const url = API_ROOT + '/post_admin_ranking/'
 
-    await axios.post(url, ranking*10, await getHeaders('POST', true))
+    await axios.post(url, {id: gameID, ranking: ranking*10}, await getHeaders('POST', true))
         .then((response) => {
             return response;
     })

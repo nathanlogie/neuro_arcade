@@ -471,6 +471,19 @@ def get_player(request: Request, player_name_slug: str) -> Response:
     return Response(player_data)
 
 
+@api_view(['post'])
+@permission_classes([IsAdminUser])
+def post_admin_ranking(request) -> Response:
+    """
+    Posts admin ranking for a game
+    """
+
+    game = get_object_or_404(Game, id=request.data["id"])
+    game.priority = request.data["ranking"]
+    game.save()
+
+    return Response(status=200)
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -480,26 +493,6 @@ class UserViewSet(viewsets.ModelViewSet):
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
-
-    """ 
-    Action on a game when ranking is updated
-    Returns success response if ranking updated
-    """
-
-    @permission_classes([IsAdminUser])
-    @action(detail=True, methods=['POST'])
-    def update_ranking(self, request, pk=None):
-        new_ranking = int(request.body)
-        game = self.get_object()
-
-        if not game:
-            return Response(status=404, data='Game does not exist')
-
-        game.priority = new_ranking
-
-        game.save()
-
-        return Response(status=200, data='Ranking updated successfully!')
 
     @action(detail=True, methods=['post'])
     def add_tags(self, request, pk=None):

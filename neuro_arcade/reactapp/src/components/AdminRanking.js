@@ -27,15 +27,15 @@ export function AdminRanking({game, rating}){
                     precision={0.5}
                     max={10}
                 />
-                :
-                <Rating
-                    name="half-rating customized-10"
-                    value = {value}
-                    precision={0.5}
-                    max={10}
-                    readOnly
-                />
-            }
+                 :
+                 <Rating
+                     name="half-rating customized-10"
+                     value = {value}
+                     precision={0.5}
+                     max={10}
+                     readOnly
+                 />
+             }
         </>
     )
 
