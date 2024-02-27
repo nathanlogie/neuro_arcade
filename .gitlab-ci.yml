@@ -1,7 +1,5 @@
 stages:          # List of stages for jobs, and their order of execution
-  - build
-  - django
-  - react
+  - test
 
 variables:
   PYTHON_VERSION: "3.11.5"
@@ -10,36 +8,41 @@ variables:
   MYSQL_USER: $MYSQL_USER
   MYSQL_PASSWORD: $MYSQL_PASS
 
-django-build-job:
-  image: python:latest
-  stage: build
+.react-job:
+  cache:
+    key: npm
+    policy: pull-push
+    paths:
+      - neuro_arcade/reactapp/.npm/
   before_script:
-  - python -m venv venv
-  - source venv/bin/activate
-  - pip install -r requirements.txt
+    - cd neuro_arcade
+    - cd reactapp
+    - npm ci --cache .npm --prefer-offline
+
+.django-job:
+  image: python:latest
+  before_script:
+    - pip install -r requirements.txt
+
+django-migrate-test-job:
+  extends: .django-job
+  stage: test
   script:
     - python neuro_arcade/manage.py makemigrations --check
     - python neuro_arcade/manage.py migrate
     - python neuro_arcade/manage.py check
 
-unit-test-job: 
-  image: python:latest
-  before_script:
-  - python -m venv venv
-  - source venv/bin/activate
-  - pip install -r requirements.txt
-  stage: django
+django-unit-test-job: 
+  extends: .django-job
+  stage: test
   script:
     - cd neuro_arcade
     - python manage.py test
 
-unit-test-r-job:
-  stage: react
+react-unit-test-job:
+  extends: .react-job
+  stage: test
   image: node:latest
-  before_script:
-    - cd neuro_arcade
-    - cd reactapp
-    - npm install --force
   script:
     - export CI=1
     - npm test
