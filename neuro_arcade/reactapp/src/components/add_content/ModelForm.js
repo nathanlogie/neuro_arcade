@@ -11,18 +11,15 @@ import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION} fr
 
 
 const customStyles = {
-    option: provided => ({
-        ...provided,
-        color: 'black'
-    }),
-    control: provided => ({
-        ...provided,
-        color: 'black'
-    }),
-    singleValue: provided => ({
-        ...provided,
-        color: 'black'
-    })
+    option: provided => ({...provided, color: 'white'}),
+    control: provided => ({...provided, color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.2)', border: 'none', borderRadius: '0.5em', marginBottom: '1em'}),
+    valueContainer: provided => ({...provided, height: 'max-content'}),
+    placeholder: provided => ({...provided, color: '#CCCCCC', textAlign: 'left', fontSize: '0.9em', paddingLeft: '1em'}),
+    input: provided => ({...provided, color: '#FFFFFF', paddingLeft: '1em', fontSize: '0.9em'}),
+    multiValue: provided => ({...provided, backgroundColor: 'rgba(0,0,0,0.2)', color: 'white', borderRadius: '0.5em'}),
+    multiValueLabel: provided => ({...provided, color: 'white'}),
+    multiValueRemove: provided => ({...provided, borderRadius: '0.5em'}),
+    menu: provided => ({...provided, borderRadius: '0.5em', position: 'relative'})
 }
 
 export function ModelForm() {
@@ -208,6 +205,20 @@ export function ModelForm() {
                 components={makeAnimated()}
                 styles={customStyles}
                 placeholder={"Search..."}
+                theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                        ...theme.colors,
+                        primary25: 'rgba(255,255,255,0.3)',
+                        primary: 'white',
+                        neutral0: 'rgba(255, 255, 255, 0.1)',
+                        neutral20: 'white',
+                        neutral40: '#BBBBBB',
+                        neutral60: '#CCCCCC',
+                        neutral80: '#AAAAAA',
+                        primary50: 'rgba(209,64,129,0.3)'
+                    },
+                })}
             />
 
             <span>

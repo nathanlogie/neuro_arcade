@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from na.models import Game, GameTag, Player, PlayerTag, UserStatus
+from na.models import Game, GameTag, Player, PlayerTag, UserStatus, validate_score_type
 from django.contrib.auth.models import User
 
 class UserStatusSerializer(serializers.ModelSerializer):
@@ -15,7 +15,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['id', 'username', 'email', 'status']
 
 
-
 class GameTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = GameTag
@@ -24,6 +23,12 @@ class GameTagSerializer(serializers.ModelSerializer):
 
 class GameSerializer(serializers.ModelSerializer):
     tags = GameTagSerializer(read_only=True, many=True).data
+
+    def validate_score_type(self, data):
+        passed, msg = validate_score_type(data)
+        if not passed:
+            raise serializers.ValidationError(msg)
+
 
     class Meta:
         model = Game

@@ -94,6 +94,9 @@ export function SwarmPlot({inputData}) {
                             'line': {
                                 stroke: 'rgba(255,255,255,0.4)'
                             }
+                        },
+                        'tooltip': {
+                            color: '#3b3b93'
                         }
                     }}
                     axisBottom={{
