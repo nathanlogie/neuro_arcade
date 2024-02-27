@@ -119,11 +119,11 @@ export function PlayerViewTable({inputData}) {
                     initialState={{
                         pagination: {
                             paginationModel: {
-                                pageSize: 8,
+                                pageSize: 7,
                             },
                         },
                     }}
-                    pageSizeOptions={[8]}
+                    pageSizeOptions={[7]}
                     disableRowSelectionOnClick
                 />
             </ThemeProvider>
