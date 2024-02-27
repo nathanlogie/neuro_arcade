@@ -23,9 +23,22 @@ import {useNavigate, useParams} from "react-router-dom";
 
 const customStyles = {
     option: provided => ({...provided, color: 'white'}),
-    control: provided => ({...provided, color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.2)', border: 'none', borderRadius: '0.5em', marginBottom: '1em'}),
+    control: provided => ({
+        ...provided,
+        color: 'black',
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        border: 'none',
+        borderRadius: '0.5em',
+        marginBottom: '1em'
+    }),
     valueContainer: provided => ({...provided, height: 'max-content'}),
-    placeholder: provided => ({...provided, color: '#CCCCCC', textAlign: 'left', fontSize: '0.9em', paddingLeft: '1em'}),
+    placeholder: provided => ({
+        ...provided,
+        color: '#CCCCCC',
+        textAlign: 'left',
+        fontSize: '0.9em',
+        paddingLeft: '1em'
+    }),
     input: provided => ({...provided, color: '#FFFFFF', paddingLeft: '1em', fontSize: '0.9em'}),
     multiValue: provided => ({...provided, backgroundColor: 'rgba(0,0,0,0.2)', color: 'white', borderRadius: '0.5em'}),
     multiValueLabel: provided => ({...provided, color: 'white'}),
@@ -78,9 +91,6 @@ export function ModelUpdateForm() {
             label: tag.name
         })
     })
-
-
-
 
 
     function handleTagReset() {
@@ -137,7 +147,7 @@ export function ModelUpdateForm() {
         )
     }
 
-    function handleDelete(){
+    function handleDelete() {
         if (currentValues.user !== getUser().id && !getUser().is_admin) {
             setError("root", {
                 message: "You do not have permissions to edit this game"
@@ -146,10 +156,10 @@ export function ModelUpdateForm() {
         }
 
         let url = `${API_ROOT}/api/players/${currentValues.id}/`
-        axios.delete(url).then((response)=>{
+        axios.delete(url).then((response) => {
                 navigate("/all_players/")
             }
-        ).catch(()=> {
+        ).catch(() => {
                 setError("root", {
                     message: "Could not delete model"
                 })
@@ -178,8 +188,8 @@ export function ModelUpdateForm() {
         if (image) {
             formData.append("icon", image)
         }
-       let url = `${API_ROOT}/api/players/${currentValues.id}/`;
-        if(formData.entries().next().done){
+        let url = `${API_ROOT}/api/players/${currentValues.id}/`;
+        if (formData.entries().next().done) {
             setError("root", {
                 message: "No changes detected"
             })
@@ -187,27 +197,26 @@ export function ModelUpdateForm() {
         }
 
 
-            await axios.patch(url, formData, header).then(function (response) {
+        await axios.patch(url, formData, header).then(function (response) {
 
-                if (tags.length !== 0) {
-                    const finalTagIDs = tags.map((tag) => tag.value);
-                    formData.append("tags", finalTagIDs)
-                    let url = `${API_ROOT}/api/players/${response.data.id}/add_tags/`;
-                    axios.post(url, formData, header)
-                        .catch((response) => {
-                                console.log(response)
-                                setError("root", {message: "Error during tag change"})
-                            }
-                        )
-                }
+            if (tags.length !== 0) {
+                const finalTagIDs = tags.map((tag) => tag.value);
+                formData.append("tags", finalTagIDs)
+                let url = `${API_ROOT}/api/players/${response.data.id}/add_tags/`;
+                axios.post(url, formData, header)
+                    .catch((response) => {
+                            console.log(response)
+                            setError("root", {message: "Error during tag change"})
+                        }
+                    )
+            }
             reset()
             setImage(null)
             setError("root", {message: "model updated successfully"})
             setTags(null)
-            if(name===""){
+            if (name === "") {
                 navigate(`/all_players/${currentValues.slug}`)
-            }
-            else{
+            } else {
                 navigate(`/all_players/${slugify(name)}`)
             }
 
