@@ -5,7 +5,6 @@ import {useEffect, useState} from "react";
 import { PlayerViewTable } from "../components/PlayerViewTable";
 import {Banner, MobileBanner} from "../components/Banner";
 import {motion} from "framer-motion";
-import { set } from "lodash";
 
 /**
  *

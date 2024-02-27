@@ -38,17 +38,13 @@ export function PlayerViewTable({inputData}) {
     ];
     
 
-    const scoreTypes = new Set();
     /**
      * iterates through inputData and then iterates through its value. It then adds the score type to the set in lowercase
      * @param entry {Object} 
      */
+    const scoreTypes = new Set();
     inputData.forEach(function(entry) {
         const value = entry.value;
-        /**
-         * for each value the score type is added to scoreTypes set in lowercase
-         * @param key {Key from the Value Object}
-         */
         Object.keys(value).forEach(function(key) {
             scoreTypes.add(key.toLowerCase());
         });
@@ -57,6 +53,7 @@ export function PlayerViewTable({inputData}) {
 
     /**
      * iterates through each score type and adds it to columns with all required fields
+     * @param {Object}
      */
     scoreTypes.forEach(function(scoreType) {
         columns.push({
@@ -77,6 +74,7 @@ export function PlayerViewTable({inputData}) {
         });
     });
 
+
     /**
      * mapping game name to its data
      * @param item {Object}
@@ -84,25 +82,13 @@ export function PlayerViewTable({inputData}) {
      * @returns {Object}
      **/
     const rows = inputData.map(function(item, index) {
-        const row = {
+        return {
             id: index + 1,
             game: item.game_name,
+            ...Object.entries(item.value).reduce((acc, [key, value]) => ({ ...acc, [key.toLowerCase()]: value }), {}),
         };
-        /**
-         * adds each score to its scoretype
-         * @param acc {Object}
-         * @param entry {Array}
-         * @returns {Object}
-         */
-        Object.entries(item.value).reduce(function(acc, entry) {
-            const [key, value] = entry;
-            const scoreType = key.toLowerCase();
-            acc[scoreType] = value;
-            return acc;
-        }, row);
-    
-        return row;
     });
+    
 
     const table_theme = createTheme({
       palette: {
@@ -110,6 +96,7 @@ export function PlayerViewTable({inputData}) {
       },
     });
 
+    
     return(
         <div className={styles.TableContainer} id={styles['home']}>
             <h2>Game Scores</h2>
