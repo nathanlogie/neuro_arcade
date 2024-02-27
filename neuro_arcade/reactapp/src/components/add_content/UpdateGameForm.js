@@ -22,9 +22,21 @@ import {useNavigate, useParams} from "react-router-dom";
 
 const customStyles = {
     option: provided => ({...provided, color: 'white'}),
-    control: provided => ({...provided, color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.2)', border: 'none', borderRadius: '0.5em'}),
+    control: provided => ({
+        ...provided,
+        color: 'black',
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        border: 'none',
+        borderRadius: '0.5em'
+    }),
     valueContainer: provided => ({...provided, height: 'max-content'}),
-    placeholder: provided => ({...provided, color: '#CCCCCC', textAlign: 'left', fontSize: '0.9em', paddingLeft: '1em'}),
+    placeholder: provided => ({
+        ...provided,
+        color: '#CCCCCC',
+        textAlign: 'left',
+        fontSize: '0.9em',
+        paddingLeft: '1em'
+    }),
     input: provided => ({...provided, color: '#FFFFFF', paddingLeft: '1em', fontSize: '0.9em'}),
     multiValue: provided => ({...provided, backgroundColor: 'rgba(0,0,0,0.2)', color: 'white', borderRadius: '0.5em'}),
     multiValueLabel: provided => ({...provided, color: 'white'}),
@@ -68,7 +80,7 @@ export function GameUpdateForm() {
         requestGame(gameSlug)
             .then((currentData) => {
                 setCurrentValues(currentData.game);
-                getHeaders("PATCH", true).then((header)=>{
+                getHeaders("PATCH", true).then((header) => {
                     header.headers["Content-Type"] = "multipart/form-data";
                     setHeader(header);
                     requestGameTags()
@@ -77,7 +89,10 @@ export function GameUpdateForm() {
                             setImageURL(`${API_ROOT}/${currentData.game.icon}`)
                             setLoading(false)
                             console.log(currentValues)
-                        })})})}, [])
+                        })
+                })
+            })
+    }, [])
 
     existingTags.forEach((tag) => {
         options.push({
@@ -86,14 +101,13 @@ export function GameUpdateForm() {
         })
     })
 
-    function handleTagReset(){
-        options.forEach((option)=>{
-            if(currentValues.tags.includes(option.value)){
+    function handleTagReset() {
+        options.forEach((option) => {
+            if (currentValues.tags.includes(option.value)) {
                 tags.push(option)
             }
         })
     }
-
 
 
     function handleReset() {
@@ -171,21 +185,21 @@ export function GameUpdateForm() {
     }
 
     const onUpdate = async (event) => {
-        if(currentValues.user!==getUser().id && !getUser().is_admin){
+        if (currentValues.user !== getUser().id && !getUser().is_admin) {
             setError("root", {
                 message: "You do not have permissions to edit this game"
             })
         }
 
         let formData = new FormData();
-        if(name!==""){
+        if (name !== "") {
             formData.append("name", name);
             formData.append("slug", slugify(name));
         }
-        if(description!==""){
+        if (description !== "") {
             formData.append("description", description);
         }
-        if(playLink!==""){
+        if (playLink !== "") {
             formData.append("play_link", playLink);
         }
 
@@ -221,9 +235,9 @@ export function GameUpdateForm() {
                 reset();
                 setError("root", {message: "game updated successfully"});
                 setTags([]);
-                if(name!==""){
+                if (name !== "") {
                     navigate(`/all_games/${slugify(name)}`)
-                } else{
+                } else {
                     navigate(`/all_games/${currentValues.slug}`)
                 }
 
