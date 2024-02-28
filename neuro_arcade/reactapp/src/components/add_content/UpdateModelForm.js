@@ -76,8 +76,7 @@ export function ModelUpdateForm() {
         requestPlayer(player_name)
             .then((currentData) => {
                 setCurrentValues(currentData);
-                getHeaders("PATCH", true).then((header) => {
-                    header.headers["Content-Type"] = "multipart/form-data";
+                getHeaders("PATCH", true, 'multipart/form-data').then((header) => {
                     setHeader(header);
                     requestPlayerTags()
                         .then((tags) => {

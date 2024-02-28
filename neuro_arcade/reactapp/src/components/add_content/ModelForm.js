@@ -46,9 +46,8 @@ export function ModelForm() {
             .then((tags) => {
                 setExistingTags(tags);
                 setUser(getUser().id);
-                getHeaders("POST")
+                getHeaders("POST", true, "'multipart/form-data'")
                     .then((header)=>{
-                        header.headers["Content-Type"] = "multipart/form-data";
                         setHeader(header);
                     })
             })

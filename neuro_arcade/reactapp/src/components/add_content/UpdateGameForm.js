@@ -80,8 +80,7 @@ export function GameUpdateForm() {
         requestGame(gameSlug)
             .then((currentData) => {
                 setCurrentValues(currentData.game);
-                getHeaders("PATCH", true).then((header) => {
-                    header.headers["Content-Type"] = "multipart/form-data";
+                getHeaders("PATCH", true, 'multipart/form-data').then((header) => {
                     setHeader(header);
                     requestGameTags()
                         .then((tags) => {
