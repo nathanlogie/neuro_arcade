@@ -42,8 +42,10 @@ export function AllGames() {
                     onTagChange={setSelectedTags}
                 />
             </div>
-            <div className={styles.Content} id={styles['AllGames']}>
-                <h1>All Games</h1>
+            <div className={styles.Content} id={styles['big']}>
+                <div className={styles.Title}>
+                    <h1>All Games</h1>
+                </div>
                 <GameGrid
                     textQuery={textQuery}
                     tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)}

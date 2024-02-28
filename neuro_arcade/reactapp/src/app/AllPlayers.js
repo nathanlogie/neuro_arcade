@@ -76,8 +76,10 @@ export function AllPlayers() {
                 </div>
                 <TagFilter tags={tags.map((tag) => tag.name)} onTagChange={setSelectedTags}/>
             </div>
-            <div className={styles.Content} id={styles['AllGames']}>
-                <h1>All Players</h1>
+            <div className={styles.Content} id={styles['big']}>
+                <div className={styles.Title}>
+                    <h1>All Players</h1>
+                </div>
                 <PlayerGrid
                     mode={modes[modeIdx]}
                     textQuery={textQuery}
@@ -90,7 +92,7 @@ export function AllPlayers() {
 
     return (
         <>
-            <Banner size={'small'} selected={'Players'} />
+            <Banner size={'small'} selected={'Players'}/>
             <MobileBanner/>
             <motion.div
                 className={styles.MainBlock}

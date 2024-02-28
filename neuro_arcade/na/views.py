@@ -8,9 +8,9 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.middleware.csrf import get_token
 
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -331,6 +331,7 @@ def login(request: Request) -> Response:
         'username': user.username,
         'email': user.email,
         'is_admin': user.is_superuser,
+        'id': user.id,
         'token': token.key,
         'status': None,
     }
@@ -378,7 +379,6 @@ def sign_up(request: Request) -> Response:
 
 @api_view(['POST'])
 def update_user_status(request: Request) -> Response:
-
     if not request.data['user'] or not request.data['status']:
         return Response(status=400, data='Missing data in request')
 
@@ -471,6 +471,24 @@ def get_player(request: Request, player_name_slug: str) -> Response:
 
 
 @api_view(['POST'])
+@permission_classes([IsAdminUser])
+def post_admin_ranking(request) -> Response:
+    """
+    Posts admin ranking for a game
+    """
+    game = get_object_or_404(Game, id=request.data["id"])
+    ranking = request.data.get("ranking")
+
+    if ranking is None:
+        return Response(status=400, data="Error occurred while trying to retrieve ranking")
+
+    game.priority = request.data["ranking"]
+    game.save()
+
+    return Response(status=200)
+
+
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def post_unprocessed_result(request: Request) -> Response:
     """
@@ -533,6 +551,32 @@ class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
 
+    @action(detail=True, methods=['POST'])
+    def add_tags(self, request, pk=None):
+        data = request.data
+        game = self.get_object()
+        if not game:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        tags = data['tags'].split(',')
+        for tag in tags:
+            game.tags.add(GameTag.objects.get(id=tag))
+
+        game.save()
+        return Response("Tags added", status=200)
+
+    def patch(self, request, pk):
+        data = request.data
+        game = self.get_object(pk=pk)
+        if not game:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(game, data=data, partial=True, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_200_OK, data=serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
+
 
 class GameTagViewSet(viewsets.ModelViewSet):
     queryset = GameTag.objects.all()
@@ -547,3 +591,17 @@ class PlayerTagViewSet(viewsets.ModelViewSet):
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
+
+    @action(detail=True, methods=['post'])
+    def add_tags(self, request, pk=None):
+        data = request.data
+        player = self.get_object()
+        if not player:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        tags = data['tags'].split(',')
+        for tag in tags:
+            player.tags.add(PlayerTag.objects.get(id=tag))
+
+        player.save()
+        return Response("Tags added", status=200)

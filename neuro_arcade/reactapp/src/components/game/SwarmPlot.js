@@ -3,13 +3,6 @@ import {ResponsiveSwarmPlot} from '@nivo/swarmplot';
 import {Switcher} from '../Switcher';
 import PropTypes from 'prop-types';
 import styles from '../../styles/components/TableGraph.module.css';
-import {createTheme, ThemeProvider} from "@mui/material";
-
-const graph_theme = createTheme({
-  palette: {
-      mode: 'dark',
-  },
-});
 
 /**
  * @param inputData {Object}
@@ -52,17 +45,21 @@ export function SwarmPlot({inputData}) {
         setSelectedSwitcherValue(selectedValue);
     };
 
-    /**
-     * currently sets the size value to be a 5th of the max value
-     */
     const maxValue = Math.max(...data.map(item => item.value));
-    const maxSize = maxValue / 5;
-    
+    const minValue = Math.min(...data.map(item => item.value));
+
+    const getColor = (e) => {
+        switch (e.group) {
+            case "AI":
+                return "rgba(209,64,129,0.75)"
+            case "Human":
+                return "rgba(121,255,183,0.75)"
+        }
+    }
 
     return (
-        <div className={styles.GraphContainer}>
-            <div style={{width: '43.8em', height: '32em'}}>
-                <h2>Trends</h2>
+        <>
+            <div style={{width: '43em', height: '30.75em'}}>
                 <div className={styles.TabSwitcher}>
                     <Switcher
                         data={inputData}
@@ -70,43 +67,63 @@ export function SwarmPlot({inputData}) {
                         switcherDefault={selectedSwitcherValue}
                     />
                 </div>
-                <ThemeProvider theme={graph_theme}>
-                    <ResponsiveSwarmPlot
-                        data={data}
-                        groups={['AI', 'Human']}
-                        identity='id'
-                        value="value"
-                        groupBy="group"
-                        margin={{top: 50, right: 50, bottom: 50, left: 60}}
-                        size={{key: 'value', values: [1, maxSize], sizes: [1, 10]}}
-                        forceStrength={1}
-                        simulationIterations={100}
-                        style={{
-                            background: 'linear-gradient(270deg, rgba(217, 217, 217, 0.43) 0%, rgba(217, 217, 217, 0.00) 100%)',
-                            stroke: '#FFFFFF',
-                            color: '#FFFFFF'
-                        }}
-                        axisBottom={{
-                            orient: 'bottom',
-                            tickSize: 5,
-                            tickPadding: 5,
-                            tickRotation: 0,
-                            legend: 'AI vs Humans',
-                            legendPosition: 'middle',
-                            legendOffset: 36,
-                        }}
-                        axisLeft={{
-                            orient: 'left',
-                            tickSize: 5,
-                            tickPadding: 5,
-                            tickRotation: 0,
-                            legend: selectedSwitcherValue,
-                            legendOffset: -40,
-                        }}
-                    />
-                </ThemeProvider>
+                <ResponsiveSwarmPlot
+                    data={data}
+                    groups={['AI', 'Human']}
+                    groupBy="group"
+                    margin={{top: 100, right: 75, bottom: 100, left: 100}}
+                    size={{key: 'value', values: [minValue, maxValue], sizes: [15, 60]}}
+                    colors={getColor}
+                    forceStrength={1}
+                    simulationIterations={100}
+                    theme={{
+                        'text': {
+                            'fill': '#CCCCCC',
+                            fontFamily: 'inherit',
+                        },
+                        'axis': {
+                            'legend': {
+                                'text': {
+                                    fontWeight: 'bold',
+                                    fontSize: '1em',
+                                    color: '#DDDDDD'
+                                }
+                            }
+                        },
+                        'grid': {
+                            'line': {
+                                stroke: 'rgba(255,255,255,0.4)'
+                            }
+                        },
+                        'tooltip': {
+                            color: '#3b3b93'
+                        }
+                    }}
+                    axisBottom={{
+                        orient: 'bottom',
+                        tickSize: 20,
+                        tickPadding: 20,
+                        tickRotation: 0,
+                        legend: 'AI vs Humans',
+                        legendPosition: 'middle',
+                        legendOffset: 60,
+                    }}
+                    axisLeft={{
+                        orient: 'left',
+                        tickSize: 5,
+                        tickPadding: 5,
+                        tickRotation: 0,
+                        legend: selectedSwitcherValue,
+                        legendPosition: 'middle',
+                        legendOffset: -60,
+                    }}
+                    axisTop={{
+                        tickSize: 20,
+                        tickPadding: 20
+                    }}
+                />
             </div>
-        </div>
+        </>
     );
 };
 
