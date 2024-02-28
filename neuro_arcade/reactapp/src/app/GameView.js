@@ -8,6 +8,7 @@ import React, {useEffect, useState} from "react";
 import {Banner, MobileBanner} from "../components/Banner";
 import {Switcher} from "../components/Switcher";
 import {motion} from "framer-motion";
+import {AdminRanking} from "../components/AdminRanking";
 
 /**
  *
@@ -43,7 +44,6 @@ export function GameView() {
         setSelectedSwitcherValue(selectedValue);
     }
 
-
     let content = <>...</>;
     if (!loading) {
         content =
@@ -57,6 +57,7 @@ export function GameView() {
                 <div className={styles.Content}>
                     <div className={styles.Title}>
                         <h1>{gameData.game.name}</h1>
+                        <AdminRanking game={gameData.game.id} rating={gameData.game.priority}/>
                     </div>
                     <div className={styles.ContentBlock}>
                         <p>

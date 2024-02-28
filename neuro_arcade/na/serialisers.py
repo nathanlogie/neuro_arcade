@@ -33,7 +33,7 @@ class GameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = ['id', 'name', 'slug', 'description', 'owner', 'icon', 'tags', 'score_type', 'play_link',
-                  'evaluation_script']
+                  'evaluation_script', 'priority']
 
 
 class PlayerTagSerializer(serializers.ModelSerializer):

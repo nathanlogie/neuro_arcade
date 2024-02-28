@@ -688,3 +688,28 @@ export async function requestPlayer(playerName) {
             throw error;
         })
 }
+
+/**
+ * Posts Admin Ranking to model
+ *
+ * @param {int} gameID - ID of game to be ranked
+ * @param {float} ranking - ranking of new game
+ *
+ * @returns Response success response
+ *
+ * @throws error otherwise
+ */
+export async function postAdminRanking(gameID, ranking){
+    const url = API_ROOT + '/post_admin_ranking/'
+
+    await axios.post(url, {id: gameID, ranking: ranking*10}, await getHeaders('POST', true))
+        .then((response) => {
+            return response;
+    })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        })
+
+}
+
