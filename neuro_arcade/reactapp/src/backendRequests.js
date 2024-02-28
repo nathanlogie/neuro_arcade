@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Note: you need to change this on a development server
 // TODO: find an automated solution to this
-const API_ROOT = "https://134.122.101.180/" // "http://localhost:8000"
+const API_ROOT = "https://134.122.101.180:8000" // "http://localhost:8000"
 /**
  * This file contains functions that request or upload data from/to the backend
  */
