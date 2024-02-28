@@ -101,7 +101,14 @@ export function GameUpdateForm() {
         })
     })
 
+    options.forEach((option) => {
+        if (currentValues.tags.includes(option.value)) {
+            tags.push(option)
+        }
+    })
+
     function handleTagReset() {
+        setTags([])
         options.forEach((option) => {
             if (currentValues.tags.includes(option.value)) {
                 tags.push(option)
@@ -238,7 +245,7 @@ export function GameUpdateForm() {
 
         let url = `${API_ROOT}/api/games/${currentValues.id}/`;
 
-        if(formData.entries().next().done){
+        if(formData.entries().next().done&& tags.length===0){
             setError("root", {
                 message: "No changes detected"
             })
@@ -297,7 +304,7 @@ export function GameUpdateForm() {
 
     if (!loading) {
         return (
-            <form onSubmit={handleSubmit(onUpdate)}>
+            <form>
                 <h3> {currentValues.name} </h3>
                 <input  {...register("name", {
                     maxLength: {
@@ -434,6 +441,7 @@ export function GameUpdateForm() {
                 <motion.button
                     whileHover={{scale: 1.1}}
                     whileTap={{scale: 0.9}}
+                    onClick={handleSubmit(onUpdate)}
                 >
                     {"Save Changes"}
                     <div>

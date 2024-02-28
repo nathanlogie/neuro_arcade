@@ -94,9 +94,16 @@ export function ModelUpdateForm() {
             label: tag.name
         })
     })
+    options.forEach((option) => {
+        if (currentValues.tags.includes(option.value)) {
+            tags.push(option);
+        }
+    })
+
 
 
     function handleTagReset() {
+        setTags([])
         options.forEach((option) => {
             if (currentValues.tags.includes(option.value)) {
                 tags.push(option);
@@ -192,7 +199,7 @@ export function ModelUpdateForm() {
             formData.append("icon", image)
         }
         let url = `${API_ROOT}/api/players/${currentValues.id}/`;
-        if (formData.entries().next().done) {
+        if (formData.entries().next().done && tags.length===0) {
             setError("root", {
                 message: "No changes detected"
             })
@@ -246,9 +253,10 @@ export function ModelUpdateForm() {
         });
     }
 
+
     if (!loading) {
         return (
-            <form onSubmit={handleSubmit(onUpdate)}>
+            <form>
                 <h3> {currentValues.name} </h3>
                 <input  {...register("name", {
                     maxLength: {
@@ -321,6 +329,7 @@ export function ModelUpdateForm() {
                 <motion.button
                     whileHover={{scale: 1.1}}
                     whileTap={{scale: 0.9}}
+                    onClick={handleSubmit(onUpdate)}
                 >
                     {"Save Changes"}
                     <div>
@@ -330,7 +339,7 @@ export function ModelUpdateForm() {
                 <motion.button
                     whileHover={{scale: 1.1}}
                     whileTap={{scale: 0.9}}
-                    onClick={handleReset}
+                    onClick={handleSubmit(handleReset)}
                 >
                     {"RESET"}
                     <div>
