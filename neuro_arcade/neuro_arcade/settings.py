@@ -13,6 +13,12 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from corsheaders.defaults import default_headers
 from pathlib import Path
+import subprocess
+
+IP = subprocess.run(['hostname', '-i'], stdout=subprocess.PIPE)
+IP = IP.stdout.decode().split(' ')[0]
+
+IS_ON_SERVER = os.getenv('NEURO_ARCADE')
 
 # TODO: change this to the URL of the website
 WEBSITE_URL = "localhost:3000"

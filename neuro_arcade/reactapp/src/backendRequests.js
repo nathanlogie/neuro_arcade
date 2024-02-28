@@ -1,6 +1,10 @@
 import axios from "axios";
 
-export const API_ROOT = "http://localhost:8000"
+let IP = new URL(location.origin);
+IP.port = '';
+IP = IP.toString();
+IP = IP.slice(0, -1);
+export const API_ROOT = IP + ":8000"; //todo change port
 /**
  * This file contains functions that request or upload data from/to the backend
  */
