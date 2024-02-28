@@ -471,6 +471,23 @@ def get_player(request: Request, player_name_slug: str) -> Response:
     return Response(player_data)
 
 
+@api_view(['post'])
+@permission_classes([IsAdminUser])
+def post_admin_ranking(request) -> Response:
+    """
+    Posts admin ranking for a game
+    """
+    game = get_object_or_404(Game, id=request.data["id"])
+    ranking = request.data.get("ranking")
+
+    if ranking is None:
+        return Response(status=400, data="Error occurred while trying to retrieve ranking")
+
+    game.priority = request.data["ranking"]
+    game.save()
+
+    return Response(status=200)
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()

@@ -2,7 +2,7 @@
 
 # installing python libs:
 echo 'Updating pip packages:'
-python3.9 -m pip install -r requirements.txt
+python -m pip install -r requirements.txt
 
 # updating npm packages:
 echo 'Updating npm packages:'

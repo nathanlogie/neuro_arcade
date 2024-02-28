@@ -20,7 +20,7 @@ export function GameGrid({textQuery='', tagQuery=[], num=0, id}) {
     useEffect(() => {
         requestGames()
             .then(g => {
-                setGames(g);
+                setGames(g.sort((a,b) => b.priority-a.priority));
                 setLoading(false);
             })
     }, []);
