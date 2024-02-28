@@ -76,7 +76,7 @@ export function AllPlayers() {
                 </div>
                 <TagFilter tags={tags.map((tag) => tag.name)} onTagChange={setSelectedTags}/>
             </div>
-            <div className={styles.Content} id={styles['AllGames']}>
+            <div className={styles.Content} id={styles['big']}>
                 <div className={styles.Title}>
                     <h1>All Players</h1>
                 </div>

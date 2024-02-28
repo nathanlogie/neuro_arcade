@@ -2,10 +2,11 @@ import {Banner, MobileBanner} from "../../components/Banner";
 import {NavBar} from "../../components/NavBar";
 import styles from "../../styles/App.module.css";
 import {motion} from "framer-motion";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {getAboutData} from "../../backendRequests";
 import {Description} from "../../components/about/Description";
 import {Button} from "../../components/Button";
+import {Link} from "react-router-dom";
 
 /**
  * @returns {JSX.Element} about page
@@ -36,33 +37,51 @@ export function AboutPage() {
 
         let publications = aboutData["publications"].map(function (publication) {
         return (
-                <li key={publication.id}>{publication.link ? (
-                    <a href={publication.link}>{publication.title} - {publication.author}</a>) : (<>{publication.title} - {publication.author}</>)}</li>
+                <li key={publication.id + 1}>{ publication.link ?
+                            (
+                                <Link to={publication.link}>
+                                        <label>{publication.title}</label>
+                                        <label>{publication.author}</label>
+                                    </Link>
+                            ) : (
+                                <span>
+                                    <label>{publication.title}</label>
+                                    <label>{publication.author}</label>
+                                </span>
+                            )}
+                </li>
             );
         });
 
         content = <>
-                <div className={styles.Content}>
-
+                <div className={styles.Content} id={styles['big']}>
                     <div className={styles.ContentBlock}>
-
                         <Description description={aboutData.description}/>
-                        <h2>Publications</h2>
-                        <ul>
-                            {publications}
-                        </ul>
-
                     </div>
                 </div>
-                <div className={styles.Side}></div>
-            </>;
+            <div className={styles.Side}>
+                <div className={styles.Publications}>
+                    <h2>Publications</h2>
+                    <main>
+                        <li key={0}>
+                        <span>
+                            <div><strong>Title</strong></div>
+                            <div><strong>Author</strong></div>
+                        </span>
+                        </li>
+                        {publications}
+                    </main>
+                </div>
+            </div>
+        </>
+    ;
     }
 
     return (
         <>
-            <Banner size={'big'} right={nav_right} />
-            <MobileBanner />
-            <NavBar right={nav_right} />
+            <Banner size={'big'} right={nav_right}/>
+            <MobileBanner/>
+            <NavBar right={nav_right}/>
             <motion.div
                 className={styles.MainBlock}
                 id={styles['big']}
