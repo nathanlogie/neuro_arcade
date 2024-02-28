@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_ROOT = "http://localhost:8000"
+export const API_ROOT = "http://localhost:8000"
 /**
  * This file contains functions that request or upload data from/to the backend
  */
@@ -91,6 +91,7 @@ const API_ROOT = "http://localhost:8000"
  * @property {string} user
  * @property {string} description
  * @property {PlayerTagKey[]} tags
+ * @property {image} icon
  */
 
 /**
@@ -157,17 +158,18 @@ async function getCSRFToken() {
  * Set authenticated to true to send the authentication token as well.
  *
  * @param {string} method HTTP method (so like GET, POST etc.)
- * @param {boolean} authenticated
+ * @param {boolean} authenticated (defaults to false)
+ * @param {string} contentType (defaults to 'application/json')
  *
  * @return Axios Request Config
  */
-async function getHeaders(method, authenticated=false) {
+export async function getHeaders(method, authenticated=false, contentType='application/json') {
     let config = {
         credentials: 'include',
         method: method,
         mode: 'same-origin',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': contentType,
         },
     }
     if (authenticated) {
@@ -211,7 +213,7 @@ export async function requestGame(gameName) {
 /**
  * Requests a list of all available GameTags.
  *
- * @return {GameTag[]} response data
+ * @return {Promise<GameTag[]>} response data
  *
  * @throws Error when the request is rejected.
  */
