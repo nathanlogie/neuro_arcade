@@ -19,6 +19,8 @@ from na.models import PlayerTag
 from django.conf import settings
 
 from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
+from na.models import Game, GameTag, Player, UserStatus, PlayerTag, UnprocessedResults
+
 import json
 from na.models import Game, GameTag, Player, UserStatus
 
@@ -99,7 +101,6 @@ def get_tags(request: Request) -> Response:
     """
     Retrieves the GameTags
     """
-
     return Response([GameTagSerializer(tag).data for tag in GameTag.objects.all()])
 
 
@@ -471,6 +472,78 @@ def get_player(request: Request, player_name_slug: str) -> Response:
     return Response(player_data)
 
 
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def post_admin_ranking(request) -> Response:
+    """
+    Posts admin ranking for a game
+    """
+    game = get_object_or_404(Game, id=request.data["id"])
+    ranking = request.data.get("ranking")
+
+    if ranking is None:
+        return Response(status=400, data="Error occurred while trying to retrieve ranking")
+
+    game.priority = request.data["ranking"]
+    game.save()
+
+    return Response(status=200)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def post_unprocessed_result(request: Request) -> Response:
+    """
+    Upload of raw score that will need to be evaluated. User needs to be authenticated.
+    Request format: {
+        game: <game slug>,
+        player: <player slug>,
+        content: <raw score, as string>,
+    }
+    Player field needs to be owned by the user making the request
+    """
+    # getting the fields from the request
+    game = request.data.get('game')
+    player = request.data.get('player')
+    content = request.data.get('content')
+    # making sure the fields are present
+    if game is None:
+        return Response(status=400, data='Field \'game\' not provided!')
+    if player is None:
+        return Response(status=400, data='Field \'player\' not provided! ' +
+                                         'Note: AI models are considered players for this request.')
+    if content is None:
+        return Response(status=400, data='Field \'content\' not provided!')
+    # getting the game object
+    try:
+        game_obj = Game.objects.get(slug=game)
+    except ObjectDoesNotExist:
+        # game slug is incorrect; throwing an error
+        return Response(status=400,
+                        data='Provided game does not exist! Make sure you are passing the Game\'s name slug.')
+    # getting the player object
+    try:
+        player_obj = Player.objects.get(name=player)
+    except ObjectDoesNotExist:
+        # player slug is incorrect; throwing an error
+        return Response(status=400,
+                        data='Provided player/model does not exist! Make sure you are passing the Player\'s name.')
+    # checking that the player is owned by the authenticated user
+    if player_obj.user != request.user:
+        return Response(status=400,
+                        data='Provided player/model is not owned by the authenticated user! ' +
+                             'You can not upload scores attributed to a Player/Model that\'s not associated with the user')
+    # finally, creating the raw score object
+    new_raw_score = UnprocessedResults.objects.create(game=game_obj, player=player_obj, content=content)
+    # checking the raw score was actually created
+    if new_raw_score is None:
+        return Response(status=500,
+                        data='Internal error encountered while trying to upload a raw score to the database!' +
+                             'Please contact an admin.')
+    # request fully successful, returning OK 200
+    return Response(status=200, data='Raw Score has successfully been added to the queue.')
+
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -482,7 +555,7 @@ class GameViewSet(viewsets.ModelViewSet):
     serializer_class = GameSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=['POST'])
     def add_tags(self, request, pk=None):
         data = request.data
         game = self.get_object()
@@ -498,7 +571,6 @@ class GameViewSet(viewsets.ModelViewSet):
         game.save()
         return Response("Tags added", status=200)
 
-    @action(detail=True)
     def patch(self, request, pk):
         data = request.data
         game = self.get_object(pk=pk)

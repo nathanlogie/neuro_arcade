@@ -158,17 +158,18 @@ async function getCSRFToken() {
  * Set authenticated to true to send the authentication token as well.
  *
  * @param {string} method HTTP method (so like GET, POST etc.)
- * @param {boolean} authenticated
+ * @param {boolean} authenticated (defaults to false)
+ * @param {string} contentType (defaults to 'application/json')
  *
  * @return Axios Request Config
  */
-export async function getHeaders(method, authenticated=false) {
+export async function getHeaders(method, authenticated=false, contentType='application/json') {
     let config = {
         credentials: 'include',
         method: method,
         mode: 'same-origin',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': contentType,
         },
     }
     if (authenticated) {
@@ -393,6 +394,39 @@ export async function postGameScore(gameName, playerIdentification, scoreData) {
         console.log(error);
         throw error;
     })
+}
+
+/**
+ * Uploads Unprocessed Result data to be processed.
+ * Corresponds to na.views.post_unprocessed_result in django.
+ * User needs to be authenticated.
+ *
+ * @param {any} content - will be converted to string before upload
+ * @param {string} game_slug
+ * @param {string} player_name
+ *
+ * @return {Promise} server response
+ *
+ * @throws {Error | UserNotAuthenticatedError} when the request is rejected or when the user is not logged in.
+ */
+export async function postUnprocessedResults(content, game_slug, player_name) {
+    const url = API_ROOT + '/upload/unprocessed_result/';
+
+    if (!isLoggedIn())
+        throw UserNotAuthenticatedError()
+
+    return await axios.post(url, {
+        content: content.toString(),
+        game: game_slug,
+        player: player_name
+    }, await getHeaders('POST', true)
+    ).then((response) => {
+        console.log("Sending of raw scores successful!");
+        return response;
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    });
 }
 
 /**
@@ -687,3 +721,28 @@ export async function requestPlayer(playerName) {
             throw error;
         })
 }
+
+/**
+ * Posts Admin Ranking to model
+ *
+ * @param {int} gameID - ID of game to be ranked
+ * @param {float} ranking - ranking of new game
+ *
+ * @returns Response success response
+ *
+ * @throws error otherwise
+ */
+export async function postAdminRanking(gameID, ranking){
+    const url = API_ROOT + '/post_admin_ranking/'
+
+    await axios.post(url, {id: gameID, ranking: ranking*10}, await getHeaders('POST', true))
+        .then((response) => {
+            return response;
+    })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        })
+
+}
+
