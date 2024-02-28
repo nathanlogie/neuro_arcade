@@ -319,7 +319,7 @@
         }
     }
     .Form {
-        margin: 3em;
+        margin: 3em 0;
         width: 30em;
         position: relative;
         background-color: rgba(3, 3, 3, 0.4);
