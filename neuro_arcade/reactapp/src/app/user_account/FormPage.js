@@ -35,7 +35,7 @@ export function FormPage({type}) {
         form = <GameUpdateForm/>
         title = "Update Game"
     }
-    else if (type=='modelUpdate'){
+    else if (type==='modelUpdate'){
         form = <ModelUpdateForm/>
         title="Update Model"
 

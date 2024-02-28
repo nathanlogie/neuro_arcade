@@ -13,7 +13,7 @@ import {SignUp} from "./app/SignUp";
 import {Login} from "./app/Login";
 import {AllPlayers} from './app/AllPlayers';
 import {PlayerView} from './app/PlayerView';
-import { EditAbout } from "./app/about/EditAbout";
+import {EditAbout} from "./app/about/EditAbout";
 import {PageNotFound} from "./app/PageNotFound"
 import {AnimatePresence} from 'framer-motion'
 import {Background} from "./components/Background";
@@ -26,9 +26,9 @@ import {isLoggedIn, getUserStatus, userIsAdmin} from "./backendRequests";
  * @param children - The JSX Element returned if the user is logged in
  * @returns {React.JSX.Element|*} - Returns child element if logged in, otherwise redirects to login
  */
-export function LoginRoutes({children}){
-    if (!isLoggedIn()){
-        return <Navigate to={'/login'} />
+export function LoginRoutes({children}) {
+    if (!isLoggedIn()) {
+        return <Navigate to={'/login'}/>
     }
     return children;
 };
@@ -39,9 +39,9 @@ export function LoginRoutes({children}){
  * @returns {React.JSX.Element|*} - Returns child element if user is approved
  * or is an admin, otherwise returns PageNotFound component
  */
-export function ApprovedRoutes({children}){
-    if((!isLoggedIn() || getUserStatus()!=='approved') && !userIsAdmin()){
-        return <PageNotFound />
+export function ApprovedRoutes({children}) {
+    if ((!isLoggedIn() || getUserStatus() !== 'approved') && !userIsAdmin()) {
+        return <PageNotFound/>
     }
     return children;
 }
@@ -51,9 +51,9 @@ export function ApprovedRoutes({children}){
  * @param children - The JSX Element returned if the user is an admin
  * @returns {React.JSX.Element|*} - Returns child element if an admin, otherwise returns PageNotFound
  */
-export function AdminRoutes({children}){
-    if (!userIsAdmin()){
-        return <PageNotFound />
+export function AdminRoutes({children}) {
+    if (!userIsAdmin()) {
+        return <PageNotFound/>
     }
     return children;
 }
@@ -63,9 +63,9 @@ export function AdminRoutes({children}){
  * @param children - The JSX Element returned if the user is not an admin
  * @returns {React.JSX.Element|*} - Returns child element if user is not an admin, returns EditAbout otherwise
  */
-export function EditRoute({children}){
-    if (isLoggedIn() && userIsAdmin()){
-        return <EditAbout />
+export function EditRoute({children}) {
+    if (isLoggedIn() && userIsAdmin()) {
+        return <EditAbout/>
     }
     return children;
 }
@@ -86,14 +86,14 @@ const router = createBrowserRouter([
         path: "user_account", //TODO slug for users
         element:
             <LoginRoutes>
-                <AccountPage />
+                <AccountPage/>
             </LoginRoutes>
     },
     {
         path: "user_account/all_users",
         element:
             <AdminRoutes>
-                <AllUsers />
+                <AllUsers/>
             </AdminRoutes>
     },
     {
@@ -115,6 +115,20 @@ const router = createBrowserRouter([
         element: <GameView/>
     },
     {
+        path: 'all_players/:player_slug/edit',
+        element:
+            <EditRoute>
+                <FormPage type={'modelUpdate'}/>
+            </EditRoute>
+    },
+    {
+        path: 'all_games/:game_slug/edit',
+        element:
+            <EditRoute>
+                <FormPage type={'gameUpdate'}/>
+            </EditRoute>
+    },
+    {
         path: "all_games",
         element: <AllGames/>
     },
@@ -124,11 +138,11 @@ const router = createBrowserRouter([
     },
     {
         path: "login",
-        element: <Login />
+        element: <Login/>
     },
     {
         path: "auth_test",
-        element: <AuthTest />
+        element: <AuthTest/>
     },
     {
         path: "all_players",
@@ -140,14 +154,14 @@ const router = createBrowserRouter([
     },
     {
         path: "*",
-        element: <PageNotFound />
+        element: <PageNotFound/>
     }
 ]);
 
 
 createRoot(document.getElementById('root')).render(
     <>
-        <Background />
+        <Background/>
         <AnimatePresence>
             <RouterProvider router={router}/>
         </AnimatePresence>
