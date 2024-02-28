@@ -547,13 +547,13 @@ def post_unprocessed_result(request: Request) -> Response:
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     @action(detail=True, methods=['POST'])
     def add_tags(self, request, pk=None):
@@ -587,19 +587,19 @@ class GameViewSet(viewsets.ModelViewSet):
 class GameTagViewSet(viewsets.ModelViewSet):
     queryset = GameTag.objects.all()
     serializer_class = GameTagSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class PlayerTagViewSet(viewsets.ModelViewSet):
     queryset = PlayerTag.objects.all()
     serializer_class = PlayerTagSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     @action(detail=True, methods=['post'])
     def add_tags(self, request, pk=None):

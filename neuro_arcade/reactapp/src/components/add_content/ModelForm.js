@@ -64,7 +64,7 @@ export function ModelForm() {
 
     const handleImage = (event) => {
         const file = event.target.files[0];
-        const acceptedFormats = ACCEPTED_IMAGE;
+        const acceptedFormats = IMAGE_EXTENSION;
         const fileExtension = file.name.split('.').pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
             setError("root", {message: "Invalid file type provided"})
