@@ -16,6 +16,7 @@ urlpatterns = [
     path('edit_about/', views.post_about_data, name='update_about_json'),
     path('create_player/', views.post_new_player, name='create_player'),
     path('delete_player/', views.delete_player, name='delete_player'),
+    path('get_human_player/', views.get_human_player_for_logged_in_user, name='get_human_player_for_logged_in_user'),
     path('csrf/', views.csrf, name='csrf'),
     path('ping/', views.ping, name='ping'),
     path('model_rankings/', views.get_model_rankings, name='get_model_rankings'),

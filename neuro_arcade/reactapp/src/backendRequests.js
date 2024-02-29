@@ -340,8 +340,30 @@ export async function deletePlayer(playerName) {
         throw new UserNotAuthenticatedError()
 
     return await axios.post(url, { playerName: playerName }, await getHeaders('POST', true))
-        .then((response) => {
+    .then((response) => {
         console.log('Deletion of player ' + playerName + ' successful!');
+        return response;
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    })
+}
+
+/**
+ * Makes a request for the human player associated with the logged-in user.
+ *
+ * @throws {UserNotAuthenticatedError}
+ *
+ * @returns {Promise<axios.AxiosResponse<Player>>}
+ */
+export async function getHumanPlayerFromCurrentUser() {
+    const url = API_ROOT + "/get_human_player/";
+
+    if (!isLoggedIn())
+        throw new UserNotAuthenticatedError();
+
+    return await axios.get(url, await getHeaders('GET', true))
+    .then((response) => {
         return response;
     }).catch((error) => {
         console.log(error);
