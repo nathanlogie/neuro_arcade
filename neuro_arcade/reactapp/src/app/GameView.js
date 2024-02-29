@@ -11,6 +11,7 @@ import {motion} from "framer-motion";
 import { MdBubbleChart } from "react-icons/md";
 import {AiOutlineRadarChart} from "react-icons/ai";
 import {NavBar} from "../components/NavBar";
+import {AdminRanking} from "../components/AdminRanking";
 
 /**
  *
@@ -49,7 +50,6 @@ export function GameView() {
         setSelectedSwitcherValue(selectedValue);
     }
 
-
     let content = <>...</>;
     if (!loading) {
         content =
@@ -63,6 +63,7 @@ export function GameView() {
                 <div className={styles.Content}>
                     <div className={styles.Title}>
                         <h1>{gameData.game.name}</h1>
+                        <AdminRanking game={gameData.game.id} rating={gameData.game.priority}/>
                     </div>
                     <div className={styles.ContentBlock}>
                         <p>
