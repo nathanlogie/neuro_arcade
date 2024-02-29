@@ -30,7 +30,7 @@ export function Card ({subject, linkPrefix, link, text, icon, id}) {
     if (subject) {
         link = linkPrefix + subject.slug;
         text = subject.name || 'Name';
-        icon = <img src={subject.icon} alt='icon'/>
+        icon = <img src={subject.icon || API_ROOT + '/media/game_icons/example.png'} alt='icon'/>;
     }
     if (text && icon && link) {
         return (

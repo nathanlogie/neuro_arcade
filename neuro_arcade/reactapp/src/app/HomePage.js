@@ -6,7 +6,7 @@ import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {TagFilter} from "../components/TagFilter";
 import {HomePageTable} from "../components/HomePageTable";
-import {requestGameTags, requestModelsRanked} from "../backendRequests";
+import {getUser, requestGameTags, requestModelsRanked} from "../backendRequests";
 import {motion} from "framer-motion";
 import {useEffect, useState} from "react";
 import { IoFilter } from "react-icons/io5";
@@ -42,12 +42,12 @@ export function HomePage() {
     );
 
     let nav_right = (
-        <Card id={'nav'} link={'sign_up'} text={'guest'} icon={<FaRegUserCircle/>}/>
+        <Card id={'nav'} link={'sign_up'} text={'Guest'} icon={<FaRegUserCircle/>}/>
     );
 
     if (isLoggedIn()) {
         nav_right = (
-            <Card id={'nav'} link={'user_account'} text={'user'} icon={<FaRegUserCircle/>} //TODO signed in user profile display
+            <Card id={'nav'} link={'user_account'} text={getUser().name} icon={<FaRegUserCircle/>} //TODO signed in user profile display
             />
         );
     }
