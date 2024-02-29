@@ -1,5 +1,5 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {requestGame} from "../backendRequests";
+import {API_ROOT, requestGame} from "../backendRequests";
 import styles from "../styles/App.module.css";
 import {Table} from "../components/game/Table";
 import {RadarC} from "../components/game/RadarC";
@@ -69,8 +69,7 @@ export function GameView() {
                     </div>
                     <div className={styles.ContentBlock}>
                         <p>
-                            <img src="https://loremflickr.com/500/500" alt={'image'} // TODO add query for image here
-                            />
+                            <img src={API_ROOT + gameData.game.icon} alt={'image'} />
                             {gameData.game.description}
                         </p>
                     </div>
