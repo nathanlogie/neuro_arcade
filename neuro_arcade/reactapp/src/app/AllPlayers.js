@@ -17,12 +17,12 @@ import { useArraySearchParam, useSearchParam } from "../urlHelpers";
 export function AllPlayers() {
     // name query for sorting the already fetched players
     // can be changed freely, as it only affect data displayed on the client
-    let [textQuery, setTextQuery] = useSearchParam('query', '');
+    let [textQuery, setTextQuery] = useSearchParam('query', '', {replace: true});
     let [tags, setTags] = useState([]);
-    let [selectedTags, setSelectedTags] = useArraySearchParam('tags');
+    let [selectedTags, setSelectedTags] = useArraySearchParam('tags', {replace: true});
     let [loading, setLoading] = useState(true);
 
-    const [selectedSwitcherValue, setSelectedSwitcherValue] = useSearchParam('mode', 'all');
+    const [selectedSwitcherValue, setSelectedSwitcherValue] = useSearchParam('mode', 'all', {replace: true});
 
     /**
      * Converts a mode's display name into the enum used by PlayerGrid

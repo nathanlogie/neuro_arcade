@@ -16,9 +16,9 @@ import { useArraySearchParam, useSearchParam } from "../urlHelpers";
 export function AllGames() {
     // name query for sorting the already fetched games
     // can be changed freely, as it only affect data displayed on the client
-    let [textQuery, setTextQuery] = useSearchParam('query', '');
+    let [textQuery, setTextQuery] = useSearchParam('query', '', {replace: true});
     let [tags, setTags] = useState([]);
-    let [selectedTags, setSelectedTags] = useArraySearchParam('tags');
+    let [selectedTags, setSelectedTags] = useArraySearchParam('tags', {replace: true});
     let [loading, setLoading] = useState(true);
 
     const [show, setShow] = useState(false);
