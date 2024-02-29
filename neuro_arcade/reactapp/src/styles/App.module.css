@@ -65,7 +65,7 @@
                     border-radius: 0.5em;
                 }
             }
-            & #edit, #save {
+            & #edit, #save, #logout {
                 position: relative;
                 width: max-content;
                 left: 0.5em;

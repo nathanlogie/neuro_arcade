@@ -7,12 +7,13 @@ import { FaGamepad } from "react-icons/fa6";
 import { TbBoxModel } from "react-icons/tb";
 import {motion} from "framer-motion";
 import {Button} from "../../components/Button";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import React, {useState} from "react";
 import {logout} from "../../backendRequests";
 import {getUser} from "../../backendRequests";
 import {userIsAdmin} from "../../backendRequests";
 import {FaSave} from "react-icons/fa";
+import { IoExit } from "react-icons/io5";
 
 
 /**
@@ -64,18 +65,22 @@ export function AccountPage() {
                 exit={{opacity: 0, x: 100}}
             >
                 <div className={styles.Content} id={styles['small']}>
-                    <button onClick={onLogout}>Logout</button>
-                    <motion.button
-                        onClick={onLogout}
-                        whileHover={{scale: 1.1}}
-                        whileTap={{scale: 0.9}}
-                        id={styles['logout']}
-                    >
-                        log out
-                        <div>
-                            <FaSave/>
-                        </div>
-                    </motion.button>
+                    <div className={styles.ContentBlock}>
+                        <p>
+                            Contact admin for account removal...
+                        </p>
+                        <motion.button
+                            onClick={onLogout}
+                            whileHover={{scale: 1.1}}
+                            whileTap={{scale: 0.9}}
+                            id={styles['logout']}
+                        >
+                            log out
+                            <div>
+                                <IoExit/>
+                            </div>
+                        </motion.button>
+                    </div>
                 </div>
                 <div className={styles.Side}>
                     <div className={styles.Title}>
