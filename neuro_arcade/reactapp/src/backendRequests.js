@@ -4,7 +4,7 @@ let IP = new URL(location.origin);
 IP.port = '';
 IP = IP.toString();
 IP = IP.slice(0, -1);
-export const API_ROOT = IP + ":8000"; //todo change port
+export const API_ROOT = IP + ":8000"; //todo change API port
 /**
  * This file contains functions that request or upload data from/to the backend
  */
