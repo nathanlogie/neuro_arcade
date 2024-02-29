@@ -18,10 +18,10 @@ def main():
         return 1
 
     # checks that the evaluation script is present in volume:
+    # PLACEHOLDER
     try:
         from volume import evaluation
-        # TODO: also check that evaluation has an evaluation function inside
-        #  should be `def evaluation(inp: str) -> str:`
+        # TODO this should run evaluation, rather it should just run the full file
     except ImportError:
         # this will always give you errors if you try to
         # execute it outside the docker container
@@ -43,10 +43,20 @@ def main():
     # todo: rather than running an arbitrary function, maybe run it as main?
     #  the example file in /neuro_arcade/static/population/evaluation_functions/example.py
     #  starts executing outside a function (inside an if __name__==`__main__`)
+    #  some ideas to get you started:
+    # 1: the issue is that opinion on using exec() online is very mixed, and this will be a malicious attack angle
+    # exec(path_to_eval_script)
+    # 2: just run it as a shell script
+    # output = subprocess.run(['python', path_to_eval_script], capture_output=True)
+    # this is how you get the output of the script
+    # (stdout is where all print statements print to)
+    # print('stdout: ', output.stdout.decode())
+
     output = evaluation.evaluation(data)
 
     print(output)
 
+    # no issue encountered, returning 0
     return 0
 
 
