@@ -80,7 +80,7 @@ export function AllGames() {
     }
 
     return (
-        <>
+        <div onClick={() => show && !hover ? setShow(false) : null}>
             <Banner size={'small'} selected={'Games'}/>
             <MobileBanner/>
             <motion.div
@@ -93,6 +93,6 @@ export function AllGames() {
                 {content}
                 <div className={styles.MobileBannerBuffer}></div>
             </motion.div>
-        </>
+        </div>
     );
 }

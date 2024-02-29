@@ -63,6 +63,8 @@ export function GameView() {
                 <div className={styles.Content}>
                     <div className={styles.Title}>
                         <h1>{gameData.game.name}</h1>
+                    </div>
+                    <div className={styles.Title}>
                         <AdminRanking game={gameData.game.id} rating={gameData.game.priority}/>
                     </div>
                     <div className={styles.ContentBlock}>

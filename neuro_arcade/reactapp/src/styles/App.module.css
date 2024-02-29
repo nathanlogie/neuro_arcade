@@ -518,7 +518,6 @@
         .Content {
             .Title {
                 padding-left: unset;
-                flex-direction: column;
             }
         }
         .DataBlock {

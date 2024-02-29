@@ -117,7 +117,7 @@ export function AllPlayers() {
     }
 
     return (
-        <>
+        <div onClick={() => show && !hover ? setShow(false) : null}>
             <Banner size={'small'} selected={'Players'}/>
             <MobileBanner/>
             <motion.div
@@ -129,6 +129,6 @@ export function AllPlayers() {
             >
                 {content}
             </motion.div>
-        </>
+        </div>
     );
 }
