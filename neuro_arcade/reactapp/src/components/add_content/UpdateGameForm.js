@@ -342,6 +342,20 @@ export function GameUpdateForm() {
                     components={makeAnimated()}
                     styles={customStyles}
                     placeholder={"Search..."}
+                    theme={(theme) => ({
+                        ...theme,
+                        colors: {
+                            ...theme.colors,
+                            primary25: 'rgba(255,255,255,0.3)',
+                            primary: 'white',
+                            neutral0: 'rgba(255, 255, 255, 0.1)',
+                            neutral20: 'white',
+                            neutral40: '#BBBBBB',
+                            neutral60: '#CCCCCC',
+                            neutral80: '#AAAAAA',
+                            primary50: 'rgba(209,64,129,0.3)'
+                        },
+                    })}
                 />
                 {errors.tags && (
                     <div>{errors.tags.message}</div>

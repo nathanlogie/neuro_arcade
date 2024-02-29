@@ -117,16 +117,17 @@ const router = createBrowserRouter([
     {
         path: 'all_players/:player_slug/edit',
         element:
-            <EditRoute>
+            <ApprovedRoutes>
+              
                 <FormPage type={'modelUpdate'}/>
-            </EditRoute>
+            </ApprovedRoutes>
     },
     {
         path: 'all_games/:game_slug/edit',
         element:
-            <EditRoute>
+            <ApprovedRoutes>
                 <FormPage type={'gameUpdate'}/>
-            </EditRoute>
+            </ApprovedRoutes>
     },
     {
         path: "all_games",
