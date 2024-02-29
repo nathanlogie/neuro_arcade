@@ -269,6 +269,16 @@
                 }
             }
         }
+        .AddContent {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .FormMenu {
+                display: flex;
+                gap: 2em;
+                margin: 2em;
+            }
+        }
     }
     .DataBlock {
         padding: 0 3em;

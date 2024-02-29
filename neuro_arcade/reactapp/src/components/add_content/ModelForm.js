@@ -238,7 +238,6 @@ export function ModelForm() {
                         </label>
                         <input id={'icon'} {...register("icon", {
                             required: false,
-
                         })} type={"file"} accept={"image/*"} onChange={handleImage}/>
                     </motion.div>
                 </div>

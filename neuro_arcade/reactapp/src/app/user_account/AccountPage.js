@@ -12,6 +12,7 @@ import React, {useState} from "react";
 import {logout} from "../../backendRequests";
 import {getUser} from "../../backendRequests";
 import {userIsAdmin} from "../../backendRequests";
+import {FaSave} from "react-icons/fa";
 
 
 /**
@@ -41,18 +42,20 @@ export function AccountPage() {
 
     const pendingUser = <p>Your account is still pending. Once an admin approves you can post models and games.</p>
     const regularContent =
-        <>
-            <Card link={'/add_game'} text={'New Game'} icon={<FaGamepad />} />
-            <Card link={'/add_model'} text={'New Model'} icon={<TbBoxModel />} />
-
-            { user && userIsAdmin() ? <Link to='all_users'>ALL USERS</Link> : null}
-        </>
+        <div className={styles.AddContent}>
+            <div className={styles.FormMenu}>
+                <Card link={'/add_game'} text={'New Game'} icon={<FaGamepad/>}/>
+                <Card link={'/add_model'} text={'New Model'} icon={<TbBoxModel/>}/>
+            </div>
+            {user && userIsAdmin() ?
+                <Button name={'all users'} link={'all_users'} orientation={'right'} direction={'down'}/> : null}
+        </div>
 
     return (
         <>
-            <Banner size={'big'} left={nav_left} />
+            <Banner size={'big'} left={nav_left}/>
             <MobileBanner/>
-            <NavBar left={nav_left} />
+            <NavBar left={nav_left}/>
             <motion.div
                 className={styles.MainBlock}
                 id={styles['big']}
@@ -62,13 +65,24 @@ export function AccountPage() {
             >
                 <div className={styles.Content} id={styles['small']}>
                     <button onClick={onLogout}>Logout</button>
+                    <motion.button
+                        onClick={onLogout}
+                        whileHover={{scale: 1.1}}
+                        whileTap={{scale: 0.9}}
+                        id={styles['logout']}
+                    >
+                        log out
+                        <div>
+                            <FaSave/>
+                        </div>
+                    </motion.button>
                 </div>
                 <div className={styles.Side}>
                     <div className={styles.Title}>
                         <h1>Add Content</h1>
                     </div>
                     <div className={styles.ContentBlock}>
-                        {user.status === "pending" ? pendingUser : regularContent }
+                        {user.status === "pending" ? pendingUser : regularContent}
                     </div>
                 </div>
             </motion.div>
