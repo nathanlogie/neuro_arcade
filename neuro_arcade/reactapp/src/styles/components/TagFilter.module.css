@@ -43,7 +43,7 @@
 }
 
 #home, #all {
-    position: fixed;
+    position: absolute;
     margin-top: 4.25em;
     margin-left: 12em;
     height: fit-content;
@@ -78,7 +78,7 @@
     .FilterTable {
         display: none;
     }
-    #all {
+    #home, #all {
         display: block;
     }
 }
