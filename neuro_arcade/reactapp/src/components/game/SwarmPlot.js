@@ -2,7 +2,7 @@ import React from 'react';
 import {ResponsiveSwarmPlot} from '@nivo/swarmplot';
 import {Switcher} from '../Switcher';
 import PropTypes from 'prop-types';
-import styles from '../../styles/components/TableGraph.module.css';
+import styles from '../../styles/components/Table.module.css';
 
 /**
  * @param inputData {Object}
@@ -59,7 +59,7 @@ export function SwarmPlot({inputData}) {
 
     return (
         <>
-            <div style={{width: '43em', height: '30.75em'}}>
+            <div style={{width: '38em', height: '30.75em'}}>
                 <div className={styles.TabSwitcher}>
                     <Switcher
                         data={inputData}

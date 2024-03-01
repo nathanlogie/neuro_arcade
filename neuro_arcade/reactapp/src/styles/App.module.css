@@ -39,6 +39,9 @@
                 box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
                 cursor: pointer;
             }
+            .FilterButton#all {
+                display: none;
+            }
         }
         .ContentBlock {
             position: relative;
@@ -68,7 +71,7 @@
                 left: 0.5em;
                 height: 2em;
                 border-radius: 0.75em;
-                margin: 2em 2em;
+                margin: 2em 1.5em 1.5em;
                 outline: none;
                 border: none;
                 background-color: #D14081;
@@ -113,17 +116,17 @@
             left: 2em;
         }
     }
-    #big {
-        width: 60em;
-        padding: 2em 0;
+    .Content#big {
+        width: 50em;
+        padding: 2em;
     }
     .Side {
-        width: 32.5em;
         display: flex;
         flex-direction: column;
         align-items: center;
         overflow: hidden;
         .Switcher {
+            margin: 2em 0;
             box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
             border-radius: 3em;
             background-color: rgba(255, 255, 255, 0.1);
@@ -139,7 +142,7 @@
             border-radius: 0.5em;
             backdrop-filter: blur(20px);
             width: max-content;
-            margin-top: 3em;
+            margin: 7em auto 0;
             list-style-type: none;
             display: flex;
             flex-direction: column;
@@ -154,12 +157,12 @@
                 display: flex;
                 flex-direction: column;
                 margin: 2em;
-                width: 25em;
+                width: max-content;
                 align-items: flex-start;
                 overflow-y: auto;
             }
             & a, span {
-                width: 23em;
+                width: 15em;
                 height: max-content;
                 border-bottom: solid rgba(255, 255, 255, 0.2);
                 border-width: 1px;
@@ -178,7 +181,7 @@
                     width: max-content;
                     gap: 1em;
                     & input {
-                        width: 19em;
+                        width: 11.5em;
                         height: 3em;
                         border-radius: 0.5em;
                         padding: 0 1em;
@@ -268,12 +271,11 @@
         }
     }
     .DataBlock {
-        padding: 3em 3em 0 3em;
+        padding: 0 3em;
         width: 100%;
         display: flex;
         overflow-x: auto;
         gap: 3em;
-        justify-content: center;
         .Graphs {
             padding: 2em 0;
             height: 31em;
@@ -282,6 +284,7 @@
             background-color: rgba(3, 3, 3, 0.4);
             border-radius: 0.5em;
             backdrop-filter: blur(20px);
+            margin: 3em auto 0 0;
             .Background {
                 background: linear-gradient(270deg, rgba(255, 255, 255, 0.10) 0%, rgba(217, 217, 217, 0.00) 100%);
             }
@@ -294,11 +297,13 @@
             .GraphSwitcher {
                 position: absolute;
                 top: 2em;
-                right: -12em;
+                right: -4em;
                 border-radius: 0;
                 * {
                     display: flex;
                     flex-direction: column;
+                    width: 4em;
+                    height: 4em;
                     #start {
                         border-radius: 0 2em 0 0;
                     }
@@ -306,14 +311,15 @@
                         border-radius: 0 0 2em 0;
                     }
                     * {
-                        width: 12em;
+                        width: 100%;
+                        height: 100%;
                     }
                 }
             }
         }
     }
     .Form {
-        margin: 3em;
+        margin: 3em 0;
         width: 30em;
         position: relative;
         background-color: rgba(3, 3, 3, 0.4);
@@ -440,30 +446,31 @@
     }
 }
 
-.NavBuffer {
-    display: flex;
-    justify-content: center;
-    width: 14em;
-    margin: 0 auto;
-}
-
 .MobileBannerBuffer {
     position: relative;
     display: none;
-    height: 7em;
+    width: 100%;
+    height: 10em;
 }
 
 .MainBlock#big {
     max-height: calc(100dvh - 13.5em);
+    gap: 0;
 }
 
 .MainBlock#small {
     max-height: calc(100dvh - 9em);
 }
 
-@media(max-width: 85em) {
+@media(max-width: 81em) {
     .MainBlock {
         gap: 0;
+        .Side {
+            .Publications {
+                margin-top: 1em;
+            }
+            padding-bottom: 3em;
+        }
     }
 }
 
@@ -476,14 +483,29 @@
         max-height: calc(100dvh - 14.5em);
         .Content {
             width: 100%;
-            padding: 2em;
+            padding: 2em !important;
             margin: 0;
+            & p {
+                margin: 0 1em;
+                width: calc(100% - 2em) !important;
+            }
+            .Title {
+                & h1 {
+                    font-size: 1.5em;
+                }
+                .FilterButton#all {
+                    display: block;
+                }
+            }
+            .Title {
+                padding-left: 3em;
+            }
         }
-        & h1 {
-            font-size: 1.5em;
+        .Content#big {
+            padding: 0 2em !important;
         }
         .Side {
-            width: 100%;
+            padding-bottom: 0;
         }
     }
     .MobileBannerBuffer {
@@ -493,9 +515,46 @@
 
 @media (max-width: 50em) {
     .MainBlock {
+        .Content {
+            .Title {
+                padding-left: unset;
+            }
+        }
         .DataBlock {
             padding: 0 2em;
             display: block;
+            .Publications {
+                scale: 0.9;
+            }
+            .Graphs {
+                scale: 0.9;
+                margin: auto;
+            }
+        }
+    }
+}
+
+@media (max-width: 30em) {
+    .Content {
+        .Title {
+            justify-content: center;
+        }
+        .ContentBlock {
+            & p {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    }
+    .Side {
+        .Search {
+            width: 15em;
+        }
+    }
+    .DataBlock {
+        .Graphs {
+            scale: 0.7 !important;
         }
     }
 }
@@ -527,17 +586,14 @@
 }
 
 @media (max-width: 20em) {
-    #hexagon {
-        visibility: hidden;
-    }
-    .Gradient {
-        visibility: hidden;
+    #save {
+        margin-top: 0 !important;
     }
 }
 
 .Search {
     position: relative;
-    margin: 3em 0;
+    margin: 3em 0 0 0;
     height: 5em;
     width: 20em;
     .SearchIcon {
@@ -567,7 +623,7 @@
         padding: 0.75em 1em;
         border: none;
         outline: none;
-        background-color: rgba(255, 255, 255, 0.25);
+        background-color: rgba(255, 255, 255, 0.2);
         backdrop-filter: blur(5px);
         color: #ffffff;
         font-family: inherit;
