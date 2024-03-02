@@ -4,6 +4,7 @@ import {Switcher} from '../Switcher'
 import { DataGrid } from '@mui/x-data-grid';
 import styles from '../../styles/components/Table.module.css';
 import {createTheme, ThemeProvider} from "@mui/material";
+import {Link} from "react-router-dom";
 
 /**
  * @param inputData {Object}
@@ -24,10 +25,22 @@ export function Table({inputData}) {
     const columns = [
         // { field: 'id', headerName: 'ID', width: 90 },
         { field: 'player', width: 150, renderHeader: () => (
-          <strong>
-            Player
-          </strong>
-        ), },
+              <strong>
+                Player
+              </strong>
+            ),
+            renderCell: (params) => (
+                <Link
+                    to={'/all_players/' + params.value.replace(/\s+/g, '-').toLowerCase()}
+                    style={{
+                        color: '#FFFFFF',
+                        textDecoration: 'none'
+                    }}
+                >
+                    {params.value}
+                </Link>
+            ),
+        },
         ...inputData.table_headers.map(header => ({
             field: header.name.toLowerCase(),
             headerName: header.name,
@@ -54,7 +67,7 @@ export function Table({inputData}) {
             const columnName = inputData.table_headers[scoreIndex].name.toLowerCase();
             return { ...acc, [columnName]: score };
         }, {}),
-        is_AI: row.is_ai,
+        is_AI: row.is_ai
     }));
 
 
@@ -105,7 +118,7 @@ export function Table({inputData}) {
                         color: 'white',
                         borderColor: 'rgba(0,0,0,0)',
                         '& .MuiDataGrid-cell:hover': {
-                          color: 'white',
+                            color: 'white',
                         },
                         width: '33em',
                         fontFamily: 'inherit'

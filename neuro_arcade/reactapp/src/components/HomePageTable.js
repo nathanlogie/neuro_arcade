@@ -4,6 +4,7 @@ import {DataGrid} from '@mui/x-data-grid';
 import {RankedModel} from '../backendRequests';
 import styles from '../styles/components/Table.module.css';
 import {createTheme, ThemeProvider} from "@mui/material";
+import {Link} from "react-router-dom";
 
 /**
  * 
@@ -22,10 +23,22 @@ export function HomePageTable({inputData}) {
 
     const columns = [
         {field: 'name', width:150, renderHeader: () => (
-          <strong>
-            AI Platform
-          </strong>
-        ),}, //TODO render link to AI description page
+              <strong>
+                AI Platform
+              </strong>
+            ),
+            renderCell: (params) => (
+                <Link
+                    to={'/all_players/' + params.value.replace(/\s+/g, '-').toLowerCase()}
+                    style={{
+                        color: '#FFFFFF',
+                        textDecoration: 'none'
+                    }}
+                >
+                    {params.value}
+                </Link>
+            ),
+        },
         {field: 'score', headerName: 'Overall Score', width:150, renderHeader: () => (
             <strong>
                 Overall Score
