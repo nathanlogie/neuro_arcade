@@ -9,6 +9,7 @@ VOLUME_PATH = './volume'
 EVALUATION_SCRIPT_PATH = VOLUME_PATH + '/evaluation.py'
 INPUT_FILE_PATH = VOLUME_PATH + '/input.txt'
 
+
 def main():
     # checks that the `volume` directory exists:
     if not os.path.exists(VOLUME_PATH):
