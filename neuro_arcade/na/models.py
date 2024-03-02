@@ -346,7 +346,7 @@ class UnprocessedResults(models.Model):
     def __str__(self):
         return ("UnprocessedResults for game " + self.game.name +
                 " by player " + self.player.name +
-                ": " + self.upload_date.__str__())
+                ": " + self.upload_date.__str__() + f" ({self.get_status_display()})")
 
 
 class UserStatus(models.Model):
