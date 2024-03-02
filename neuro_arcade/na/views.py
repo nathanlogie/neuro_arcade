@@ -530,7 +530,8 @@ def post_unprocessed_result(request: Request) -> Response:
     if player_obj.user != request.user:
         return Response(status=400,
                         data='Provided player/model is not owned by the authenticated user! ' +
-                             'You can not upload scores attributed to a Player/Model that\'s not associated with the user')
+                             'You can not upload scores attributed to a Player/Model that\'s not associated with the '
+                             'user')
     # finally, creating the raw score object
     new_raw_score = UnprocessedResults.objects.create(game=game_obj, player=player_obj, content=content)
     # checking the raw score was actually created
@@ -565,6 +566,7 @@ class GameViewSet(viewsets.ModelViewSet):
         game.save()
         return Response("Tags added", status=200)
 
+    # noinspection PyArgumentList
     def patch(self, request, pk):
         data = request.data
         game = self.get_object(pk=pk)
