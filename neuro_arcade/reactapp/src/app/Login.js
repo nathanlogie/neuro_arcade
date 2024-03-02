@@ -76,6 +76,7 @@ export function Login() {
                         <p>Don't have an account? <Link to='/sign_up'>Sign up here...</Link></p>
                     </form>
                 </div>
+                <div className={styles.MobileBannerBuffer}/>
             </motion.div>
         </>
     )

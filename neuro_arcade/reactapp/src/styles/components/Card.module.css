@@ -1,14 +1,11 @@
 .Card {
-    position: relative;
-    float: left;
-    width: 7em;
-    height: 10em;
+    width: max-content;
+    height: max-content;
     padding-bottom: 1em;
     backdrop-filter: blur(20px);
     background: rgba(255, 255, 255, 0.1);
     border-radius: 1.5em;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-    margin: 1em;
     & a {
         text-decoration: none;
         display: flex;
@@ -18,8 +15,8 @@
     }
     .Icon {
         padding-bottom: 0.5em;
-        width: 7em;
-        height: 7em;
+        width: 100%;
+        height: 70%;
         border-radius: 1.5em;
         object-fit: contain;
         color: rgba(255, 255, 255, 0.5);
@@ -36,7 +33,6 @@
     .Text {
         text-decoration: none;
         text-align: center;
-        width: 7em;
         font-size: 0.85em;
         margin: auto 0;
         color: #FFFFFF;
@@ -47,28 +43,69 @@
 }
 
 #nav {
-    scale: 80%;
-    .Text {
-        font-size: 1.25em;
-        width: 4.6em;
+    a {
+        height: 8em;
+        width: 5.6em;
     }
+}
+
+.CardGrid:last-of-type {
+  margin-left: auto;
 }
 
 @media (max-width: 75em) {
     .Card {
-        scale: 85%;
-        margin: 0;
+        a {
+            height: 8em;
+            width: 5.6em;
+        }
     }
 }
 
 @media (max-width: 50em) {
     .Card {
-        scale: 75%;
+        a {
+            height: 7.5em;
+            width: 5.25em;
+            .Text {
+                font-size: 0.7em;
+            }
+        }
+    }
+    #nav {
+        a {
+            height: 6.5em;
+            width: 4.55em;
+        }
     }
 }
 
-@media (max-width: 20em) {
+@media (max-width: 40em) {
     .Card {
-        scale: 60%;
+        border-radius: 1.25em;
+        a {
+            height: 6.5em;
+            width: 4.55em;
+        }
+    }
+}
+
+@media (max-width: 30em) {
+    .Card {
+        border-radius: 1em;
+        a {
+            height: 6em;
+            width: 4.2em;
+            .Text {
+                font-size: 0.55em;
+            }
+        }
+    }
+    #nav {
+        border-radius: 1em;
+        a {
+            height: 5em;
+            width: 3.5em;
+        }
     }
 }

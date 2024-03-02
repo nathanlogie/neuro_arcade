@@ -35,10 +35,16 @@ export function EditAbout() {
     let content = <>...</>;
     if (aboutData) {
         content = <>
-            <div className={styles.Content}>
+            <div className={styles.Content} id={styles['big']}>
                 <div className={styles.ContentBlock}>
                     <DescriptionForm description={aboutData.description}/>
-                    <PublicationsForm publications={aboutData.publications}/>
+                </div>
+            </div>
+            <div className={styles.Side}>
+                <div className={styles.DataBlock}>
+                    <div className={styles.Publications}>
+                        <PublicationsForm publications={aboutData.publications}/>
+                    </div>
                 </div>
             </div>
         </>
@@ -46,16 +52,18 @@ export function EditAbout() {
 
     return (
         <>
-            <Banner size={'big'} right={nav_right} />
+            <Banner size={'big'} right={nav_right}/>
             <MobileBanner/>
             <NavBar right={nav_right} />
             <motion.div
                 className={styles.MainBlock}
+                id={styles['big']}
                 initial={{opacity: 0, x: -100}}
                 animate={{opacity: 1, x: 0}}
                 exit={{opacity: 0, x: -100}}
             >
                 {content}
+                <div className={styles.MobileBannerBuffer}/>
             </motion.div>
         </>
     );

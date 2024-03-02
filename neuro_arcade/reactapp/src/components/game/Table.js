@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Switcher} from '../Switcher'
 import { DataGrid } from '@mui/x-data-grid';
-import styles from '../../styles/components/TableGraph.module.css';
+import styles from '../../styles/components/Table.module.css';
 import {createTheme, ThemeProvider} from "@mui/material";
 
 /**

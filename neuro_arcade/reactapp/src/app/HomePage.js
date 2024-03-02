@@ -21,7 +21,6 @@ import { FaRegUserCircle } from "react-icons/fa";
 export function HomePage() {
 
     let [tags, setTags] = useState([]);
-    let [forcedTags, setForcedTags] = useState([]);
     let [selectedTags, setSelectedTags] = useState([]);
     let [loadingTags, setLoadingTags] = useState(true);
 
@@ -30,6 +29,7 @@ export function HomePage() {
 
     const [show, setShow] = useState(false);
     const [hover, setHover] = useState(false);
+
     const [loggedIn, setLoggedIn] = useState(isLoggedIn());
 
     let nav_left = (
@@ -47,10 +47,8 @@ export function HomePage() {
 
     if (isLoggedIn()) {
         nav_right = (
-            <div className={styles.NavBuffer}>
             <Card id={'nav'} link={'user_account'} text={'user'} icon={<FaRegUserCircle/>} //TODO signed in user profile display
             />
-            </div>
         );
     }
 
@@ -59,7 +57,6 @@ export function HomePage() {
         requestGameTags()
             .then((tags) => {
                 setTags(tags.filter((tag) => tag.slug != 'featured'));
-                setForcedTags(tags.filter((tag) => tag.slug == 'featured'));
                 setLoadingTags(false);
             })
     }, [])
@@ -83,9 +80,9 @@ export function HomePage() {
                 animate={{opacity: 1}}
                 exit={{opacity: 0}}
             >
-                <div className={styles.Content} id={styles['small']}>
+                <div className={styles.Content}>
                     <div className={styles.Title}>
-                        <h1>Featured games</h1>
+                        <h1>Featured Games</h1>
                         <motion.div
                             className={styles.FilterButton} onClick={() => setShow(!show)}
                             whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}
@@ -100,20 +97,10 @@ export function HomePage() {
                         onMouseOver={() => setHover(true)}
                         onMouseOut={() => setHover(false)}
                     />
-                    {/*
-                        The featured tag is always applied, so that's put in the query for server-side
-                        filtering
-                        TODO: CardGrid should probably abstract the query
-                        TODO: only the first 8 featured games will be requested, so when additional tags are applied
-                        there may be less than 8 games shown even if other valid ones exist. Either tag filtering should
-                        be done server-side (resulting in a request on every check/uncheck), or num filtering should be
-                        done locally
-                    */}
                     <GameGrid
                         num={8}
                         tagQuery={
                             tags.filter((tag, i) => selectedTags[i])
-                                .concat(forcedTags)
                                 .map((tag) => tag.id)
                         }
                     />

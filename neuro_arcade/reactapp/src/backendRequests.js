@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_ROOT = "http://localhost:8000"
+export const API_ROOT = "http://localhost:8000";
 /**
  * This file contains functions that request or upload data from/to the backend
  */
@@ -395,6 +395,39 @@ export async function postGameScore(gameName, playerIdentification, scoreData) {
 }
 
 /**
+ * Uploads Unprocessed Result data to be processed.
+ * Corresponds to na.views.post_unprocessed_result in django.
+ * User needs to be authenticated.
+ *
+ * @param {any} content - will be converted to string before upload
+ * @param {string} game_slug
+ * @param {string} player_name
+ *
+ * @return {Promise} server response
+ *
+ * @throws {Error | UserNotAuthenticatedError} when the request is rejected or when the user is not logged in.
+ */
+export async function postUnprocessedResults(content, game_slug, player_name) {
+    const url = API_ROOT + '/upload/unprocessed_result/';
+
+    if (!isLoggedIn())
+        throw UserNotAuthenticatedError()
+
+    return await axios.post(url, {
+        content: content.toString(),
+        game: game_slug,
+        player: player_name
+    }, await getHeaders('POST', true)
+    ).then((response) => {
+        console.log("Sending of raw scores successful!");
+        return response;
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    });
+}
+
+/**
  * Requests about data
  *
  * @throws err when get is rejected
@@ -706,5 +739,30 @@ export async function requestPlayerScores(playerName) {
             console.log(error);
             throw error;
         })
+}
+
+
+/**
+ * Posts Admin Ranking to model
+ *
+ * @param {int} gameID - ID of game to be ranked
+ * @param {float} ranking - ranking of new game
+ *
+ * @returns Response success response
+ *
+ * @throws error otherwise
+ */
+export async function postAdminRanking(gameID, ranking){
+    const url = API_ROOT + '/post_admin_ranking/'
+
+    await axios.post(url, {id: gameID, ranking: ranking*10}, await getHeaders('POST', true))
+        .then((response) => {
+            return response;
+    })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        })
+
 }
 

@@ -113,10 +113,6 @@ users = [
 
 game_tags = [
     {
-        'name': "Featured",
-        'description': "The current featured games",
-    },
-    {
         'name': "Tracking Games",
         'description': "Games that involve tracking an object",
     },
@@ -169,7 +165,8 @@ games = [
         'owner': "kangaroo14",
         'icon': "example.png",
         'tags': ["Tracking Games", "High AI Score"],
-        'score_type': "{collected_coins: {max: 100, type: int}}"
+        'score_type': "{collected_coins: {max: 100, type: int}}",
+        'priority': 100
     },
     {
         'name': "Flying Objects",
@@ -177,7 +174,8 @@ games = [
         'owner': "hippo88",
         'icon': "example.png",
         'tags': ["Judgement Games", "High Human Player Score"],
-        'score_type': "{collected_points: {max: 20, type: int}}"
+        'score_type': "{collected_points: {max: 20, type: int}}",
+        'priority': 90
     },
     {
         'name': "Object Crops",
@@ -185,7 +183,8 @@ games = [
         'owner': "kangaroo14",
         'icon': "example.png",
         'tags': ["Tracking Games", "High AI Score"],
-        'score_type': "{collected_points: {max: 100.0, type: float}}"
+        'score_type': "{collected_points: {max: 100.0, type: float}}",
+        'priority': 80
     },
     {
         'name': "Block Drops",
@@ -193,31 +192,35 @@ games = [
         'owner': "giraffe10",
         'icon': "example.png",
         'tags': ["Pattern Recognition Games", "Strategic Games"],
-        'score_type': "{collected_points: {max: 10000, type: int}}"
+        'score_type': "{collected_points: {max: 10000, type: int}}",
+        'priority': 70
     },
     {
         'name': "2048",
         'description': "A game where blocks are combined to try and make the number 2048",
         'owner': "giraffe10",
         'icon': "example.png",
-        'tags': ["Puzzle Games", "Strategic Games", "Featured"],
-        'score_type': "{collected_points: {max: 10000, type: int}}"
+        'tags': ["Puzzle Games", "Strategic Games"],
+        'score_type': "{collected_points: {max: 10000, type: int}}",
+        'priority': 60
     },
     {
         'name': "Space Creatures",
         'description': "A game where aliens come in from the sky and need to be shot down before they reach you",
         'owner': "duck44",
         'icon': "example.png",
-        'tags': ["Reflex Games", "Tracking Games", "Featured"],
-        'score_type': "{collected_points: {max: 100.0, type: float}}"
+        'tags': ["Reflex Games", "Tracking Games"],
+        'score_type': "{collected_points: {max: 100.0, type: float}}",
+        'priority': 50
     },
     {
         'name': "Flying Bird",
         'description': "A game where you need to correctly time jumps to get through small spaces",
         'owner': "duck44",
         'icon': "example.png",
-        'tags': ["Reflex Games", "Timing Games", "Featured"],
-        'score_type': "{collected_points: {max: 10000, type: int}}"
+        'tags': ["Reflex Games", "Timing Games"],
+        'score_type': "{collected_points: {max: 10000, type: int}}",
+        'priority': 100
     },
     {
         'name': "Suduko",
@@ -225,7 +228,8 @@ games = [
         'owner': "penguin726",
         'icon': "example.png",
         'tags': ["High AI Score", "Puzzle Games", "Problem Solving Games"],
-        'score_type': "{time_taken: {max: 600.0, type: float}}"
+        'score_type': "{time_taken: {max: 600.0, type: float}}",
+        'priority': 30
     },
     {
         'name': "Maze",
@@ -233,7 +237,8 @@ games = [
         'owner': "duck44",
         'icon': "example.png",
         'tags': ["High Human Score", "Puzzle Games", "Problem Solving Games"],
-        'score_type': "{time_taken: {max: 600.0, type: float}}"
+        'score_type': "{time_taken: {max: 600.0, type: float}}",
+        'priority': 20
     },
     {
         'name': "Music Jump",
@@ -241,40 +246,45 @@ games = [
                        "requires memory",
         'owner': "kangaroo14",
         'icon': "example.png",
-        'tags': ["Reflex Games", "Pattern Recognition Games", "Memory Games", "Timing Games", "Featured"],
-        'score_type': "{attempt_made: {max: 100, type: int}}"
+        'tags': ["Reflex Games", "Pattern Recognition Games", "Memory Games", "Timing Games"],
+        'score_type': "{attempt_made: {max: 100, type: int}}",
+        'priority': 100
     },
     {
         'name': "Brick Breaker",
         'description': "A game where you need break the bricks using a ball the quickest",
         'owner': "hippo88",
         'icon': "example.png",
-        'tags': ["Strategic Games", "Tracking Games", "Featured"],
-        'score_type': "{time_taken: {max: 600.0, type: float}}"
+        'tags': ["Strategic Games", "Tracking Games"],
+        'score_type': "{time_taken: {max: 600.0, type: float}}",
+        'priority': 10
     },
     {
         'name': "Minesweeper",
         'description': "A game where you need find all the bombs",
         'owner': "panda22",
         'icon': "example.png",
-        'tags': ["Strategic Games", "Puzzle Games", "Featured"],
-        'score_type': "{time_taken: {max: 600.0, type: float}}"
+        'tags': ["Strategic Games", "Puzzle Games"],
+        'score_type': "{time_taken: {max: 600.0, type: float}}",
+        'priority': 10
     },
     {
         'name': "Snake",
         'description': "A game where you need to get the longest snake possible without crashing",
         'owner': "panda22",
         'icon': "example.png",
-        'tags': ["Strategic Games", "Puzzle Games", "Featured"],
-        'score_type': "{collected_points: {max: 200, type: int}}"
+        'tags': ["Strategic Games", "Puzzle Games"],
+        'score_type': "{collected_points: {max: 200, type: int}}",
+        'priority': 85
     },
     {
         'name': "Simon Says",
         'description': "A game where you need to memorise the pattern",
         'owner': "giraffe10",
         'icon': "example.png",
-        'tags': ["Memory Games", "Pattern Recognition Games", "Featured"],
-        'score_type': "{collected_points: {max: 25, type: int}}"
+        'tags': ["Memory Games", "Pattern Recognition Games"],
+        'score_type': "{collected_points: {max: 25, type: int}}",
+        'priority': 95
     },
     {
         'name': "Frog Road",
@@ -282,39 +292,44 @@ games = [
         'owner': "panda22",
         'icon': "example.png",
         'tags': ["Timing Games", "Reflex Games", "High AI Score"],
-        'score_type': "{collected_points: {max: 250, type: int}}"
+        'score_type': "{collected_points: {max: 250, type: int}}",
+        'priority': 60
     },
     {
         'name': "Spelling",
         'description': "A game where you need to find the word spelled incorrectly the quickest",
         'owner': "lion589",
         'icon': "example.png",
-        'tags': ["Pattern Recognition Games", "Problem Solving Games", "Featured"],
-        'score_type': "{time_taken: {max: 600.0, type: float}}"
+        'tags': ["Pattern Recognition Games", "Problem Solving Games"],
+        'score_type': "{time_taken: {max: 600.0, type: float}}",
+        'priority': 5
     },
     {
         'name': "Connections",
         'description': "A game where you need to find the four sets of connections between a set of words",
         'owner': "duck44",
         'icon': "example.png",
-        'tags': ["Pattern Recognition Games", "Featured", "High Human Player Score"],
-        'score_type': "{time_taken: {max: 600.0, type: float}}"
+        'tags': ["Pattern Recognition Games", "High Human Player Score"],
+        'score_type': "{time_taken: {max: 600.0, type: float}}",
+        'priority': 100
     },
     {
         'name': "Words",
         'description': "A game where you need to find the most words with the given letters",
         'owner': "lion589",
         'icon': "example.png",
-        'tags': ["Pattern Recognition Games", "Problem Solving Games", "Featured"],
-        'score_type': "{collected_points: {max: 75, type: int}}"
+        'tags': ["Pattern Recognition Games", "Problem Solving Games"],
+        'score_type': "{collected_points: {max: 75, type: int}}",
+        'priority': 20
     },
     {
         'name': "Wordsearch",
         'description': "A game where you need to solve the wordsearch the quickest",
         'owner': "lion589",
         'icon': "example.png",
-        'tags': ["Puzzle Games", "Problem Solving Games", "Featured"],
-        'score_type': "{time_taken: {max: 600.0, type: float}}"
+        'tags': ["Puzzle Games", "Problem Solving Games"],
+        'score_type': "{time_taken: {max: 600.0, type: float}}",
+        'priority': 10
     },
 ]
 
@@ -716,9 +731,6 @@ def add_game_tag(data: Dict) -> GameTag:
 
 
 def add_game(data: Dict) -> Game:
-    MINIMUM_PRIORITY = 0
-    MAXIMUM_PRIORITY = 50
-
     """Create a na game"""
 
     game = Game.objects.get_or_create(
@@ -729,7 +741,7 @@ def add_game(data: Dict) -> Game:
     )[0]
     game.score_type = score_types[data['name']]
     game.description = data.get('description', "no description")
-    game.priority = random.randint(MINIMUM_PRIORITY, MAXIMUM_PRIORITY)
+    game.priority = data['priority']
 
     if 'icon' in data:
         game.icon.name = add_media_from_static(Game.ICON_SUBDIR, data['icon'])
