@@ -4,6 +4,7 @@ import {Banner, MobileBanner} from "../../components/Banner";
 import {NavBar} from "../../components/NavBar";
 import {motion} from "framer-motion";
 import {ModelForm} from "../../components/add_content/ModelForm";
+import {BatchUploadForm} from "../../components/add_content/BatchUploadForm";
 import {Button} from "../../components/Button";
 
 /**
@@ -25,8 +26,11 @@ export function FormPage({type}) {
     if (type === 'game') {
         form = <GameForm/>;
     } else if (type === 'model') {
-        form  = <ModelForm/>
-    } else {
+        form  = <ModelForm/>;
+    } else if (type === 'batch-upload') {
+        form = <BatchUploadForm/>;
+    }
+    else {
         throw('invalid form type');
     }
 

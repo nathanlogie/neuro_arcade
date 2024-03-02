@@ -115,6 +115,10 @@ const router = createBrowserRouter([
         element: <GameView/>
     },
     {
+        path: 'all_games/:game_slug/batch-upload',
+        element: <FormPage type={'batch-upload'} />
+    },
+    {
         path: "all_games",
         element: <AllGames/>
     },
