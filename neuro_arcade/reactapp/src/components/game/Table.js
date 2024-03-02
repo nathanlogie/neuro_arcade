@@ -23,7 +23,6 @@ export function Table({inputData}) {
     }
 
     const columns = [
-        // { field: 'id', headerName: 'ID', width: 90 },
         { field: 'player', width: 150, renderHeader: () => (
               <strong>
                 Player
@@ -69,7 +68,6 @@ export function Table({inputData}) {
         }, {}),
         is_AI: row.is_ai
     }));
-
 
     const getRowStyle = (params) => {
         return {

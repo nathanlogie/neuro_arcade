@@ -5,6 +5,7 @@ import {RankedModel} from '../backendRequests';
 import styles from '../styles/components/Table.module.css';
 import {createTheme, ThemeProvider} from "@mui/material";
 import {Link} from "react-router-dom";
+import {Switcher} from "./Switcher";
 
 /**
  * 
@@ -15,16 +16,19 @@ import {Link} from "react-router-dom";
  */
 export function HomePageTable({inputData}) {
 
-    if(!inputData){
-        return(
-            <h2>No Data</h2>
-        );
+    const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState('all');
+
+    /**
+     * @param selectedValue {string}
+     */
+    const handleSwitcherChange = (selectedValue) => {
+        setSelectedSwitcherValue(selectedValue);
     }
 
     const columns = [
         {field: 'name', width:150, renderHeader: () => (
               <strong>
-                AI Platform
+                Player
               </strong>
             ),
             renderCell: (params) => (
@@ -41,14 +45,14 @@ export function HomePageTable({inputData}) {
         },
         {field: 'score', headerName: 'Overall Score', width:150, renderHeader: () => (
             <strong>
-                Overall Score
+                Overall score
             </strong>
         ),},
-        {field: 'owner', width: 150, renderHeader: () => (
+        {field: 'is_AI', width: 150, type: 'boolean', renderHeader: () => (
             <strong>
-                Owner
+                is AI?
             </strong>
-        ),}, // TODO show user instead of ID
+        ),}
     ]
 
     /**
@@ -63,8 +67,7 @@ export function HomePageTable({inputData}) {
             id: index + 1,
             name: item.player.name,
             score: item.overall_score.toFixed(1),
-            owner: item.player.user,
-            description: item.player.description
+            is_AI: item.player.is_ai
         };
     });
 
@@ -74,9 +77,33 @@ export function HomePageTable({inputData}) {
       },
     });
 
+    const switcher_labels = {
+    table_headers: [
+        { name: 'AI Platforms' },
+        { name: 'all' },
+        { name: 'Humans' }
+    ],
+  };
+
+    const filteredRows =
+      selectedSwitcherValue === 'all'
+        ? rows
+        : selectedSwitcherValue === 'AI Platforms'
+        ? rows.filter((row) => row.is_AI)
+        : selectedSwitcherValue === 'Humans'
+        ? rows.filter((row) => !row.is_AI)
+        : rows;
+
     return(
         <div className={styles.TableContainer} id={styles['home']}>
             <h2>Top Performers</h2>
+            <div className={styles.TabSwitcher}>
+                <Switcher
+                    data={switcher_labels}
+                    onSwitcherChange={handleSwitcherChange}
+                    switcherDefault={selectedSwitcherValue}
+                />
+            </div>
             <ThemeProvider theme={table_theme}>
                 <DataGrid
                     sx={{
@@ -85,13 +112,13 @@ export function HomePageTable({inputData}) {
                         color: 'white',
                         borderColor: 'rgba(0,0,0,0)',
                         '& .MuiDataGrid-cell:hover': {
-                          color: 'white',
+                            color: 'white',
                         },
                         height: '100%',
                         width: '32.5em',
                         fontFamily: 'inherit'
                     }}
-                    rows={rows}
+                    rows={filteredRows}
                     columns={columns}
                     initialState={{
                         pagination: {

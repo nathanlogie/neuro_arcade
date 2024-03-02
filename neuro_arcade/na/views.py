@@ -397,7 +397,7 @@ def update_user_status(request: Request) -> Response:
 
 
 @api_view(['GET'])
-def get_model_rankings(request: Request) -> Response:
+def get_player_rankings(request: Request) -> Response:
     """
     Gets the overall rankings of AI models
 
@@ -428,18 +428,15 @@ def get_model_rankings(request: Request) -> Response:
 
         # Distribute scores for each leaderboard
         for ranking in rank_tables.values():
-            # Filter out humans
-            ai_ranking = [score for score in ranking if score.player.is_ai]
-
             # Ignore empty leaderboards
-            if len(ai_ranking) == 0:
+            if len(ranking) == 0:
                 continue
 
             # Calculate the decrease in score for each position
-            step = 100 / len(ai_ranking)
+            step = 100 / len(ranking)
 
             # Give out the points for each position
-            for i, score in enumerate(ai_ranking):
+            for i, score in enumerate(ranking):
                 player_ranks[score.player.id] += 100.0 - (i * step)
 
     # Build response data structure
@@ -447,9 +444,9 @@ def get_model_rankings(request: Request) -> Response:
         {
             'player': PlayerSerializer(player, context={'request': request}).data,
             'overall_score': player_ranks[player.id],
+            'is_AI' : player_ranks[player.is_ai]
         }
         for player in Player.objects.all()
-        if player.is_ai
     ]
     data.sort(key=lambda d: -d['overall_score'])
 
