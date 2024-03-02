@@ -1,6 +1,6 @@
 # python:alpine produces smaller images, but you can encounter issues
 # see this discussion: https://news.ycombinator.com/item?id=10782897
-FROM python:3
+FROM python:3.12
 
 # add your name here if you work on this docker image
 # of should this include the entire team?
