@@ -8,6 +8,7 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import {Switcher} from "../components/Switcher";
 import {motion} from "framer-motion";
 import {IoFilter} from "react-icons/io5";
+import { useArraySearchParam, useSearchParam } from "../urlHelpers";
 
 /**
  * @returns {JSX.Element} all players page
@@ -16,30 +17,27 @@ import {IoFilter} from "react-icons/io5";
 export function AllPlayers() {
     // name query for sorting the already fetched players
     // can be changed freely, as it only affect data displayed on the client
-    let [textQuery, setTextQuery] = useState('');
+    let [textQuery, setTextQuery] = useSearchParam('query', '', {replace: true});
     let [tags, setTags] = useState([]);
-    let [selectedTags, setSelectedTags] = useState([]);
+    let [selectedTags, setSelectedTags] = useArraySearchParam('tags', {replace: true});
     let [loading, setLoading] = useState(true);
 
-    let modes = [PlayerGridMode.ALL, PlayerGridMode.HUMAN, PlayerGridMode.AI];
-    let [modeIdx, setModeIdx] = useState(0);
-
-    const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState('all');
+    const [selectedSwitcherValue, setSelectedSwitcherValue] = useSearchParam('mode', 'all', {replace: true});
 
     /**
-     * @param selectedValue {string}
+     * Converts a mode's display name into the enum used by PlayerGrid
+     * 
+     * TODO: this is hacky, Switcher's API should probably be refactored to some extent
+     * 
+     * @param {string} displayName 
+     * @returns {PlayerGridMode} mode
      */
-    const handleSwitcherChange = (selectedValue) => {
-        setSelectedSwitcherValue(selectedValue);
-        if (selectedValue === 'AI Platforms') {
-            setModeIdx(2);
-        }
-        if (selectedValue === 'Humans') {
-            setModeIdx(1);
-        }
-        if (selectedValue === 'all') {
-            setModeIdx(0);
-        }
+    function convertModeName(displayName) {
+        if (displayName == 'AI Platforms')
+            return PlayerGridMode.AI;
+        if (displayName == 'Humans')
+            return PlayerGridMode.HUMAN;
+        return PlayerGridMode.ALL;
     }
 
     const switcher_labels = {
@@ -60,9 +58,14 @@ export function AllPlayers() {
             })
     }, [])
 
+    function onTagChange(selection) {
+        setSelectedTags(tags.filter((tag, i) => selection[i]).map((tag) => tag.slug))
+    }
+
     const smallTagFilter =
         <TagFilter
-            onTagChange={setSelectedTags}
+            onTagChange={onTagChange}
+            initialTicks={tags.map((tag) => selectedTags.includes(tag.slug))}
             tags={tags.map((tag) => tag.name)}
             id={show ? 'all' : 'invisible'}
             onMouseOver={() => setHover(true)}
@@ -71,7 +74,8 @@ export function AllPlayers() {
 
     const largeTagFilter =
         <TagFilter
-            onTagChange={setSelectedTags}
+            onTagChange={onTagChange}
+            initialTicks={tags.map((tag) => selectedTags.includes(tag.slug))}
             tags={tags.map((tag) => tag.name)}
             onMouseOver={() => setHover(true)}
             onMouseOut={() => setHover(false)}
@@ -82,7 +86,7 @@ export function AllPlayers() {
         content = <>
             <div className={styles.Side}>
                 <div className={styles.Search}>
-                    <input onChange={e => setTextQuery(e.target.value)} placeholder="search..."/>
+                    <input onChange={e => setTextQuery(e.target.value)} defaultValue={textQuery} placeholder="search..."/>
                     <div className={styles.SearchIcon}>
                         <FaMagnifyingGlass/>
                     </div>
@@ -90,7 +94,7 @@ export function AllPlayers() {
                 <div className={styles.Switcher}>
                     <Switcher
                         data={switcher_labels}
-                        onSwitcherChange={handleSwitcherChange}
+                        onSwitcherChange={setSelectedSwitcherValue}
                         switcherDefault={selectedSwitcherValue}
                     />
                 </div>
@@ -108,9 +112,9 @@ export function AllPlayers() {
                 </div>
                 {smallTagFilter}
                 <PlayerGrid
-                    mode={modes[modeIdx]}
+                    mode={convertModeName(selectedSwitcherValue)}
                     textQuery={textQuery}
-                    tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)}
+                    tagQuery={tags.filter((tag) => selectedTags.includes(tag.slug)).map((tag) => tag.id)}
                 />
             </div>
         </>;
