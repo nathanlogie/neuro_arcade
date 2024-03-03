@@ -86,13 +86,17 @@ to their values. For example,
 ```
 ### Error handling
 
-If the script exits with an error code other than 0, or the output printed
-isn't valid (either can't be parsed as json, or doesn't fall within the
-constraints of the game's score type), then the score will not be saved. The
-error will be logged for game admins to check, along with the unprocessed
-result data which triggered it.
+The evaluation script should exit with code 0 if it successfully ran otherwise 
+if it crashes, python will exit with code 1 automatically. If your code determines the input
+JSON to be an invalid format, you should exit with code 2. 
 
-TODO - time limit for scripts
+If you exit with code 1 or any code not specified above, then you will be
+informed of this via email along with the unprocessed result data that triggered it.
+If the output of an evaluation script does not match the corresponding score type then you
+will be informed in the same way.
+
+If you exit with code 2, then the uploading player will be made aware of the invalid input. All errors 
+are logged internally for admins to see.
 
 ### Environment
 
