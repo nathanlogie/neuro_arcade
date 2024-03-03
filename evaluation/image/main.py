@@ -43,8 +43,21 @@ def main():
     print(output.returncode)
     print('stdout: ', output.stdout.decode())
 
-    # no issue encountered, returning 0
-    return 0
+    # Return returncode mapped to our own custom returncodes
+    returncode = output.returncode
+
+    if returncode == 0:
+        # Works fine
+        return 0
+    elif returncode == 1:
+        # Evaluation script crashes
+        return 4
+    elif returncode == 2:
+        # Evaluation script reported bad input
+        return 5
+    else:
+        # Unexpected return code
+        return 6
 
 
 if __name__ == '__main__':
