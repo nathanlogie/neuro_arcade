@@ -39,11 +39,10 @@ def main():
               " or if it was copied and not renamed into `input.txt`.")
         return 3
 
+    # This will automatically print the stdout and stderr which will be picked up by the master thread
     output = subprocess.run(['python', 'volume/evaluation.py', 'volume/input.txt'], capture_output=True)
-    print(output.returncode)
-    print('stdout: ', output.stdout.decode())
 
-    # Return returncode mapped to our own custom returncodes
+    # Return return code mapped to our own custom return codes
     returncode = output.returncode
 
     if returncode == 0:
