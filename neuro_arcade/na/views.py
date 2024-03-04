@@ -255,31 +255,38 @@ def post_about_data(request) -> Response:
 def post_new_player(request: Request) -> Response:
     """
     Requests the creation of a new player.
-    The request should be of format: {playerName: str, isAI: bool}
+    The request should be of format: {playerName: str, description: str, playerTags: [str]}
     """
-    # TODO add support for PlayerTags
-    user = request.user
     player_name = request.data.get('playerName')
-    is_AI = request.data.get('isAI')
-    if player_name is None or is_AI is None:
-        return Response(status=400, data='Invalid data; `playerName` and `isAI` must be provided!')
+    description = request.data.get('description')
+    player_tags = request.data.get('playerTags')
+    if player_name is None:
+        return Response(status=400, data='Invalid data; `playerName` must be provided!')
+    if description is None:
+        return Response(status=400, data='Invalid data; `description` must be provided!')
+    # if len(player_tags) > 0 and type(player_tags[0]) is str:
+    #     return Response(status=400, data='Invalid data; `playerTags` must be an array of strings!')
 
     try:
-        player, was_created = Player.objects.get_or_create(name=player_name, is_ai=is_AI, user=user)
+        player_obj, _ = Player.objects.get_or_create(
+            name=player_name, description=description, is_ai=True, user=request.user
+        )
     except IntegrityError:
-        # Actually, it's the player slug that needs to be unique.
-        return Response(status=400, data='Invalid data; Player name must be unique!')
+        return Response(status=500, data='Internal server error')
 
-    if was_created:
-        return Response(status=201, data={
-            'msg': 'Player was successfully created!',
-            'playerID': player.id
-        })
-    else:
-        return Response(status=200, data={
-            'msg': 'Player already exists!',
-            'playerID': player.id,
-        })
+    # adding player tags to the new player
+    tags_to_add = []
+    for tag in player_tags:
+        # Note: this can create new tags
+        selected_tag = PlayerTag.objects.get_or_create(name=tag)[0]
+        tags_to_add.append(selected_tag)
+    player_obj.tags.set(tags_to_add)
+
+    # successful outcome
+    return Response(status=201, data={
+        'msg': 'Player was successfully created!',
+        'playerID': player_obj.id
+    })
 
 
 @api_view(['POST'])

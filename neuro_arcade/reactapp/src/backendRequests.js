@@ -231,7 +231,7 @@ export async function requestGameTags() {
 /**
  * Requests a list of all available PlayerTags.
  *
- * @return {PlayerTag[]} response data
+ * @return {Promise<PlayerTag[]> | Promise<axios.AxiosResponse<PlayerTag[]>>} response data
  *
  * @throws Error when the request is rejected.
  */
@@ -264,22 +264,29 @@ export async function requestGames() {
 }
 
 /**
- * Creates a new player associated with the current user.
+ * Creates a new player associated with the current user. Only AI players are generated.
  * Requires the user to be authenticated, will throw an error if not.
  *
  * @param {string} playerName
- * @param {boolean} isAI
+ * @param {string} description
+ * @param {[string]} playerTags
+ * @param {Image} image
+ *
+ * @return {Promise<axios.AxiosResponse<{}>>}
  *
  * @throws {Error | UserNotAuthenticatedError}
  */
-export async function createNewPlayer(playerName, isAI) {
+export async function createNewPlayer(playerName, description, playerTags, image=null) {
     const url = API_ROOT + "/create_player/";
-
     if (!isLoggedIn())
         throw UserNotAuthenticatedError()
 
+    let data = { playerName: playerName, description: description, playerTags: playerTags };
+    if (image)
+        data.image = image;
+
     return await axios.post(url,
-        { playerName: playerName, isAI: isAI },
+        data,
         await getHeaders('POST', true)
     ).then((response) => {
         console.log('Creation of player ' + playerName + ' successful!');
