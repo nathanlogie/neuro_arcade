@@ -2,9 +2,11 @@
 
 ### Client [React]
 
-Our client uses React JS to render the frontend of the website. React provides modularity,
+Our client uses React JS to structure the frontend of the website. React provides modularity,
  it helps with separation of concerns and makes the structure of the code easier to understand. It does so through
 the use of components.
+
+
 
 [More on the React Client]
 
@@ -28,6 +30,9 @@ There are also permission classes such as IsAdminUser and IsAuthenticated. These
 only requests containing the required features are accepted, otherwise it returns a forbidden response.
 These prevent any security risks that may occur.
 
+API requests are sent from our React JS client via axios requests (see [backendRequests.js](../neuro_arcade/reactapp/src/backendRequests.js)).
+Our django server receives this data and does the appropriate actions (see [views.py](../neuro_arcade/na/views.py)).
+
 [More on the Django API Server]
 
 ### Score Processing [Celery + Docker]
@@ -39,14 +44,30 @@ The Neuro Arcade server returns unprocessed data which needs to be in a json for
 
 ### Frontend Server [Serve]
 
-
+Our frontend server links everything together. 
 
 [More on our Frontend Server]
 
 ### Database [SQLite]
 
 Our database runs with SQLite. It helps to structure our data and provides relationships between
-related data.
+related data. Our backend uses Django models to assemble this information (see [models.py](../neuro_arcade/na/models.py)).
+
+Each model contains a number of attributes, with one or more of the attributes acting as a 
+primary key. A primary key is a unique attribute specific to individual models. This is how we identify 
+each instance. 
+
+There are three types of relationships a model can have: one-to-one, one-to-many, and many-to-many. A one-to-one
+relationship links one instance of one model to another instance of a different model. A one-to-many relationship links
+one instance to many instances of another model. For example, a user has one status: pending, blocked or approved. 
+But multiple users can have the same status. This is a one-to-many relationship. 
+
+A many-to-many relationship links many instances of a model to many instances of another. For example,
+one game can have multiple tags and a tag can relate to multiple games.
+
+Models are related through foreign key in our database. A foreign key is a primary key of another model.
+
+This structure allows us to easily access and manipulate relevant data for our app.
 
 [More on our database]
 
