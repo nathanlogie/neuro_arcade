@@ -12,10 +12,10 @@ import styles from '../../styles/components/Table.module.css';
 export function SwarmPlot({inputData}) {
 
     if (!inputData || !inputData.rows || inputData.rows.length === 0){
-        return <h1>No data</h1>;
-    }
+        return <div style={{width: '38em', height: '30.75em', lineHeight: '30.75em'}}>no data</div>;
+            }
 
-    const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(
+            const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(
         inputData.table_headers[0].name
     );
     

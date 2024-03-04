@@ -287,6 +287,7 @@ def delete_player(request: Request) -> Response:
     Requests the deletion of a player associated with the current user.
     The request should be of format: {playerName: str}
     """
+    # todo look over for delete_player required; keep in mind that user shouldn't delete their own human player
     user = request.user
     player_name = request.data.get('playerName')
     if player_name is None:
@@ -490,6 +491,14 @@ def get_player_scores(request: Request, player_name_slug: str) -> Response:
 
     return Response(scores_data)
 
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_human_player_for_logged_in_user(request: Request) -> Response:
+    player_obj = Player.objects.get(user=request.user, is_ai=False)
+    data = PlayerSerializer(player_obj).data
+    return Response(status=200, data=data)
 
 
 @api_view(['POST'])

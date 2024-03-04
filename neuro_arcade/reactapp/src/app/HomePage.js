@@ -6,7 +6,13 @@ import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {TagFilter} from "../components/TagFilter";
 import {HomePageTable} from "../components/HomePageTable";
-import {requestGameTags, requestPlayersRanked} from "../backendRequests";
+import {
+    API_ROOT,
+    getHumanPlayerFromCurrentUser,
+    getUser,
+    requestGameTags,
+    requestPlayersRanked
+} from "../backendRequests";
 import {motion} from "framer-motion";
 import {useEffect, useState} from "react";
 import { IoFilter } from "react-icons/io5";
@@ -32,6 +38,8 @@ export function HomePage() {
 
     const [loggedIn, setLoggedIn] = useState(isLoggedIn());
 
+    const [playerIcon, setPlayerIcon] = useState(<FaRegUserCircle/>)
+
     let nav_left = (
         <Button
             name={'about'}
@@ -42,14 +50,16 @@ export function HomePage() {
     );
 
     let nav_right = (
-        <Card id={'nav'} link={'sign_up'} text={'guest'} icon={<FaRegUserCircle/>}/>
+        <Card id={'nav'} link={'sign_up'} text={'Guest'} icon={<FaRegUserCircle/>}/>
     );
 
     if (isLoggedIn()) {
-        nav_right = (
-            <Card id={'nav'} link={'user_account'} text={'user'} icon={<FaRegUserCircle/>} //TODO signed in user profile display
-            />
-        );
+        getHumanPlayerFromCurrentUser().then(p => {
+            if (p.data.icon) {
+                setPlayerIcon(<img src={API_ROOT + p.data.icon}/>);
+            }
+        }).catch(() => {})
+        nav_right = <Card id={'nav'} link={'user_account'} text={getUser().name} icon={playerIcon}/>;
     }
 
     // Fetch the data tags on load
