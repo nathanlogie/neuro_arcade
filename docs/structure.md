@@ -6,9 +6,7 @@ Our client uses React JS to structure the frontend of the website. React provide
  it helps with separation of concerns and makes the structure of the code easier to understand. It does so through
 the use of components.
 
-
-
-[More on the React Client]
+[More on the React Client](client.md)
 
 ### API Server [Django]
 
