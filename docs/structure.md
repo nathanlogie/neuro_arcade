@@ -2,9 +2,18 @@
 
 ### Client [React]
 
-Our client uses React JS to structure the frontend of the website. React provides modularity,
- it helps with separation of concerns and makes the structure of the code easier to understand. It does so through
-the use of components.
+Our client uses React JS to provide modularity for the frontend of the website. 
+It helps with separation of concerns and makes the structure of the code easier to understand. 
+It does so through the use of components. 
+
+Components return a JSX element. JSX is an extension of the javascript language commonly used in React projects,
+and it contains HTML like elements. It allows for the creation of DOM trees.
+
+Each page in our app corresponds to a component in our app directory.
+Helper components are located in the component directory.
+
+Our React App handles URLs using react-router-dom (see [index.js](../neuro_arcade/reactapp/src/index.js)).
+It creates routes to each page then renders the documents.
 
 [More on the React Client](client.md)
 
@@ -36,15 +45,19 @@ Our django server receives this data and does the appropriate actions (see [view
 ### Score Processing [Celery + Docker]
 
 This regards the process and processing of game scores and the components involved in them.
-The Neuro Arcade server returns unprocessed data which needs to be in a json format. 
+The server returns unprocessed data which must be in a json format. 
+
+There are two ways in which data is collected; the first is through the server's API: 
+once a user has played a game, the scores are automatically collected and sent. 
+The second is by batch-upload: users have the option to batch upload scores for 
+their own AI bots.
 
 [More on Score Processing](score_pipeline.md)
 
 ### Frontend Server [Serve]
 
-Our frontend server links everything together. 
-
-[More on our Frontend Server]
+Our frontend server provides precompiled React files to users. It sends the React client to 
+the clients.
 
 ### Database [SQLite]
 
