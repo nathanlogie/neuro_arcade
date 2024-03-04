@@ -20,7 +20,7 @@ export function Login() {
         await login(userID, password).then(() => {
             setSuccess(true);
             setInvalidMessage("");
-        }).catch((error) => setInvalidMessage("Invalid Details. " + error.toString()))
+        }).catch((error) => setInvalidMessage("Invalid Details. " + error.response.data))
     }
 
     let nav_left = (
@@ -73,7 +73,7 @@ export function Login() {
                                 <FaArrowDown/>
                             </div>
                         </motion.button>
-                        <p>Don't have an account? <Link to='/sign_up'>Sign Up Here</Link></p>
+                        <p>Don't have an account? <Link to='/sign_up'>Sign up here...</Link></p>
                     </form>
                 </div>
             </motion.div>

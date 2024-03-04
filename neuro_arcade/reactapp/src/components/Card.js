@@ -1,6 +1,7 @@
 import styles from '../styles/components/Card.module.css'
 import {Link} from "react-router-dom";
 import {motion} from "framer-motion";
+import {API_ROOT} from "../backendRequests";
 
 /**
  * Interface for objects displayable in a Card
@@ -29,7 +30,7 @@ export function Card ({subject, linkPrefix, link, text, icon, id}) {
     if (subject) {
         link = linkPrefix + subject.slug;
         text = subject.name || 'Name';
-        icon = <img src={subject.icon || 'http://localhost:8000/media/game_icons/example.png'} alt='icon'
+        icon = <img src={subject.icon || `${API_ROOT}/media/game_icons/example.png`} alt='icon'
                     // TODO Populate game icons
                     />
     }

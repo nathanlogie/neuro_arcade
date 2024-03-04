@@ -5,7 +5,7 @@
 
 .Logo {
     position: relative;
-    margin: 0.5em auto;
+    margin: 0.5em;
     & img {
         padding-top: 1em;
         min-width: 60%;

@@ -1,8 +1,10 @@
 import axios from "axios";
 
-// Note: you need to change this on a development server
-// TODO: find an automated solution to this
-const API_ROOT = "https://134.122.101.180:8000" // "http://localhost:8000"
+let IP = new URL(location.origin);
+IP.port = '';
+IP = IP.toString();
+IP = IP.slice(0, -1);
+export const API_ROOT = IP + ":8000"; //todo change API port
 /**
  * This file contains functions that request or upload data from/to the backend
  */
@@ -93,6 +95,7 @@ const API_ROOT = "https://134.122.101.180:8000" // "http://localhost:8000"
  * @property {string} user
  * @property {string} description
  * @property {PlayerTagKey[]} tags
+ * @property {image} icon
  */
 
 /**
@@ -159,17 +162,18 @@ async function getCSRFToken() {
  * Set authenticated to true to send the authentication token as well.
  *
  * @param {string} method HTTP method (so like GET, POST etc.)
- * @param {boolean} authenticated
+ * @param {boolean} authenticated (defaults to false)
+ * @param {string} contentType (defaults to 'application/json')
  *
  * @return Axios Request Config
  */
-async function getHeaders(method, authenticated=false) {
+export async function getHeaders(method, authenticated=false, contentType='application/json') {
     let config = {
         credentials: 'include',
         method: method,
         mode: 'same-origin',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': contentType,
         },
     }
     if (authenticated) {
@@ -213,7 +217,7 @@ export async function requestGame(gameName) {
 /**
  * Requests a list of all available GameTags.
  *
- * @return {GameTag[]} response data
+ * @return {Promise<GameTag[]>} response data
  *
  * @throws Error when the request is rejected.
  */
@@ -461,7 +465,7 @@ export async function postPublications(publications){
 /**
  * Gets the current user associate with this session. Returns null if user is not logged in.
  *
- * @return {{token, name, email, is_admin} | null} user object {token, name, email, is_admin} or null
+ * @return {{token, name, email, is_admin, id} | null} user object {token, name, email, is_admin, id} or null
  */
 export function getUser() {
     let user_str = localStorage.getItem("user");
@@ -541,6 +545,14 @@ export function userIsAdmin() {
     let user = localStorage.getItem('user');
     if (user) {
         return JSON.parse(user).is_admin;
+    }
+    return null;
+}
+
+export function getUserStatus(){
+    let user = localStorage.getItem('user');
+    if (user) {
+        return JSON.parse(user).status;
     }
     return null;
 }
@@ -629,6 +641,7 @@ export async function login(userID, password) {
                 name: response.data.username,
                 email: response.data.email,
                 is_admin: response.data.is_admin === true,
+                id: response.data.id,
                 status: null
             };
 
@@ -657,5 +670,50 @@ export async function login(userID, password) {
 export function logout() {
     console.log("Logging out...");
     localStorage.removeItem("user");
+}
+
+/**
+ * Requests the data associated with a player.
+ *
+ * @param {string} playerName - slug of the player name
+ *
+ * @return {Player} response data
+ *
+ * @throws Error when the request is rejected.
+ */
+export async function requestPlayer(playerName) {
+    const url = API_ROOT + '/players/' + playerName + '/data/'
+    return await axios.get(url)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        })
+}
+
+/**
+ * Posts Admin Ranking to model
+ *
+ * @param {int} gameID - ID of game to be ranked
+ * @param {float} ranking - ranking of new game
+ *
+ * @returns Response success response
+ *
+ * @throws error otherwise
+ */
+export async function postAdminRanking(gameID, ranking){
+    const url = API_ROOT + '/post_admin_ranking/'
+
+    await axios.post(url, {id: gameID, ranking: ranking*10}, await getHeaders('POST', true))
+        .then((response) => {
+            return response;
+    })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        })
+
 }
 

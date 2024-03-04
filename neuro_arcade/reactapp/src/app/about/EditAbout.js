@@ -1,12 +1,11 @@
 import {useState, useEffect} from 'react';
 import {DescriptionForm} from "../../components/about/DescriptionForm"
 import {PublicationsForm} from "../../components/about/PublicationsForm"
-import {getAboutData, isLoggedIn, userIsAdmin} from "../../backendRequests";
+import {getAboutData} from "../../backendRequests";
 import {Banner, MobileBanner} from "../../components/Banner";
 import styles from "../../styles/App.module.css";
 import {motion} from "framer-motion"
 import {NavBar} from "../../components/NavBar";
-import { redirect } from "react-router-dom";
 import {Button} from "../../components/Button";
 
 /**
@@ -24,13 +23,6 @@ export function EditAbout() {
         />
     );
 
-    // todo do this:
-    // redirect if user is not logged in
-    // if (!isLoggedIn())
-    //     redirect("/login/");
-    // if (!userIsAdmin())
-    //     return (<p>Only Admins can edit this page!</p>);
-
     const [aboutData, updateAboutData] = useState()
 
     useEffect(() => {
@@ -43,9 +35,13 @@ export function EditAbout() {
     let content = <>...</>;
     if (aboutData) {
         content = <>
-            <div className={styles.Content}>
+            <div className={styles.Content} id={styles['big']}>
                 <div className={styles.ContentBlock}>
                     <DescriptionForm description={aboutData.description}/>
+                </div>
+            </div>
+            <div className={styles.Side}>
+                <div className={styles.Publications}>
                     <PublicationsForm publications={aboutData.publications}/>
                 </div>
             </div>

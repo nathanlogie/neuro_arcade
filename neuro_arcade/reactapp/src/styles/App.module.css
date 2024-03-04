@@ -9,18 +9,22 @@
     gap: 3em;
     .Content {
         padding: 3em;
-        width: 80em;
+        width: 40em;
         display: flex;
         flex-wrap: wrap;
         overflow: hidden;
+        justify-content: center;
         .Title {
             display: flex;
+            align-items: center;
+            gap: 1em;
+            padding: 1em;
+            width: 100%;
             & h1 {
-                position: relative;
                 text-align: left;
                 margin: 0;
                 width: max-content;
-                padding: 1em 0.5em 1em 0;
+                padding-bottom: 0.15em;
             }
             .FilterButton {
                 width: 2em;
@@ -33,7 +37,6 @@
                 font-weight: 900;
                 line-height: 2.5em;
                 box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-                margin: auto 0;
                 cursor: pointer;
             }
         }
@@ -41,6 +44,56 @@
             position: relative;
             width: 100%;
             overflow: hidden;
+            .Toolbar {
+                border-radius: 0.5em 0.5em 0 0;
+                background-color: rgba(255, 255, 255, 0.1);
+                border: none;
+                fill: none;
+                stroke: white;
+                * {
+                    fill: none;
+                    stroke: white;
+                    * {
+                        * {
+                            color: white;
+                        }
+                    }
+                    border: none;
+                    border-radius: 0.5em;
+                }
+            }
+            & #edit, #save {
+                position: relative;
+                width: max-content;
+                left: 0.5em;
+                height: 2em;
+                border-radius: 0.75em;
+                margin: 2em 2em;
+                outline: none;
+                border: none;
+                background-color: #D14081;
+                font-family: inherit;
+                color: #FFFFFF;
+                font-weight: 600;
+                font-size: 1em;
+                cursor: pointer;
+                padding: 0 1em 0 2em;
+                & div {
+                    position: absolute;
+                    top: -0.5em;
+                    left: -1.5em;
+                    width: 3em;
+                    height: 3em;
+                    border-radius: 3em;
+                    background-color: rgba(255, 255, 255, 0.72);
+                    color: #41584C;
+                    backdrop-filter: blur(5px);
+                }
+                & div > * {
+                    height: 100%;
+                    width: 40%;
+                }
+            }
             & img {
                 float: left;
                 width: 10rem;
@@ -60,11 +113,8 @@
             left: 2em;
         }
     }
-    .Content#small {
-        width: 40em;
-    }
-    #AllGames {
-        width: 70em;
+    #big {
+        width: 60em;
         padding: 2em 0;
     }
     .Side {
@@ -83,6 +133,139 @@
             display: flex;
             justify-content: center;
         }
+        .Publications {
+            position: relative;
+            background-color: rgba(3, 3, 3, 0.4);
+            border-radius: 0.5em;
+            backdrop-filter: blur(20px);
+            width: max-content;
+            margin-top: 3em;
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 2em;
+            & h2 {
+                position: absolute;
+                top: -1.5em;
+                left: 1em;
+                font-size: 1.75em;
+            }
+            & main {
+                display: flex;
+                flex-direction: column;
+                margin: 2em;
+                width: 25em;
+                align-items: flex-start;
+                overflow-y: auto;
+            }
+            & a, span {
+                width: 23em;
+                height: max-content;
+                border-bottom: solid rgba(255, 255, 255, 0.2);
+                border-width: 1px;
+                display: flex;
+                align-items: center;
+                text-align: left;
+                padding: 0.75em 1em;
+                cursor: pointer;
+                gap: 1em;
+                justify-content: space-between;
+                text-decoration: none;
+                color: #FFFFFF;
+                & section {
+                    display: flex;
+                    flex-direction: column;
+                    width: max-content;
+                    gap: 1em;
+                    & input {
+                        width: 19em;
+                        height: 3em;
+                        border-radius: 0.5em;
+                        padding: 0 1em;
+                        background-color: rgba(255, 255, 255, 0.2);
+                        color: #FFFFFF;
+                        font-family: inherit;
+                        outline: none;
+                        border: none;
+                    }
+                    & input::placeholder {
+                        color: #BBBBBB;
+                    }
+                }
+                & label {
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    cursor: pointer;
+                }
+                & div {
+                    margin: 0;
+                    width: 50%;
+                    text-align: center;
+                }
+                & button {
+                    background-color: rgba(255,255,255,0);
+                    padding: 0;
+                    width: max-content;
+                    height: max-content;
+                    margin: 0 1em 0 0;
+                    & div {
+                        position: inherit;
+                        left: 0;
+                        top: 0;
+                    }
+                }
+            }
+            & span {
+                cursor: unset;
+            }
+            & a:hover {
+                background-color: rgba(255, 255, 255, 0.125);
+            }
+            span:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+            }
+            & li {
+                display: flex;
+                justify-content: center;
+                & li {
+                    width: max-content;
+                    margin: 1em 1.5em 0 1.5em;
+                }
+            }
+            button {
+                position: relative;
+                width: max-content;
+                left: 0.5em;
+                height: 2em;
+                border-radius: 0.75em;
+                margin: 1em auto;
+                outline: none;
+                border: none;
+                background-color: #D14081;
+                font-family: inherit;
+                color: #FFFFFF;
+                font-weight: 600;
+                font-size: 1em;
+                cursor: pointer;
+                padding: 0 1em 0 2em;
+                & div {
+                    position: absolute;
+                    top: -0.5em;
+                    left: -1.5em;
+                    width: 3em;
+                    height: 3em;
+                    border-radius: 3em;
+                    background-color: rgba(255, 255, 255, 0.72);
+                    color: #41584C;
+                    backdrop-filter: blur(5px);
+                }
+                & div > * {
+                    height: 100%;
+                    width: 40%;
+                }
+            }
+        }
     }
     .DataBlock {
         padding: 3em 3em 0 3em;
@@ -90,11 +273,43 @@
         display: flex;
         overflow-x: auto;
         gap: 3em;
+        justify-content: center;
         .Graphs {
-            display: flex;
-            flex-direction: column;
-            gap: 2em;
-            margin-right: auto;
+            padding: 2em 0;
+            height: 31em;
+            width: fit-content;
+            position: relative;
+            background-color: rgba(3, 3, 3, 0.4);
+            border-radius: 0.5em;
+            backdrop-filter: blur(20px);
+            .Background {
+                background: linear-gradient(270deg, rgba(255, 255, 255, 0.10) 0%, rgba(217, 217, 217, 0.00) 100%);
+            }
+            h2 {
+                position: absolute;
+                top: -1.5em;
+                left: 1em;
+                font-size: 1.75em;
+            }
+            .GraphSwitcher {
+                position: absolute;
+                top: 2em;
+                right: -12em;
+                border-radius: 0;
+                * {
+                    display: flex;
+                    flex-direction: column;
+                    #start {
+                        border-radius: 0 2em 0 0;
+                    }
+                    #end {
+                        border-radius: 0 0 2em 0;
+                    }
+                    * {
+                        width: 12em;
+                    }
+                }
+            }
         }
     }
     .Form {
@@ -110,6 +325,38 @@
             top: -1.4em;
         }
         & form {
+            button {
+                position: relative;
+                width: max-content;
+                left: 0.5em;
+                height: 2em;
+                border-radius: 0.75em;
+                margin: 1em auto;
+                outline: none;
+                border: none;
+                background-color: #D14081;
+                font-family: inherit;
+                color: #FFFFFF;
+                font-weight: 600;
+                font-size: 1.25em;
+                cursor: pointer;
+                padding: 0 1em 0 2em;
+                & div {
+                    position: absolute;
+                    top: -0.5em;
+                    left: -1.5em;
+                    width: 3em;
+                    height: 3em;
+                    border-radius: 3em;
+                    background-color: rgba(255, 255, 255, 0.72);
+                    color: #41584C;
+                    backdrop-filter: blur(5px);
+                }
+                & div > * {
+                    height: 100%;
+                    width: 40%;
+                }
+            }
             display: flex;
             flex-direction: column;
             & h3 {
@@ -182,38 +429,6 @@
                         overflow: hidden;
                         white-space: nowrap;
                     }
-                }
-            }
-            button {
-                position: relative;
-                width: max-content;
-                left: 0.5em;
-                height: 2em;
-                border-radius: 0.75em;
-                margin: 1em auto;
-                outline: none;
-                border: none;
-                background-color: #D14081;
-                font-family: inherit;
-                color: #FFFFFF;
-                font-weight: 600;
-                font-size: 1.25em;
-                cursor: pointer;
-                padding: 0 1em 0 2em;
-                & div {
-                    position: absolute;
-                    top: -0.5em;
-                    left: -1.5em;
-                    width: 3em;
-                    height: 3em;
-                    border-radius: 3em;
-                    background-color: rgba(255, 255, 255, 0.72);
-                    color: #41584C;
-                    backdrop-filter: blur(5px);
-                }
-                & div > * {
-                    height: 100%;
-                    width: 40%;
                 }
             }
             p {
