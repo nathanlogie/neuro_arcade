@@ -15,8 +15,8 @@ from corsheaders.defaults import default_headers
 from pathlib import Path
 import subprocess
 
-IP = subprocess.run(['hostname', '-i'], stdout=subprocess.PIPE)
-IP = IP.stdout.decode().split(' ')[0]
+IP = subprocess.run(['curl', 'ifconfig.me'], stdout=subprocess.PIPE)
+IP = IP.stdout.decode()
 PORT = ':3000'
 API_PORT = ':8000'
 
@@ -54,7 +54,7 @@ DEBUG = True
 ALLOWED_HOSTS = [IP, "127.0.0.1", "localhost"]
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_PRIVATE_NETWORK = True  # idk what this does
+CORS_ALLOW_PRIVATE_NETWORK = True
 CORS_ALLOWED_ORIGINS = [
     "http://" + WEBSITE_URL,
     "https://" + WEBSITE_URL,
