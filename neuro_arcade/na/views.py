@@ -544,7 +544,16 @@ def post_unprocessed_result(request: Request) -> Response:
 
 @api_view(['GET'])
 def get_user_players(request: Request, user_id: int) -> Response:
+    """
+    Gets all players owned by a user
 
+    Args:
+        request: request sent
+        user_id: id of the user
+
+    Returns:
+        Response with all player models owned by that user
+    """
     players = Player.objects.filter(user=user_id)
 
     user_players = []

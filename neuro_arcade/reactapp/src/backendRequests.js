@@ -749,9 +749,15 @@ export async function postAdminRanking(gameID, ranking){
 /**
  * Request AI Players that belong to a specific user
  *
+ * @param {int} userID - ID of current logged-in user
+ *
+ * @returns {Array} players owned by current user on success
+ *
+ * @throws {Error} error otherwise
+ *
  */
-export async function requestUserPlayers(username){
-    const url = API_ROOT + '/users/' + username + '/players/';
+export async function requestUserPlayers(userID){
+    const url = API_ROOT + '/users/' + userID + '/players/';
 
     return await axios.get(url)
         .then((response) => {

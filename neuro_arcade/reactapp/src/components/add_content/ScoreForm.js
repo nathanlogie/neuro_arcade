@@ -9,7 +9,6 @@ import makeAnimated from "react-select/animated";
 import Select from "react-select";
 import {useParams} from "react-router-dom";
 
-
 const customStyles = {
     option: provided => ({...provided, color: 'white'}),
     control: provided => ({...provided, color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.2)', border: 'none', borderRadius: '0.5em'}),
@@ -29,6 +28,11 @@ async function parseJsonFile(file) {
   })
 }
 
+/**
+ *
+ * @returns {JSX.Element} score upload form
+ * @constructor builds form
+ */
 export function ScoreForm(){
     const {
         register,
@@ -187,7 +191,7 @@ export function ScoreForm(){
 
             <motion.button
                 disabled={isSubmitting}
-                onClick={onSubmit}
+                type={"submit"}
                 whileHover={{scale: 1.1}}
                 whileTap={{scale: 0.9}}
             >
