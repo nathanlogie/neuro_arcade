@@ -15,13 +15,17 @@ import styles from '../styles/components/TagFilter.module.css';
  * @param {Object} props
  * @param {OnTagChange} props.onTagChange - callback for when a tag is checked/unchecked
  * @param {string[]} props.tags - list of tag names
+ * @param {boolean[]} [props.initialTicks] - list of bools for whether each tag is ticked initially
 */
-export function TagFilter({onTagChange, tags, id, onMouseOver, onMouseOut}) {
+export function TagFilter({onTagChange, tags, initialTicks=null, id, onMouseOver, onMouseOut}) {
     let [ticks, setTicks] = useState(tags.map(() => false));
 
-    // Untick all tags on tag list modification
+    if (initialTicks && initialTicks.length != tags.length)
+        throw "Tag list and tick list size mismatch";
+
+    // Reset ticks on tag list modification
     useEffect(() => {
-        var newTicks = tags.map(() => false);
+        var newTicks = initialTicks || tags.map(() => false);
         setTicks(newTicks);
         onTagChange(newTicks);
     }, [...tags]);
