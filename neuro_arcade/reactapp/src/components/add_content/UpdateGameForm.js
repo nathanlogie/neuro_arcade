@@ -59,19 +59,19 @@ export function GameUpdateForm() {
     } = useForm();
 
 
-    const [image, setImage] = useState(null)
-    const [evaluationScript, setEvaluationScript] = useState(null)
-    const [scoreType, setScoreType] = useState(null)
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [tags, setTags] = useState([])
-    const [playLink, setPlayLink] = useState("");
-    const [options, setOptions] = useState([]);
-    const [existingTags, setExistingTags] = useState([]);
-    const [currentValues, setCurrentValues] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [imageURL, setImageURL] = useState(null);
-    const [header, setHeader] = useState(null);
+    let [image, setImage] = useState(null)
+    let [evaluationScript, setEvaluationScript] = useState(null)
+    let [scoreType, setScoreType] = useState(null)
+    let [name, setName] = useState("");
+    let [description, setDescription] = useState("");
+    let [tags, setTags] = useState([])
+    let [playLink, setPlayLink] = useState("");
+    let [options, setOptions] = useState([]);
+    let [existingTags, setExistingTags] = useState([]);
+    let [currentValues, setCurrentValues] = useState(null);
+    let [loading, setLoading] = useState(true);
+    let [imageURL, setImageURL] = useState(null);
+    let [header, setHeader] = useState(null);
     const gameSlug = useParams().game_slug;
     const navigate = useNavigate();
 

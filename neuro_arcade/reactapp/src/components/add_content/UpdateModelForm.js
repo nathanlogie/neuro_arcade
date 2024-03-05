@@ -59,18 +59,18 @@ export function ModelUpdateForm() {
         reset
     } = useForm()
 
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
+    let [name, setName] = useState("");
+    let [description, setDescription] = useState("");
     let [tags, setTags] = useState([]);
-    const [existingTags, setExistingTags] = useState([]);
-    const [options, setOptions] = useState([]);
-    const [image, setImage] = useState(null);
-    const player_name = useParams().player_slug;
-    const [loading, setLoading] = useState(true);
-    const [currentValues, setCurrentValues] = useState(null);
-    const [header, setHeader] = useState(null);
-    const [imageURL, setImageURL] = useState(null);
-    const navigate = useNavigate();
+    let [existingTags, setExistingTags] = useState([]);
+    let [options, setOptions] = useState([]);
+    let [image, setImage] = useState(null);
+    let player_name = useParams().player_slug;
+    let [loading, setLoading] = useState(true);
+    let [currentValues, setCurrentValues] = useState(null);
+    let [header, setHeader] = useState(null);
+    let [imageURL, setImageURL] = useState(null);
+    let navigate = useNavigate();
 
     useEffect(() => {
         requestPlayer(player_name)
