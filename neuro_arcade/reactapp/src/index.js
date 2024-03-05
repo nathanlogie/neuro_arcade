@@ -116,7 +116,10 @@ const router = createBrowserRouter([
     },
     {
         path: 'all_games/:game_slug/upload_scores',
-        element: <FormPage type={'score'} />
+        element:
+            <ApprovedRoutes>
+                <FormPage type={'score'} />
+            </ApprovedRoutes>
     },
     {
         path: "all_games",
