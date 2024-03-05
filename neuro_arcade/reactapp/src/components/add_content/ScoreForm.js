@@ -99,7 +99,6 @@ export function ScoreForm(){
         let counter = 0;
         for (const scoreFile of scores) {
             let jsonData = await parseJsonFile(scoreFile);
-            console.log(typeof jsonData)
             await postUnprocessedResults(jsonData, gameSlug, selectedPlayer.label)
                 .then(() => {
                     counter++;
@@ -170,7 +169,7 @@ export function ScoreForm(){
                 <ul>
                     { filenames.map((file, index) => (
                             <li>
-                                <p>{file}</p>
+                                <label>{file}</label>
                                 <motion.button
                                     onClick={() => removeScore(index)}
                                     whileHover={{scale: 1.1}}
@@ -183,7 +182,9 @@ export function ScoreForm(){
                             </li>
                     ))}
                 </ul>
+
             </span>
+
             <motion.button
                 disabled={isSubmitting}
                 onClick={onSubmit}

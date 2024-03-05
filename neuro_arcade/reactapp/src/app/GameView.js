@@ -1,4 +1,4 @@
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {requestGame} from "../backendRequests";
 import styles from "../styles/App.module.css";
 import {Table} from "../components/game/Table";
@@ -12,6 +12,8 @@ import { MdBubbleChart } from "react-icons/md";
 import {AiOutlineRadarChart} from "react-icons/ai";
 import {NavBar} from "../components/NavBar";
 import {AdminRanking} from "../components/AdminRanking";
+import {FaPlus} from "react-icons/fa6";
+import {Button} from "../components/Button";
 
 /**
  *
@@ -97,6 +99,12 @@ export function GameView() {
                         </div>
                     </div>
                 </div>
+                <Button
+                        name={'Upload Scores'}
+                        link={'upload_scores'}
+                        orientation={'right'}
+                        direction={'down'}
+                    />
                 <div className={styles.MobileBannerBuffer}/>
             </motion.div>;
     }
