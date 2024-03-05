@@ -123,6 +123,7 @@ export function GameUpdateForm() {
             playLink: currentValues.play_link
         })
         setImageURL(currentValues.icon)
+        setImage(null)
         handleTagReset()
     }
 
@@ -299,7 +300,6 @@ export function GameUpdateForm() {
             });
     };
 
-    handleTagReset()
 
     if (!loading) {
         return (

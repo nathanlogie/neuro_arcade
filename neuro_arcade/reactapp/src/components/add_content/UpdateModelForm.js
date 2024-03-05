@@ -76,6 +76,7 @@ export function ModelUpdateForm() {
         requestPlayer(player_name)
             .then((currentData) => {
                 setCurrentValues(currentData);
+                setImageURL(`${API_ROOT}/${currentData.icon}`)
                 getHeaders("PATCH", true, 'multipart/form-data').then((header) => {
                     setHeader(header);
                     requestPlayerTags()
@@ -101,6 +102,8 @@ export function ModelUpdateForm() {
 
 
 
+
+
     function handleTagReset() {
         setTags([])
         options.forEach((option) => {
@@ -116,6 +119,7 @@ export function ModelUpdateForm() {
             description: currentValues.description,
         })
         setImageURL(`${API_ROOT}/${currentValues.icon}`);
+        setImage(null)
         handleTagReset();
     }
 
