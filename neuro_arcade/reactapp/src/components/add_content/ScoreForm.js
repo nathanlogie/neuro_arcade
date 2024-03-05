@@ -3,7 +3,7 @@ import {SCORE_EXTENSION} from "./variableHelper";
 import {useForm} from "react-hook-form";
 import {motion} from "framer-motion";
 import {LuFileJson} from "react-icons/lu";
-import {FaPlus} from "react-icons/fa6";
+import {FaPlus, FaTrash} from "react-icons/fa6";
 
 
 export function ScoreForm(){
@@ -17,6 +17,13 @@ export function ScoreForm(){
 
     const [scores, setScores] = useState([]);
     const [filenames, setFilenames] = useState([])
+
+    function removeScore(index){
+        console.log("Removing Score at index ", index, "...");
+        scores.splice(index, 1);
+        filenames.splice(index, 1);
+        console.log("File Removed")
+    }
 
     function handleScores(e){
         const file = e.target.files[0];
@@ -63,9 +70,22 @@ export function ScoreForm(){
                 {errors.score ? (
                         <div>{errors.score.message}</div>
                     ) : null}
-                { filenames.map(file => {
-                    return (<p>{file}</p>)
-                })}
+                <ul>
+                    { filenames.map((file, index) => (
+                            <li>
+                                <p>{file}</p>
+                                <motion.button
+                                    onClick={() => removeScore(index)}
+                                    whileHover={{scale: 1.1}}
+                                    whileTap={{scale: 0.9}}
+                                >
+                                    <div>
+                                        <FaTrash/>
+                                    </div>
+                                </motion.button>
+                            </li>
+                    ))}
+                </ul>
             </span>
             <motion.button
                 disabled={isSubmitting}
