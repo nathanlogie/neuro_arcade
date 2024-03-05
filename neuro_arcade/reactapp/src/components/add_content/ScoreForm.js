@@ -1,10 +1,22 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {SCORE_EXTENSION} from "./variableHelper";
 import {useForm} from "react-hook-form";
 import {motion} from "framer-motion";
 import {LuFileJson} from "react-icons/lu";
 import {FaPlus, FaTrash} from "react-icons/fa6";
+import {getUser, requestUserPlayers} from "../../backendRequests";
+import makeAnimated from "react-select/animated";
+import Select from "react-select";
 
+
+const customStyles = {
+    option: provided => ({...provided, color: 'white'}),
+    control: provided => ({...provided, color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.2)', border: 'none', borderRadius: '0.5em'}),
+    valueContainer: provided => ({...provided, height: 'max-content'}),
+    placeholder: provided => ({...provided, color: '#CCCCCC', textAlign: 'left', fontSize: '0.9em', paddingLeft: '1em'}),
+    input: provided => ({...provided, color: '#FFFFFF', paddingLeft: '1em', fontSize: '0.9em'}),
+    menu: provided => ({...provided, borderRadius: '0.5em', position: 'relative'})
+}
 
 export function ScoreForm(){
     const {
@@ -15,14 +27,36 @@ export function ScoreForm(){
         reset,
     } = useForm();
 
+    const user = getUser().id
+
     const [scores, setScores] = useState([]);
     const [filenames, setFilenames] = useState([])
+    const [players, setPlayers] = useState([])
+    const [selectedPlayer, setSelectedPlayer] = useState(null)
+    const [options, setOptions] = useState([])
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        requestUserPlayers(user)
+            .then((response) => {
+                setPlayers(response)
+            })
+
+    },[])
+
+    useEffect(() => {
+        players.forEach((player) => {
+            options.push({
+                value: player.id,
+                label: player.name
+            })
+        })
+        setLoading(false);
+    })
 
     function removeScore(index){
-        console.log("Removing Score at index ", index, "...");
         scores.splice(index, 1);
         filenames.splice(index, 1);
-        console.log("File Removed")
     }
 
     function handleScores(e){
@@ -49,6 +83,30 @@ export function ScoreForm(){
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+            <Select
+                isClearable
+                onChange={(current) => setSelectedPlayer(current)}
+                value={selectedPlayer}
+                options={options}
+                components={makeAnimated()}
+                styles={customStyles}
+                placeholder={"Select Player..."}
+                isLoading={loading}
+                theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                        ...theme.colors,
+                        primary25: 'rgba(255,255,255,0.3)',
+                        primary: 'white',
+                        neutral0: 'rgba(255,255,255,0.075)',
+                        neutral20: 'white',
+                        neutral40: '#BBBBBB',
+                        neutral60: '#CCCCCC',
+                        neutral80: '#AAAAAA',
+                        primary50: 'rgba(209,64,129,0.3)'
+                    },
+                })}
+            />
             { errors.duplicate ? errors.duplicate.message : null }
             <span>
                 <motion.div

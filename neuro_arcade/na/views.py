@@ -542,6 +542,20 @@ def post_unprocessed_result(request: Request) -> Response:
     return Response(status=200, data='Raw Score has successfully been added to the queue.')
 
 
+@api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+def get_user_players(request: Request, user_id: int) -> Response:
+
+    # user = get_object_or_404(User, slug=user_name_slug)
+    players = Player.objects.filter(user=user_id)
+
+    user_players = []
+    for player in players:
+        user_players.append(PlayerSerializer(player).data)
+
+    return Response(user_players)
+
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
