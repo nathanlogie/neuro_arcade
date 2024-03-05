@@ -4,9 +4,10 @@ import {useForm} from "react-hook-form";
 import {motion} from "framer-motion";
 import {LuFileJson} from "react-icons/lu";
 import {FaPlus, FaTrash} from "react-icons/fa6";
-import {getUser, requestUserPlayers} from "../../backendRequests";
+import {getUser, requestUserPlayers, postUnprocessedResults} from "../../backendRequests";
 import makeAnimated from "react-select/animated";
 import Select from "react-select";
+import {useParams} from "react-router-dom";
 
 
 const customStyles = {
@@ -18,16 +19,23 @@ const customStyles = {
     menu: provided => ({...provided, borderRadius: '0.5em', position: 'relative'})
 }
 
+// https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file
+async function parseJsonFile(file) {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader()
+    fileReader.onload = event => resolve(JSON.parse(event.target.result))
+    fileReader.onerror = error => reject(error)
+    fileReader.readAsText(file)
+  })
+}
+
 export function ScoreForm(){
     const {
         register,
         handleSubmit,
         formState: {errors, isSubmitting},
         setError,
-        reset,
     } = useForm();
-
-    const user = getUser().id
 
     const [scores, setScores] = useState([]);
     const [filenames, setFilenames] = useState([])
@@ -35,9 +43,12 @@ export function ScoreForm(){
     const [selectedPlayer, setSelectedPlayer] = useState(null)
     const [options, setOptions] = useState([])
     const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState(getUser);
+    let gameSlug = useParams().game_slug;
+    const [successMessage, setSuccessMessage] = useState("");
 
     useEffect(() => {
-        requestUserPlayers(user)
+        requestUserPlayers(user.id)
             .then((response) => {
                 setPlayers(response)
             })
@@ -47,7 +58,7 @@ export function ScoreForm(){
     useEffect(() => {
         players.forEach((player) => {
             options.push({
-                value: player.id,
+                value: player.slug,
                 label: player.name
             })
         })
@@ -64,25 +75,53 @@ export function ScoreForm(){
         const acceptedFormats = SCORE_EXTENSION;
         const fileExtension = file.name.split('.').pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
-            setError("score", {message: "Invalid file type provided"})
+            setError("root", {message: "Invalid file type provided"})
         } else if (filenames.includes(file.name)){
-            setError("duplicate", {message: "Duplicate file"})
+            setError("root", {message: "Duplicate file"})
         }
         else {
-            setError("score", null)
-            setError("duplicate", null)
+            setError("root", null)
             scores.push(file)
             filenames.push(file.name)
         }
     }
 
-    function onSubmit(e){
-        e.preventDefault
+    async function onSubmit() {
+
+        if (scores.length === 0 || selectedPlayer === null){
+            setError("root", {message: "Missing Fields"});
+            return;
+        }
+
+        setError("root", null)
+        console.log(selectedPlayer)
+
+        let counter = 0;
+        for (const scoreFile of scores) {
+            let jsonData = await parseJsonFile(scoreFile);
+            await postUnprocessedResults(jsonData, gameSlug, selectedPlayer.label)
+                .then(() => {
+                    counter++;
+                })
+                .catch((error) => {
+                    console.log(error.response)
+                    setSuccessMessage("An error occurred while uploading " + scoreFile.name)
+                })
+        }
+
+        if (counter === scores.length){
+            setSuccessMessage("Scores uploaded successfully!");
+            setSelectedPlayer(null);
+            setScores([]);
+            setFilenames([]);
+        }
+
     }
 
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+            { errors.root ? errors.root.message : successMessage }
             <Select
                 isClearable
                 onChange={(current) => setSelectedPlayer(current)}
@@ -107,7 +146,6 @@ export function ScoreForm(){
                     },
                 })}
             />
-            { errors.duplicate ? errors.duplicate.message : null }
             <span>
                 <motion.div
                     whileHover={{scale: 1.1}}
@@ -147,7 +185,7 @@ export function ScoreForm(){
             </span>
             <motion.button
                 disabled={isSubmitting}
-                type={"submit"}
+                onClick={onSubmit}
                 whileHover={{scale: 1.1}}
                 whileTap={{scale: 0.9}}
             >
