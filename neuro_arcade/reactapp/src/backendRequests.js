@@ -416,7 +416,7 @@ export async function postUnprocessedResults(content, game_slug, player_name) {
         throw UserNotAuthenticatedError()
 
     return await axios.post(url, {
-        content: content.toString(),
+        content: JSON.stringify(content),
         game: game_slug,
         player: player_name
     }, await getHeaders('POST', true)

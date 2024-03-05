@@ -99,6 +99,7 @@ export function ScoreForm(){
         let counter = 0;
         for (const scoreFile of scores) {
             let jsonData = await parseJsonFile(scoreFile);
+            console.log(typeof jsonData)
             await postUnprocessedResults(jsonData, gameSlug, selectedPlayer.label)
                 .then(() => {
                     counter++;
@@ -160,7 +161,7 @@ export function ScoreForm(){
                         </div>
                     </label>
                     <input id={'score'} {...register("score", {
-                        required: "Score types must be uploaded"
+                        required: "Score must be uploaded"
                     })} type={"file"} onChange={handleScores}/>
                 </motion.div>
                 {errors.score ? (
