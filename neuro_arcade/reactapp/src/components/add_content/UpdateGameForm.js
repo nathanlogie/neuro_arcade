@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import axios from 'axios';
-import {FaImage} from "react-icons/fa6";
+import {FaImage, FaTrash} from "react-icons/fa6";
 import {LuFileJson} from "react-icons/lu";
 import {FaPython} from "react-icons/fa6";
-import {FaPlus} from "react-icons/fa6";
 import {motion} from "framer-motion";
 import CreatableSelect from 'react-select/creatable';
 import {requestGameTags, requestGame, API_ROOT, getUser, getHeaders} from "../../backendRequests";
@@ -19,6 +18,9 @@ import {
     EVAL_EXTENSION
 } from "./variableHelper";
 import {useNavigate, useParams} from "react-router-dom";
+import {FaSave} from "react-icons/fa";
+import {RxReset} from "react-icons/rx";
+import {GrPowerReset} from "react-icons/gr";
 
 const customStyles = {
     option: provided => ({...provided, color: 'white'}),
@@ -310,7 +312,7 @@ export function GameUpdateForm() {
     if (!loading) {
         return (
             <form>
-                <h3> {currentValues.name} </h3>
+                <h3> Name </h3>
                 <input  {...register("name", {
                     maxLength: {
                         value: MAX_NAME_LENGTH_GAME,
@@ -408,8 +410,6 @@ export function GameUpdateForm() {
                     <img src={imageURL} alt='icon'/>
                 </div>
 
-
-
                 <div>
                     <h3>Score Types</h3>
                     <motion.div
@@ -462,9 +462,9 @@ export function GameUpdateForm() {
                     whileTap={{scale: 0.9}}
                     onClick={handleSubmit(onUpdate)}
                 >
-                    {"Save Changes"}
+                    {"save"}
                     <div>
-                        <FaPlus/>
+                        <FaSave/>
                     </div>
                 </motion.button>
                 <motion.button
@@ -472,9 +472,9 @@ export function GameUpdateForm() {
                     whileTap={{scale: 0.9}}
                     onClick={handleSubmit(handleReset)}
                 >
-                    {"RESET"}
+                    {"reset"}
                     <div>
-                        <FaPlus/>
+                        <GrPowerReset/>
                     </div>
                 </motion.button>
                 <motion.button
@@ -482,9 +482,9 @@ export function GameUpdateForm() {
                     whileTap={{scale: 0.9}}
                     onClick={handleSubmit(handleDelete)}
                 >
-                    {"Delete Game"}
+                    {"delete"}
                     <div>
-                        <FaPlus/>
+                        <FaTrash/>
                     </div>
                 </motion.button>
                 {errors.root && (

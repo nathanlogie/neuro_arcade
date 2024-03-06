@@ -2,7 +2,7 @@ import {useForm} from "react-hook-form";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {motion} from "framer-motion";
-import {FaImage, FaPlus, FaPython} from "react-icons/fa6";
+import {FaImage, FaTrash} from "react-icons/fa6";
 import CreatableSelect from 'react-select/creatable';
 import {
     requestPlayerTags,
@@ -19,6 +19,8 @@ import {
     IMAGE_EXTENSION,
 } from "./variableHelper";
 import {useNavigate, useParams} from "react-router-dom";
+import {FaSave} from "react-icons/fa";
+import {GrPowerReset} from "react-icons/gr";
 
 
 const customStyles = {
@@ -262,7 +264,7 @@ export function ModelUpdateForm() {
     if (!loading) {
         return (
             <form>
-                <h3> {currentValues.name} </h3>
+                <h3> Name </h3>
                 <input  {...register("name", {
                     maxLength: {
                         value: MAX_NAME_LENGTH_MODEL,
@@ -350,9 +352,9 @@ export function ModelUpdateForm() {
                     whileTap={{scale: 0.9}}
                     onClick={handleSubmit(onUpdate)}
                 >
-                    {"Save Changes"}
+                    {"save"}
                     <div>
-                        <FaPlus/>
+                        <FaSave/>
                     </div>
                 </motion.button>
                 <motion.button
@@ -360,9 +362,9 @@ export function ModelUpdateForm() {
                     whileTap={{scale: 0.9}}
                     onClick={handleSubmit(handleReset)}
                 >
-                    {"RESET"}
+                    {"reset"}
                     <div>
-                        <FaPlus/>
+                        <GrPowerReset/>
                     </div>
                 </motion.button>
                 <motion.button
@@ -370,9 +372,9 @@ export function ModelUpdateForm() {
                     whileTap={{scale: 0.9}}
                     onClick={handleSubmit(handleDelete)}
                 >
-                    {"Delete Model"}
+                    {"delete"}
                     <div>
-                        <FaPlus/>
+                        <FaTrash/>
                     </div>
                 </motion.button>
                 {errors.root && (
