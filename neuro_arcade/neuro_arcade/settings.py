@@ -14,7 +14,8 @@ import os
 from corsheaders.defaults import default_headers
 from pathlib import Path
 
-# TODO: change this to the URL of the website
+IN_PRODUCTION = os.getenv('NEURO_ARCADE')
+
 WEBSITE_URL = "localhost:3000"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,13 +32,14 @@ REACT_MEDIA_ROOT = os.path.join(REACT_STATIC_DIR, 'media')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# TODO: turn off debug mode and use a proper secret_key
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-4#($c-j6(9ujy#i&&gj)&umiojdi_-aa8u3x2$!qqh%xj(e@@k'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if IN_PRODUCTION:
+    SECRET_KEY = os.getenv('NEURO_ARCADE_SECRET_KEY')
+    DEBUG = False
+else:
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = 'django-insecure-4#($c-j6(9ujy#i&&gj)&umiojdi_-aa8u3x2$!qqh%xj(e@@k'
+    # SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = True
 
 ALLOWED_HOSTS = ["sh08.ccni-socs-tp3.xyz",
                  "127.0.0.1", "localhost"]
