@@ -1,9 +1,9 @@
-import { screen, waitFor } from "@testing-library/react";
-import { PlayerGrid, PlayerGridMode } from "../PlayerGrid";
+import {screen, waitFor} from "@testing-library/react";
+import {PlayerGrid, PlayerGridMode} from "../PlayerGrid";
 
 // We need to mock requestPlayers to control the component
 import {requestGames, requestPlayers} from "../../backendRequests";
-jest.mock('../../backendRequests');
+jest.mock("../../backendRequests");
 
 /*
     General note: since PlayerGrid has async behaviour triggered on creation,
@@ -15,7 +15,7 @@ jest.mock('../../backendRequests');
     disappear or for a player to appear.
 */
 
-test('PlayerGrid renders without crashing', async () => {
+test("PlayerGrid renders without crashing", async () => {
     requestPlayers.mockResolvedValue([]);
     renderWithRouter(<PlayerGrid />);
     // Wait for load to complete
@@ -24,7 +24,7 @@ test('PlayerGrid renders without crashing', async () => {
     });
 });
 
-test('PlayerGrid shows a player', async () => {
+test("PlayerGrid shows a player", async () => {
     requestPlayers.mockResolvedValue([
         {
             id: 1,
@@ -33,8 +33,8 @@ test('PlayerGrid shows a player', async () => {
             is_ai: false,
             user: 1,
             description: "",
-            tags: [],
-        },
+            tags: []
+        }
     ]);
     renderWithRouter(<PlayerGrid />);
 
@@ -52,7 +52,7 @@ const modeTestData = [
         is_ai: false,
         user: 1,
         description: "",
-        tags: [],
+        tags: []
     },
     {
         id: 2,
@@ -61,32 +61,32 @@ const modeTestData = [
         is_ai: true,
         user: 1,
         description: "",
-        tags: [],
-    },
+        tags: []
+    }
 ];
 
-test('PlayerGrid shows human players in ANY mode', async () => {
+test("PlayerGrid shows human players in ANY mode", async () => {
     requestPlayers.mockResolvedValue(modeTestData);
     renderWithRouter(<PlayerGrid mode={PlayerGridMode.ANY} />);
 
     expect(await screen.findByText("Human")).toBeInTheDocument();
 });
 
-test('PlayerGrid shows AI players in ANY mode', async () => {
+test("PlayerGrid shows AI players in ANY mode", async () => {
     requestPlayers.mockResolvedValue(modeTestData);
     renderWithRouter(<PlayerGrid mode={PlayerGridMode.ANY} />);
 
     expect(await screen.findByText("AI")).toBeInTheDocument();
 });
 
-test('PlayerGrid shows humans in HUMAN mode', async () => {
+test("PlayerGrid shows humans in HUMAN mode", async () => {
     requestPlayers.mockResolvedValue(modeTestData);
     renderWithRouter(<PlayerGrid mode={PlayerGridMode.HUMAN} />);
 
     expect(await screen.findByText("Human")).toBeInTheDocument();
 });
 
-test('PlayerGrid hides AIs in HUMAN mode', async () => {
+test("PlayerGrid hides AIs in HUMAN mode", async () => {
     requestPlayers.mockResolvedValue(modeTestData);
     renderWithRouter(<PlayerGrid mode={PlayerGridMode.HUMAN} />);
 
@@ -98,7 +98,7 @@ test('PlayerGrid hides AIs in HUMAN mode', async () => {
     expect(await screen.queryByText("AI")).not.toBeInTheDocument();
 });
 
-test('PlayerGrid hides humans in AI mode', async () => {
+test("PlayerGrid hides humans in AI mode", async () => {
     requestPlayers.mockResolvedValue(modeTestData);
     renderWithRouter(<PlayerGrid mode={PlayerGridMode.AI} />);
 
@@ -110,7 +110,7 @@ test('PlayerGrid hides humans in AI mode', async () => {
     expect(await screen.queryByText("Human")).not.toBeInTheDocument();
 });
 
-test('PlayerGrid shows AIs in AI mode', async () => {
+test("PlayerGrid shows AIs in AI mode", async () => {
     requestPlayers.mockResolvedValue(modeTestData);
     renderWithRouter(<PlayerGrid mode={PlayerGridMode.AI} />);
 

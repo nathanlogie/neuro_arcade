@@ -47,6 +47,9 @@
             position: relative;
             width: 100%;
             overflow: hidden;
+            display: flex;
+            gap: 1em;
+            margin: 1em 0;
             .Toolbar {
                 border-radius: 0.5em 0.5em 0 0;
                 background-color: rgba(255, 255, 255, 0.1);
@@ -103,13 +106,16 @@
                 height: 10rem;
                 object-fit: contain;
                 border-radius: 2em;
-                margin: 1.5em;
+                margin: 0 1.5em;
             }
             & p {
                 width: 100%;
                 text-align: left;
                 line-height: 2em;
             }
+        }
+        #details {
+            gap: 5em;
         }
         .Header {
             z-index: 1;
@@ -389,6 +395,7 @@
                 flex-direction: column;
                 width: 100%;
                 margin-bottom: 2em;
+                margin-top: 2em;
                 align-items: center;
                 & h3 {
                     text-align: center;
@@ -440,6 +447,35 @@
             p {
                 & a {
                     color: #79FFB7;
+                }
+            }
+            & ul {
+                list-style-type: none;
+
+                & li {
+                    justify-content: space-between;
+                    display: flex;
+                    margin: 1em;
+
+                    & label {
+                        width: 100%;
+                    }
+
+                    button {
+
+                        background-color: rgba(255, 255, 255, 0);
+                        padding: 0;
+                        width: max-content;
+                        height: max-content;
+                        margin: 0 1em;
+
+                        & div {
+                            position: inherit;
+                            left: 0;
+                            width: 3em;
+                            height: 2em;
+                        }
+                    }
                 }
             }
         }
