@@ -74,22 +74,35 @@ export function ModelForm() {
         let requestTags = [];
         tags.forEach(tag => requestTags.push(tag.value));
         await createNewPlayer(name, description, requestTags, image)
-        .then(() => {
-            reset();
-            setImage(null);
-            setError("root", {message: "model submitted successfully"});
-            setTags([]);
-        }).catch((response) => {
-            console.log(response);
-            if (!response) {
-                setError("root", {message: "No response from server"});
-            } else {
-                if (response.status === 400)  // 400 Bad Request
-                    setError('root', response.data);
-                if (response.status === 500)  // 500 Internal Server Error
-                    setError('root', {message: 'Internal server error;'});
-            }
-        });
+        .then((response) => {
+            console.log(response)
+            reset()
+            setImage(null)
+            setError("root", {message: "Model submitted successfully"})
+            setTags(null)
+        }).catch(function (response) {
+                console.log(response)
+                if (!response) {
+                    setError("root", {message: "No response from server"});
+                } else {
+                    if (response.response.data.slug) {
+                        setError("root", {message: "A Model with that name already exists!"});
+                        return;
+                    } else if (response.response.data.tags) {
+                        setError("root", {message: "Tag upload failed"});
+                        return;
+                    }
+                    if (response)
+                        if (response.response.data.includes("IntegrityError")) {
+                            setError("root", {message: "A Model with that name already exists!"});
+                        } else {
+                            setError("root", {
+                                message: response.response.data
+                            })
+                        }
+                }
+            });
+
     }
 
     return (
@@ -111,7 +124,7 @@ export function ModelForm() {
 
             <h3>Description</h3>
             <input {...register("description", {
-                required: false,
+                required: "Description is required",
                 maxLength: {
                     value: MAX_DESCRIPTION_LENGTH_MODEL,
                     message: `Maximum description length has been exceeded (${MAX_NAME_LENGTH_MODEL}`

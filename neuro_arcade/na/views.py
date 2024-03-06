@@ -272,7 +272,7 @@ def post_new_player(request: Request) -> Response:
             name=player_name, description=description, is_ai=True, user=request.user
         )
     except IntegrityError:
-        return Response(status=500, data='Internal server error')
+        return Response(status=500, data='A Model with that name already exists!')
 
     # adding player tags to the new player
     tags_to_add = []
