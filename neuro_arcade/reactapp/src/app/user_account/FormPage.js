@@ -6,8 +6,9 @@ import {motion} from "framer-motion";
 import {ModelForm} from "../../components/add_content/ModelForm";
 import {ScoreForm} from "../../components/add_content/ScoreForm";
 import {Button} from "../../components/Button";
-import {useState} from "react";
 import {useParams} from "react-router-dom";
+import {GameUpdateForm} from "../../components/add_content/UpdateGameForm";
+import {ModelUpdateForm} from "../../components/add_content/UpdateModelForm";
 
 /**
  * @returns {JSX.Element} add game page
@@ -27,12 +28,24 @@ export function FormPage({type}) {
     );
 
     let form;
+    let title;
     if (type === 'game') {
         form = <GameForm/>;
+        title = "Add Game"
     } else if (type === 'model') {
-        form  = <ModelForm/>;
+        form  = <ModelForm/>
+        title = "Add Model"
+    } else if (type==='gameUpdate'){
+        form = <GameUpdateForm/>
+        title = "Update Game"
+    }
+    else if (type==='modelUpdate'){
+        form = <ModelUpdateForm/>
+        title="Update Model"
+
     } else if (type === 'score') {
         form = <ScoreForm/>;
+        title = "Upload Score"
         gameSlug = useParams().game_slug;
         nav_left = (
             <Button
@@ -60,7 +73,7 @@ export function FormPage({type}) {
                 exit={{opacity: 0}}
             >
                 <div className={styles.Form}>
-                    <h1 className={styles.Header}>Add {type}</h1>
+                    <h1 className={styles.Header}>{title}</h1>
                     {form}
                 </div>
             </motion.div>
