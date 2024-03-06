@@ -38,7 +38,8 @@ only requests containing the required features are accepted, otherwise it return
 These prevent any security risks that may occur.
 
 For making request on the client, the Axios library is used, which streamlines the process of making http requests 
-to the API server. API requests are sent from our React JS client via Axios http requests (see [backendRequests.js](../neuro_arcade/reactapp/src/backendRequests.js)).
+to the API server. API requests are sent from our React JS client via Axios http requests
+(see [backendRequests.js](../neuro_arcade/reactapp/src/backendRequests.js)).
 Our django server receives this data and does the appropriate actions (see [views.py](../neuro_arcade/na/views.py)).
 
 [More on the Django API Server]
