@@ -62,12 +62,12 @@ export function AccountPage() {
                     }
                 });
                 if (player) {
-                    let icon = <img src={placeholder} alt='icon' />;
+                    let icon = <img src={placeholder} alt={"icon"} />;
                     if (player.icon) {
                         icon = <img src={API_ROOT + player.icon} alt={"image"} />;
                     }
                     setUserContent(
-                        <div className={styles.ContentBlock}>
+                        <div className={styles.ContentBlock} id={styles["vertical"]}>
                             <p>
                                 {icon}
                                 {player.description}
@@ -104,7 +104,7 @@ export function AccountPage() {
                         <h1>Registered models</h1>
                     </div>
                     {modelGrid}
-                    <div className={styles.ContentBlock}>
+                    <div className={styles.ContentBlock} id={styles["vertical"]}>
                         <p>
                             Contact <Link to='mailto:benjamin.peters@glasgow.ac.uk'>benjamin.peters@glasgow.ac.uk</Link> for account
                             removal.
