@@ -1,64 +1,64 @@
-import { screen } from "@testing-library/react";
-import { CardGrid, exportedForTesting } from "../CardGrid";
+import {screen} from "@testing-library/react";
+import {CardGrid, exportedForTesting} from "../CardGrid";
 
 // Import private methods
-const { textQueryFilter, tagQueryFilter, searchFilter } = exportedForTesting;
+const {textQueryFilter, tagQueryFilter, searchFilter} = exportedForTesting;
 
 // Function tests
 
-test('textQueryFilter false when not matching', () => {
+test("textQueryFilter false when not matching", () => {
     let subject = {
         name: "Name",
-        description: "Description",
+        description: "Description"
     };
     expect(textQueryFilter(subject, "<match>")).toBe(false);
 });
 
-test('textQueryFilter true when matching in name', () => {
+test("textQueryFilter true when matching in name", () => {
     let subject = {
         name: "Name <match>",
-        description: "Description",
+        description: "Description"
     };
     expect(textQueryFilter(subject, "<match>")).toBe(true);
 });
 
-test('textQueryFilter true when matching in description', () => {
+test("textQueryFilter true when matching in description", () => {
     let subject = {
         name: "Name",
-        description: "Description <match>",
+        description: "Description <match>"
     };
     expect(textQueryFilter(subject, "<match>")).toBe(true);
 });
 
-test('tagQueryFilter false when not matching', () => {
+test("tagQueryFilter false when not matching", () => {
     let subject = {
         tags: [1]
     };
     expect(tagQueryFilter(subject, [2])).toBe(false);
 });
 
-test('textQueryFilter true when matching for a 1-tag list', () => {
+test("textQueryFilter true when matching for a 1-tag list", () => {
     let subject = {
         tags: [1, 2]
     };
     expect(tagQueryFilter(subject, [2])).toBe(true);
 });
 
-test('textQueryFilter false when matching only some tags', () => {
+test("textQueryFilter false when matching only some tags", () => {
     let subject = {
         tags: [1, 2]
     };
     expect(tagQueryFilter(subject, [2, 3])).toBe(false);
 });
 
-test('textQueryFilter true when matching for a multi-tag list', () => {
+test("textQueryFilter true when matching for a multi-tag list", () => {
     let subject = {
         tags: [1, 2, 3]
     };
     expect(tagQueryFilter(subject, [2, 3])).toBe(true);
 });
 
-test('searchFilter false when not matching text', () => {
+test("searchFilter false when not matching text", () => {
     let subject = {
         name: "Name",
         description: "Description",
@@ -67,7 +67,7 @@ test('searchFilter false when not matching text', () => {
     expect(searchFilter(subject, "<match>", [2])).toBe(false);
 });
 
-test('searchFilter false when not matching tags', () => {
+test("searchFilter false when not matching tags", () => {
     let subject = {
         name: "Name <match>",
         description: "Description",
@@ -76,7 +76,7 @@ test('searchFilter false when not matching tags', () => {
     expect(searchFilter(subject, "<match>", [2])).toBe(false);
 });
 
-test('searchFilter true when matching', () => {
+test("searchFilter true when matching", () => {
     let subject = {
         name: "Name <match>",
         description: "Description",
@@ -87,90 +87,90 @@ test('searchFilter true when matching', () => {
 
 // Component tests
 
-test('CardGrid renders without crashing', () => {
+test("CardGrid renders without crashing", () => {
     renderWithRouter(<CardGrid subjects={[]} />);
 });
 
-test('CardGrid shows a subject', () => {
+test("CardGrid shows a subject", () => {
     let subjects = [
         {
             name: "Name",
             slug: "name",
             description: "Description",
             tags: [1],
-            icon: "",
-        },
+            icon: ""
+        }
     ];
 
     renderWithRouter(<CardGrid subjects={subjects} />);
 
-    expect(screen.getByText("Name")).toBeInTheDocument()
+    expect(screen.getByText("Name")).toBeInTheDocument();
 });
 
-test('CardGrid filters subjects by text filter', () => {
+test("CardGrid filters subjects by text filter", () => {
     let subjects = [
         {
             name: "Name1",
             slug: "name1",
             description: "Description",
             tags: [1],
-            icon: "",
+            icon: ""
         },
         {
             name: "Name2",
             slug: "name2",
             description: "Description",
             tags: [1],
-            icon: "",
-        },
+            icon: ""
+        }
     ];
 
-    renderWithRouter(<CardGrid subjects={subjects} textQuery="Name1" />);
+    renderWithRouter(<CardGrid subjects={subjects} textQuery='Name1' />);
 
     expect(screen.getByText("Name1")).toBeInTheDocument();
     expect(screen.queryByText("Name2")).not.toBeInTheDocument();
 });
 
-test('CardGrid filters subjects by description filter', () => {
+test("CardGrid filters subjects by description filter", () => {
     let subjects = [
         {
             name: "Name1",
             slug: "name1",
             description: "Description1",
             tags: [1],
-            icon: "",
+            icon: ""
         },
         {
             name: "Name2",
             slug: "name2",
             description: "Description2",
             tags: [1],
-            icon: "",
-        },
+            icon: ""
+        }
     ];
 
-    renderWithRouter(<CardGrid subjects={subjects} textQuery="Description1" />);
+    renderWithRouter(<CardGrid subjects={subjects} textQuery='Description1' />);
 
     expect(screen.getByText("Name1")).toBeInTheDocument();
     expect(screen.queryByText("Name2")).not.toBeInTheDocument();
 });
 
-test('CardGrid filters subjects by tag filter', () => {
+test("CardGrid filters subjects by tag filter", () => {
     let subjects = [
         {
             name: "Name1",
             slug: "name1",
             description: "Description1",
             tags: [1],
-            icon: "",
+            icon: ""
         },
         {
             name: "Name2",
             slug: "name2",
             description: "Description2",
             tags: [2],
-            icon: "",
-        },
+            icon: ""
+        }
     ];
 
     renderWithRouter(<CardGrid subjects={subjects} tagQuery={[1]} />);
@@ -178,4 +178,3 @@ test('CardGrid filters subjects by tag filter', () => {
     expect(screen.getByText("Name1")).toBeInTheDocument();
     expect(screen.queryByText("Name2")).not.toBeInTheDocument();
 });
-

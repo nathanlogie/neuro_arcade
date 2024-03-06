@@ -2,39 +2,35 @@ import {useForm} from "react-hook-form";
 import React, {useEffect, useState} from "react";
 import {motion} from "framer-motion";
 import {FaImage, FaPlus} from "react-icons/fa6";
-import CreatableSelect from 'react-select/creatable';
-import {
-    requestPlayerTags,
-    createNewPlayer
-} from "../../backendRequests";
-import makeAnimated from 'react-select/animated';
+import CreatableSelect from "react-select/creatable";
+import {requestPlayerTags, createNewPlayer} from "../../backendRequests";
+import makeAnimated from "react-select/animated";
 import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION} from "./variableHelper";
 
-
 const customStyles = {
-    option: provided => ({...provided, color: 'white'}),
-    control: provided => ({
+    option: (provided) => ({...provided, color: "white"}),
+    control: (provided) => ({
         ...provided,
-        color: 'black',
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        border: 'none',
-        borderRadius: '0.5em',
-        marginBottom: '1em'
+        color: "black",
+        backgroundColor: "rgba(255, 255, 255, 0.2)",
+        border: "none",
+        borderRadius: "0.5em",
+        marginBottom: "1em"
     }),
-    valueContainer: provided => ({...provided, height: 'max-content'}),
-    placeholder: provided => ({
+    valueContainer: (provided) => ({...provided, height: "max-content"}),
+    placeholder: (provided) => ({
         ...provided,
-        color: '#CCCCCC',
-        textAlign: 'left',
-        fontSize: '0.9em',
-        paddingLeft: '1em'
+        color: "#CCCCCC",
+        textAlign: "left",
+        fontSize: "0.9em",
+        paddingLeft: "1em"
     }),
-    input: provided => ({...provided, color: '#FFFFFF', paddingLeft: '1em', fontSize: '0.9em'}),
-    multiValue: provided => ({...provided, backgroundColor: 'rgba(0,0,0,0.2)', color: 'white', borderRadius: '0.5em'}),
-    multiValueLabel: provided => ({...provided, color: 'white'}),
-    multiValueRemove: provided => ({...provided, borderRadius: '0.5em'}),
-    menu: provided => ({...provided, borderRadius: '0.5em', position: 'relative'})
-}
+    input: (provided) => ({...provided, color: "#FFFFFF", paddingLeft: "1em", fontSize: "0.9em"}),
+    multiValue: (provided) => ({...provided, backgroundColor: "rgba(0,0,0,0.2)", color: "white", borderRadius: "0.5em"}),
+    multiValueLabel: (provided) => ({...provided, color: "white"}),
+    multiValueRemove: (provided) => ({...provided, borderRadius: "0.5em"}),
+    menu: (provided) => ({...provided, borderRadius: "0.5em", position: "relative"})
+};
 
 export function ModelForm() {
     const {
@@ -53,21 +49,23 @@ export function ModelForm() {
     let [image, setImage] = useState(null);
 
     useEffect(() => {
-        requestPlayerTags().then((tags) => setExistingTags(tags))
-    }, [])
+        requestPlayerTags().then((tags) => setExistingTags(tags));
+    }, []);
 
     useEffect(() => {
         let newOpt = [];
-        existingTags.forEach((tag) => newOpt.push({
-            value: tag.name,
-            label: tag.name,
-        }));
+        existingTags.forEach((tag) =>
+            newOpt.push({
+                value: tag.name,
+                label: tag.name
+            })
+        );
         setOptions(newOpt);
-    }, [existingTags])
+    }, [existingTags]);
 
     const handleImage = (event) => {
         const file = event.target.files[0];
-        const fileExtension = file.name.split('.').pop().toLowerCase();
+        const fileExtension = file.name.split(".").pop().toLowerCase();
         if (IMAGE_EXTENSION.includes(fileExtension)) {
             setImage(file);
         } else {
@@ -75,20 +73,21 @@ export function ModelForm() {
             setError("root", {message: "Invalid file type provided"});
             setImage(null);
         }
-    }
+    };
 
     const onSubmit = async () => {
         let requestTags = [];
-        tags.forEach(tag => requestTags.push(tag.value));
+        tags.forEach((tag) => requestTags.push(tag.value));
         await createNewPlayer(name, description, requestTags, image)
             .then((response) => {
-                console.log(response)
-                reset()
-                setImage(null)
-                setError("root", {message: "Model submitted successfully"})
-                setTags(null)
-            }).catch(function (response) {
-                console.log(response)
+                console.log(response);
+                reset();
+                setImage(null);
+                setError("root", {message: "Model submitted successfully"});
+                setTags(null);
+            })
+            .catch(function (response) {
+                console.log(response);
                 if (!response) {
                     setError("root", {message: "No response from server"});
                 } else {
@@ -105,44 +104,43 @@ export function ModelForm() {
                         } else {
                             setError("root", {
                                 message: response.response.data
-                            })
+                            });
                         }
                 }
             });
-
-    }
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <h3>Name</h3>
-            <input {...register("name", {
-                required: "Name is required",
-                maxLength: {
-                    value: MAX_NAME_LENGTH_MODEL,
-                    message: `Maximum name length has been exceeded (${MAX_NAME_LENGTH_MODEL})`
-                }
-            })}
-                   type={"text"} placeholder={"model name"}
-                   onChange={(event) => setName(event.target.value)}
+            <input
+                {...register("name", {
+                    required: "Name is required",
+                    maxLength: {
+                        value: MAX_NAME_LENGTH_MODEL,
+                        message: `Maximum name length has been exceeded (${MAX_NAME_LENGTH_MODEL})`
+                    }
+                })}
+                type={"text"}
+                placeholder={"model name"}
+                onChange={(event) => setName(event.target.value)}
             />
-            {errors.name && (
-                <div>{errors.name.message}</div>
-            )}
+            {errors.name && <div>{errors.name.message}</div>}
 
             <h3>Description</h3>
-            <input {...register("description", {
-                required: "Description is required",
-                maxLength: {
-                    value: MAX_DESCRIPTION_LENGTH_MODEL,
-                    message: `Maximum description length has been exceeded (${MAX_NAME_LENGTH_MODEL}`
-                }
-            })}
-                   type={"text"} placeholder={"This model was designed to..."}
-                   onChange={(event) => setDescription(event.target.value)}
+            <input
+                {...register("description", {
+                    required: "Description is required",
+                    maxLength: {
+                        value: MAX_DESCRIPTION_LENGTH_MODEL,
+                        message: `Maximum description length has been exceeded (${MAX_NAME_LENGTH_MODEL}`
+                    }
+                })}
+                type={"text"}
+                placeholder={"This model was designed to..."}
+                onChange={(event) => setDescription(event.target.value)}
             />
-            {errors.description && (
-                <div>{errors.description.message}</div>
-            )}
+            {errors.description && <div>{errors.description.message}</div>}
 
             <h3> Model Tags </h3>
             <CreatableSelect
@@ -159,55 +157,48 @@ export function ModelForm() {
                     ...theme,
                     colors: {
                         ...theme.colors,
-                        primary25: 'rgba(255,255,255,0.3)',
-                        primary: 'white',
-                        neutral0: 'rgba(255,255,255,0.075)',
-                        neutral20: 'white',
-                        neutral40: '#BBBBBB',
-                        neutral60: '#CCCCCC',
-                        neutral80: '#AAAAAA',
-                        primary50: 'rgba(209,64,129,0.3)'
-                    },
+                        primary25: "rgba(255,255,255,0.3)",
+                        primary: "white",
+                        neutral0: "rgba(255,255,255,0.075)",
+                        neutral20: "white",
+                        neutral40: "#BBBBBB",
+                        neutral60: "#CCCCCC",
+                        neutral80: "#AAAAAA",
+                        primary50: "rgba(209,64,129,0.3)"
+                    }
                 })}
             />
 
             <span>
                 <div>
                     <h3>Model Icon</h3>
-                    <motion.div
-                        whileHover={{scale: 1.1}}
-                        whileTap={{scale: 0.9}}
-                    >
-                        <label htmlFor={'icon'}>
-                            <p>
-                                {image ? image.name : 'No file chosen'}
-                            </p>
+                    <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
+                        <label htmlFor={"icon"}>
+                            <p>{image ? image.name : "No file chosen"}</p>
                             <div>
-                                <FaImage/>
+                                <FaImage />
                             </div>
                         </label>
-                        <input id={'icon'} {...register("icon", {
-                            required: false,
-
-                        })} type={"file"} accept={"image/*"} onChange={handleImage}/>
+                        <input
+                            id={"icon"}
+                            {...register("icon", {
+                                required: false
+                            })}
+                            type={"file"}
+                            accept={"image/*"}
+                            onChange={handleImage}
+                        />
                     </motion.div>
                 </div>
             </span>
 
-            <motion.button
-                disabled={isSubmitting}
-                type={"submit"}
-                whileHover={{scale: 1.1}}
-                whileTap={{scale: 0.9}}
-            >
+            <motion.button disabled={isSubmitting} type={"submit"} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
                 {isSubmitting ? "submitting model..." : "add new model"}
                 <div>
-                    <FaPlus/>
+                    <FaPlus />
                 </div>
             </motion.button>
-            {errors.root && (
-                <div>{errors.root.message}</div>
-            )}
+            {errors.root && <div>{errors.root.message}</div>}
         </form>
-    )
+    );
 }

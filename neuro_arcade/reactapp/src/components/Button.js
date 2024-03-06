@@ -1,8 +1,8 @@
-import { FaArrowRight } from "react-icons/fa6";
-import { FaArrowLeft } from "react-icons/fa6";
-import { FaArrowUp } from "react-icons/fa6";
-import { FaArrowDown } from "react-icons/fa6";
-import styles from '../styles/components/Button.module.css';
+import {FaArrowRight} from "react-icons/fa6";
+import {FaArrowLeft} from "react-icons/fa6";
+import {FaArrowUp} from "react-icons/fa6";
+import {FaArrowDown} from "react-icons/fa6";
+import styles from "../styles/components/Button.module.css";
 import {Link} from "react-router-dom";
 import {motion} from "framer-motion";
 
@@ -15,7 +15,7 @@ import {motion} from "framer-motion";
  * @constructor builds button
  */
 export function Button({name, link, direction, orientation}) {
-    if (link !== '') {
+    if (link !== "") {
         return (
             <motion.div
                 className={styles.Button}
@@ -25,44 +25,27 @@ export function Button({name, link, direction, orientation}) {
                 animate={{opacity: 1}}
                 exit={{opacity: 0}}
             >
-                <Link
-                    className={styles.ButtonBlock}
-                    id={styles[orientation]}
-                    to={link}
-                >
+                <Link className={styles.ButtonBlock} id={styles[orientation]} to={link}>
                     {name}
                 </Link>
-                <Link className={styles.Arrow}
-                      id={styles[orientation]}
-                      to={link}
-                >
+                <Link className={styles.Arrow} id={styles[orientation]} to={link}>
                     <Arrow direction={direction} />
                 </Link>
             </motion.div>
         );
     } else {
-        return (
-            <div className={styles.Button} />
-        );
+        return <div className={styles.Button} />;
     }
 }
 
 function Arrow({direction}) {
-    if (direction === 'left') {
-        return (
-            <FaArrowLeft />
-        );
-    } else if (direction === 'up') {
-        return (
-            <FaArrowUp />
-        );
-    } else if (direction === 'down') {
-        return (
-            <FaArrowDown />
-        )
+    if (direction === "left") {
+        return <FaArrowLeft />;
+    } else if (direction === "up") {
+        return <FaArrowUp />;
+    } else if (direction === "down") {
+        return <FaArrowDown />;
     } else {
-        return (
-            <FaArrowRight />
-        );
+        return <FaArrowRight />;
     }
 }
