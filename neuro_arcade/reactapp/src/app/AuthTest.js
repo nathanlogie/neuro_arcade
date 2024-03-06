@@ -8,7 +8,7 @@ import {
     login,
     logout,
     postGameScore,
-    signupNewUser, postUnprocessedResults, getHumanPlayerFromCurrentUser
+    signupNewUser, postUnprocessedResults, getHumanPlayerFromCurrentUser, getPlayersFromCurrentUser
 } from "../backendRequests";
 import {useState} from "react";
 import {motion} from "framer-motion"
@@ -92,6 +92,16 @@ export function AuthTest() {
                             })
                     }>
                         getHumanPlayerFromCurrentUser
+                    </button>
+                    <button onClick={() =>
+                        getPlayersFromCurrentUser()
+                            .then((r) => {
+                                console.log(r);
+                                setResponse(r);
+                                setUserInfo(localStorage.getItem("user"));
+                            })
+                    }>
+                        getPlayersFromCurrentUser
                     </button>
                     <button onClick={() =>
                         postUnprocessedResults('things', 'words', 'newGuyPlayer')

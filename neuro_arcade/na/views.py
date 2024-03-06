@@ -499,7 +499,6 @@ def get_players_for_logged_in_user(request: Request) -> Response:
     return Response(status=200, data=data)
 
 
-
 @api_view(['GET'])
 def get_player_scores(request: Request, player_name_slug: str) -> Response:
     """
