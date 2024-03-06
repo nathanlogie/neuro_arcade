@@ -9,7 +9,7 @@ import {motion} from "framer-motion";
 import {Button} from "../../components/Button";
 import {Link, useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {API_ROOT, getHumanPlayerFromCurrentUser, getPlayersFromCurrentUser, logout} from "../../backendRequests";
+import {API_ROOT, getPlayersFromCurrentUser, logout} from "../../backendRequests";
 import {getUser} from "../../backendRequests";
 import {userIsAdmin} from "../../backendRequests";
 import {IoExit} from "react-icons/io5";
@@ -50,30 +50,37 @@ export function AccountPage() {
     );
 
     useEffect(() => {
-        getHumanPlayerFromCurrentUser()
-        .then((p) => {
-            let icon = <img src={placeholder} alt='icon' />;
-            if (p.data.icon) {
-                icon = <img src={API_ROOT + p.data.icon} alt={"image"} />;
-            }
-
-            setUserContent(
-                <div className={styles.ContentBlock}>
-                    <p>
-                        {icon}
-                        {p.data.description}
-                    </p>
-                    <Button name={"view statistics"} link={"/all_players/" + p.data.slug} orientation={"right"} direction={"right"} />
-                </div>
-            );
-        })
-        .catch(() => {});
-
-    getPlayersFromCurrentUser()
-        .then((m) => {
-            setModelGrid(<CardGrid subjects={m.data} />);
-        })
-        .catch(() => {});
+        getPlayersFromCurrentUser()
+            .then((m) => {
+                let models = [];
+                let player;
+                m.data.map(model => {
+                    if (!model.is_ai) {
+                        player = model;
+                    } else {
+                        models.push(model);
+                    }
+                });
+                if (player) {
+                    let icon = <img src={placeholder} alt='icon' />;
+                    if (player.icon) {
+                        icon = <img src={API_ROOT + player.icon} alt={"image"} />;
+                    }
+                    setUserContent(
+                        <div className={styles.ContentBlock}>
+                            <p>
+                                {icon}
+                                {player.description}
+                            </p>
+                            <Button name={"view statistics"} link={"/all_players/" + player.slug} orientation={"right"} direction={"right"} />
+                        </div>
+                    );
+                }
+                if (models.length > 0) {
+                    setModelGrid(<CardGrid subjects={models} linkPrefix={"/all_players/"} />);
+                }
+            })
+            .catch(() => {});
     }, []);
 
     return (
