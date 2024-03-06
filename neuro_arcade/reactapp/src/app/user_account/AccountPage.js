@@ -43,8 +43,8 @@ export function AccountPage() {
 
 
     const [user, setUser] = useState(getUser());
-    const [userContent, setUserContent] = useState(<></>);
-    const [modelGrid, setModelGrid] = useState(<></>);
+    const [userContent, setUserContent] = useState(<>not a registered player</>);
+    const [modelGrid, setModelGrid] = useState(<>no registered models</>);
 
     const pendingUser = <div>Your account is still pending. <br /> Once an admin approves you can post models and games.</div>
     const regularContent =
@@ -64,11 +64,12 @@ export function AccountPage() {
         }
 
          setUserContent(
-             <div style={styles.ContentBlock}>
+             <div className={styles.ContentBlock}>
                  <p>
                      {icon}
                      {p.data.description}
                  </p>
+                 <Button name={"view statistics"} link={"/all_players/" + p.data.slug} orientation={"right"} direction={"right"} />
              </div>
          );
 
