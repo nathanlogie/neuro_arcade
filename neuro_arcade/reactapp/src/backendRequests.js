@@ -421,7 +421,7 @@ export async function postUnprocessedResults(content, game_slug, player_name) {
         throw UserNotAuthenticatedError()
 
     return await axios.post(url, {
-        content: content.toString(),
+        content: JSON.stringify(content),
         game: game_slug,
         player: player_name
     }, await getHeaders('POST', true)
@@ -771,5 +771,28 @@ export async function postAdminRanking(gameID, ranking){
             throw error;
         })
 
+}
+
+/**
+ * Request AI Players that belong to a specific user
+ *
+ * @param {int} userID - ID of current logged-in user
+ *
+ * @returns {Array} players owned by current user on success
+ *
+ * @throws {Error} error otherwise
+ *
+ */
+export async function requestUserPlayers(userID){
+    const url = API_ROOT + '/users/' + userID + '/players/';
+
+    return await axios.get(url)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        })
 }
 

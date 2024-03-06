@@ -4,7 +4,9 @@ import {Banner, MobileBanner} from "../../components/Banner";
 import {NavBar} from "../../components/NavBar";
 import {motion} from "framer-motion";
 import {ModelForm} from "../../components/add_content/ModelForm";
+import {ScoreForm} from "../../components/add_content/ScoreForm";
 import {Button} from "../../components/Button";
+import {useParams} from "react-router-dom";
 import {GameUpdateForm} from "../../components/add_content/UpdateGameForm";
 import {ModelUpdateForm} from "../../components/add_content/UpdateModelForm";
 
@@ -13,6 +15,8 @@ import {ModelUpdateForm} from "../../components/add_content/UpdateModelForm";
  * @constructor builds add game page
  */
 export function FormPage({type}) {
+
+    let gameSlug = "";
 
     let nav_left = (
         <Button
@@ -39,6 +43,18 @@ export function FormPage({type}) {
         form = <ModelUpdateForm/>
         title="Update Model"
 
+    } else if (type === 'score') {
+        form = <ScoreForm/>;
+        title = "Upload Score"
+        gameSlug = useParams().game_slug;
+        nav_left = (
+            <Button
+                name={'Back'}
+                link={`/all_games/${gameSlug}`}
+                orientation={'left'}
+                direction={'left'}
+            />
+        )
     }
     else {
         throw('invalid form type');

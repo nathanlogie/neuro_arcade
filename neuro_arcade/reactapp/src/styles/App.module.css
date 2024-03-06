@@ -395,6 +395,7 @@
                 flex-direction: column;
                 width: 100%;
                 margin-bottom: 2em;
+                margin-top: 2em;
                 align-items: center;
                 & h3 {
                     text-align: center;
@@ -446,6 +447,35 @@
             p {
                 & a {
                     color: #79FFB7;
+                }
+            }
+            & ul {
+                list-style-type: none;
+
+                & li {
+                    justify-content: space-between;
+                    display: flex;
+                    margin: 1em;
+
+                    & label {
+                        width: 100%;
+                    }
+
+                    button {
+
+                        background-color: rgba(255, 255, 255, 0);
+                        padding: 0;
+                        width: max-content;
+                        height: max-content;
+                        margin: 0 1em;
+
+                        & div {
+                            position: inherit;
+                            left: 0;
+                            width: 3em;
+                            height: 2em;
+                        }
+                    }
                 }
             }
         }
