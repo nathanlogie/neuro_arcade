@@ -3,7 +3,7 @@ import {MobileBanner} from "../../components/Banner";
 import {motion} from "framer-motion";
 import {getAllUsers, updateStatus} from "../../backendRequests";
 import React, {useEffect, useState} from "react";
-import styles from '../../styles/components/TableGraph.module.css';
+import styles from '../../styles/components/Table.module.css';
 import {createTheme, ThemeProvider} from "@mui/material";
 import {DataGrid} from '@mui/x-data-grid';
 

@@ -62,14 +62,14 @@ test('Banner renders without crashing in small mode', () => {
 test('Banner shows the back button in small mode', () => {
     renderWithRouter(<Banner size='small' />);
 
-    expect(screen.getByText("back")).toBeInTheDocument();
+    expect(screen.getAllByText("back").length).toBe(2);
 })
 
 test('Banner shows the switcher in small mode', () => {
     renderWithRouter(<Banner size='small' />);
 
-    expect(screen.getByText("Games")).toBeInTheDocument();
-    expect(screen.getByText("Players")).toBeInTheDocument();
+    expect(screen.getAllByText("Games").length).toBe(2);
+    expect(screen.getAllByText("Players").length).toBe(2);
 })
 
 // TODO: maybe test switcher callback?

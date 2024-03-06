@@ -13,6 +13,8 @@
     padding: 2em;
     width: fit-content;
     height: 30.75em;
+    margin: 3em 0 0 auto;
+
     .TabSwitcher {
         right: 0;
         top: -2em;
@@ -28,7 +30,7 @@
 
 #home {
     height: fit-content;
-    margin: 4em auto 2em;
+    margin: 6em auto 2em;
 }
 
 @media(max-width: 78em) {
@@ -37,9 +39,15 @@
     }
 }
 
-@media (max-width: 50em) {
+@media(max-width: 50em) {
     .TableContainer {
-        margin-left: auto;
-        margin-right: auto;
+        scale: 0.9;
+        margin: auto;
+    }
+}
+
+@media (max-width: 30em) {
+    .TableContainer {
+        scale: 0.7;
     }
 }

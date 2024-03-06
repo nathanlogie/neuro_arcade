@@ -33,7 +33,7 @@ queue is periodically processed into score data, using evaluation scripts.
 Evaluation scripts are per-game python scripts uploaded by the owners of games
 which take in one set of result data for a game and output one or more numeric
 scores for that data. For example, a game's script may calculate the number
-of items collected along with the number of unneccessary inputs.
+of items collected along with the number of unnecessary inputs.
 
 These scores should fit within the limitations of the score type defined for
 the game.

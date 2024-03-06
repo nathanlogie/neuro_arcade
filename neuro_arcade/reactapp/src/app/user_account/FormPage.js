@@ -5,6 +5,8 @@ import {NavBar} from "../../components/NavBar";
 import {motion} from "framer-motion";
 import {ModelForm} from "../../components/add_content/ModelForm";
 import {Button} from "../../components/Button";
+import {GameUpdateForm} from "../../components/add_content/UpdateGameForm";
+import {ModelUpdateForm} from "../../components/add_content/UpdateModelForm";
 
 /**
  * @returns {JSX.Element} add game page
@@ -22,11 +24,23 @@ export function FormPage({type}) {
     );
 
     let form;
+    let title;
     if (type === 'game') {
         form = <GameForm/>;
+        title = "Add Game"
     } else if (type === 'model') {
         form  = <ModelForm/>
-    } else {
+        title = "Add Model"
+    } else if (type==='gameUpdate'){
+        form = <GameUpdateForm/>
+        title = "Update Game"
+    }
+    else if (type==='modelUpdate'){
+        form = <ModelUpdateForm/>
+        title="Update Model"
+
+    }
+    else {
         throw('invalid form type');
     }
 
@@ -43,7 +57,7 @@ export function FormPage({type}) {
                 exit={{opacity: 0}}
             >
                 <div className={styles.Form}>
-                    <h1 className={styles.Header}>Add {type}</h1>
+                    <h1 className={styles.Header}>{title}</h1>
                     {form}
                 </div>
             </motion.div>

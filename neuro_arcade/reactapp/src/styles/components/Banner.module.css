@@ -17,7 +17,7 @@
 }
 
 .TabSwitcher > * > * > * {
-    width: 15em;
+    width: 10em;
 }
 
 @media (max-width: 50em) {
@@ -31,11 +31,5 @@
         .AnimationContainer {
             margin: auto 0;
         }
-    }
-}
-
-@media (max-width: 20em) {
-    .MobileBanner {
-        background: rgba(255,255,255,0);
     }
 }

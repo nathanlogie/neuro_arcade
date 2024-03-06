@@ -95,7 +95,6 @@ export const API_ROOT = IP + "/api";
  * @property {string} user
  * @property {string} description
  * @property {PlayerTagKey[]} tags
- * @property {image} icon
  */
 
 /**
@@ -162,24 +161,23 @@ async function getCSRFToken() {
  * Set authenticated to true to send the authentication token as well.
  *
  * @param {string} method HTTP method (so like GET, POST etc.)
- * @param {boolean} authenticated (defaults to false)
- * @param {string} contentType (defaults to 'application/json')
+ * @param {boolean} authenticated
  *
  * @return Axios Request Config
  */
-export async function getHeaders(method, authenticated=false, contentType='application/json') {
+export async function getHeaders(method, authenticated=false) {
     let config = {
         credentials: 'include',
         method: method,
         mode: 'same-origin',
         headers: {
-            'Content-Type': contentType,
+            'Content-Type': 'application/json',
         },
     }
     if (authenticated) {
         config.headers.Authorization = `Token ${getUser().token}`;
     }
-    if (method.toUpperCase() === 'POST') {
+    if (method.toUpperCase() === 'POST' || method.toUpperCase()==="PATCH") {
         config.headers['X-CSRFToken'] = await getCSRFToken();
     }
     return config;
@@ -217,7 +215,7 @@ export async function requestGame(gameName) {
 /**
  * Requests a list of all available GameTags.
  *
- * @return {Promise<GameTag[]>} response data
+ * @return {GameTag[]} response data
  *
  * @throws Error when the request is rejected.
  */
@@ -235,7 +233,7 @@ export async function requestGameTags() {
 /**
  * Requests a list of all available PlayerTags.
  *
- * @return {PlayerTag[]} response data
+ * @return {Promise<PlayerTag[]> | Promise<axios.AxiosResponse<PlayerTag[]>>} response data
  *
  * @throws Error when the request is rejected.
  */
@@ -268,22 +266,29 @@ export async function requestGames() {
 }
 
 /**
- * Creates a new player associated with the current user.
+ * Creates a new player associated with the current user. Only AI players are generated.
  * Requires the user to be authenticated, will throw an error if not.
  *
  * @param {string} playerName
- * @param {boolean} isAI
+ * @param {string} description
+ * @param {[string]} playerTags
+ * @param {Image} image
+ *
+ * @return {Promise<axios.AxiosResponse<{}>>}
  *
  * @throws {Error | UserNotAuthenticatedError}
  */
-export async function createNewPlayer(playerName, isAI) {
+export async function createNewPlayer(playerName, description, playerTags, image=null) {
     const url = API_ROOT + "/create_player/";
-
     if (!isLoggedIn())
         throw UserNotAuthenticatedError()
 
+    let data = { playerName: playerName, description: description, playerTags: playerTags };
+    if (image)
+        data.image = image;
+
     return await axios.post(url,
-        { playerName: playerName, isAI: isAI },
+        data,
         await getHeaders('POST', true)
     ).then((response) => {
         console.log('Creation of player ' + playerName + ' successful!');
@@ -317,8 +322,8 @@ export async function requestPlayers() {
  *
  * @return {RankedModel[]} - Models in descending order of overall score
  */
-export async function requestModelsRanked() {
-    const url = API_ROOT + '/model_rankings/';
+export async function requestPlayersRanked() {
+    const url = API_ROOT + '/player_rankings/';
     return await axios.get(url)
         .then((response) => {
             return response.data;
@@ -398,6 +403,39 @@ export async function postGameScore(gameName, playerIdentification, scoreData) {
         console.log(error);
         throw error;
     })
+}
+
+/**
+ * Uploads Unprocessed Result data to be processed.
+ * Corresponds to na.views.post_unprocessed_result in django.
+ * User needs to be authenticated.
+ *
+ * @param {any} content - will be converted to string before upload
+ * @param {string} game_slug
+ * @param {string} player_name
+ *
+ * @return {Promise} server response
+ *
+ * @throws {Error | UserNotAuthenticatedError} when the request is rejected or when the user is not logged in.
+ */
+export async function postUnprocessedResults(content, game_slug, player_name) {
+    const url = API_ROOT + '/upload/unprocessed_result/';
+
+    if (!isLoggedIn())
+        throw UserNotAuthenticatedError()
+
+    return await axios.post(url, {
+        content: content.toString(),
+        game: game_slug,
+        player: player_name
+    }, await getHeaders('POST', true)
+    ).then((response) => {
+        console.log("Sending of raw scores successful!");
+        return response;
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    });
 }
 
 /**
@@ -692,6 +730,28 @@ export async function requestPlayer(playerName) {
             throw error;
         })
 }
+
+/**
+ * Requests the scores associated with a player.
+ *
+ * @param {string} playerName - slug of the player name
+ *
+ * @return {Scores} response data
+ *
+ * @throws Error when the request is rejected.
+ */
+export async function requestPlayerScores(playerName) {
+    const url = API_ROOT + '/players/' + playerName + '/score/'
+    return await axios.get(url)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        })
+}
+
 
 /**
  * Posts Admin Ranking to model
