@@ -18,7 +18,7 @@ from rest_framework.response import Response
 from django.conf import settings
 
 from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
-from na.models import Game, GameTag, Player, UserStatus, PlayerTag, UnprocessedResults
+from na.models import Game, GameTag, Player, UserStatus, PlayerTag, UnprocessedResults, Score
 
 import json
 
@@ -397,7 +397,7 @@ def update_user_status(request: Request) -> Response:
 
 
 @api_view(['GET'])
-def get_model_rankings(request: Request) -> Response:
+def get_player_rankings(request: Request) -> Response:
     """
     Gets the overall rankings of AI models
 
@@ -428,18 +428,15 @@ def get_model_rankings(request: Request) -> Response:
 
         # Distribute scores for each leaderboard
         for ranking in rank_tables.values():
-            # Filter out humans
-            ai_ranking = [score for score in ranking if score.player.is_ai]
-
             # Ignore empty leaderboards
-            if len(ai_ranking) == 0:
+            if len(ranking) == 0:
                 continue
 
             # Calculate the decrease in score for each position
-            step = 100 / len(ai_ranking)
+            step = 100 / len(ranking)
 
             # Give out the points for each position
-            for i, score in enumerate(ai_ranking):
+            for i, score in enumerate(ranking):
                 player_ranks[score.player.id] += 100.0 - (i * step)
 
     # Build response data structure
@@ -447,9 +444,9 @@ def get_model_rankings(request: Request) -> Response:
         {
             'player': PlayerSerializer(player, context={'request': request}).data,
             'overall_score': player_ranks[player.id],
+            'is_AI' : player_ranks[player.is_ai]
         }
         for player in Player.objects.all()
-        if player.is_ai
     ]
     data.sort(key=lambda d: -d['overall_score'])
 
@@ -466,8 +463,33 @@ def get_player(request: Request, player_name_slug: str) -> Response:
 
     tag_names = [tag.name for tag in player.tags.all()]
 
+    username = player.user.username
+
     player_data['tags'] = tag_names
+    player_data['user'] = username
     return Response(player_data)
+
+
+@api_view(['GET'])
+def get_player_scores(request: Request, player_name_slug: str) -> Response:
+    """
+    Retrieve all scores made by players
+    """
+    player = get_object_or_404(Player, slug=player_name_slug)
+
+    scores = Score.objects.filter(player=player)
+
+    scores_data = []
+    for score in scores:
+        score_data = {
+            'game_name': score.game.name,
+            'value': score.score
+        }
+        scores_data.append(score_data)
+
+
+    return Response(scores_data)
+
 
 
 @api_view(['POST'])
