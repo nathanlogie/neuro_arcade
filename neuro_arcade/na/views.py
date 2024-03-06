@@ -8,19 +8,21 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.middleware.csrf import get_token
 
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, permissions
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from na.models import PlayerTag
 from django.conf import settings
 
 from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
 from na.models import Game, GameTag, Player, UserStatus, PlayerTag, UnprocessedResults, Score
 
 import json
+from na.models import Game, GameTag, Player, UserStatus
 
 
 # ------------------
@@ -253,31 +255,38 @@ def post_about_data(request) -> Response:
 def post_new_player(request: Request) -> Response:
     """
     Requests the creation of a new player.
-    The request should be of format: {playerName: str, isAI: bool}
+    The request should be of format: {playerName: str, description: str, playerTags: [str]}
     """
-    # TODO add support for PlayerTags
-    user = request.user
     player_name = request.data.get('playerName')
-    is_AI = request.data.get('isAI')
-    if player_name is None or is_AI is None:
-        return Response(status=400, data='Invalid data; `playerName` and `isAI` must be provided!')
+    description = request.data.get('description')
+    player_tags = request.data.get('playerTags')
+    if player_name is None:
+        return Response(status=400, data='Invalid data; `playerName` must be provided!')
+    if description is None:
+        return Response(status=400, data='Invalid data; `description` must be provided!')
+    # if len(player_tags) > 0 and type(player_tags[0]) is str:
+    #     return Response(status=400, data='Invalid data; `playerTags` must be an array of strings!')
 
     try:
-        player, was_created = Player.objects.get_or_create(name=player_name, is_ai=is_AI, user=user)
+        player_obj, _ = Player.objects.get_or_create(
+            name=player_name, description=description, is_ai=True, user=request.user
+        )
     except IntegrityError:
-        # Actually, it's the player slug that needs to be unique.
-        return Response(status=400, data='Invalid data; Player name must be unique!')
+        return Response(status=500, data='A Model with that name already exists!')
 
-    if was_created:
-        return Response(status=201, data={
-            'msg': 'Player was successfully created!',
-            'playerID': player.id
-        })
-    else:
-        return Response(status=200, data={
-            'msg': 'Player already exists!',
-            'playerID': player.id,
-        })
+    # adding player tags to the new player
+    tags_to_add = []
+    for tag in player_tags:
+        # Note: this can create new tags
+        selected_tag = PlayerTag.objects.get_or_create(name=tag)[0]
+        tags_to_add.append(selected_tag)
+    player_obj.tags.set(tags_to_add)
+
+    # successful outcome
+    return Response(status=201, data={
+        'msg': 'Player was successfully created!',
+        'playerID': player_obj.id
+    })
 
 
 @api_view(['POST'])
@@ -567,11 +576,13 @@ def post_unprocessed_result(request: Request) -> Response:
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     @action(detail=True, methods=['POST'])
     def add_tags(self, request, pk=None):
@@ -579,6 +590,8 @@ class GameViewSet(viewsets.ModelViewSet):
         game = self.get_object()
         if not game:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+        game.tags.clear()
 
         tags = data['tags'].split(',')
         for tag in tags:
@@ -603,16 +616,19 @@ class GameViewSet(viewsets.ModelViewSet):
 class GameTagViewSet(viewsets.ModelViewSet):
     queryset = GameTag.objects.all()
     serializer_class = GameTagSerializer
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class PlayerTagViewSet(viewsets.ModelViewSet):
     queryset = PlayerTag.objects.all()
     serializer_class = PlayerTagSerializer
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     @action(detail=True, methods=['post'])
     def add_tags(self, request, pk=None):
@@ -621,9 +637,24 @@ class PlayerViewSet(viewsets.ModelViewSet):
         if not player:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
+        player.tags.clear()
         tags = data['tags'].split(',')
         for tag in tags:
             player.tags.add(PlayerTag.objects.get(id=tag))
 
         player.save()
         return Response("Tags added", status=200)
+
+    @action(detail=True)
+    def patch(self, request, pk):
+        data = request.data
+
+        player = self.get_object(pk=pk)
+        if not player:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(player, data=data, partial=True, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_200_OK, data=serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
