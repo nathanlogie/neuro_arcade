@@ -20,7 +20,7 @@ It creates routes to each page then renders the documents.
 ### API Server [Django]
 
 Our API server is the main point of communication between our database and our client.
-It takes a request - which can either be 'POST' or 'GET' - and alters/creates/retrieves 
+It takes a http request - most commonly a 'POST' or 'GET' request - and alters/creates/retrieves 
 instances from the database depending on the request. 
 
 For 'POST' requests, the request holds data to be altered. It then retrieves an existing model,
