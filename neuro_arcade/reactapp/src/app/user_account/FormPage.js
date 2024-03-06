@@ -4,13 +4,19 @@ import {Banner, MobileBanner} from "../../components/Banner";
 import {NavBar} from "../../components/NavBar";
 import {motion} from "framer-motion";
 import {ModelForm} from "../../components/add_content/ModelForm";
+import {ScoreForm} from "../../components/add_content/ScoreForm";
 import {Button} from "../../components/Button";
+import {useParams} from "react-router-dom";
+import {GameUpdateForm} from "../../components/add_content/UpdateGameForm";
+import {ModelUpdateForm} from "../../components/add_content/UpdateModelForm";
 
 /**
  * @returns {JSX.Element} add game page
  * @constructor builds add game page
  */
 export function FormPage({type}) {
+
+    let gameSlug = "";
 
     let nav_left = (
         <Button
@@ -22,11 +28,35 @@ export function FormPage({type}) {
     );
 
     let form;
+    let title;
     if (type === 'game') {
         form = <GameForm/>;
+        title = "Add Game"
     } else if (type === 'model') {
         form  = <ModelForm/>
-    } else {
+        title = "Add Model"
+    } else if (type==='gameUpdate'){
+        form = <GameUpdateForm/>
+        title = "Update Game"
+    }
+    else if (type==='modelUpdate'){
+        form = <ModelUpdateForm/>
+        title="Update Model"
+
+    } else if (type === 'score') {
+        form = <ScoreForm/>;
+        title = "Upload Score"
+        gameSlug = useParams().game_slug;
+        nav_left = (
+            <Button
+                name={'Back'}
+                link={`/all_games/${gameSlug}`}
+                orientation={'left'}
+                direction={'left'}
+            />
+        )
+    }
+    else {
         throw('invalid form type');
     }
 
@@ -43,7 +73,7 @@ export function FormPage({type}) {
                 exit={{opacity: 0}}
             >
                 <div className={styles.Form}>
-                    <h1 className={styles.Header}>Add {type}</h1>
+                    <h1 className={styles.Header}>{title}</h1>
                     {form}
                 </div>
             </motion.div>

@@ -13,7 +13,7 @@ import {SignUp} from "./app/SignUp";
 import {Login} from "./app/Login";
 import {AllPlayers} from './app/AllPlayers';
 import {PlayerView} from './app/PlayerView';
-import { EditAbout } from "./app/about/EditAbout";
+import {EditAbout} from "./app/about/EditAbout";
 import {PageNotFound} from "./app/PageNotFound"
 import {AnimatePresence} from 'framer-motion'
 import {Background} from "./components/Background";
@@ -86,14 +86,14 @@ const router = createBrowserRouter([
         path: "user_account", //TODO slug for users
         element:
             <LoginRoutes>
-                <AccountPage />
+                <AccountPage/>
             </LoginRoutes>
     },
     {
         path: "user_account/all_users",
         element:
             <AdminRoutes>
-                <AllUsers />
+                <AllUsers/>
             </AdminRoutes>
     },
     {
@@ -115,6 +115,28 @@ const router = createBrowserRouter([
         element: <GameView/>
     },
     {
+        path: 'all_games/:game_slug/upload_scores',
+        element:
+            <ApprovedRoutes>
+                <FormPage type={'score'} />
+            </ApprovedRoutes>
+    },
+    {
+        path: 'all_players/:player_slug/edit',
+        element:
+            <ApprovedRoutes>
+
+                <FormPage type={'modelUpdate'}/>
+            </ApprovedRoutes>
+    },
+    {
+        path: 'all_games/:game_slug/edit',
+        element:
+            <ApprovedRoutes>
+                <FormPage type={'gameUpdate'}/>
+            </ApprovedRoutes>
+    },
+    {
         path: "all_games",
         element: <AllGames/>
     },
@@ -124,11 +146,11 @@ const router = createBrowserRouter([
     },
     {
         path: "login",
-        element: <Login />
+        element: <Login/>
     },
     {
         path: "auth_test",
-        element: <AuthTest />
+        element: <AuthTest/>
     },
     {
         path: "all_players",
@@ -140,14 +162,14 @@ const router = createBrowserRouter([
     },
     {
         path: "*",
-        element: <PageNotFound />
+        element: <PageNotFound/>
     }
 ]);
 
 
 createRoot(document.getElementById('root')).render(
     <>
-        <Background />
+        <Background/>
         <AnimatePresence>
             <RouterProvider router={router}/>
         </AnimatePresence>

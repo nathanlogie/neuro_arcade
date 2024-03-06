@@ -173,7 +173,7 @@ export async function getHeaders(method, authenticated=false) {
     if (authenticated) {
         config.headers.Authorization = `Token ${getUser().token}`;
     }
-    if (method.toUpperCase() === 'POST') {
+    if (method.toUpperCase() === 'POST' || method.toUpperCase()==="PATCH") {
         config.headers['X-CSRFToken'] = await getCSRFToken();
     }
     return config;
@@ -229,7 +229,7 @@ export async function requestGameTags() {
 /**
  * Requests a list of all available PlayerTags.
  *
- * @return {PlayerTag[]} response data
+ * @return {Promise<PlayerTag[]> | Promise<axios.AxiosResponse<PlayerTag[]>>} response data
  *
  * @throws Error when the request is rejected.
  */
@@ -262,22 +262,29 @@ export async function requestGames() {
 }
 
 /**
- * Creates a new player associated with the current user.
+ * Creates a new player associated with the current user. Only AI players are generated.
  * Requires the user to be authenticated, will throw an error if not.
  *
  * @param {string} playerName
- * @param {boolean} isAI
+ * @param {string} description
+ * @param {[string]} playerTags
+ * @param {Image} image
+ *
+ * @return {Promise<axios.AxiosResponse<{}>>}
  *
  * @throws {Error | UserNotAuthenticatedError}
  */
-export async function createNewPlayer(playerName, isAI) {
+export async function createNewPlayer(playerName, description, playerTags, image=null) {
     const url = API_ROOT + "/create_player/";
-
     if (!isLoggedIn())
         throw UserNotAuthenticatedError()
 
+    let data = { playerName: playerName, description: description, playerTags: playerTags };
+    if (image)
+        data.image = image;
+
     return await axios.post(url,
-        { playerName: playerName, isAI: isAI },
+        data,
         await getHeaders('POST', true)
     ).then((response) => {
         console.log('Creation of player ' + playerName + ' successful!');
@@ -436,7 +443,7 @@ export async function postUnprocessedResults(content, game_slug, player_name) {
         throw UserNotAuthenticatedError()
 
     return await axios.post(url, {
-        content: content.toString(),
+        content: JSON.stringify(content),
         game: game_slug,
         player: player_name
     }, await getHeaders('POST', true)
@@ -786,5 +793,28 @@ export async function postAdminRanking(gameID, ranking){
             throw error;
         })
 
+}
+
+/**
+ * Request AI Players that belong to a specific user
+ *
+ * @param {int} userID - ID of current logged-in user
+ *
+ * @returns {Array} players owned by current user on success
+ *
+ * @throws {Error} error otherwise
+ *
+ */
+export async function requestUserPlayers(userID){
+    const url = API_ROOT + '/users/' + userID + '/players/';
+
+    return await axios.get(url)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        })
 }
 

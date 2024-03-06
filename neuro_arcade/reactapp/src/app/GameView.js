@@ -1,4 +1,4 @@
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {API_ROOT, requestGame} from "../backendRequests";
 import styles from "../styles/App.module.css";
 import {Table} from "../components/game/Table";
@@ -10,8 +10,9 @@ import {Switcher} from "../components/Switcher";
 import {motion} from "framer-motion";
 import { MdBubbleChart } from "react-icons/md";
 import {AiOutlineRadarChart} from "react-icons/ai";
-import {NavBar} from "../components/NavBar";
 import {AdminRanking} from "../components/AdminRanking";
+import {Button} from "../components/Button";
+import {isLoggedIn} from "../backendRequests";
 
 /**
  *
@@ -96,6 +97,14 @@ export function GameView() {
                         </div>
                     </div>
                 </div>
+                { isLoggedIn() ?
+                    <Button
+                            name={'Upload Scores'}
+                            link={'upload_scores'}
+                            orientation={'right'}
+                            direction={'down'}
+                        />
+                : null }
                 <div className={styles.MobileBannerBuffer}/>
             </motion.div>;
     }
