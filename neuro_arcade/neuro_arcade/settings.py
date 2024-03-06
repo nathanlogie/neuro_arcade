@@ -13,23 +13,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from corsheaders.defaults import default_headers
 from pathlib import Path
-import subprocess
-
-IP = subprocess.run(['curl', 'ifconfig.me'], stdout=subprocess.PIPE)
-IP = IP.stdout.decode()
-PORT = ':3000'
-API_PORT = ':8000'
-
-IS_ON_SERVER = os.getenv('NEURO_ARCADE')
 
 # TODO: change this to the URL of the website
-
-if IS_ON_SERVER:
-    WEBSITE_URL = IP + PORT
-    API_URL = IP + API_PORT
-else:
-    WEBSITE_URL = "localhost:3000"
-    API_URL = "localhost:8000"
+WEBSITE_URL = "localhost:3000"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -51,18 +37,21 @@ SECRET_KEY = 'django-insecure-4#($c-j6(9ujy#i&&gj)&umiojdi_-aa8u3x2$!qqh%xj(e@@k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [IP, "127.0.0.1", "localhost", "sh08.ccni-socs-tp3.xyz"]
+ALLOWED_HOSTS = ["sh08.ccni-socs-tp3.xyz",
+                 "127.0.0.1", "localhost"]
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_PRIVATE_NETWORK = True
+CORS_ALLOW_PRIVATE_NETWORK = True  # idk what this does
 CORS_ALLOWED_ORIGINS = [
-    "http://" + WEBSITE_URL,
-    "https://" + WEBSITE_URL,
-    "http://" + API_URL,
-    "https://" + API_URL
+    "http://localhost:3000",
+    "https://localhost:3000",
+    "http://locahost:8000",
+    "https://localhost:8000",
+    "https://" + WEBSITE_URL
 ]
 CORS_ALLOWED_ORIGIN_REGEXES = [
-    'http://' + WEBSITE_URL + '/*.'
+    'http://localhost:3000/*.',
+    WEBSITE_URL + '/*'
 ]
 CORS_ALLOW_HEADERS = (
     *default_headers,
@@ -75,6 +64,8 @@ CSRF_COOKIE_SECURE = True
 # SESSION_COOKIE_SECURE = True  # this is not necessary
 CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'  # on client: 'X-CSRFToken'
 CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
     "https://" + WEBSITE_URL
 ]
 
