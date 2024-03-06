@@ -13,6 +13,7 @@ import {AiOutlineRadarChart} from "react-icons/ai";
 import {AdminRanking} from "../components/AdminRanking";
 import {Button} from "../components/Button";
 import {isLoggedIn} from "../backendRequests";
+import placeholder from "../static/images/placeholder.webp";
 
 /**
  *
@@ -53,6 +54,12 @@ export function GameView() {
 
     let content = <>...</>;
     if (!loading) {
+
+        let icon = <img src={placeholder} alt="icon"/>;
+        if (gameData.game.icon) {
+            icon = <img src={API_ROOT + gameData.game.icon} alt={'image'}/>;
+        }
+
         content =
             <motion.div
                 className={styles.MainBlock}
@@ -70,7 +77,7 @@ export function GameView() {
                     </div>
                     <div className={styles.ContentBlock}>
                         <p>
-                            <img src={API_ROOT + gameData.game.icon} alt={'image'} />
+                            {icon}
                             {gameData.game.description}
                         </p>
                     </div>

@@ -1,10 +1,11 @@
 import {useParams} from "react-router-dom";
-import {requestPlayer, requestPlayerScores} from "../backendRequests";
+import {API_ROOT, requestPlayer, requestPlayerScores} from "../backendRequests";
 import styles from "../styles/App.module.css";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import { PlayerViewTable } from "../components/PlayerViewTable";
 import {Banner, MobileBanner} from "../components/Banner";
 import {motion} from "framer-motion";
+import placeholder from "../static/images/placeholder.webp";
 
 /**
  *
@@ -46,7 +47,13 @@ export function PlayerView() {
     </div>
 
     let content = <>...</>;
-    if(!loadingPlayer && !loadingScores){
+    if (!loadingPlayer && !loadingScores){
+
+        let icon = <img src={placeholder} alt="icon"/>;
+        if (playerData.icon) {
+            icon = <img src={API_ROOT + playerData.icon} alt={'image'}/>;
+        }
+
         content = 
             <motion.div
                 className={styles.MainBlock}
@@ -61,8 +68,7 @@ export function PlayerView() {
                     </div>
                     <div className={styles.ContentBlock}>
                         <p>
-                            <img src="https://loremflickr.com/500/500" alt={'image'} // TODO add query for image here
-                            />
+                            {icon}
                             {playerData.description}
                         </p>
                     </div>
