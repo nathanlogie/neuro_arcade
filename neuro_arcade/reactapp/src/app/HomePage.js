@@ -6,7 +6,7 @@ import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {TagFilter} from "../components/TagFilter";
 import {HomePageTable} from "../components/HomePageTable";
-import {requestGameTags, requestModelsRanked} from "../backendRequests";
+import {requestGameTags, requestPlayersRanked} from "../backendRequests";
 import {motion} from "framer-motion";
 import {useEffect, useState} from "react";
 import { IoFilter } from "react-icons/io5";
@@ -24,8 +24,8 @@ export function HomePage() {
     let [selectedTags, setSelectedTags] = useState([]);
     let [loadingTags, setLoadingTags] = useState(true);
 
-    let [models, setModels] = useState([]);
-    let [loadingModels, setLoadingModels] = useState(true);
+    let [players, setPlayers] = useState([]);
+    let [loadingPlayers, setLoadingPlayers] = useState(true);
 
     const [show, setShow] = useState(false);
     const [hover, setHover] = useState(false);
@@ -63,15 +63,15 @@ export function HomePage() {
     
     // Fetch the model rankings on load
     useEffect(() => {
-        requestModelsRanked()
-            .then((models) => {
-                setModels(models);
-                setLoadingModels(false);
+        requestPlayersRanked()
+            .then((players) => {
+                setPlayers(players);
+                setLoadingPlayers(false);
             })
     }, [])
 
     let content = <>...</>;
-    if (!loadingTags && !loadingModels) {
+    if (!loadingTags && !loadingPlayers) {
         content =
             <motion.div
                 className={styles.MainBlock}
@@ -113,7 +113,7 @@ export function HomePage() {
                 </div>
                 <div className={styles.Side}>
                     <div className={styles.DataBlock}>
-                        <HomePageTable inputData={models}/>
+                        <HomePageTable inputData={players}/>
                     </div>
                     <Button
                         name={'all players'}
