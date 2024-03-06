@@ -7,13 +7,14 @@ import { FaGamepad } from "react-icons/fa6";
 import { TbBoxModel } from "react-icons/tb";
 import {motion} from "framer-motion";
 import {Button} from "../../components/Button";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import React, {useState} from "react";
-import {logout} from "../../backendRequests";
+import {API_ROOT, getHumanPlayerFromCurrentUser, logout} from "../../backendRequests";
 import {getUser} from "../../backendRequests";
 import {userIsAdmin} from "../../backendRequests";
-import {FaSave} from "react-icons/fa";
+import {FaRegUserCircle, FaSave} from "react-icons/fa";
 import { IoExit } from "react-icons/io5";
+import placeholder from "../../static/images/placeholder.webp";
 
 
 /**
@@ -39,9 +40,10 @@ export function AccountPage() {
     );
 
 
-    const [user, setUser] = useState(getUser())
+    const [user, setUser] = useState(getUser());
+    const [userContent, setUserContent] = useState();
 
-    const pendingUser = <p>Your account is still pending. Once an admin approves you can post models and games.</p>
+    const pendingUser = <div>Your account is still pending. <br /> Once an admin approves you can post models and games.</div>
     const regularContent =
         <div className={styles.AddContent}>
             <div className={styles.FormMenu}>
@@ -52,9 +54,24 @@ export function AccountPage() {
                 <Button name={'all users'} link={'all_users'} orientation={'right'} direction={'down'}/> : null}
         </div>
 
+    getHumanPlayerFromCurrentUser().then(p => {
+        let icon = <img src={placeholder} alt="icon"/>;
+        if (p.data.icon) {
+            icon = <img src={API_ROOT + p.data.icon} alt={'image'}/>;
+        }
+         setUserContent(
+             <p>
+                 {icon}
+                 {p.data.description}
+             </p>
+         );
+    }).catch(() => {
+    });
+
+
     return (
         <>
-            <Banner size={'big'} left={nav_left}/>
+        <Banner size={'big'} left={nav_left}/>
             <MobileBanner/>
             <NavBar left={nav_left}/>
             <motion.div
@@ -66,9 +83,8 @@ export function AccountPage() {
             >
                 <div className={styles.Content} id={styles['small']}>
                     <div className={styles.ContentBlock}>
-                        <p>
-                            Contact admin for account removal...
-                        </p>
+                        {userContent}
+                        <div>Contact <Link to="mailto:benjamin.peters@glasgow.ac.uk">benjamin.peters@glasgow.ac.uk</Link> for account removal</div>
                         <motion.button
                             onClick={onLogout}
                             whileHover={{scale: 1.1}}

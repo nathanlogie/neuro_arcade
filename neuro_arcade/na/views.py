@@ -260,6 +260,7 @@ def post_new_player(request: Request) -> Response:
     player_name = request.data.get('playerName')
     description = request.data.get('description')
     player_tags = request.data.get('playerTags')
+    # todo read image
     if player_name is None:
         return Response(status=400, data='Invalid data; `playerName` must be provided!')
     if description is None:

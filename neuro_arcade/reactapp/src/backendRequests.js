@@ -281,7 +281,7 @@ export async function createNewPlayer(playerName, description, playerTags, image
 
     let data = { playerName: playerName, description: description, playerTags: playerTags };
     if (image)
-        data.image = image;
+        data.icon = image;
 
     return await axios.post(url,
         data,
