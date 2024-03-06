@@ -481,6 +481,25 @@ def get_player(request: Request, player_name_slug: str) -> Response:
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_human_player_for_logged_in_user(request: Request) -> Response:
+    player_obj = Player.objects.get(user=request.user, is_ai=False)
+    data = PlayerSerializer(player_obj).data
+    return Response(status=200, data=data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_players_for_logged_in_user(request: Request) -> Response:
+    player_objs = Player.objects.filter(user=request.user)
+    data = []
+    for player_obj in player_objs:
+        data.append(PlayerSerializer(player_obj).data)
+    return Response(status=200, data=data)
+
+
+
+@api_view(['GET'])
 def get_player_scores(request: Request, player_name_slug: str) -> Response:
     """
     Retrieve all scores made by players
@@ -499,15 +518,6 @@ def get_player_scores(request: Request, player_name_slug: str) -> Response:
 
 
     return Response(scores_data)
-
-
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_human_player_for_logged_in_user(request: Request) -> Response:
-    player_obj = Player.objects.get(user=request.user, is_ai=False)
-    data = PlayerSerializer(player_obj).data
-    return Response(status=200, data=data)
 
 
 @api_view(['POST'])

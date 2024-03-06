@@ -377,6 +377,28 @@ export async function getHumanPlayerFromCurrentUser() {
 }
 
 /**
+ * Makes a request for the players associated with the logged-in user.
+ *
+ * @throws {UserNotAuthenticatedError}
+ *
+ * @returns {Promise<axios.AxiosResponse<Player[]>>}
+ */
+export async function getPlayersFromCurrentUser() {
+    const url = API_ROOT + "/get-players/";
+
+    if (!isLoggedIn())
+        throw new UserNotAuthenticatedError();
+
+    return await axios.get(url, await getHeaders('GET', true))
+    .then((response) => {
+        return response;
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    })
+}
+
+/**
  * Posts a Score table row for a specific game.
  * Example scoreData: {"player":7,"Points":355,"Time":120}
  * for a Game with Points and Time Score headers.
