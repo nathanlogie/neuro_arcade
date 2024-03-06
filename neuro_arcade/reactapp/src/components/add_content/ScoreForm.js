@@ -54,24 +54,18 @@ export function ScoreForm(){
     useEffect(() => {
         requestUserPlayers(user.id)
             .then((response) => {
-                setPlayers(response)
+                setPlayers(response);
             })
-
+        setLoading(false);
     },[])
 
-    useEffect(() => {
-        players.forEach((player) => {
-            options.push({
-                value: player.slug,
-                label: player.name
-            })
-        })
-        setLoading(false);
-    })
-
-    function removeScore(index){
-        scores.splice(index, 1);
-        filenames.splice(index, 1);
+    function removeScore(e, index){
+        let temp = [...scores];
+        let temp2 = [...filenames];
+        temp.splice(index, 1);
+        temp2.splice(index, 1);
+        setScores(temp);
+        setFilenames(temp2);
     }
 
     function handleScores(e){
@@ -98,7 +92,6 @@ export function ScoreForm(){
         }
 
         setError("root", null)
-        console.log(selectedPlayer)
 
         let counter = 0;
         for (const scoreFile of scores) {
@@ -109,7 +102,7 @@ export function ScoreForm(){
                 })
                 .catch((error) => {
                     console.log(error.response)
-                    setSuccessMessage("An error occurred while uploading " + scoreFile.name)
+                    setError("root", {message: "An error occurred while uploading " +scoreFile.name})
                 })
         }
 
@@ -122,15 +115,18 @@ export function ScoreForm(){
 
     }
 
+    if (loading){
+        return (<>...</>)
+    }
+
 
     return (
         <form>
-            { errors.root ? errors.root.message : successMessage }
             <Select
                 isClearable
                 onChange={(current) => setSelectedPlayer(current)}
                 value={selectedPlayer}
-                options={options}
+                options={players.map(player => ({value: player.name, label: player.name}))}
                 components={makeAnimated()}
                 styles={customStyles}
                 placeholder={"Select Player..."}
@@ -140,7 +136,7 @@ export function ScoreForm(){
                     colors: {
                         ...theme.colors,
                         primary25: 'rgba(255,255,255,0.3)',
-                        primary: 'white',
+                        primary: 'black',
                         neutral0: 'rgba(255,255,255,0.075)',
                         neutral20: 'white',
                         neutral40: '#BBBBBB',
@@ -175,7 +171,7 @@ export function ScoreForm(){
                             <li>
                                 <label>{file}</label>
                                 <motion.button
-                                    onClick={() => removeScore(index)}
+                                    onClick={(e) => removeScore(e, index)}
                                     whileHover={{scale: 1.1}}
                                     whileTap={{scale: 0.9}}
                                 >
@@ -200,6 +196,7 @@ export function ScoreForm(){
                     <FaPlus/>
                 </div>
             </motion.button>
+            { errors.root ? errors.root.message : successMessage }
         </form>
     );
 
