@@ -41,8 +41,8 @@ export function ScoreForm(){
         setError,
     } = useForm();
 
-    const [scores, setScores] = useState([]);
-    const [filenames, setFilenames] = useState([])
+    let [scores, setScores] = useState([]);
+    let [filenames, setFilenames] = useState([])
     const [players, setPlayers] = useState([])
     const [selectedPlayer, setSelectedPlayer] = useState(null)
     const [options, setOptions] = useState([])
@@ -124,7 +124,7 @@ export function ScoreForm(){
 
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form>
             { errors.root ? errors.root.message : successMessage }
             <Select
                 isClearable
@@ -191,7 +191,7 @@ export function ScoreForm(){
 
             <motion.button
                 disabled={isSubmitting}
-                type={"submit"}
+                onClick={handleSubmit(onSubmit)}
                 whileHover={{scale: 1.1}}
                 whileTap={{scale: 0.9}}
             >
