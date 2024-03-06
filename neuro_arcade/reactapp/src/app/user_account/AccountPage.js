@@ -8,7 +8,7 @@ import {TbBoxModel} from "react-icons/tb";
 import {motion} from "framer-motion";
 import {Button} from "../../components/Button";
 import {Link, useNavigate} from "react-router-dom";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {API_ROOT, getHumanPlayerFromCurrentUser, getPlayersFromCurrentUser, logout} from "../../backendRequests";
 import {getUser} from "../../backendRequests";
 import {userIsAdmin} from "../../backendRequests";
@@ -49,7 +49,8 @@ export function AccountPage() {
         </div>
     );
 
-    getHumanPlayerFromCurrentUser()
+    useEffect(() => {
+        getHumanPlayerFromCurrentUser()
         .then((p) => {
             let icon = <img src={placeholder} alt='icon' />;
             if (p.data.icon) {
@@ -73,6 +74,7 @@ export function AccountPage() {
             setModelGrid(<CardGrid subjects={m.data} />);
         })
         .catch(() => {});
+    }, []);
 
     return (
         <>
