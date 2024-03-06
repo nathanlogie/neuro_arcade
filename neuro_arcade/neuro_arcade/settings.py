@@ -31,6 +31,8 @@ REACT_MEDIA_ROOT = os.path.join(REACT_STATIC_DIR, 'media')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
+# TODO: turn off debug mode and use a proper secret_key
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-4#($c-j6(9ujy#i&&gj)&umiojdi_-aa8u3x2$!qqh%xj(e@@k'
 
@@ -48,11 +50,11 @@ CORS_ALLOWED_ORIGINS = [
     "http://locahost:8000",
     "https://localhost:8000",
     "https://" + WEBSITE_URL,
-    "https://sh08.ccni-socs-tp3.xyz"
+    # "https://sh08.ccni-socs-tp3.xyz"
 ]
 CORS_ALLOWED_ORIGIN_REGEXES = [
     'http://localhost:3000/*.',
-    "https://sh08.ccni-socs-tp3.xyz/*.",
+    # "https://sh08.ccni-socs-tp3.xyz/*.",
     WEBSITE_URL + '/*'
 ]
 CORS_ALLOW_HEADERS = (
@@ -68,6 +70,7 @@ CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'  # on client: 'X-CSRFToken'
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://sh08.ccni-socs-tp3.xyz",
     "https://" + WEBSITE_URL
 ]
 
