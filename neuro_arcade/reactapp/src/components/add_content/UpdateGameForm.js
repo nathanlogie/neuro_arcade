@@ -19,7 +19,6 @@ import {
 } from "./variableHelper";
 import {useNavigate, useParams} from "react-router-dom";
 import {FaSave} from "react-icons/fa";
-import {RxReset} from "react-icons/rx";
 import {GrPowerReset} from "react-icons/gr";
 
 const customStyles = {
