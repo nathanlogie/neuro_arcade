@@ -106,7 +106,7 @@
                 float: left;
                 width: 10rem;
                 height: 10rem;
-                object-fit: contain;
+                object-fit: cover;
                 border-radius: 2em;
                 margin: 0 1.5em;
             }
