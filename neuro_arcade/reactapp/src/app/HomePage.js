@@ -37,17 +37,6 @@ export function HomePage() {
 
     let nav_right = <Card id={"nav"} link={"sign_up"} text={"Guest"} icon={<FaRegUserCircle />} />;
 
-    if (isLoggedIn()) {
-        getHumanPlayerFromCurrentUser()
-            .then((p) => {
-                if (p.data.icon) {
-                    setPlayerIcon(<img src={API_ROOT + p.data.icon} />);
-                }
-            })
-            .catch(() => {});
-        nav_right = <Card id={"nav"} link={"user_account"} text={getUser().name} icon={playerIcon} />;
-    }
-
     // Fetch the data tags on load
     useEffect(() => {
         requestGameTags().then((tags) => {
@@ -66,6 +55,18 @@ export function HomePage() {
 
     let content = <>...</>;
     if (!loadingTags && !loadingPlayers) {
+
+        if (isLoggedIn()) {
+            getHumanPlayerFromCurrentUser()
+                .then((p) => {
+                    if (p.data.icon) {
+                        setPlayerIcon(<img src={API_ROOT + p.data.icon} />);
+                    }
+                })
+                .catch(() => {});
+            nav_right = <Card id={"nav"} link={"user_account"} text={getUser().name} icon={playerIcon} />;
+        }
+
         content = (
             <motion.div className={styles.MainBlock} id={styles["big"]} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
                 <div className={styles.Content}>
