@@ -27,9 +27,13 @@ router.register(r'gameTag', GameTagViewSet)
 router.register(r'players', PlayerViewSet)
 router.register(r'playerTag', PlayerTagViewSet)
 
+media_urls = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+static_urls = static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 urlpatterns = [
     path('api/', include('na.urls')),
     path('admin/', admin.site.urls),
     # path('', include('reactapp.urls')),
     path('api/', include(router.urls)),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + media_urls + static_urls
+
