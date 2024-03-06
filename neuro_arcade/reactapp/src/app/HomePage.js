@@ -58,7 +58,7 @@ export function HomePage() {
             if (p.data.icon) {
                 setPlayerIcon(<img src={API_ROOT + p.data.icon}/>);
             }
-        }).catch(() => {})
+        }).catch(() => {});
         nav_right = <Card id={'nav'} link={'user_account'} text={getUser().name} icon={playerIcon}/>;
     }
 
