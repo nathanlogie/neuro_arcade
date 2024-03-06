@@ -120,7 +120,7 @@ export function AccountPage() {
                         </motion.button>
                     </div>
                 </div>
-                <div className={styles.Side}>
+                <div className={styles.Side} id={styles["addContent"]}>
                     <div className={styles.Title}>
                         <h1>Add Content</h1>
                     </div>
