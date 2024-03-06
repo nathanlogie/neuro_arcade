@@ -56,7 +56,7 @@ export function PlayerGrid({mode=PlayerGridMode.ALL, textQuery='', tagQuery=[], 
             tagQuery={tagQuery}
             num={num}
             id={id}
-            linkPrefix='/all_players/'
+            linkPrefix={'/all_players/'}
         />
     }
 }

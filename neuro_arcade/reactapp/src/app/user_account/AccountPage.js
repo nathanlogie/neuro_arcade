@@ -9,12 +9,14 @@ import {motion} from "framer-motion";
 import {Button} from "../../components/Button";
 import {Link, useNavigate} from "react-router-dom";
 import React, {useState} from "react";
-import {API_ROOT, getHumanPlayerFromCurrentUser, logout} from "../../backendRequests";
+import {API_ROOT, getHumanPlayerFromCurrentUser, getPlayersFromCurrentUser, logout} from "../../backendRequests";
 import {getUser} from "../../backendRequests";
 import {userIsAdmin} from "../../backendRequests";
 import {FaRegUserCircle, FaSave} from "react-icons/fa";
 import { IoExit } from "react-icons/io5";
 import placeholder from "../../static/images/placeholder.webp";
+import {PlayerGrid} from "../../components/PlayerGrid";
+import {CardGrid} from "../../components/CardGrid";
 
 
 /**
@@ -41,7 +43,8 @@ export function AccountPage() {
 
 
     const [user, setUser] = useState(getUser());
-    const [userContent, setUserContent] = useState();
+    const [userContent, setUserContent] = useState(<></>);
+    const [modelGrid, setModelGrid] = useState(<></>);
 
     const pendingUser = <div>Your account is still pending. <br /> Once an admin approves you can post models and games.</div>
     const regularContent =
@@ -59,15 +62,24 @@ export function AccountPage() {
         if (p.data.icon) {
             icon = <img src={API_ROOT + p.data.icon} alt={'image'}/>;
         }
+
          setUserContent(
-             <p>
-                 {icon}
-                 {p.data.description}
-             </p>
+             <div style={styles.ContentBlock}>
+                 <p>
+                     {icon}
+                     {p.data.description}
+                 </p>
+             </div>
          );
+
     }).catch(() => {
     });
 
+    getPlayersFromCurrentUser().then(m => {
+        setModelGrid(
+            <CardGrid subjects={m.data} />
+        );
+    }).catch(() => {});
 
     return (
         <>
@@ -82,9 +94,18 @@ export function AccountPage() {
                 exit={{opacity: 0, x: 100}}
             >
                 <div className={styles.Content} id={styles['small']}>
+                    <div className={styles.Title}>
+                        <h1>{user.name}</h1>
+                    </div>
+                    {userContent}
+                    <div className={styles.Title}>
+                        <h1>Registered models</h1>
+                    </div>
+                    {modelGrid}
                     <div className={styles.ContentBlock}>
-                        {userContent}
-                        <div>Contact <Link to="mailto:benjamin.peters@glasgow.ac.uk">benjamin.peters@glasgow.ac.uk</Link> for account removal</div>
+                        <p>
+                            Contact <Link to="mailto:benjamin.peters@glasgow.ac.uk">benjamin.peters@glasgow.ac.uk</Link> for account removal.
+                        </p>
                         <motion.button
                             onClick={onLogout}
                             whileHover={{scale: 1.1}}
@@ -106,8 +127,8 @@ export function AccountPage() {
                         {user.status === "pending" ? pendingUser : regularContent}
                     </div>
                 </div>
+                <div className={styles.MobileBannerBuffer}/>
             </motion.div>
-            <div className={styles.MobileBannerBuffer}/>
         </>
     );
 }
