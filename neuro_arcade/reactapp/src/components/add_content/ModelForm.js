@@ -1,27 +1,34 @@
 import {useForm} from "react-hook-form";
 import React, {useEffect, useState} from "react";
-import axios from "axios";
 import {motion} from "framer-motion";
 import {FaImage, FaPlus} from "react-icons/fa6";
 import CreatableSelect from 'react-select/creatable';
 import {
     requestPlayerTags,
-    getUser,
-    getHeaders,
-    API_ROOT,
-    requestGameTags,
     createNewPlayer
 } from "../../backendRequests";
-import slugify from 'react-slugify';
 import makeAnimated from 'react-select/animated';
 import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION} from "./variableHelper";
 
 
 const customStyles = {
     option: provided => ({...provided, color: 'white'}),
-    control: provided => ({...provided, color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.2)', border: 'none', borderRadius: '0.5em', marginBottom: '1em'}),
+    control: provided => ({
+        ...provided,
+        color: 'black',
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        border: 'none',
+        borderRadius: '0.5em',
+        marginBottom: '1em'
+    }),
     valueContainer: provided => ({...provided, height: 'max-content'}),
-    placeholder: provided => ({...provided, color: '#CCCCCC', textAlign: 'left', fontSize: '0.9em', paddingLeft: '1em'}),
+    placeholder: provided => ({
+        ...provided,
+        color: '#CCCCCC',
+        textAlign: 'left',
+        fontSize: '0.9em',
+        paddingLeft: '1em'
+    }),
     input: provided => ({...provided, color: '#FFFFFF', paddingLeft: '1em', fontSize: '0.9em'}),
     multiValue: provided => ({...provided, backgroundColor: 'rgba(0,0,0,0.2)', color: 'white', borderRadius: '0.5em'}),
     multiValueLabel: provided => ({...provided, color: 'white'}),
@@ -33,7 +40,7 @@ export function ModelForm() {
     const {
         register,
         handleSubmit,
-        formState: {errors, isSubmitting, touchedFields},
+        formState: {errors, isSubmitting},
         setError,
         reset
     } = useForm();
@@ -70,17 +77,17 @@ export function ModelForm() {
         }
     }
 
-    const onSubmit = async (event) => {
+    const onSubmit = async () => {
         let requestTags = [];
         tags.forEach(tag => requestTags.push(tag.value));
         await createNewPlayer(name, description, requestTags, image)
-        .then((response) => {
-            console.log(response)
-            reset()
-            setImage(null)
-            setError("root", {message: "Model submitted successfully"})
-            setTags(null)
-        }).catch(function (response) {
+            .then((response) => {
+                console.log(response)
+                reset()
+                setImage(null)
+                setError("root", {message: "Model submitted successfully"})
+                setTags(null)
+            }).catch(function (response) {
                 console.log(response)
                 if (!response) {
                     setError("root", {message: "No response from server"});
@@ -198,9 +205,9 @@ export function ModelForm() {
                     <FaPlus/>
                 </div>
             </motion.button>
-                {errors.root && (
-                    <div>{errors.root.message}</div>
-                )}
+            {errors.root && (
+                <div>{errors.root.message}</div>
+            )}
         </form>
-)
+    )
 }
