@@ -28,8 +28,8 @@ router.register(r'players', PlayerViewSet)
 router.register(r'playerTag', PlayerTagViewSet)
 
 urlpatterns = [
-    path('', include('na.urls')),
+    path('api/', include('na.urls')),
     path('admin/', admin.site.urls),
-    path('', include('reactapp.urls')),
+    # path('', include('reactapp.urls')),
     path('api/', include(router.urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

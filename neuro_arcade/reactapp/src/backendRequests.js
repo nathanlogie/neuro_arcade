@@ -4,7 +4,7 @@ let IP = new URL(location.origin);
 IP.port = '';
 IP = IP.toString();
 IP = IP.slice(0, -1);
-export const API_ROOT = IP;
+export const API_ROOT = IP + "/api";
 /**
  * This file contains functions that request or upload data from/to the backend
  */
@@ -222,7 +222,7 @@ export async function requestGame(gameName) {
  * @throws Error when the request is rejected.
  */
 export async function requestGameTags() {
-    const url = API_ROOT + '/api/gameTag/';
+    const url = API_ROOT + '/gameTag/';
     try {
         let response = await axios.get(url);
         return response.data;
@@ -240,7 +240,7 @@ export async function requestGameTags() {
  * @throws Error when the request is rejected.
  */
 export async function requestPlayerTags() {
-    const url = API_ROOT + '/api/playerTag/';
+    const url = API_ROOT + '/playerTag/';
     return await axios.get(url)
         .then((response) => {
             return response.data;
@@ -258,7 +258,7 @@ export async function requestPlayerTags() {
  * @throws Error when request is rejected
  */
 export async function requestGames() {
-    const url = API_ROOT + '/api/games/';
+    const url = API_ROOT + '/games/';
     return await axios.get(url).then((response) => {
         return response.data;
     }).catch((error) => {
@@ -302,7 +302,7 @@ export async function createNewPlayer(playerName, isAI) {
  * @throws Error when request is rejected
  */
 export async function requestPlayers() {
-    const url = API_ROOT + '/api/players/';
+    const url = API_ROOT + '/players/';
     try {
         let response = await axios.get(url);
         return response.data;
@@ -484,7 +484,7 @@ export function getUser() {
  * @throws error otherwise
  */
 export async function getAllUsers() {
-    const url = API_ROOT + '/api/users/';
+    const url = API_ROOT + '/users/';
     return await axios.get(url).then((response) => {
         return(response.data.map(function(user) {
             let status = "";
