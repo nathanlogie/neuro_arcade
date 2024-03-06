@@ -47,10 +47,12 @@ CORS_ALLOWED_ORIGINS = [
     "https://localhost:3000",
     "http://locahost:8000",
     "https://localhost:8000",
-    "https://" + WEBSITE_URL
+    "https://" + WEBSITE_URL,
+    "https://sh08.ccni-socs-tp3.xyz"
 ]
 CORS_ALLOWED_ORIGIN_REGEXES = [
     'http://localhost:3000/*.',
+    "https://sh08.ccni-socs-tp3.xyz/*.",
     WEBSITE_URL + '/*'
 ]
 CORS_ALLOW_HEADERS = (
