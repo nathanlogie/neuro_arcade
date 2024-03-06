@@ -42,8 +42,8 @@
     }
 }
 
-#home {
-    position: fixed;
+#home, #all {
+    position: absolute;
     margin-top: 4.25em;
     margin-left: 12em;
     height: fit-content;
@@ -56,7 +56,35 @@
         margin: 1em 0.5em;
     }
 }
+#all {
+    left: 0;
+    margin-top: 4em;
+    display: none
+}
 
 #invisible {
     display: none;
+}
+
+@media(max-width: 78em) {
+    #home {
+        left: 0;
+        margin-left: 16em;
+        margin-top: 4em;
+    }
+}
+
+@media(max-width: 75em) {
+    .FilterTable {
+        display: none;
+    }
+    #home, #all {
+        display: block;
+    }
+}
+
+@media (max-width: 50em) {
+    #home, #all {
+        margin-left: 2em;
+    }
 }

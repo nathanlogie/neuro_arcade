@@ -37,6 +37,12 @@ export function Switcher({data, onSwitcherChange, switcherDefault}) {
         }
     };
 
+    const checkifSelected = (alignment, name) => {
+        if ((typeof name === 'string' && alignment === name) || (typeof name === 'object' && alignment.type === name.type)) {
+            return true
+        }
+    }
+
     return(
         <>
             <ToggleButtonGroup
@@ -65,10 +71,10 @@ export function Switcher({data, onSwitcherChange, switcherDefault}) {
                                     })()
                                 ]}
                             style={{
-                                borderColor: alignment === header.name ? 'white' : 'transparent',
+                                borderColor: checkifSelected(alignment, header.name) ? 'white' : 'transparent',
                                 borderWidth: '0.3em',
                                 backdropFilter: 'blur(40px)',
-                                backgroundColor: alignment === header.name ? 'rgba(255, 255, 255, 0.3)' : 'rgba(143,143,143, 0.2)',
+                                backgroundColor: checkifSelected(alignment, header.name) ? 'rgba(255, 255, 255, 0.3)' : 'rgba(143,143,143, 0.2)',
                                 color: '#EEEEEE',
                                 fontSize: '0.75em',
                                 fontFamily: 'inherit',

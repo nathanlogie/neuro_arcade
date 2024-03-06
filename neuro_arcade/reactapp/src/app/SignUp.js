@@ -108,6 +108,7 @@ export function SignUp() {
                         <p>Already have an account? <Link to='/login'>Login here...</Link></p>
                     </form>
                 </div>
+                <div className={styles.MobileBannerBuffer}/>
             </motion.div>
         </>
     )

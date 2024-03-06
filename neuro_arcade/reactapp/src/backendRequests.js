@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_ROOT = "http://localhost:8000"
+export const API_ROOT = "http://localhost:8000";
 /**
  * This file contains functions that request or upload data from/to the backend
  */
@@ -91,7 +91,6 @@ export const API_ROOT = "http://localhost:8000"
  * @property {string} user
  * @property {string} description
  * @property {PlayerTagKey[]} tags
- * @property {image} icon
  */
 
 /**
@@ -158,18 +157,17 @@ async function getCSRFToken() {
  * Set authenticated to true to send the authentication token as well.
  *
  * @param {string} method HTTP method (so like GET, POST etc.)
- * @param {boolean} authenticated (defaults to false)
- * @param {string} contentType (defaults to 'application/json')
+ * @param {boolean} authenticated
  *
  * @return Axios Request Config
  */
-export async function getHeaders(method, authenticated=false, contentType='application/json') {
+export async function getHeaders(method, authenticated=false) {
     let config = {
         credentials: 'include',
         method: method,
         mode: 'same-origin',
         headers: {
-            'Content-Type': contentType,
+            'Content-Type': 'application/json',
         },
     }
     if (authenticated) {
@@ -213,7 +211,7 @@ export async function requestGame(gameName) {
 /**
  * Requests a list of all available GameTags.
  *
- * @return {Promise<GameTag[]>} response data
+ * @return {GameTag[]} response data
  *
  * @throws Error when the request is rejected.
  */
@@ -320,8 +318,8 @@ export async function requestPlayers() {
  *
  * @return {RankedModel[]} - Models in descending order of overall score
  */
-export async function requestModelsRanked() {
-    const url = API_ROOT + '/model_rankings/';
+export async function requestPlayersRanked() {
+    const url = API_ROOT + '/player_rankings/';
     return await axios.get(url)
         .then((response) => {
             return response.data;
@@ -728,6 +726,28 @@ export async function requestPlayer(playerName) {
             throw error;
         })
 }
+
+/**
+ * Requests the scores associated with a player.
+ *
+ * @param {string} playerName - slug of the player name
+ *
+ * @return {Scores} response data
+ *
+ * @throws Error when the request is rejected.
+ */
+export async function requestPlayerScores(playerName) {
+    const url = API_ROOT + '/players/' + playerName + '/score/'
+    return await axios.get(url)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        })
+}
+
 
 /**
  * Posts Admin Ranking to model

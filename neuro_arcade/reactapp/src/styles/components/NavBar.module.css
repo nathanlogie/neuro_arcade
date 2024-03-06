@@ -4,13 +4,14 @@
     display: flex;
     align-items: center;
     position: fixed;
-    width: 100%;
+    width: 100dvw;
     bottom: 0;
     z-index: 1;
+    height: 10em;
     .Buffer {
-        width: 14em;
-        scale: 85%;
-        margin: 0 auto;
+        width: 50%;
+        justify-content: center;
+        display: flex;
     }
 }
 
@@ -20,8 +21,14 @@
     }
 }
 
-@media (max-width: 20em) {
+@media (max-width: 50em) {
     .NavBar {
-        display: block;
+        justify-content: space-around;
+    }
+}
+
+@media (max-width: 25em) {
+    .NavBar {
+        height: 7em;
     }
 }

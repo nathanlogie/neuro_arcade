@@ -60,21 +60,23 @@ export function AboutPage() {
                     </div>
                 </div>
             <div className={styles.Side}>
-                <div className={styles.Publications}>
-                    <h2>Publications</h2>
-                    <main>
-                        <li key={0}>
+                <div className={styles.DataBlock}>
+                    <div className={styles.Publications}>
+                        <h2>Publications</h2>
+                        <main>
+                            <li key={0}>
                         <span>
                             <div><strong>Title</strong></div>
                             <div><strong>Author</strong></div>
                         </span>
-                        </li>
-                        {publications}
-                    </main>
+                            </li>
+                            {publications}
+                        </main>
+                    </div>
                 </div>
             </div>
         </>
-    ;
+        ;
     }
 
     return (

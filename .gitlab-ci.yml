@@ -16,7 +16,9 @@ django-build-job:
   before_script:
   - python -m venv venv
   - source venv/bin/activate
+  - cd neuro_arcade
   - pip install -r requirements.txt
+  - cd ..
   script:
     - python neuro_arcade/manage.py makemigrations --check
     - python neuro_arcade/manage.py migrate
@@ -27,7 +29,9 @@ unit-test-job:
   before_script:
   - python -m venv venv
   - source venv/bin/activate
+  - cd neuro_arcade
   - pip install -r requirements.txt
+  - cd ..
   stage: django
   script:
     - cd neuro_arcade
