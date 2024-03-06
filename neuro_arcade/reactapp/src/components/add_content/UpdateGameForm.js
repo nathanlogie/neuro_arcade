@@ -80,12 +80,12 @@ export function GameUpdateForm() {
         requestGame(gameSlug)
             .then((currentData) => {
                 setCurrentValues(currentData.game);
+                setImageURL(`${API_ROOT}/${currentData.icon}`)
                 getHeaders("PATCH", true, 'multipart/form-data').then((header) => {
                     setHeader(header);
                     requestGameTags()
                         .then((tags) => {
                             setExistingTags(tags);
-                            setImageURL(`${API_ROOT}/${currentData.game.icon}`)
                             setLoading(false)
                             console.log(currentValues)
                         })
@@ -122,7 +122,10 @@ export function GameUpdateForm() {
             description: currentValues.description,
             playLink: currentValues.play_link
         })
-        setImageURL(currentValues.icon)
+        setName("")
+        setDescription("")
+        setPlayLink("")
+        setImageURL(`${API_ROOT}/${currentValues.icon}`);
         setImage(null)
         handleTagReset()
     }

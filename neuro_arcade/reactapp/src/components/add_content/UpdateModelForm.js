@@ -118,6 +118,8 @@ export function ModelUpdateForm() {
             name: currentValues.name,
             description: currentValues.description,
         })
+        setName("")
+        setDescription("")
         setImageURL(`${API_ROOT}/${currentValues.icon}`);
         setImage(null)
         handleTagReset();
