@@ -56,6 +56,7 @@ export function GameUpdateForm() {
         formState: {errors, touchedFields},
         setError,
         reset,
+        setValue
     } = useForm();
 
 
@@ -120,12 +121,14 @@ export function GameUpdateForm() {
         reset({
             name: currentValues.name,
             description: currentValues.description,
-            playLink: currentValues.play_link
+            playLink
         })
+        setValue("playLink", currentValues.play_link.toString(), { shouldValidate: true })
+
         setName("")
         setDescription("")
         setPlayLink("")
-        setImageURL(`${API_ROOT}/${currentValues.icon}`);
+        setImageURL(`${API_ROOT}/${currentValues.icon}`)
         setImage(null)
         handleTagReset()
     }
