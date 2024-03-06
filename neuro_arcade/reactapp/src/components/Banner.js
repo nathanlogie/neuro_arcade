@@ -1,9 +1,9 @@
-import styles from '../styles/components/Banner.module.css';
+import styles from "../styles/components/Banner.module.css";
 import {Button} from "./Button";
 import {Logo} from "./Logo";
 import React from "react";
 import {Switcher} from "./Switcher";
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from "react-router-dom";
 import {NavBar} from "./NavBar";
 
 /**
@@ -15,56 +15,37 @@ import {NavBar} from "./NavBar";
  * @constructor builds banner
  */
 export function Banner({size, left, right, selected}) {
-
-    const switcher_labels = {table_headers: [
-            { name: 'Games' },
-            { name: 'Players' }
-        ],
-    };
+    const switcher_labels = {table_headers: [{name: "Games"}, {name: "Players"}]};
 
     const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(selected);
     const navigate = useNavigate();
 
     const handleSwitcherChange = (selectedValue) => {
         setSelectedSwitcherValue(selectedValue);
-            if (selectedValue === 'Games') {
-                navigate('/all_games');
-            }
-            if (selectedValue === 'Players') {
-                navigate('/all_players');
-            }
-    }
+        if (selectedValue === "Games") {
+            navigate("/all_games");
+        }
+        if (selectedValue === "Players") {
+            navigate("/all_players");
+        }
+    };
 
-    if (size === 'big') {
+    if (size === "big") {
         return (
-            <div
-                className={styles.Banner}
-                id={styles[size]}
-            >
-                <div className={styles.Buffer}>
-                    {left}
-                </div>
-                <Logo size={size}/>
-                <div className={styles.Buffer}>
-                    {right}
-                </div>
+            <div className={styles.Banner} id={styles[size]}>
+                <div className={styles.Buffer}>{left}</div>
+                <Logo size={size} />
+                <div className={styles.Buffer}>{right}</div>
             </div>
         );
     } else {
         return (
             <>
-                <div
-                    className={styles.Banner}
-                    id={styles['small']}>
+                <div className={styles.Banner} id={styles["small"]}>
                     <div className={styles.Buffer}>
-                        <Button
-                            name={'back'}
-                            link={-1}
-                            direction={'up'}
-                            orientation={'left'}
-                        />
+                        <Button name={"back"} link={-1} direction={"up"} orientation={"left"} />
                     </div>
-                    <Logo size={size}/>
+                    <Logo size={size} />
                     <div className={styles.Buffer}>
                         <div className={styles.TabSwitcher}>
                             <Switcher
@@ -76,20 +57,9 @@ export function Banner({size, left, right, selected}) {
                     </div>
                 </div>
                 <NavBar
-                    left={
-                        <Button
-                            name={'back'}
-                            link={-1}
-                            direction={'up'}
-                            orientation={'left'}
-                        />
-                    }
+                    left={<Button name={"back"} link={-1} direction={"up"} orientation={"left"} />}
                     right={
-                        <Switcher
-                            data={switcher_labels}
-                            onSwitcherChange={handleSwitcherChange}
-                            switcherDefault={selectedSwitcherValue}
-                        />
+                        <Switcher data={switcher_labels} onSwitcherChange={handleSwitcherChange} switcherDefault={selectedSwitcherValue} />
                     }
                 />
             </>
@@ -104,11 +74,8 @@ export function Banner({size, left, right, selected}) {
 export function MobileBanner() {
     return (
         <>
-            <div
-                className={styles.MobileBanner}
-                id={styles['small']}
-            >
-                <Logo size={'small'}/>
+            <div className={styles.MobileBanner} id={styles["small"]}>
+                <Logo size={"small"} />
             </div>
         </>
     );

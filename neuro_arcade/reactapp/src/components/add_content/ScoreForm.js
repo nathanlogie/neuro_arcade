@@ -10,22 +10,28 @@ import Select from "react-select";
 import {useParams} from "react-router-dom";
 
 const customStyles = {
-    option: provided => ({...provided, color: 'white'}),
-    control: provided => ({...provided, color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.2)', border: 'none', borderRadius: '0.5em'}),
-    valueContainer: provided => ({...provided, height: 'max-content'}),
-    placeholder: provided => ({...provided, color: '#CCCCCC', textAlign: 'left', fontSize: '0.9em', paddingLeft: '1em'}),
-    input: provided => ({...provided, color: '#FFFFFF', paddingLeft: '1em', fontSize: '0.9em'}),
-    menu: provided => ({...provided, borderRadius: '0.5em', position: 'relative'})
-}
+    option: (provided) => ({...provided, color: "white"}),
+    control: (provided) => ({
+        ...provided,
+        color: "black",
+        backgroundColor: "rgba(255, 255, 255, 0.2)",
+        border: "none",
+        borderRadius: "0.5em"
+    }),
+    valueContainer: (provided) => ({...provided, height: "max-content"}),
+    placeholder: (provided) => ({...provided, color: "#CCCCCC", textAlign: "left", fontSize: "0.9em", paddingLeft: "1em"}),
+    input: (provided) => ({...provided, color: "#FFFFFF", paddingLeft: "1em", fontSize: "0.9em"}),
+    menu: (provided) => ({...provided, borderRadius: "0.5em", position: "relative"})
+};
 
 // https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file
 async function parseJsonFile(file) {
-  return new Promise((resolve, reject) => {
-    const fileReader = new FileReader()
-    fileReader.onload = event => resolve(JSON.parse(event.target.result))
-    fileReader.onerror = error => reject(error)
-    fileReader.readAsText(file)
-  })
+    return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.onload = (event) => resolve(JSON.parse(event.target.result));
+        fileReader.onerror = (error) => reject(error);
+        fileReader.readAsText(file);
+    });
 }
 
 /**
@@ -33,33 +39,32 @@ async function parseJsonFile(file) {
  * @returns {JSX.Element} score upload form
  * @constructor builds form
  */
-export function ScoreForm(){
+export function ScoreForm() {
     const {
         register,
         handleSubmit,
         formState: {errors, isSubmitting},
-        setError,
+        setError
     } = useForm();
 
     let [scores, setScores] = useState([]);
-    let [filenames, setFilenames] = useState([])
-    const [players, setPlayers] = useState([])
-    const [selectedPlayer, setSelectedPlayer] = useState(null)
-    const [options, setOptions] = useState([])
+    let [filenames, setFilenames] = useState([]);
+    const [players, setPlayers] = useState([]);
+    const [selectedPlayer, setSelectedPlayer] = useState(null);
+    const [options, setOptions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(getUser);
     let gameSlug = useParams().game_slug;
     const [successMessage, setSuccessMessage] = useState("");
 
     useEffect(() => {
-        requestUserPlayers(user.id)
-            .then((response) => {
-                setPlayers(response);
-            })
+        requestUserPlayers(user.id).then((response) => {
+            setPlayers(response);
+        });
         setLoading(false);
-    },[])
+    }, []);
 
-    function removeScore(e, index){
+    function removeScore(e, index) {
         let temp = [...scores];
         let temp2 = [...filenames];
         temp.splice(index, 1);
@@ -68,30 +73,28 @@ export function ScoreForm(){
         setFilenames(temp2);
     }
 
-    function handleScores(e){
+    function handleScores(e) {
         const file = e.target.files[0];
         const acceptedFormats = SCORE_EXTENSION;
-        const fileExtension = file.name.split('.').pop().toLowerCase();
+        const fileExtension = file.name.split(".").pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
-            setError("root", {message: "Invalid file type provided"})
-        } else if (filenames.includes(file.name)){
-            setError("root", {message: "Duplicate file"})
-        }
-        else {
-            setError("root", null)
-            scores.push(file)
-            filenames.push(file.name)
+            setError("root", {message: "Invalid file type provided"});
+        } else if (filenames.includes(file.name)) {
+            setError("root", {message: "Duplicate file"});
+        } else {
+            setError("root", null);
+            scores.push(file);
+            filenames.push(file.name);
         }
     }
 
     async function onSubmit() {
-
-        if (scores.length === 0 || selectedPlayer === null){
+        if (scores.length === 0 || selectedPlayer === null) {
             setError("root", {message: "Missing Fields"});
             return;
         }
 
-        setError("root", null)
+        setError("root", null);
 
         let counter = 0;
         for (const scoreFile of scores) {
@@ -101,24 +104,22 @@ export function ScoreForm(){
                     counter++;
                 })
                 .catch((error) => {
-                    console.log(error.response)
-                    setError("root", {message: "An error occurred while uploading " +scoreFile.name})
-                })
+                    console.log(error.response);
+                    setError("root", {message: "An error occurred while uploading " + scoreFile.name});
+                });
         }
 
-        if (counter === scores.length){
+        if (counter === scores.length) {
             setSuccessMessage("Scores uploaded successfully!");
             setSelectedPlayer(null);
             setScores([]);
             setFilenames([]);
         }
-
     }
 
-    if (loading){
-        return (<>...</>)
+    if (loading) {
+        return <>...</>;
     }
-
 
     return (
         <form>
@@ -126,7 +127,7 @@ export function ScoreForm(){
                 isClearable
                 onChange={(current) => setSelectedPlayer(current)}
                 value={selectedPlayer}
-                options={players.map(player => ({value: player.name, label: player.name}))}
+                options={players.map((player) => ({value: player.name, label: player.name}))}
                 components={makeAnimated()}
                 styles={customStyles}
                 placeholder={"Select Player..."}
@@ -135,69 +136,56 @@ export function ScoreForm(){
                     ...theme,
                     colors: {
                         ...theme.colors,
-                        primary25: 'rgba(255,255,255,0.3)',
-                        primary: 'black',
-                        neutral0: 'rgba(255,255,255,0.075)',
-                        neutral20: 'white',
-                        neutral40: '#BBBBBB',
-                        neutral60: '#CCCCCC',
-                        neutral80: '#AAAAAA',
-                        primary50: 'rgba(209,64,129,0.3)'
-                    },
+                        primary25: "rgba(255,255,255,0.3)",
+                        primary: "black",
+                        neutral0: "rgba(255,255,255,0.075)",
+                        neutral20: "white",
+                        neutral40: "#BBBBBB",
+                        neutral60: "#CCCCCC",
+                        neutral80: "#AAAAAA",
+                        primary50: "rgba(209,64,129,0.3)"
+                    }
                 })}
             />
             <span>
-                <motion.div
-                    whileHover={{scale: 1.1}}
-                    whileTap={{scale: 0.9}}
-                >
-                    <label htmlFor={'score'}>
-                        <p>
-                            Upload json file
-                        </p>
+                <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
+                    <label htmlFor={"score"}>
+                        <p>Upload json file</p>
                         <div>
-                            <LuFileJson/>
+                            <LuFileJson />
                         </div>
                     </label>
-                    <input id={'score'} {...register("score", {
-                        required: "Score must be uploaded"
-                    })} type={"file"} onChange={handleScores}/>
+                    <input
+                        id={"score"}
+                        {...register("score", {
+                            required: "Score must be uploaded"
+                        })}
+                        type={"file"}
+                        onChange={handleScores}
+                    />
                 </motion.div>
-                {errors.score ? (
-                        <div>{errors.score.message}</div>
-                    ) : null}
+                {errors.score ? <div>{errors.score.message}</div> : null}
                 <ul>
-                    { filenames.map((file, index) => (
-                            <li>
-                                <label>{file}</label>
-                                <motion.button
-                                    onClick={(e) => removeScore(e, index)}
-                                    whileHover={{scale: 1.1}}
-                                    whileTap={{scale: 0.9}}
-                                >
-                                    <div>
-                                        <FaTrash/>
-                                    </div>
-                                </motion.button>
-                            </li>
+                    {filenames.map((file, index) => (
+                        <li>
+                            <label>{file}</label>
+                            <motion.button onClick={(e) => removeScore(e, index)} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
+                                <div>
+                                    <FaTrash />
+                                </div>
+                            </motion.button>
+                        </li>
                     ))}
                 </ul>
-
             </span>
 
-            <motion.button
-                disabled={isSubmitting}
-                onClick={handleSubmit(onSubmit)}
-                whileHover={{scale: 1.1}}
-                whileTap={{scale: 0.9}}
-            >
+            <motion.button disabled={isSubmitting} onClick={handleSubmit(onSubmit)} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
                 {isSubmitting ? "Submitting Scores..." : "Submit Scores"}
                 <div>
-                    <FaPlus/>
+                    <FaPlus />
                 </div>
             </motion.button>
-            { errors.root ? errors.root.message : successMessage }
+            {errors.root ? errors.root.message : successMessage}
         </form>
     );
-
 }

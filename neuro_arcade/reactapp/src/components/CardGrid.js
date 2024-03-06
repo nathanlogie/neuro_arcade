@@ -1,4 +1,4 @@
-import styles from '../styles/components/CardGrid.module.css'
+import styles from "../styles/components/CardGrid.module.css";
 import {Card} from "./Card";
 
 /**
@@ -18,7 +18,7 @@ import {Card} from "./Card";
  * @property {string} description - description text
  * @property {SubjectTag[]} tags - tags applied to this subject
  * @property {string} icon - see CardSubject
-*/
+ */
 
 /**
  * Checks if a subject's name or description contains a query string
@@ -37,10 +37,10 @@ function textQueryFilter(subject, textQuery) {
 
 /**
  * Checks if a subject is tagged with every tag in a query list
- * 
+ *
  * @param {GridSubject} subject - the subject data to test
  * @param {SubjectTag[]} tagQuery - the list of required tags
- * 
+ *
  * @returns {boolean} true if the filter is passed
  */
 function tagQueryFilter(subject, tagQuery) {
@@ -49,11 +49,11 @@ function tagQueryFilter(subject, tagQuery) {
 
 /**
  * Checks if a subject should be displayed under a query
- * 
+ *
  * @param {GridSubject} subject - the subject data to test
  * @param {string} textQuery - string to search name/description for
  * @param {SubjectTag[]} tagQuery - required tags
- * 
+ *
  * @returns {boolean} true if the filter is passed
  */
 function searchFilter(subject, textQuery, tagQuery) {
@@ -71,7 +71,7 @@ function searchFilter(subject, textQuery, tagQuery) {
  * @param {string} props.linkPrefix - link prefix passed to Card
  * @param {string} props.id - element id for styling
  */
-export function CardGrid({subjects, textQuery='', tagQuery=[], num=0, linkPrefix, id}) {
+export function CardGrid({subjects, textQuery = "", tagQuery = [], num = 0, linkPrefix, id}) {
     // Select subset of names to display
     let shownCards = subjects.filter((subject) => searchFilter(subject, textQuery, tagQuery));
     if (num > 0) {
@@ -81,14 +81,11 @@ export function CardGrid({subjects, textQuery='', tagQuery=[], num=0, linkPrefix
     // Render a card for each selected subject
     return (
         <div className={styles.CardGrid} id={styles[id]}>
-            {shownCards.filter((subject) => searchFilter(subject, textQuery, tagQuery))
+            {shownCards
+                .filter((subject) => searchFilter(subject, textQuery, tagQuery))
                 .map((subject, index) => {
-                    return <Card
-                        key={index}
-                        subject={subject}
-                        linkPrefix={linkPrefix}
-                    />
-            })}
+                    return <Card key={index} subject={subject} linkPrefix={linkPrefix} />;
+                })}
         </div>
     );
 }
@@ -96,5 +93,5 @@ export function CardGrid({subjects, textQuery='', tagQuery=[], num=0, linkPrefix
 export const exportedForTesting = {
     textQueryFilter,
     tagQueryFilter,
-    searchFilter,
+    searchFilter
 };
