@@ -98,7 +98,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',  # needs to be before other middleware
     'django.middleware.security.SecurityMiddleware',
-    'corsheaders.middleware.CorsMiddleware',   # needs to be after the security middleware
+    'corsheaders.middleware.CorsMiddleware',  # needs to be after the security middleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',  # needs to be after CORS
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -136,7 +136,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -183,3 +182,26 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'arcadeneuro@gmail.com'
+# EMAIL_HOST_PASSWORD = 'EilidhisCool28!'
+# EMAIL_PORT = 587
+#
+# EMAIL_HOST = 'localhost'
+# EMAIL_PORT = '1025'
+# # EMAIL_HOST_USER = 'arcadeneuro@gmail.com'
+# # EMAIL_HOST_PASSWORD = 'fueg awlu apid wzwk'
+# EMAIL_HOST_USER = ''
+# EMAIL_HOST_PASSWORD = ''
+# EMAIL_USE_TLS = False
+# # EMAIL_USE_SSL = False
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "arcadeneuro@gmail.com"
+EMAIL_HOST_PASSWORD = 'fueg awlu apid wzwk'
