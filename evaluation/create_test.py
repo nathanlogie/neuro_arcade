@@ -23,7 +23,7 @@ for i in range(5):
             }
         ),
         player = Player.objects.get(name="Billy Bennett"),
-        game = Game.objects.get(name="Flying Bird")
+        game = Game.objects.get(name="Words")
     )
 
 # print(UnprocessedResults.objects.all())

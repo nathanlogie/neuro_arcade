@@ -74,8 +74,7 @@ def worker_thread():
         with TemporaryDirectory() as temp_dir:
             eval_file = os.path.join(temp_dir, 'evaluation.py')
             input_file = os.path.join(temp_dir, 'input.txt')
-            # shutil.copyfile(result.game.evaluation_script.path, eval_file)
-            shutil.copyfile("../neuro_arcade/static/population/evaluation_functions/example.py", eval_file)
+            shutil.copyfile(result.game.evaluation_script.path, eval_file)
             with open(input_file,"w") as f:
                 f.write(result.content)
 
