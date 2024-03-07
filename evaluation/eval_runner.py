@@ -10,6 +10,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'neuro_arcade.settings')
 import django
 django.setup()
 
+from enum import IntEnum
+import json
 import shutil
 import subprocess
 from tempfile import TemporaryDirectory
@@ -19,14 +21,53 @@ import time
 from django.db import transaction
 from django.db.utils import OperationalError
 
-from na.models import UnprocessedResults
+from na.models import UnprocessedResults, Score, validate_score
 
 
-# Time to wait in seconds before polling again if there were no scores
-# available the last time
+class EvalError(IntEnum):
+    # Ran successfully
+    NONE = 0
+
+    # Docker custom volume wasn't accessible
+    VOLUME_NOT_FOUND = 1
+
+    # Docker volume/evaluation.py not found
+    EVAL_NOT_FOUND = 2
+
+    # Docker volume/input.txt not found
+    RESULT_NOT_FOUND = 3
+
+    # Evaluation script crashed
+    # Exited with code 1
+    EVAL_CRASHED = 4
+
+    # Evaluation script reported bad input
+    # Exited with code 2
+    RESULT_BAD_FORMAT = 5
+
+    # Evaluation script return code unexpected
+    # Exited with code not in 0-2
+    EVAL_BAD_RETURN = 6
+
+    # Score validation failed
+    # Evaluation script output didn't match score type
+    SCORE_BAD_FORMAT = 7
+
+
+# Time to wait in seconds before polling the database again if
+# there were no scores available the last time
 POLLING_TIME = 1
 
+# Time to wait in seconds before trying again when the connection
+# to the email server is refused
+RESET_TIME = 30
+
+# Global queue of emails which need to be sent
+email_list = []
+
 def main():
+    """Entry point, spawns worker threads"""
+
     if len(sys.argv) < 2:
         print('Usage: eval_runner.py <number of runner>') 
         return 1
@@ -34,11 +75,39 @@ def main():
     # Build docker image first
     subprocess.run(["docker", "build", "-t", "evaluation-container", "./image"])
 
-    # Spawn requested number of workers
+    # Spawn requested number of evaluation workers
     num_of_workers = int(sys.argv[1])
     for i in range(num_of_workers):
         t = Thread(target=worker_thread, args=[])
         t.start()
+
+    # Start a single email worker thread
+    t = Thread(target=email_worker, args=[])
+    t.start()
+
+def email_worker():
+    """Main thread for the email worker
+    Polls email_list for emails and attempts to send them"""
+
+    while True:
+        # Check if an email is ready to send
+        try:
+            email_to_send = email_list.pop()
+        except IndexError:
+            time.sleep(POLLING_TIME)
+            continue
+
+        # Attempt to send email
+        try:
+            # email_to_send.send()
+            print(email_to_send.message())
+        except Exception as e:
+            # Retry later if connection refused
+            # smtplib has a range of errors and we seem to keep hitting new
+            # ones, so a blanket exception is used for now
+            email_list.append(email_to_send)
+            time.sleep(RESET_TIME)
+
 
 @transaction.atomic
 def try_claim_result():
@@ -61,6 +130,9 @@ def try_claim_result():
     return result
 
 def worker_thread():
+    """Main thread for an evaluation worker
+    Polls the database for results to process and runs their evaluation"""
+
     while True:
         # Try claim a result until not clashing with another process
         try:
@@ -90,15 +162,29 @@ def worker_thread():
                 capture_output=True,
             )
 
+
         # Combine output streams
         output = proc.stdout.decode() + '\n' + proc.stderr.decode()
 
-        # print("Subprocess exit:", proc.returncode, proc.stdout, proc.stderr)
-        print("Exit code", proc.returncode)
+        return_code = proc.returncode
 
         # Handle errors
-        if proc.returncode == 0:#
-            # TODO: save score
+        if return_code == EvalError.NONE:
+
+            score_data = json.loads(proc.stdout.decode())
+            success, msg = validate_score(result.game.score_type, score_data)
+            if not success:
+                output = msg
+                return_code = EvalError.SCORE_BAD_FORMAT
+
+        if return_code == EvalError.NONE:
+            # Add score to database
+            score = Score.objects.create(
+                game=result.game,
+                player=result.player,
+                score=score_data
+            )
+            score.save()
 
             # Delete unneeded result data
             result.delete()
@@ -109,9 +195,11 @@ def worker_thread():
             result.save()
 
             # Email required users
-            email_handler(proc.returncode, output, result)
+            email_handler(return_code, output, result)
 
 def build_message(name: str, result: UnprocessedResults, details: str) -> str:
+    """Helper to build the email message body"""
+
     return (
         f"Hi {name} \n\n"
     
@@ -123,14 +211,16 @@ def build_message(name: str, result: UnprocessedResults, details: str) -> str:
         
         "Team @ NeuroArcade"
     )
-def admin_notification(return_code: int, stdout: str, result: UnprocessedResults):
+def admin_notification(return_code: EvalError, stdout: str, result: UnprocessedResults):
+    """Handler for emailing admins on errors"""
+
     recipient = [settings.ADMIN_EMAIL]
     email_from = settings.EMAIL_HOST_USER
     subject = f"ADMIN NOTIFICATION: Docker Failure in {result.game.name}"
     message = ""
-    if return_code not in [1, 2, 3]:
+    if return_code not in [EvalError.VOLUME_NOT_FOUND, EvalError.EVAL_NOT_FOUND, EvalError.RESULT_NOT_FOUND]:
         return
-    elif return_code == 1:
+    elif return_code == EvalError.VOLUME_NOT_FOUND:
         message = build_message(
             "Admin",
             result,
@@ -140,7 +230,7 @@ def admin_notification(return_code: int, stdout: str, result: UnprocessedResults
                 "Please see attached for full error log and uploaded data"
             )
         )
-    elif return_code == 2:
+    elif return_code == EvalError.EVAL_NOT_FOUND:
         message = build_message(
             "Admin",
             result,
@@ -150,7 +240,7 @@ def admin_notification(return_code: int, stdout: str, result: UnprocessedResults
                 "Please see attached for full error log and uploaded data"
             )
         )
-    elif return_code == 3:
+    elif return_code == EvalError.RESULT_NOT_FOUND:
         message = build_message(
             "Admin",
             result,
@@ -171,16 +261,18 @@ def admin_notification(return_code: int, stdout: str, result: UnprocessedResults
             ("uploaded_data.json", result.content, "application/json")
         ]
     )
-    email.send()
+    email_list.append(email)
 
-def owner_notification(return_code: int, stdout: str, result: UnprocessedResults):
+def owner_notification(return_code: EvalError, stdout: str, result: UnprocessedResults):
+    """Handler for emailing game owners on errors"""
+
     recipient = [result.game.owner.email]
     email_from = settings.EMAIL_HOST_USER
     subject = f"GAME NOTIFICATION: Score Processing Failure in {result.game.name}"
     message = ""
-    if return_code not in [4, 6]:
+    if return_code not in [EvalError.EVAL_CRASHED, EvalError.EVAL_BAD_RETURN]:
         return
-    elif return_code == 4:
+    elif return_code == EvalError.EVAL_CRASHED:
         message = build_message(
             result.game.owner.username,
             result,
@@ -190,7 +282,7 @@ def owner_notification(return_code: int, stdout: str, result: UnprocessedResults
                 "Please see attachments for full error log and uploaded data\n"
             )
         )
-    elif return_code == 6:
+    elif return_code == EvalError.EVAL_BAD_RETURN:
         message = build_message(
             result.game.owner.username,
             result,
@@ -202,6 +294,19 @@ def owner_notification(return_code: int, stdout: str, result: UnprocessedResults
                 "Please see attachments for full error log and uploaded data\n"
             )
         )
+    elif return_code == EvalError.SCORE_BAD_FORMAT:
+        message = build_message(
+            result.game.owner.username,
+            result,
+            (
+                "Evaluation script did not produce correct score type"
+
+                "Please ensure your evaluation script and score types are matching, you can edit this through the edit page \n"
+
+                "Please see attachments for full error log and uploaded data\n"
+            )
+        )
+
     email = EmailMessage(
         subject,
         message,
@@ -212,19 +317,21 @@ def owner_notification(return_code: int, stdout: str, result: UnprocessedResults
             ("uploaded_data.json", result.content, "application/json")
         ]
     )
-    email.send()
+    email_list.append(email)
 
 def uploader_notification(return_code: int, stdout: str, result: UnprocessedResults):
+    """Handler for emailing result uploaders on errors"""
+
     recipient = [result.player.user.email]
     email_from = settings.EMAIL_HOST_USER
     subject = f"PLAYER NOTIFICATION: Score processing failure in {result.game.name}"
 
-    if return_code == 5:
+    if return_code == EvalError.RESULT_BAD_FORMAT:
         details = (
             f"Your result data was incorrectly formatted.\n\n"
             "The result data and error message have been attached to this email for reference.\n"
         )
-    else: # 1, 2, 3, 4, 6
+    else: # 1, 2, 3, 4, 6, 7
         details = (
             "An internal error occurred while processing the results. Please try again later.\n\n"
             "The result data has been attached to this email for reference.\n"
@@ -246,15 +353,14 @@ def uploader_notification(return_code: int, stdout: str, result: UnprocessedResu
         ]
     )
 
-    if return_code == 5:
+    if return_code == EvalError.RESULT_BAD_FORMAT:
         email.attach("Console Log.txt", stdout, "text/plain")
 
-    email.send()
+    email_list.append(email)
 
 
-def email_handler(return_code: int, stdout: str, result: UnprocessedResults):
-    if return_code == 0:
-        return
+def email_handler(return_code: EvalError, stdout: str, result: UnprocessedResults):
+    """Handler for emailing involved parties on errors"""
 
     admin_notification(return_code, stdout, result)
     owner_notification(return_code, stdout, result)
