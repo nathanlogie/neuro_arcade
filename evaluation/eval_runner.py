@@ -85,7 +85,6 @@ def worker_thread():
                 [
                     "docker", "run", "-it", "--rm",
                     "-v", f"{temp_dir}:/usr/src/app/volume/",
-                    "--name", "running-evaluation",
                     "evaluation-container",
                 ],
                 capture_output=True,

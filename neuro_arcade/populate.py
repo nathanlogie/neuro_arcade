@@ -610,12 +610,12 @@ score_types = {
         'headers': [
             {
                 "name": "Length 1",
-                "type": int,
+                "type": "int",
                 "min": 0
             },
             {
                 "name": "Length 2",
-                "type": int,
+                "type": "int",
                 "min": 0
             }
         ]
