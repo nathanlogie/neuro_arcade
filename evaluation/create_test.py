@@ -10,12 +10,18 @@ django.setup()
 
 BACKLOG_PATH = './backlog/'
 
+import json
 
 from na.models import UnprocessedResults, Game, Player
 
-for i in range(60):
+for i in range(5):
     UnprocessedResults.objects.create(
-        content = "{}",
+        content = json.dumps(
+            {
+                "string 1": "abcde",
+                "string 2": "1",
+            }
+        ),
         player = Player.objects.get(name="Billy Bennett"),
         game = Game.objects.get(name="Flying Bird")
     )

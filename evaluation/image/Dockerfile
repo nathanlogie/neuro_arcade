@@ -13,4 +13,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ./main.py main.py
 
-CMD [ "python", "./main.py" ]
+# -B used to prevent __pycache__ being created in the volume folder
+# and causing permission errors
+CMD [ "python", "-B", "./main.py" ]

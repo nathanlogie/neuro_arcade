@@ -7,18 +7,29 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'neuro_arcade.settings')
 import django
 django.setup()
 
+import shutil
 import subprocess
-import time
+from tempfile import TemporaryDirectory
 from threading import Thread
+import time
+
 from django.db import transaction
 from django.db.utils import OperationalError
+
 from na.models import UnprocessedResults
 
+
+# Time to wait in seconds before polling again if there were no scores
+# available the last time
+POLLING_TIME = 5
 
 def main():
     if len(sys.argv) < 2:
         print('Usage: eval_runner.py <number of runner>') 
         return 1
+
+    # Build docker image first
+    subprocess.run(["docker", "build", "-t", "evaluation-container", "./image"])
 
     # Spawn requested number of workers
     num_of_workers = int(sys.argv[1])
@@ -56,10 +67,30 @@ def worker_thread():
 
         # If no results existed, sleep for a bit and try again
         if result is None:
-            time.sleep(5)
+            time.sleep(POLLING_TIME)
             continue
 
         print(result)
+        with TemporaryDirectory() as temp_dir:
+            eval_file = os.path.join(temp_dir, 'evaluation.py')
+            input_file = os.path.join(temp_dir, 'input.txt')
+            # shutil.copyfile(result.game.evaluation_script.path, eval_file)
+            shutil.copyfile("../neuro_arcade/static/population/evaluation_functions/example.py", eval_file)
+            with open(input_file,"w") as f:
+                f.write(result.content)
+
+            proc = subprocess.run(
+                [
+                    "docker", "run", "-it", "--rm",
+                    "-v", f"{temp_dir}:/usr/src/app/volume/",
+                    "--name", "running-evaluation",
+                    "evaluation-container",
+                ],
+                # capture_output=True,
+            )
+            print("Subprocess exit code:", proc.returncode)
+
+
 
 
 # def main():
