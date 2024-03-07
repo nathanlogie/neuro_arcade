@@ -617,7 +617,7 @@ function passwordValidator(password) {
  *  An error can also be thrown if the password is invalid.
  */
 export async function signupNewUser(userName, email, password) {
-    const url = API_ROOT + '/sign_up/';
+    const url = API_ROOT + '/sign-up/';
     const emailRegex = new RegExp('[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}');
 
     // validating the password on client side:
