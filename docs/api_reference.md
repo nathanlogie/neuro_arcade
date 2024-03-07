@@ -80,7 +80,64 @@ Responds with user's information, including the authentication token:
   'status': whenever or not the user was approved by an admin yet,
 }
 ```
-Requests a user information from a given ID and password. For user 
+Requests a user's information from a given ID and password. For user 
 identification either the username or email of the account is needed.
 If both are provided, then only the username will be used.
+
+
+## Getters
+
+These API endpoint give you data that is available on the website, without 
+changing any of it. 
+
+#### Get Game
+
+
+#### Get Games Sorted
+
+
+#### Get Tags
+
+
+#### Get About Data
+
+
+#### Get Player
+
+
+#### Get Player Rankings
+
+
+#### Get Player Scores
+
+
+#### Get User's Players
+
+
+
+## Posters
+
+These API endpoint are meant for uploading and changing data on our platform.
+All of these endpoints require valid authentication as stated in the authentication
+section of this reference (both user token and CSRF token are necessary).
+
+#### Post Game Score
+
+
+#### Post Unprocessed Results
+
+
+#### Post New Model/Player (Should only be player)
+
+
+#### Delete Player
+
+
+#### Post About Data (admin only)
+
+
+#### Post User Status (admin only)
+
+
+#### Post Game Rank (admin only)
 
