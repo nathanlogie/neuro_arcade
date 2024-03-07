@@ -125,7 +125,6 @@ const router = createBrowserRouter([
         path: 'all_players/:player_slug/edit',
         element:
             <ApprovedRoutes>
-
                 <FormPage type={'modelUpdate'}/>
             </ApprovedRoutes>
     },

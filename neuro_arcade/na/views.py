@@ -594,10 +594,23 @@ def get_user_players(request: Request, user_id: int) -> Response:
     return Response(user_players)
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+@api_view(['GET'])
+def get_all_users(request, user_id) -> Response:
+
+    current_user = User.objects.get(id=user_id)
+    if not current_user.is_superuser:
+        return Response(status=401)
+
+    users = User.objects.all()
+    users_serialised = UserSerializer(users, many=True).data
+
+    return Response(data=users_serialised)
+
+
+# class UserViewSet(viewsets.ModelViewSet):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+#     permission_classes = [IsAdminUser]
 
 
 class GameViewSet(viewsets.ModelViewSet):
