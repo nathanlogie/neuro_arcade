@@ -2,6 +2,9 @@
 import sys
 import os
 
+from django.conf import settings
+from django.core.mail import EmailMessage
+
 sys.path.insert(0, '../neuro_arcade')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'neuro_arcade.settings')
 import django
@@ -21,7 +24,7 @@ from na.models import UnprocessedResults
 
 # Time to wait in seconds before polling again if there were no scores
 # available the last time
-POLLING_TIME = 5
+POLLING_TIME = 1
 
 def main():
     if len(sys.argv) < 2:
@@ -44,7 +47,7 @@ def try_claim_result():
     If another process tries accessing the database at the same
     time, this will throw an OperationalError"""
 
-    # Try get first unclaimed score
+    # Try to get first unclaimed score
     result = UnprocessedResults.objects.filter(status=0).first()
 
     # Back off if no scores exist
@@ -85,39 +88,164 @@ def worker_thread():
                     "--name", "running-evaluation",
                     "evaluation-container",
                 ],
-                # capture_output=True,
+                capture_output=True,
             )
-            print("Subprocess exit code:", proc.returncode)
+            print("Subprocess exit code:", proc.returncode, proc.stdout)
+            email_handler(proc.returncode, proc.stdout.decode(), result)
+            if proc.returncode == 0:
+                result.delete()
+            else:
+                result.status = 2
+                result.errors = proc.stdout.decode()
+
+def build_message(name: str, result: UnprocessedResults, details: str) -> str:
+    return (
+        f"Hi {name} \n\n"
+    
+        f"The following attempted upload of game results has failed: \n\n"
+    
+        f"Upload: results for {result.player.user.username} in {result.game.name} at "
+        f"{result.upload_date.strftime('%Y-%m-%d %H-%M-%S')}\n"
+        f"{details}\n\n"
+        
+        "Team @ NeuroArcade"
+    )
+def admin_notification(return_code: int, stdout: str, result: UnprocessedResults):
+    recipient = [settings.ADMIN_EMAIL]
+    email_from = settings.EMAIL_HOST_USER
+    subject = f"ADMIN NOTIFICATION: Docker Failure in {result.game.name}"
+    message = ""
+    if return_code not in [1, 2, 3]:
+        return
+    elif return_code == 1:
+        message = build_message(
+            "Admin",
+            result,
+            (
+                f"Upload: {result} \n"
+                f"Error Code: {return_code} - The volume folder could not be found (Issue with docker run command) \n\n"
+                "Please see attached for full error log and uploaded data"
+            )
+        )
+    elif return_code == 2:
+        message = build_message(
+            "Admin",
+            result,
+            (
+                f"Upload: {result} \n"
+                f"Error Code: {return_code} - The evaluation script could not be found \n\n"
+                "Please see attached for full error log and uploaded data"
+            )
+        )
+    elif return_code == 3:
+        message = build_message(
+            "Admin",
+            result,
+            (
+                f"Upload: {result} \n"
+                f"Error Code: {return_code} - The input data could not be found \n\n"
+                "Please see attached for full error log and uploaded data"
+            )
+        )
+
+    email = EmailMessage(
+        subject,
+        message,
+        email_from,
+        recipient,
+        attachments=[
+            ("Console Log.txt", stdout, "text/plain"),
+            ("uploaded_data.json", result.content, "application/json")
+        ]
+    )
+    email.send()
+
+def owner_notification(return_code: int, stdout: str, result: UnprocessedResults):
+    recipient = [result.game.owner.email]
+    email_from = settings.EMAIL_HOST_USER
+    subject = f"GAME NOTIFICATION: Score Processing Failure in {result.game.name}"
+    message = ""
+    if return_code not in [4, 6]:
+        return
+    elif return_code == 4:
+        message = build_message(
+            result.game.owner.username,
+            result,
+            (
+                "Evaluation script crashes\n\n"
+                
+                "Please see attachments for full error log and uploaded data\n"
+            )
+        )
+    elif return_code == 6:
+        message = build_message(
+            result.game.owner.username,
+            result,
+            (
+                "Evaluation script exited with unexpected return code \n\n"
+                
+                "Please only exit with a 0, 1 or 2 error code. Please check documentation for more details \n"
+    
+                "Please see attachments for full error log and uploaded data\n"
+            )
+        )
+    email = EmailMessage(
+        subject,
+        message,
+        email_from,
+        recipient,
+        attachments=[
+            ("Console Log.txt", stdout, "text/plain"),
+            ("uploaded_data.json", result.content, "application/json")
+        ]
+    )
+    email.send()
+
+def uploader_notification(return_code: int, stdout: str, result: UnprocessedResults):
+    recipient = [result.player.user.email]
+    email_from = settings.EMAIL_HOST_USER
+    subject = f"PLAYER NOTIFICATION: Score processing failure in {result.game.name}"
+
+    if return_code == 5:
+        details = (
+            f"Your result data was incorrectly formatted.\n\n"
+            "The result data and error message have been attached to this email for reference.\n"
+        )
+    else: # 1, 2, 3, 4, 6
+        details = (
+            "An internal error occurred while processing the results. Please try again later.\n\n"
+            "The result data has been attached to this email for reference.\n"
+        )
+
+    message = build_message (
+        result.player.user.username,
+        result,
+        details
+    )
+
+    email = EmailMessage(
+        subject,
+        message,
+        email_from,
+        recipient,
+        attachments=[
+            ("uploaded_data.json", result.content, "application/json")
+        ]
+    )
+
+    if return_code == 5:
+        email.attach("Console Log.txt", stdout, "text/plain")
+
+    email.send()
 
 
+def email_handler(return_code: int, stdout: str, result: UnprocessedResults):
+    if return_code == 0:
+        return
 
-
-# def main():
-#     # todo: shouldn't this script just fetch it's own score?
-#     #  or will the dispatcher be a different script
-#     if len(sys.argv) < 2:
-#         print('Not enough arguments!')  # todo improve this error message
-#         return 1
-
-#     # parsing command line arguments:
-#     dir_path = BACKLOG_PATH + sys.argv[1] + '/'
-#     script_path = dir_path + 'evaluation.py'
-#     input_path = dir_path + 'input.txt'
-
-#     # todo move these into volume
-
-#     # run docker_build if necessary
-#     # todo figure out how to check if an image already exists
-#     #  https://stackoverflow.com/questions/30543409/how-to-check-if-a-docker-image-with-a-specific-tag-exist-locally
-
-#     # run docker_run
-#     output = subprocess.run(['sh', 'docker_run.sh'], capture_output=True)
-
-#     print('return code:', output.returncode)
-#     print('stdout: ', output.stdout.decode())
-
-#     # todo parse docker_run output and insert it into the DB
-#     #  maybe by using the neuro_arcade API?
+    admin_notification(return_code, stdout, result)
+    owner_notification(return_code, stdout, result)
+    uploader_notification(return_code, stdout, result)
 
 
 if __name__ == '__main__':

@@ -14,48 +14,52 @@ INPUT_FILE_PATH = VOLUME_PATH + '/input.txt'
 def main():
     # checks that the `volume` directory exists:
     if not os.path.exists(VOLUME_PATH):
-        print("Error #1: directory `volume` not found!\n" +
+        print("Docker setup error: directory `volume` not found!\n" +
               " Something is wrong with the docker run command,\n" +
               " make sure it includes the argument `-v ./volume:/usr/src/app/volume/`")
         return 1
 
     # checks that the evaluation script is present in volume:
-    # PLACEHOLDER
-    try:
-        from volume import evaluation
-        # TODO this should run evaluation, rather it should just run the full file
-    except ImportError:
+    if not os.path.isfile(EVALUATION_SCRIPT_PATH):
         # this will always give you errors if you try to
         # execute it outside the docker container
-        print("Error #2: evaluation script not found!\n" +
+        print("Docker setup error: evaluation script not found!\n" +
               " This can happen if the evaluation script is not copied properly,\n" +
               " or if it was copied and not renamed into `evaluation.py`.")
         return 2
 
     # checks that the input file is present:
     if not os.path.isfile(INPUT_FILE_PATH):
-        print("Error #3: input file not found!\n" +
+        print("Docker setup error: input file not found!\n" +
               " This can happen if the input file is not copied properly,\n" +
               " or if it was copied and not renamed into `input.txt`.")
         return 3
 
     # This will automatically print the stdout and stderr which will be picked up by the master thread
-    output = subprocess.run(['python', 'volume/evaluation.py', 'volume/input.txt'], capture_output=True)
+    output = subprocess.run(['python', EVALUATION_SCRIPT_PATH, INPUT_FILE_PATH], capture_output=True)
+
+    # Pass outputs up to higher layers
+    print(output.stdout.decode())
+    print(output.stderr.decode())
 
     # Return return code mapped to our own custom return codes
-    returncode = output.returncode
+    return_code = output.returncode
 
-    if returncode == 0:
+    if return_code == 0:
         # Works fine
         return 0
-    elif returncode == 1:
-        # Evaluation script crashes
+    elif return_code == 1:
+        print("Evaluation script error: script crashed!\n" +
+              " Script exited with code 1.")
         return 4
-    elif returncode == 2:
-        # Evaluation script reported bad input
+    elif return_code == 2:
+        print("Evaluation script error: bad input reported!\n" +
+              " Script exited with code 2.")
         return 5
     else:
         # Unexpected return code
+        print("Evaluation script error: unexpected return code!\n" +
+              f" Script exited with code {return_code}.")
         return 6
 
 

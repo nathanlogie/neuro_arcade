@@ -205,3 +205,4 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "arcadeneuro@gmail.com"
 EMAIL_HOST_PASSWORD = 'fueg awlu apid wzwk'
+ADMIN_EMAIL = "arcadeneuro@gmail.com"
