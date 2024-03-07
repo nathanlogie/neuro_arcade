@@ -593,6 +593,7 @@ def get_user_players(request: Request, user_id: int) -> Response:
 
 
 class UserViewSet(viewsets.ModelViewSet):
+    # TODO DELETE THIS: IT IS SUPER UNSAFE
     queryset = User.objects.all()
     serializer_class = UserSerializer
 #     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
