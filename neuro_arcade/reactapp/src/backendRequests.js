@@ -319,7 +319,7 @@ export async function requestPlayers() {
  * @return {RankedModel[]} - Models in descending order of overall score
  */
 export async function requestPlayersRanked() {
-    const url = API_ROOT + '/player_rankings/';
+    const url = API_ROOT + '/player-rankings/';
     return await axios.get(url)
         .then((response) => {
             return response.data;
