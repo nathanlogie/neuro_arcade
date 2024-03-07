@@ -73,7 +73,7 @@ def worker_thread():
             time.sleep(POLLING_TIME)
             continue
 
-        print(result)
+        # Run the image, mounted with a temporary directory for the input files
         with TemporaryDirectory() as temp_dir:
             eval_file = os.path.join(temp_dir, 'evaluation.py')
             input_file = os.path.join(temp_dir, 'input.txt')
@@ -89,13 +89,27 @@ def worker_thread():
                 ],
                 capture_output=True,
             )
-            print("Subprocess exit code:", proc.returncode, proc.stdout)
-            email_handler(proc.returncode, proc.stdout.decode(), result)
-            if proc.returncode == 0:
-                result.delete()
-            else:
-                result.status = 2
-                result.errors = proc.stdout.decode()
+
+        # Combine output streams
+        output = proc.stdout.decode() + '\n' + proc.stderr.decode()
+
+        # print("Subprocess exit:", proc.returncode, proc.stdout, proc.stderr)
+        print("Exit code", proc.returncode)
+
+        # Handle errors
+        if proc.returncode == 0:#
+            # TODO: save score
+
+            # Delete unneeded result data
+            result.delete()
+        else:
+            # Log to database
+            result.status = 2
+            result.errors = output
+            result.save()
+
+            # Email required users
+            email_handler(proc.returncode, output, result)
 
 def build_message(name: str, result: UnprocessedResults, details: str) -> str:
     return (
