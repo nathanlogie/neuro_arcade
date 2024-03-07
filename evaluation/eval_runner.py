@@ -85,28 +85,10 @@ def main():
     t = Thread(target=email_worker, args=[])
     t.start()
 
-def email_worker():
-    """Main thread for the email worker
-    Polls email_list for emails and attempts to send them"""
 
-    while True:
-        # Check if an email is ready to send
-        try:
-            email_to_send = email_list.pop()
-        except IndexError:
-            time.sleep(POLLING_TIME)
-            continue
-
-        # Attempt to send email
-        try:
-            # email_to_send.send()
-            print(email_to_send.message())
-        except Exception as e:
-            # Retry later if connection refused
-            # smtplib has a range of errors and we seem to keep hitting new
-            # ones, so a blanket exception is used for now
-            email_list.append(email_to_send)
-            time.sleep(RESET_TIME)
+#####################
+# Result processing #
+#####################
 
 
 @transaction.atomic
@@ -128,6 +110,7 @@ def try_claim_result():
     result.status = 1
     result.save()
     return result
+
 
 def worker_thread():
     """Main thread for an evaluation worker
@@ -197,6 +180,35 @@ def worker_thread():
             # Email required users
             email_handler(return_code, output, result)
 
+
+##################
+# Email handling #
+##################
+
+def email_worker():
+    """Main thread for the email worker
+    Polls email_list for emails and attempts to send them"""
+
+    while True:
+        # Check if an email is ready to send
+        try:
+            email_to_send = email_list.pop()
+        except IndexError:
+            time.sleep(POLLING_TIME)
+            continue
+
+        # Attempt to send email
+        try:
+            # email_to_send.send()
+            print(email_to_send.message())
+        except Exception as e:
+            # Retry later if connection refused
+            # smtplib has a range of errors and we seem to keep hitting new
+            # ones, so a blanket exception is used for now
+            email_list.append(email_to_send)
+            time.sleep(RESET_TIME)
+
+
 def build_message(name: str, result: UnprocessedResults, details: str) -> str:
     """Helper to build the email message body"""
 
@@ -211,6 +223,8 @@ def build_message(name: str, result: UnprocessedResults, details: str) -> str:
         
         "Team @ NeuroArcade"
     )
+
+
 def admin_notification(return_code: EvalError, stdout: str, result: UnprocessedResults):
     """Handler for emailing admins on errors"""
 
@@ -262,6 +276,7 @@ def admin_notification(return_code: EvalError, stdout: str, result: UnprocessedR
         ]
     )
     email_list.append(email)
+
 
 def owner_notification(return_code: EvalError, stdout: str, result: UnprocessedResults):
     """Handler for emailing game owners on errors"""
@@ -318,6 +333,7 @@ def owner_notification(return_code: EvalError, stdout: str, result: UnprocessedR
         ]
     )
     email_list.append(email)
+
 
 def uploader_notification(return_code: int, stdout: str, result: UnprocessedResults):
     """Handler for emailing result uploaders on errors"""
