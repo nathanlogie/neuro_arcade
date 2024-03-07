@@ -11,10 +11,11 @@ django.setup()
 BACKLOG_PATH = './backlog/'
 
 import json
+import sys
 
-from na.models import UnprocessedResults, Game, Player
+from na.models import UnprocessedResults, Game, Player, validate_score
 
-for i in range(5):
+for i in range(int(sys.argv[1])):
     UnprocessedResults.objects.create(
         content = json.dumps(
             {
