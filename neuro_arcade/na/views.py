@@ -482,7 +482,7 @@ def get_player(request: Request, player_name_slug: str) -> Response:
 @api_view(['GET'])
 def get_player_scores(request: Request, player_name_slug: str) -> Response:
     """
-    Retrieve all scores made by players
+    Retrieve all scores made by a player.
     """
     player = get_object_or_404(Player, slug=player_name_slug)
 
@@ -496,9 +496,7 @@ def get_player_scores(request: Request, player_name_slug: str) -> Response:
         }
         scores_data.append(score_data)
 
-
     return Response(scores_data)
-
 
 
 @api_view(['POST'])
