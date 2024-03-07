@@ -11,12 +11,13 @@ Score type:
     "headers": [
         {
             "name": "Length 1",
-            "type": int,
+            "type": "int",
             "min": 0
         },
         {
             "name": "Length 2"
-            "type": float
+            "type": "int",
+            "min": 0
         },
     ]
 }

@@ -423,7 +423,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Coins',
-                'description': "Number of coins collected",
+                'type': 'int',
                 'min': 0,
                 'max': 100,
             }
@@ -433,7 +433,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Points',
-                'description': "Number of points collected",
+                'type': 'int',
                 'min': 0,
                 'max': 20,
             }
@@ -443,7 +443,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Points',
-                'description': "Number of points collected",
+                'type': 'int',
                 'min': 0,
                 'max': 100,
             }
@@ -453,7 +453,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Points',
-                'description': "Number of points collected",
+                'type': 'int',
                 'min': 0,
                 'max': 10000,
             }
@@ -463,7 +463,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Points',
-                'description': "Number of points collected",
+                'type': 'int',
                 'min': 0,
                 'max': 10000,
             }
@@ -473,19 +473,19 @@ score_types = {
         'headers': [
             {
                 'name': 'Points',
-                'description': "Number of points collected",
+                'type': 'int',
                 'min': 0,
                 'max': 10,
             },
             {
                 'name': 'Time',
-                'description': "Time",
+                'type': 'int',
                 'min': 0,
                 'max': 9999,
             },
             {
                 'name': 'Coins',
-                'description': "Coins collected",
+                'type': 'int',
                 'min': 0,
                 'max': 10,
             },
@@ -510,7 +510,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Time',
-                'description': "Time taken to complete",
+                'type': 'int',
                 'min': 0,
                 'max': 600,
             }
@@ -520,7 +520,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Time',
-                'description': "Time taken to complete",
+                'type': 'int',
                 'min': 0,
                 'max': 600,
             }
@@ -530,7 +530,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Attempts',
-                'description': "Number of attempts taken to complete",
+                'type': 'int',
                 'min': 0,
                 'max': 100,
             }
@@ -540,7 +540,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Time',
-                'description': "Time taken to complete",
+                'type': 'int',
                 'min': 0,
                 'max': 600,
             }
@@ -550,7 +550,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Time',
-                'description': "Time taken to complete",
+                'type': 'int',
                 'min': 0,
                 'max': 600,
             }
@@ -560,7 +560,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Points',
-                'description': "Number of points collected",
+                'type': 'int',
                 'min': 0,
                 'max': 200,
             }
@@ -570,7 +570,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Points',
-                'description': "Number of points collected",
+                'type': 'int',
                 'min': 0,
                 'max': 25,
             }
@@ -580,7 +580,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Points',
-                'description': "Number of points collected",
+                'type': 'int',
                 'min': 0,
                 'max': 250,
             }
@@ -590,7 +590,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Time',
-                'description': "Time taken to complete",
+                'type': 'int',
                 'min': 0,
                 'max': 600,
             }
@@ -600,7 +600,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Time',
-                'description': "Time taken to complete",
+                'type': 'int',
                 'min': 0,
                 'max': 600,
             }
@@ -609,10 +609,14 @@ score_types = {
     'Words': {
         'headers': [
             {
-                'name': 'Points',
-                'description': "Number of points collected",
-                'min': 0,
-                'max': 75,
+                "name": "Length 1",
+                "type": int,
+                "min": 0
+            },
+            {
+                "name": "Length 2",
+                "type": int,
+                "min": 0
             }
         ]
     },
@@ -620,7 +624,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Time',
-                'description': "Time taken to complete",
+                'type': 'int',
                 'min': 0,
                 'max': 600,
             }
