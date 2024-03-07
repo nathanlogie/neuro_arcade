@@ -112,6 +112,24 @@ def try_claim_result():
     return result
 
 
+def create_score(game, player, score_data):
+    """Creates a score in the database
+
+    If another process tries accessing the database at the same time,
+    repeats until successful"""
+
+    # Try until database not locked
+    while True:
+        try:
+            Score.objects.create(
+                game=game,
+                player=player,
+                score=score_data
+            )
+            return
+        except OperationalError:
+            pass
+
 def worker_thread():
     """Main thread for an evaluation worker
     Polls the database for results to process and runs their evaluation"""
@@ -162,12 +180,7 @@ def worker_thread():
 
         if return_code == EvalError.NONE:
             # Add score to database
-            score = Score.objects.create(
-                game=result.game,
-                player=result.player,
-                score=score_data
-            )
-            score.save()
+            create_score(result.game, result.player, score_data)
 
             # Delete unneeded result data
             result.delete()
