@@ -1,3 +1,8 @@
+"""
+Creates dummy unprocessed results in the database
+
+Depends on games and players from populate.py
+"""
 
 import os
 import sys
@@ -13,7 +18,23 @@ BACKLOG_PATH = './backlog/'
 import json
 import sys
 
+from django.db.utils import OperationalError
+
 from na.models import UnprocessedResults, Game, Player, validate_score
+
+def create_result(content, player, game):
+    # Try until database not locked
+    while True:
+        try:
+            UnprocessedResults.objects.create(
+                content=content,
+                player=player,
+                game=game
+            )
+            return
+        except OperationalError:
+            pass
+
 
 for i in range(int(sys.argv[1])):
     UnprocessedResults.objects.create(
