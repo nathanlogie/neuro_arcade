@@ -182,27 +182,17 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = 'arcadeneuro@gmail.com'
-# EMAIL_HOST_PASSWORD = 'EilidhisCool28!'
-# EMAIL_PORT = 587
-#
-# EMAIL_HOST = 'localhost'
-# EMAIL_PORT = '1025'
-# # EMAIL_HOST_USER = 'arcadeneuro@gmail.com'
-# # EMAIL_HOST_PASSWORD = 'fueg awlu apid wzwk'
-# EMAIL_HOST_USER = ''
-# EMAIL_HOST_PASSWORD = ''
-# EMAIL_USE_TLS = False
-# # EMAIL_USE_SSL = False
 
+# Email address to send admin errors to
+ADMIN_EMAIL = "arcadeneuro@gmail.com"
+
+# Configuration for error emails in the evaluation pipeline
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
+
+# The email account to send the error emails from
 EMAIL_HOST_USER = "arcadeneuro@gmail.com"
 EMAIL_HOST_PASSWORD = 'fueg awlu apid wzwk'
-ADMIN_EMAIL = "arcadeneuro@gmail.com"
