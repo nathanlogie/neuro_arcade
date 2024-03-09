@@ -26,7 +26,9 @@ Score type:
 import json
 
 # Test importing, not actually used
-import pandas, numpy, scipy
+import pandas
+import numpy
+import scipy
 
 with open("/usr/src/app/volume/input.txt") as f:
     inp = json.load(f)

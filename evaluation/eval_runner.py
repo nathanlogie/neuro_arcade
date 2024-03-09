@@ -1,4 +1,15 @@
 # MAKE SURE YOU RUN THIS FILE FROM INSIDE /evaluation/ !!!
+from na.models import UnprocessedResults, Score, validate_score
+from django.db.utils import OperationalError
+from django.db import transaction
+import time
+from threading import Thread
+from tempfile import TemporaryDirectory
+import subprocess
+import shutil
+import json
+from enum import IntEnum
+import django
 import sys
 import os
 
@@ -7,21 +18,7 @@ from django.core.mail import EmailMessage
 
 sys.path.insert(0, '../neuro_arcade')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'neuro_arcade.settings')
-import django
 django.setup()
-
-from enum import IntEnum
-import json
-import shutil
-import subprocess
-from tempfile import TemporaryDirectory
-from threading import Thread
-import time
-
-from django.db import transaction
-from django.db.utils import OperationalError
-
-from na.models import UnprocessedResults, Score, validate_score
 
 
 class EvalError(IntEnum):
@@ -65,15 +62,17 @@ RESET_TIME = 30
 # Global queue of emails which need to be sent
 email_list = []
 
+
 def main():
     """Entry point, spawns worker threads"""
 
     if len(sys.argv) < 2:
-        print('Usage: eval_runner.py <number of runner>') 
+        print('Usage: eval_runner.py <number of runner>')
         return 1
 
     # Build docker image first
-    subprocess.run(["docker", "build", "-t", "evaluation-container", "./image"])
+    subprocess.run(
+        ["docker", "build", "-t", "evaluation-container", "./image"])
 
     # Spawn requested number of evaluation workers
     num_of_workers = int(sys.argv[1])
@@ -130,6 +129,7 @@ def create_score(game, player, score_data):
         except OperationalError:
             pass
 
+
 def worker_thread():
     """Main thread for an evaluation worker
     Polls the database for results to process and runs their evaluation"""
@@ -151,7 +151,7 @@ def worker_thread():
             eval_file = os.path.join(temp_dir, 'evaluation.py')
             input_file = os.path.join(temp_dir, 'input.txt')
             shutil.copyfile(result.game.evaluation_script.path, eval_file)
-            with open(input_file,"w") as f:
+            with open(input_file, "w") as f:
                 f.write(result.content)
 
             proc = subprocess.run(
@@ -162,7 +162,6 @@ def worker_thread():
                 ],
                 capture_output=True,
             )
-
 
         # Combine output streams
         output = proc.stdout.decode() + '\n' + proc.stderr.decode()
@@ -227,56 +226,43 @@ def build_message(name: str, result: UnprocessedResults, details: str) -> str:
 
     return (
         f"Hi {name} \n\n"
-    
         f"The following attempted upload of game results has failed: \n\n"
-    
         f"Upload: results for {result.player.user.username} in {result.game.name} at "
         f"{result.upload_date.strftime('%Y-%m-%d %H-%M-%S')}\n"
         f"{details}\n\n"
-        
-        "Team @ NeuroArcade"
-    )
+        "Team @ NeuroArcade")
 
 
-def admin_notification(return_code: EvalError, stdout: str, result: UnprocessedResults):
+def admin_notification(
+        return_code: EvalError,
+        stdout: str,
+        result: UnprocessedResults):
     """Handler for emailing admins on errors"""
 
     recipient = [settings.ADMIN_EMAIL]
     email_from = settings.EMAIL_HOST_USER
     subject = f"ADMIN NOTIFICATION: Docker Failure in {result.game.name}"
     message = ""
-    if return_code not in [EvalError.VOLUME_NOT_FOUND, EvalError.EVAL_NOT_FOUND, EvalError.RESULT_NOT_FOUND]:
+    if return_code not in [
+            EvalError.VOLUME_NOT_FOUND,
+            EvalError.EVAL_NOT_FOUND,
+            EvalError.RESULT_NOT_FOUND]:
         return
     elif return_code == EvalError.VOLUME_NOT_FOUND:
         message = build_message(
-            "Admin",
-            result,
-            (
-                f"Upload: {result} \n"
-                f"Error Code: {return_code} - The volume folder could not be found (Issue with docker run command) \n\n"
-                "Please see attached for full error log and uploaded data"
-            )
-        )
+            "Admin", result, (f"Upload: {result} \n"
+                              f"Error Code: {return_code} - The volume folder could not be found (Issue with docker run command) \n\n"
+                              "Please see attached for full error log and uploaded data"))
     elif return_code == EvalError.EVAL_NOT_FOUND:
         message = build_message(
-            "Admin",
-            result,
-            (
-                f"Upload: {result} \n"
-                f"Error Code: {return_code} - The evaluation script could not be found \n\n"
-                "Please see attached for full error log and uploaded data"
-            )
-        )
+            "Admin", result, (f"Upload: {result} \n"
+                              f"Error Code: {return_code} - The evaluation script could not be found \n\n"
+                              "Please see attached for full error log and uploaded data"))
     elif return_code == EvalError.RESULT_NOT_FOUND:
         message = build_message(
-            "Admin",
-            result,
-            (
-                f"Upload: {result} \n"
-                f"Error Code: {return_code} - The input data could not be found \n\n"
-                "Please see attached for full error log and uploaded data"
-            )
-        )
+            "Admin", result, (f"Upload: {result} \n"
+                              f"Error Code: {return_code} - The input data could not be found \n\n"
+                              "Please see attached for full error log and uploaded data"))
 
     email = EmailMessage(
         subject,
@@ -291,7 +277,10 @@ def admin_notification(return_code: EvalError, stdout: str, result: UnprocessedR
     email_list.append(email)
 
 
-def owner_notification(return_code: EvalError, stdout: str, result: UnprocessedResults):
+def owner_notification(
+        return_code: EvalError,
+        stdout: str,
+        result: UnprocessedResults):
     """Handler for emailing game owners on errors"""
 
     recipient = [result.game.owner.email]
@@ -306,7 +295,7 @@ def owner_notification(return_code: EvalError, stdout: str, result: UnprocessedR
             result,
             (
                 "Evaluation script crashes\n\n"
-                
+
                 "Please see attachments for full error log and uploaded data\n"
             )
         )
@@ -314,26 +303,14 @@ def owner_notification(return_code: EvalError, stdout: str, result: UnprocessedR
         message = build_message(
             result.game.owner.username,
             result,
-            (
-                "Evaluation script exited with unexpected return code \n\n"
-                
-                "Please only exit with a 0, 1 or 2 error code. Please check documentation for more details \n"
-    
-                "Please see attachments for full error log and uploaded data\n"
-            )
-        )
+            ("Evaluation script exited with unexpected return code \n\n"
+             "Please only exit with a 0, 1 or 2 error code. Please check documentation for more details \n"
+             "Please see attachments for full error log and uploaded data\n"))
     elif return_code == EvalError.SCORE_BAD_FORMAT:
         message = build_message(
-            result.game.owner.username,
-            result,
-            (
-                "Evaluation script did not produce correct score type"
-
-                "Please ensure your evaluation script and score types are matching, you can edit this through the edit page \n"
-
-                "Please see attachments for full error log and uploaded data\n"
-            )
-        )
+            result.game.owner.username, result, ("Evaluation script did not produce correct score type"
+                                                 "Please ensure your evaluation script and score types are matching, you can edit this through the edit page \n"
+                                                 "Please see attachments for full error log and uploaded data\n"))
 
     email = EmailMessage(
         subject,
@@ -348,7 +325,10 @@ def owner_notification(return_code: EvalError, stdout: str, result: UnprocessedR
     email_list.append(email)
 
 
-def uploader_notification(return_code: int, stdout: str, result: UnprocessedResults):
+def uploader_notification(
+        return_code: int,
+        stdout: str,
+        result: UnprocessedResults):
     """Handler for emailing result uploaders on errors"""
 
     recipient = [result.player.user.email]
@@ -358,15 +338,13 @@ def uploader_notification(return_code: int, stdout: str, result: UnprocessedResu
     if return_code == EvalError.RESULT_BAD_FORMAT:
         details = (
             f"Your result data was incorrectly formatted.\n\n"
-            "The result data and error message have been attached to this email for reference.\n"
-        )
-    else: # 1, 2, 3, 4, 6, 7
+            "The result data and error message have been attached to this email for reference.\n")
+    else:  # 1, 2, 3, 4, 6, 7
         details = (
             "An internal error occurred while processing the results. Please try again later.\n\n"
-            "The result data has been attached to this email for reference.\n"
-        )
+            "The result data has been attached to this email for reference.\n")
 
-    message = build_message (
+    message = build_message(
         result.player.user.username,
         result,
         details
@@ -388,7 +366,10 @@ def uploader_notification(return_code: int, stdout: str, result: UnprocessedResu
     email_list.append(email)
 
 
-def email_handler(return_code: EvalError, stdout: str, result: UnprocessedResults):
+def email_handler(
+        return_code: EvalError,
+        stdout: str,
+        result: UnprocessedResults):
     """Handler for emailing involved parties on errors"""
 
     admin_notification(return_code, stdout, result)

@@ -14,18 +14,20 @@ INPUT_FILE_PATH = VOLUME_PATH + '/input.txt'
 def main():
     # checks that the `volume` directory exists:
     if not os.path.exists(VOLUME_PATH):
-        print("Docker setup error: directory `volume` not found!\n" +
-              " Something is wrong with the docker run command,\n" +
-              " make sure it includes the argument `-v ./volume:/usr/src/app/volume/`")
+        print(
+            "Docker setup error: directory `volume` not found!\n" +
+            " Something is wrong with the docker run command,\n" +
+            " make sure it includes the argument `-v ./volume:/usr/src/app/volume/`")
         return 1
 
     # checks that the evaluation script is present in volume:
     if not os.path.isfile(EVALUATION_SCRIPT_PATH):
         # this will always give you errors if you try to
         # execute it outside the docker container
-        print("Docker setup error: evaluation script not found!\n" +
-              " This can happen if the evaluation script is not copied properly,\n" +
-              " or if it was copied and not renamed into `evaluation.py`.")
+        print(
+            "Docker setup error: evaluation script not found!\n" +
+            " This can happen if the evaluation script is not copied properly,\n" +
+            " or if it was copied and not renamed into `evaluation.py`.")
         return 2
 
     # checks that the input file is present:
@@ -35,8 +37,10 @@ def main():
               " or if it was copied and not renamed into `input.txt`.")
         return 3
 
-    # This will automatically print the stdout and stderr which will be picked up by the master thread
-    output = subprocess.run(['python', EVALUATION_SCRIPT_PATH, INPUT_FILE_PATH], capture_output=True)
+    # This will automatically print the stdout and stderr which will be picked
+    # up by the master thread
+    output = subprocess.run(
+        ['python', EVALUATION_SCRIPT_PATH, INPUT_FILE_PATH], capture_output=True)
 
     # Pass outputs up to higher layers
     print(output.stdout.decode())
