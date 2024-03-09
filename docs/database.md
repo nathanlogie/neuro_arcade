@@ -64,3 +64,9 @@ Errors - A text field containing any errors raised during processing. <br>
 The database representation of a user's status, this is primarily used by admins to distinguish other admins and the different states of users. It contains the following fields: <br><br>
 Status - A char field with the following possible values: Approved - Meaning the user can view and upload games/data, Pending - Meaning the user has only recently signed up and needs admin approval for uploading games/scores, Blocked - Meaning the user can no longer log in. <br>
 User - An instance of the django inbuilt user class which this status links to.
+
+<h3 style="text-align: center;"> Visual representations </h3>
+See below for a visual representation of the database and the database dependencies. <br>
+
+![ER.img](db-table-diagram.png)
+![Dependency.img](model-dependecy-diagram.png)
