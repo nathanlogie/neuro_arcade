@@ -1,10 +1,11 @@
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {requestPlayer, requestPlayerScores} from "../backendRequests";
 import styles from "../styles/App.module.css";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {PlayerViewTable} from "../components/PlayerViewTable";
 import {Banner, MobileBanner} from "../components/Banner";
 import {motion} from "framer-motion";
+import {FaRegPenToSquare} from "react-icons/fa6";
 
 /**
  *
@@ -57,6 +58,18 @@ export function PlayerView() {
             </div>
         );
 
+    const editButton = (
+        <Link
+         to={'edit'}>
+            <motion.button whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
+                {"Edit Player"}
+                <div>
+                    <FaRegPenToSquare />
+                </div>
+            </motion.button>
+        </Link>
+    )
+
     let content = <>...</>;
     if (!loadingPlayer && !loadingScores) {
         content = (
@@ -64,6 +77,7 @@ export function PlayerView() {
                 <div className={styles.Content} id={styles["small"]}>
                     <div className={styles.Title}>
                         <h1>{playerData.name}</h1>
+                        { editButton }
                     </div>
                     <div className={styles.ContentBlock}>
                         <p>

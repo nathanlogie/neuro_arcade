@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {Link, Navigate, useParams} from "react-router-dom";
 import {requestGame} from "../backendRequests";
 import styles from "../styles/App.module.css";
 import {Table} from "../components/game/Table";
@@ -13,6 +13,7 @@ import {AiOutlineRadarChart} from "react-icons/ai";
 import {AdminRanking} from "../components/AdminRanking";
 import {Button} from "../components/Button";
 import {isLoggedIn} from "../backendRequests";
+import { FaRegPenToSquare } from "react-icons/fa6";
 
 /**
  *
@@ -47,6 +48,18 @@ export function GameView() {
         setSelectedSwitcherValue(selectedValue);
     };
 
+    const editButton = (
+        <Link
+         to={'edit'}>
+            <motion.button whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
+                {"Edit Game"}
+                <div>
+                    <FaRegPenToSquare />
+                </div>
+            </motion.button>
+        </Link>
+    )
+
     let content = <>...</>;
     if (!loading) {
         content = (
@@ -54,6 +67,7 @@ export function GameView() {
                 <div className={styles.Content}>
                     <div className={styles.Title}>
                         <h1>{gameData.game.name}</h1>
+                        {editButton}
                     </div>
                     <div className={styles.Title}>
                         <AdminRanking game={gameData.game.id} rating={gameData.game.priority} />
