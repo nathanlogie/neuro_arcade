@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
 
-
 MAX_SCORE_VALUE_SIZE = 256
 
 
@@ -75,7 +74,7 @@ def validate_score_header(header: Any) -> Tuple[bool, Optional[str]]:
         return False, "Field 'name' is required"
     if not isinstance(header['name'], str):
         return False, "Field 'name' should be a string"
-    
+
     # Type should be integer or float
     if 'type' not in header:
         return False, "Field 'type' is required"
@@ -83,7 +82,7 @@ def validate_score_header(header: Any) -> Tuple[bool, Optional[str]]:
         return False, f"Invalid value for field 'type' - should be integer or float"
 
     data_type = int if header['type'] == Game.SCORE_INT else float
-    
+
     # Min and max should match type if they exist
     if 'min' in header:
         if not isinstance(header['min'], data_type):
@@ -129,8 +128,8 @@ def validate_score_type(score_type: Any) -> Tuple[bool, Optional[str]]:
     for i, d in enumerate(score_type['headers']):
         passed, msg = validate_score_header(d)
         if not passed:
-            return False, f"Error in header {i+1}: {msg}"
-    
+            return False, f"Error in header {i + 1}: {msg}"
+
     return True, None
 
 
@@ -158,8 +157,8 @@ def validate_score(score_type: ScoreType, score: Any) -> Tuple[bool, Optional[st
             return False, f"Field '{header['name']}' is required"
 
         if (
-            ('min' in header and header['min'] > value)
-            or ('max' in header and header['max'] < value)
+                ('min' in header and header['min'] > value)
+                or ('max' in header and header['max'] < value)
         ):
             return False, f"Field '{header['name']}' out of range"
 
@@ -299,7 +298,6 @@ class Player(models.Model):
     MAX_PLAYER_DESCRIPTION_LENGTH = 1024
     PROFILE_SUBDIR = 'profile_pics'
 
-
     name = models.CharField(max_length=MAX_PLAYER_NAME_LENGTH)
     slug = models.SlugField(unique=True, null=True)
     is_ai = models.BooleanField(default=False)
@@ -319,7 +317,7 @@ class Player(models.Model):
 class Score(models.Model):
     """Scores. """
 
-    score = models.JSONField(default=default_score) # map of name: value
+    score = models.JSONField(default=default_score)  # map of name: value
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
 
