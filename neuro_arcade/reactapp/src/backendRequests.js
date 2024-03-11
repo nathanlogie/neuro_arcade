@@ -804,10 +804,10 @@ export async function requestUserPlayers(userID){
 /**
  * Update Game Info
  *
- * @param {String} gameSlug: slug of game to update
- * @param {FormData} data: data to update to
+ * @param {string} gameSlug: slug of game to update
+ * @param {dict} data: data to update to
  *
- * @Returns
+ * @Returns {Response} response to patch call
  */
 export async function updateGames(gameSlug, data){
     const url = API_ROOT + `/games/${gameSlug}/update_game/`
@@ -818,12 +818,12 @@ export async function updateGames(gameSlug, data){
 }
 
 /**
- * Update Player Info
+ * Update Player Data
  *
- * @param {String} playerSlug: slug of player to update
- * @param {FormData} data: data to update to
+ * @param {string} playerSlug: slug of player to update
+ * @param {dict} data: data to update to
  *
- * @Returns
+ * @Returns {Response} response to patch call
  */
 export async function updatePlayer(playerSlug, data){
     const url = API_ROOT + `/players/${playerSlug}/update_player/`

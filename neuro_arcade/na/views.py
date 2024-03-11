@@ -627,6 +627,20 @@ def get_user_players(request: Request, user_id: int) -> Response:
 
 @api_view(['PATCH'])
 def update_game(request, game_name_slug) -> Response:
+    """
+    PATCH request to update game data
+
+    Args:
+        request: containing user and data to change to
+        game_name_slug: slug of the game
+
+    Returns:
+        Response:
+            with status 200 on success;
+            with status 401 if current logged-in user doesn't match game owner;
+            with status 404 if game not found;
+            with status 400 otherwise
+    """
 
     game = get_object_or_404(Game, slug=game_name_slug)
     if game.owner != request.user:
@@ -642,6 +656,20 @@ def update_game(request, game_name_slug) -> Response:
 
 @api_view(['PATCH'])
 def update_player(request, player_name_slug) -> Response:
+    """
+    PATCH request to update player data
+
+    Args:
+        request: containing user and data to change to
+        player_name_slug: slug of the player
+
+    Returns:
+        Response:
+            with status 200 on success;
+            with status 401 if current logged-in user doesn't match player user;
+            with status 404 if player not found;
+            with status 400 otherwise
+    """
 
     player = get_object_or_404(Player, slug=player_name_slug)
     if player.user != request.user:
@@ -668,12 +696,6 @@ def get_all_users(request, user_id) -> Response:
     return Response(data=users_serialised)
 
 
-# class UserViewSet(viewsets.ModelViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-#     permission_classes = [IsAdminUser]
-
-
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
@@ -694,21 +716,6 @@ class GameViewSet(viewsets.ModelViewSet):
 
         game.save()
         return Response("Tags added", status=200)
-
-    def patch(self, request, pk):
-        data = request.data
-        game = self.get_object(pk=pk)
-        if not game:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        serializer = self.get_serializer(
-            game, data=data, partial=True, many=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_200_OK, data=serializer.data)
-        return Response(
-            status=status.HTTP_400_BAD_REQUEST,
-            data=serializer.errors)
 
 
 class GameTagViewSet(viewsets.ModelViewSet):
@@ -742,20 +749,3 @@ class PlayerViewSet(viewsets.ModelViewSet):
 
         player.save()
         return Response("Tags added", status=200)
-
-    @action(detail=True)
-    def patch(self, request, pk):
-        data = request.data
-
-        player = self.get_object()
-        if not player:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        serializer = self.get_serializer(
-            player, data=data, partial=True, many=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_200_OK, data=serializer.data)
-        return Response(
-            status=status.HTTP_400_BAD_REQUEST,
-            data=serializer.errors)
