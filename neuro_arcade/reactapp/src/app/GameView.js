@@ -12,7 +12,7 @@ import {MdBubbleChart} from "react-icons/md";
 import {AiOutlineRadarChart} from "react-icons/ai";
 import {AdminRanking} from "../components/AdminRanking";
 import {Button} from "../components/Button";
-import {isLoggedIn} from "../backendRequests";
+import {isLoggedIn, isOwner} from "../backendRequests";
 import { FaRegPenToSquare } from "react-icons/fa6";
 
 /**
@@ -25,6 +25,7 @@ export function GameView() {
     let gameSlug = useParams().game_slug;
     let [loading, setLoading] = useState(true);
     let [gameData, setGameData] = useState({});
+    let [isCurrentOwner, setIsCurrentOwner] = useState(false);
     let type_count = 0;
 
     useEffect(() => {
@@ -61,12 +62,13 @@ export function GameView() {
 
     let content = <>...</>;
     if (!loading) {
+        setIsCurrentOwner(isOwner(gameData.owner))
         content = (
             <motion.div className={styles.MainBlock} id={styles["small"]} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
                 <div className={styles.Content}>
                     <div className={styles.Title}>
                         <h1>{gameData.game.name}</h1>
-                        {editButton}
+                        {isCurrentOwner ? editButton : null}
                     </div>
                     <div className={styles.Title}>
                         <AdminRanking game={gameData.game.id} rating={gameData.game.priority} />

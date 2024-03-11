@@ -832,3 +832,11 @@ export async function updatePlayer(playerSlug, data){
         .then((response) => console.log(response))
         .catch(error => console.log(error))
 }
+
+/**
+ * Check if game/player is owned by current user
+ */
+export function isOwner(owner){
+    const user = getUser();
+    return (user && user === owner);
+}

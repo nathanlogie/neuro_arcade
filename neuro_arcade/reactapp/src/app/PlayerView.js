@@ -1,5 +1,5 @@
 import {Link, useParams} from "react-router-dom";
-import {requestPlayer, requestPlayerScores} from "../backendRequests";
+import {requestPlayer, requestPlayerScores, isOwner} from "../backendRequests";
 import styles from "../styles/App.module.css";
 import React, {useEffect, useState} from "react";
 import {PlayerViewTable} from "../components/PlayerViewTable";
@@ -16,7 +16,7 @@ export function PlayerView() {
     let playerSlug = useParams().player_slug;
     let [loadingPlayer, setLoadingPlayer] = useState(true);
     let [playerData, setPlayerData] = useState({});
-
+    let [isCurrentOwner, setIsCurrentOwner] = useState(false);
     let [loadingScores, setLoadingScores] = useState(true);
     let [playerScores, setPlayerScores] = useState([]);
     useEffect(() => {
@@ -71,12 +71,13 @@ export function PlayerView() {
 
     let content = <>...</>;
     if (!loadingPlayer && !loadingScores) {
+        setIsCurrentOwner(isOwner(playerData.user));
         content = (
             <motion.div className={styles.MainBlock} id={styles["small"]} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
                 <div className={styles.Content} id={styles["small"]}>
                     <div className={styles.Title}>
                         <h1>{playerData.name}</h1>
-                        { editButton }
+                        {isCurrentOwner ? editButton : null}
                     </div>
                     <div className={styles.ContentBlock}>
                         <p>
