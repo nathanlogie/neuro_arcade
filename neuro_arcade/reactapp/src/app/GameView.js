@@ -51,12 +51,11 @@ export function GameView() {
     const editButton = (
         <Link
          to={'edit'}>
-            <motion.button whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
-                {"Edit Game"}
+            <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
                 <div>
                     <FaRegPenToSquare />
                 </div>
-            </motion.button>
+            </motion.div>
         </Link>
     )
 

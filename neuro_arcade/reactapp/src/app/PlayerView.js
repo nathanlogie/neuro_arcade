@@ -61,12 +61,11 @@ export function PlayerView() {
     const editButton = (
         <Link
          to={'edit'}>
-            <motion.button whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
-                {"Edit Player"}
+            <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
                 <div>
                     <FaRegPenToSquare />
                 </div>
-            </motion.button>
+            </motion.div>
         </Link>
     )
 
