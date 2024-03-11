@@ -626,6 +626,7 @@ def get_user_players(request: Request, user_id: int) -> Response:
 
 
 @api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
 def update_game(request, game_name_slug) -> Response:
     """
     PATCH request to update game data
@@ -643,7 +644,7 @@ def update_game(request, game_name_slug) -> Response:
     """
 
     game = get_object_or_404(Game, slug=game_name_slug)
-    if game.owner != request.user:
+    if game.owner != request.user and not request.user.is_superuser:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     serializer = GameSerializer(game, data=request.data, partial=True)
@@ -655,6 +656,7 @@ def update_game(request, game_name_slug) -> Response:
 
 
 @api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
 def update_player(request, player_name_slug) -> Response:
     """
     PATCH request to update player data
@@ -672,7 +674,7 @@ def update_player(request, player_name_slug) -> Response:
     """
 
     player = get_object_or_404(Player, slug=player_name_slug)
-    if player.user != request.user:
+    if player.user != request.user and not request.user.is_superuser:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     serializer = PlayerSerializer(player, data=request.data, partial=True)

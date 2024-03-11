@@ -839,7 +839,7 @@ export async function updatePlayer(playerSlug, data){
  */
 export function isOwner(owner){
     const user = getUser();
-    return (user && user === owner);
+    return (user && (user === owner || userIsAdmin()));
 }
 
 /**
@@ -850,6 +850,9 @@ export async function isGameOwner(gameSlug) {
 
     if (!user){
         return false;
+    }
+    else if (userIsAdmin()) {
+        return true;
     }
 
     await requestGame(gameSlug)
@@ -866,6 +869,9 @@ export async function isPlayerOwner(playerSlug) {
 
     if (!user){
         return false;
+    }
+    else if (userIsAdmin()) {
+        return true;
     }
 
     await requestPlayer(playerSlug)
