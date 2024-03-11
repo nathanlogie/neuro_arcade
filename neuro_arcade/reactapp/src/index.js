@@ -19,7 +19,7 @@ import {AnimatePresence} from 'framer-motion'
 import {Background} from "./components/Background";
 import {AuthTest} from "./app/AuthTest";
 import {AllUsers} from "./app/user_account/AllUsers"
-import {isLoggedIn, getUserStatus, userIsAdmin, isGameOwner, isPlayerOwner} from "./backendRequests";
+import {isLoggedIn, getUserStatus, userIsAdmin, isOwner} from "./backendRequests";
 
 /**
  * Protected routes for routes that only require a login
@@ -74,8 +74,7 @@ export function EditRoute({children}){
  * Protected Route for edit game pages requiring ownership
  */
 export function GameOwnerRoute({children}){
-    const gameSlug = useParams().game_slug;
-    if (!isGameOwner(gameSlug)){
+    if (!isOwner("game")){
         return <PageNotFound/>
     }
     return children;
@@ -85,8 +84,7 @@ export function GameOwnerRoute({children}){
  * Protected Route for edit game pages requiring ownership
  */
 export function PlayerOwnerRoute({children}){
-    const playerSlug = useParams().player_slug;
-    if (!isPlayerOwner(playerSlug)){
+    if (!isOwner("player")){
         return <PageNotFound/>
     }
     return children;

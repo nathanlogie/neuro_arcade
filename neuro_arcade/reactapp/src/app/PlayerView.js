@@ -75,7 +75,7 @@ export function PlayerView() {
                 <div className={styles.Content} id={styles["small"]}>
                     <div className={styles.Title}>
                         <h1>{playerData.name}</h1>
-                        {isOwner(playerData.user) ? editButton : null}
+                        {isOwner("player") ? editButton : null}
                     </div>
                     <div className={styles.ContentBlock}>
                         <p>

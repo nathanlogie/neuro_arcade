@@ -66,7 +66,7 @@ export function GameView() {
                 <div className={styles.Content}>
                     <div className={styles.Title}>
                         <h1>{gameData.game.name}</h1>
-                        {isOwner(gameData.owner) ? editButton : null}
+                        {isOwner("game") ? editButton : null}
                     </div>
                     <div className={styles.Title}>
                         <AdminRanking game={gameData.game.id} rating={gameData.game.priority} />

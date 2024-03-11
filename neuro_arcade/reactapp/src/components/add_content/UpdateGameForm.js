@@ -234,8 +234,6 @@ export function GameUpdateForm() {
             formData.append("scoreType", scoreType);
         }
 
-        let url = `${API_ROOT}/api/games/${currentValues.id}/`;
-
         if (formData.entries().next().done && tags.length === 0) {
             setError("root", {
                 message: "No changes detected"
@@ -243,53 +241,50 @@ export function GameUpdateForm() {
             return;
         }
 
-        await updateGames(gameSlug, formData);
+        await updateGames(gameSlug, formData)
+            .then(response => {
+                console.log(response);
 
-        // await axios
-        //     .patch(url, formData, header)
-        //     .then(function (response) {
-        //         console.log(response);
-        //
-        //         if (tags.length !== 0) {
-        //             const finalTagIDs = tags.map((tag) => tag.value);
-        //             formData.append("tags", finalTagIDs);
-        //             let url = `${API_ROOT}/api/games/${response.data.id}/add_tags/`;
-        //             axios.post(url, formData, header).catch((response) => {
-        //                 console.log(response);
-        //                 setError("root", {message: "Error during tag change"});
-        //             });
-        //         }
-        //         reset();
-        //         setError("root", {message: "game updated successfully"});
-        //         setTags([]);
-        //         if (name !== "") {
-        //             navigate(`/all_games/${slugify(name)}`);
-        //         } else {
-        //             navigate(`/all_games/${currentValues.slug}`);
-        //         }
-        //     })
-        //     .catch(function (response) {
-        //         console.log(response);
-        //         if (!response) {
-        //             setError("root", {message: "No response from server"});
-        //         } else {
-        //             if (response.response.data.slug) {
-        //                 setError("root", {message: "A game with that name already exists!"});
-        //                 return;
-        //             } else if (response.response.data.tags) {
-        //                 setError("root", {message: "Tag update failed"});
-        //                 return;
-        //             }
-        //             if (response)
-        //                 if (response.response.data.includes("IntegrityError")) {
-        //                     setError("root", {message: "A game with that name already exists!"});
-        //                 } else {
-        //                     setError("root", {
-        //                         message: `Something went wrong... ${response.response.data}`
-        //                     });
-        //                 }
-        //         }
-        //     });
+                if (tags.length !== 0) {
+                    const finalTagIDs = tags.map((tag) => tag.value);
+                    formData.append("tags", finalTagIDs);
+                    let url = `${API_ROOT}/api/games/${response.data.id}/add_tags/`;
+                    axios.post(url, formData, header).catch((response) => {
+                        console.log(response);
+                        setError("root", {message: "Error during tag change"});
+                    });
+                }
+                reset();
+                setError("root", {message: "game updated successfully"});
+                setTags([]);
+                if (name !== "") {
+                    navigate(`/all_games/${slugify(name)}`);
+                } else {
+                    navigate(`/all_games/${currentValues.slug}`);
+                }
+            })
+            .catch(function (response) {
+                console.log(response);
+                if (!response) {
+                    setError("root", {message: "No response from server"});
+                } else {
+                    if (response.response.data.slug) {
+                        setError("root", {message: "A game with that name already exists!"});
+                        return;
+                    } else if (response.response.data.tags) {
+                        setError("root", {message: "Tag update failed"});
+                        return;
+                    }
+                    if (response)
+                        if (response.response.data.includes("IntegrityError")) {
+                            setError("root", {message: "A game with that name already exists!"});
+                        } else {
+                            setError("root", {
+                                message: `Something went wrong... ${response.response.data}`
+                            });
+                        }
+                }
+            });
     };
 
     if (!loading) {

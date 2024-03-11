@@ -200,6 +200,12 @@ export async function requestGame(gameName) {
     const url = API_ROOT + '/games/' + gameName + '/data/'
     return await axios.get(url)
         .then((response) => {
+            let gameData = {
+                id: response.data.game.id,
+                name: response.data.game.name,
+                owner: response.data.game.owner,
+            }
+            localStorage.setItem("game", JSON.stringify(gameData))
             return response.data;
         })
         .catch((error) => {
@@ -724,6 +730,12 @@ export async function requestPlayer(playerName) {
     const url = API_ROOT + '/players/' + playerName + '/data/'
     return await axios.get(url)
         .then((response) => {
+            let playerData = {
+                name: response.data.name,
+                user: response.data.user,
+                slug: response.data.slug,
+            }
+            localStorage.setItem("player", JSON.stringify(playerData))
             return response.data;
         })
         .catch((error) => {
@@ -812,9 +824,7 @@ export async function requestUserPlayers(userID){
 export async function updateGames(gameSlug, data){
     const url = API_ROOT + `/games/${gameSlug}/update_game/`
 
-    return await axios.patch(url, data, await getHeaders('patch', true))
-        .then((response) => console.log(response))
-        .catch(error => console.log(error))
+    return await axios.patch(url, data, await getHeaders('patch', true));
 }
 
 /**
@@ -837,45 +847,20 @@ export async function updatePlayer(playerSlug, data){
 /**
  * Check if game/player is owned by current user
  */
-export function isOwner(owner){
-    const user = getUser();
-    return (user && (user === owner || userIsAdmin()));
-}
-
-/**
- * Check if game is owned by current logged-in user from slug
- */
-export async function isGameOwner(gameSlug) {
+export function isOwner(type){
     const user = getUser();
 
     if (!user){
         return false;
     }
-    else if (userIsAdmin()) {
+    else if (userIsAdmin()){
         return true;
     }
 
-    await requestGame(gameSlug)
-        .then(gameData => {
-            return gameData.owner === user;
-        })
-}
-
-/**
- * Check if player is owned by current logged-in user from slug
- */
-export async function isPlayerOwner(playerSlug) {
-    const user = getUser();
-
-    if (!user){
-        return false;
+    if (type==="player"){
+        return JSON.parse(localStorage.getItem("player")).user === user.name;
     }
-    else if (userIsAdmin()) {
-        return true;
+    else if (type==="game"){
+        return JSON.parse(localStorage.getItem("game")).owner === user.id;
     }
-
-    await requestPlayer(playerSlug)
-        .then(playerData => {
-            return playerData.user === user;
-        })
 }

@@ -185,7 +185,7 @@ export function ModelUpdateForm() {
         if (image) {
             formData.append("icon", image);
         }
-        let url = `${API_ROOT}/api/players/${currentValues.id}/`;
+
         if (formData.entries().next().done && tags.length === 0) {
             setError("root", {
                 message: "No changes detected"
@@ -193,31 +193,7 @@ export function ModelUpdateForm() {
             return;
         }
 
-        // await updatePlayer(player_name, formData)
-        //     .then(function (response) {
-        //         if (tags.length !== 0) {
-        //             const finalTagIDs = tags.map((tag) => tag.value);
-        //             formData.append("tags", finalTagIDs);
-        //             let url = `${API_ROOT}/api/players/${response.data.id}/add_tags/`;
-        //             axios.post(url, formData, header).catch((response) => {
-        //                 console.log(response);
-        //                 setError("root", {message: "Error during tag change"});
-        //             });
-        //         }
-        //         reset();
-        //         setImage(null);
-        //         setError("root", {message: "model updated successfully"});
-        //         setTags(null);
-        //         if (name === "") {
-        //             navigate(`/all_players/${currentValues.slug}`);
-        //         } else {
-        //             navigate(`/all_players/${slugify(name)}`);
-        //         }
-        //     });
-
-
-        await axios
-            .patch(url, formData, header)
+        await updatePlayer(player_name, formData)
             .then(function (response) {
                 if (tags.length !== 0) {
                     const finalTagIDs = tags.map((tag) => tag.value);
