@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
 
-
 MAX_SCORE_VALUE_SIZE = 256
 
 
@@ -54,7 +53,7 @@ class ScoreType(TypedDict):
 
 def validate_score_header(header: Any) -> Tuple[bool, Optional[str]]:
     """Takes an object parsed from json and checks it's a valid score type
-    
+
     Returns whether the test passed, and the error message if not"""
 
     # While header is expected to be a ScoreHeader, it could be any object
@@ -75,7 +74,7 @@ def validate_score_header(header: Any) -> Tuple[bool, Optional[str]]:
         return False, "Field 'name' is required"
     if not isinstance(header['name'], str):
         return False, "Field 'name' should be a string"
-    
+
     # Type should be integer or float
     if 'type' not in header:
         return False, "Field 'type' is required"
@@ -83,7 +82,7 @@ def validate_score_header(header: Any) -> Tuple[bool, Optional[str]]:
         return False, f"Invalid value for field 'type' - should be integer or float"
 
     data_type = int if header['type'] == Game.SCORE_INT else float
-    
+
     # Min and max should match type if they exist
     if 'min' in header:
         if not isinstance(header['min'], data_type):
@@ -102,7 +101,7 @@ def validate_score_header(header: Any) -> Tuple[bool, Optional[str]]:
 
 def validate_score_type(score_type: Any) -> Tuple[bool, Optional[str]]:
     """Takes an object parsed from json and checks it's a valid score type
-    
+
     Returns whether the test passed, and the error message if not"""
 
     # While score_type is expected to be a ScoreType, it could be any object
@@ -129,12 +128,13 @@ def validate_score_type(score_type: Any) -> Tuple[bool, Optional[str]]:
     for i, d in enumerate(score_type['headers']):
         passed, msg = validate_score_header(d)
         if not passed:
-            return False, f"Error in header {i+1}: {msg}"
-    
+            return False, f"Error in header {i + 1}: {msg}"
+
     return True, None
 
 
-def validate_score(score_type: ScoreType, score: Any) -> Tuple[bool, Optional[str]]:
+def validate_score(score_type: ScoreType,
+                   score: Any) -> Tuple[bool, Optional[str]]:
     """Takes an object parsed from json and checks it's a valid score for its type
     Assumes score_type is already valid
 
@@ -158,8 +158,8 @@ def validate_score(score_type: ScoreType, score: Any) -> Tuple[bool, Optional[st
             return False, f"Field '{header['name']}' is required"
 
         if (
-            ('min' in header and header['min'] > value)
-            or ('max' in header and header['max'] < value)
+                ('min' in header and header['min'] > value)
+                or ('max' in header and header['max'] < value)
         ):
             return False, f"Field '{header['name']}' out of range"
 
@@ -200,7 +200,9 @@ class Game(models.Model):
         self.slug = slugify(self.name)
         super(Game, self).save(*args, **kwargs)
 
-    def matches_search(self, query: Optional[str], tags: Optional[Iterable[GameTag]]) -> bool:
+    def matches_search(self,
+                       query: Optional[str],
+                       tags: Optional[Iterable[GameTag]]) -> bool:
         accept = True
 
         # Check tags
@@ -234,7 +236,9 @@ class Game(models.Model):
             return headers, scores
 
         except TypeError:  # this can happen if score_type is not populated
-            print("[WARN] Something went wrong when trying to get the scores for ", self)
+            print(
+                "[WARN] Something went wrong when trying to get the scores for ",
+                self)
             print("[WARN]  This might happen if score_type is not populated.")
             return None, None
 
@@ -299,12 +303,12 @@ class Player(models.Model):
     MAX_PLAYER_DESCRIPTION_LENGTH = 1024
     PROFILE_SUBDIR = 'profile_pics'
 
-
     name = models.CharField(max_length=MAX_PLAYER_NAME_LENGTH)
     slug = models.SlugField(unique=True, null=True)
     is_ai = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    description = models.TextField(max_length=MAX_PLAYER_DESCRIPTION_LENGTH, default='')
+    description = models.TextField(
+        max_length=MAX_PLAYER_DESCRIPTION_LENGTH, default='')
     tags = models.ManyToManyField(PlayerTag, blank=True)
     icon = models.ImageField(upload_to=PROFILE_SUBDIR, blank=True)
 
@@ -319,7 +323,7 @@ class Player(models.Model):
 class Score(models.Model):
     """Scores. """
 
-    score = models.JSONField(default=default_score) # map of name: value
+    score = models.JSONField(default=default_score)  # map of name: value
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
 
@@ -351,8 +355,14 @@ class UserStatus(models.Model):
         ("pending", "Pending")
     ]
 
-    status = models.CharField(max_length=10, choices=STATUS_OPTIONS, default="pending")
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="status")
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_OPTIONS,
+        default="pending")
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name="status")
 
     def __str__(self):
         return "Status of " + self.user.username + ": " + self.status
