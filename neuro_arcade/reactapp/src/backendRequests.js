@@ -821,6 +821,7 @@ export async function updateGames(gameSlug, data){
  * Update Player Data
  *
  * @param {string} playerSlug: slug of player to update
+ *
  * @param {dict} data: data to update to
  *
  * @Returns {Response} response to patch call
@@ -839,4 +840,36 @@ export async function updatePlayer(playerSlug, data){
 export function isOwner(owner){
     const user = getUser();
     return (user && user === owner);
+}
+
+/**
+ * Check if game is owned by current logged-in user from slug
+ */
+export async function isGameOwner(gameSlug) {
+    const user = getUser();
+
+    if (!user){
+        return false;
+    }
+
+    await requestGame(gameSlug)
+        .then(gameData => {
+            return gameData.owner === user;
+        })
+}
+
+/**
+ * Check if player is owned by current logged-in user from slug
+ */
+export async function isPlayerOwner(playerSlug) {
+    const user = getUser();
+
+    if (!user){
+        return false;
+    }
+
+    await requestPlayer(playerSlug)
+        .then(playerData => {
+            return playerData.user === user;
+        })
 }

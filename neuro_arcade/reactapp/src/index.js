@@ -4,7 +4,7 @@ import './styles/index.css';
 import {HomePage} from "./app/HomePage";
 import {AboutPage} from './app/about/AboutPage';
 import reportWebVitals from './app/reportWebVitals';
-import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, Navigate, RouterProvider, useParams} from "react-router-dom";
 import {AccountPage} from "./app/user_account/AccountPage";
 import {FormPage} from "./app/user_account/FormPage";
 import {AllGames} from "./app/AllGames";
@@ -19,7 +19,7 @@ import {AnimatePresence} from 'framer-motion'
 import {Background} from "./components/Background";
 import {AuthTest} from "./app/AuthTest";
 import {AllUsers} from "./app/user_account/AllUsers"
-import {isLoggedIn, getUserStatus, userIsAdmin} from "./backendRequests";
+import {isLoggedIn, getUserStatus, userIsAdmin, isGameOwner, isPlayerOwner} from "./backendRequests";
 
 /**
  * Protected routes for routes that only require a login
@@ -31,7 +31,7 @@ export function LoginRoutes({children}){
         return <Navigate to={'/login'} />
     }
     return children;
-};
+}
 
 /**
  * Protected routes for routes that require an approved user
@@ -66,6 +66,28 @@ export function AdminRoutes({children}){
 export function EditRoute({children}){
     if (isLoggedIn() && userIsAdmin()){
         return <EditAbout />
+    }
+    return children;
+}
+
+/**
+ * Protected Route for edit game pages requiring ownership
+ */
+export function GameOwnerRoute({children}){
+    const gameSlug = useParams().game_slug;
+    if (!isGameOwner(gameSlug)){
+        return <PageNotFound/>
+    }
+    return children;
+}
+
+/**
+ * Protected Route for edit game pages requiring ownership
+ */
+export function PlayerOwnerRoute({children}){
+    const playerSlug = useParams().player_slug;
+    if (!isPlayerOwner(playerSlug)){
+        return <PageNotFound/>
     }
     return children;
 }
@@ -124,16 +146,16 @@ const router = createBrowserRouter([
     {
         path: 'all_players/:player_slug/edit',
         element:
-            <ApprovedRoutes>
+            <PlayerOwnerRoute>
                 <FormPage type={'modelUpdate'}/>
-            </ApprovedRoutes>
+            </PlayerOwnerRoute>
     },
     {
         path: 'all_games/:game_slug/edit',
         element:
-            <ApprovedRoutes>
+            <GameOwnerRoute>
                 <FormPage type={'gameUpdate'}/>
-            </ApprovedRoutes>
+            </GameOwnerRoute>
     },
     {
         path: "all_games",
