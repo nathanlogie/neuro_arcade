@@ -10,6 +10,7 @@ import CreatableSelect from "react-select/creatable";
 import {requestGameTags, requestGame, API_ROOT, getUser, getHeaders} from "../../backendRequests";
 import slugify from "react-slugify";
 import makeAnimated from "react-select/animated";
+import {updateGames} from "../../backendRequests";
 
 import {MAX_NAME_LENGTH_GAME, MAX_DESCRIPTION_LENGTH_GAME, IMAGE_EXTENSION, SCORE_EXTENSION, EVAL_EXTENSION} from "./variableHelper";
 import {useNavigate, useParams} from "react-router-dom";
@@ -72,7 +73,7 @@ export function GameUpdateForm() {
         requestGame(gameSlug).then((currentData) => {
             setCurrentValues(currentData.game);
             setImageURL(`${API_ROOT}/${currentData.icon}`);
-            getHeaders("PATCH", true, "multipart/form-data").then((header) => {
+            getHeaders("PATCH", true).then((header) => {
                 setHeader(header);
                 requestGameTags().then((tags) => {
                     setExistingTags(tags);
@@ -242,51 +243,53 @@ export function GameUpdateForm() {
             return;
         }
 
-        await axios
-            .patch(url, formData, header)
-            .then(function (response) {
-                console.log(response);
+        await updateGames(gameSlug, formData);
 
-                if (tags.length !== 0) {
-                    const finalTagIDs = tags.map((tag) => tag.value);
-                    formData.append("tags", finalTagIDs);
-                    let url = `${API_ROOT}/api/games/${response.data.id}/add_tags/`;
-                    axios.post(url, formData, header).catch((response) => {
-                        console.log(response);
-                        setError("root", {message: "Error during tag change"});
-                    });
-                }
-                reset();
-                setError("root", {message: "game updated successfully"});
-                setTags([]);
-                if (name !== "") {
-                    navigate(`/all_games/${slugify(name)}`);
-                } else {
-                    navigate(`/all_games/${currentValues.slug}`);
-                }
-            })
-            .catch(function (response) {
-                console.log(response);
-                if (!response) {
-                    setError("root", {message: "No response from server"});
-                } else {
-                    if (response.response.data.slug) {
-                        setError("root", {message: "A game with that name already exists!"});
-                        return;
-                    } else if (response.response.data.tags) {
-                        setError("root", {message: "Tag update failed"});
-                        return;
-                    }
-                    if (response)
-                        if (response.response.data.includes("IntegrityError")) {
-                            setError("root", {message: "A game with that name already exists!"});
-                        } else {
-                            setError("root", {
-                                message: `Something went wrong... ${response.response.data}`
-                            });
-                        }
-                }
-            });
+        // await axios
+        //     .patch(url, formData, header)
+        //     .then(function (response) {
+        //         console.log(response);
+        //
+        //         if (tags.length !== 0) {
+        //             const finalTagIDs = tags.map((tag) => tag.value);
+        //             formData.append("tags", finalTagIDs);
+        //             let url = `${API_ROOT}/api/games/${response.data.id}/add_tags/`;
+        //             axios.post(url, formData, header).catch((response) => {
+        //                 console.log(response);
+        //                 setError("root", {message: "Error during tag change"});
+        //             });
+        //         }
+        //         reset();
+        //         setError("root", {message: "game updated successfully"});
+        //         setTags([]);
+        //         if (name !== "") {
+        //             navigate(`/all_games/${slugify(name)}`);
+        //         } else {
+        //             navigate(`/all_games/${currentValues.slug}`);
+        //         }
+        //     })
+        //     .catch(function (response) {
+        //         console.log(response);
+        //         if (!response) {
+        //             setError("root", {message: "No response from server"});
+        //         } else {
+        //             if (response.response.data.slug) {
+        //                 setError("root", {message: "A game with that name already exists!"});
+        //                 return;
+        //             } else if (response.response.data.tags) {
+        //                 setError("root", {message: "Tag update failed"});
+        //                 return;
+        //             }
+        //             if (response)
+        //                 if (response.response.data.includes("IntegrityError")) {
+        //                     setError("root", {message: "A game with that name already exists!"});
+        //                 } else {
+        //                     setError("root", {
+        //                         message: `Something went wrong... ${response.response.data}`
+        //                     });
+        //                 }
+        //         }
+        //     });
     };
 
     if (!loading) {

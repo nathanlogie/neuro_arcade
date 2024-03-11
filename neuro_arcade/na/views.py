@@ -496,9 +496,7 @@ def get_player_scores(request: Request, player_name_slug: str) -> Response:
         }
         scores_data.append(score_data)
 
-
     return Response(scores_data)
-
 
 
 @api_view(['POST'])
@@ -594,6 +592,36 @@ def get_user_players(request: Request, user_id: int) -> Response:
     return Response(user_players)
 
 
+@api_view(['PATCH'])
+def update_game(request, game_name_slug) -> Response:
+
+    game = get_object_or_404(Game, slug=game_name_slug)
+    if game.owner != request.user:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+    serializer = GameSerializer(game, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+    return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
+
+
+@api_view(['PATCH'])
+def update_player(request, player_name_slug) -> Response:
+
+    player = get_object_or_404(Player, slug=player_name_slug)
+    if player.user != request.user:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+    serializer = PlayerSerializer(player, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+    return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
+
+
 @api_view(['GET'])
 def get_all_users(request, user_id) -> Response:
 
@@ -683,7 +711,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
     def patch(self, request, pk):
         data = request.data
 
-        player = self.get_object(pk=pk)
+        player = self.get_object()
         if not player:
             return Response(status=status.HTTP_404_NOT_FOUND)
 

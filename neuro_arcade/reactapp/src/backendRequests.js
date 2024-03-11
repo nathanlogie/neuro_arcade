@@ -801,3 +801,34 @@ export async function requestUserPlayers(userID){
         })
 }
 
+/**
+ * Update Game Info
+ *
+ * @param {String} gameSlug: slug of game to update
+ * @param {FormData} data: data to update to
+ *
+ * @Returns
+ */
+export async function updateGames(gameSlug, data){
+    const url = API_ROOT + `/games/${gameSlug}/update_game/`
+
+    return await axios.patch(url, data, await getHeaders('patch', true))
+        .then((response) => console.log(response))
+        .catch(error => console.log(error))
+}
+
+/**
+ * Update Player Info
+ *
+ * @param {String} playerSlug: slug of player to update
+ * @param {FormData} data: data to update to
+ *
+ * @Returns
+ */
+export async function updatePlayer(playerSlug, data){
+    const url = API_ROOT + `/players/${playerSlug}/update_player/`
+
+    return await axios.patch(url, data, await getHeaders('patch', true))
+        .then((response) => console.log(response))
+        .catch(error => console.log(error))
+}
