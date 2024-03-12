@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from na import views
-from na.views import GameViewSet, UserViewSet, GameTagViewSet, PlayerViewSet, PlayerTagViewSet
+from na.views import GameViewSet, GameTagViewSet, PlayerViewSet, PlayerTagViewSet
 from rest_framework import routers
 
 
@@ -9,7 +9,6 @@ app_name = 'na'
 
 router = routers.DefaultRouter()
 router.register(r'games', GameViewSet)
-router.register(r'users', UserViewSet)
 router.register(r'gameTag', GameTagViewSet)
 router.register(r'players', PlayerViewSet)
 router.register(r'playerTag', PlayerTagViewSet)
