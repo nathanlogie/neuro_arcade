@@ -2,10 +2,12 @@ from rest_framework import serializers
 from na.models import Game, GameTag, Player, PlayerTag, UserStatus, validate_score_type
 from django.contrib.auth.models import User
 
+
 class UserStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserStatus
         fields = '__all__'
+
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     status = UserStatusSerializer()
@@ -29,11 +31,20 @@ class GameSerializer(serializers.ModelSerializer):
         if not passed:
             raise serializers.ValidationError(msg)
 
-
     class Meta:
         model = Game
-        fields = ['id', 'name', 'slug', 'description', 'owner', 'icon', 'tags', 'score_type', 'play_link',
-                  'evaluation_script', 'priority']
+        fields = [
+            'id',
+            'name',
+            'slug',
+            'description',
+            'owner',
+            'icon',
+            'tags',
+            'score_type',
+            'play_link',
+            'evaluation_script',
+            'priority']
 
 
 class PlayerTagSerializer(serializers.ModelSerializer):
@@ -45,4 +56,12 @@ class PlayerTagSerializer(serializers.ModelSerializer):
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Player
-        fields = ['id', 'name', 'slug', 'is_ai', 'user', 'description', 'tags', 'icon']
+        fields = [
+            'id',
+            'name',
+            'slug',
+            'is_ai',
+            'user',
+            'description',
+            'tags',
+            'icon']

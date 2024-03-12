@@ -39,12 +39,12 @@
     "write-json-file": "^5.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint  --fix src/**/*.js && eslint  --fix src/**/**/*.js",
-    "format": "prettier src/**/*.js --write && prettier src/**/**/*.js --write && find . -type f -name '*.py' ! -path '*/migrations/*' -exec autopep8 --in-place --aggressive --aggressive '{}' \\;"
+    "format": "prettier src/**/*.js --write && prettier src/**/**/*.js --write && cd .. && cd .. && find . -type f -name '*.py' ! -path '*/migrations/*' -exec autopep8 --in-place --aggressive --aggressive '{}' \\;"
   },
   "browserslist": {
     "production": [

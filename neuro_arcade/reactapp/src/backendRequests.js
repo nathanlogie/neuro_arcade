@@ -515,10 +515,15 @@ export function getUser() {
  * But admins don't and hence will be marked as admin
  *
  * @return {Object} user array on success
- * @throws error otherwise
+ * @throws error if user is not admin
  */
 export async function getAllUsers() {
-    const url = API_ROOT + '/api/users/';
+    if (!getUser() || !userIsAdmin()){
+        throw new Error;
+    }
+
+    const userID = getUser().id
+    const url = API_ROOT + `/${userID}/get_all_users/`;
     return await axios.get(url).then((response) => {
         return(response.data.map(function(user) {
             let status = "";
