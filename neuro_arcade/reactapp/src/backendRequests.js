@@ -371,7 +371,7 @@ export async function deletePlayer(playerName) {
  * @throws {Error | UserNotAuthenticatedError} when the request is rejected or when the user is not logged in.
  */
 export async function postGameScore(gameName, playerIdentification, scoreData) {
-    const url = API_ROOT + '/games/' + gameName + '/add_score/'
+    const url = API_ROOT + '/games/' + gameName + '/add-score/'
     // checking if the user is logged in
     if (!isLoggedIn())
         throw UserNotAuthenticatedError()
