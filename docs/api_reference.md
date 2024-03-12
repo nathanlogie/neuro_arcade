@@ -178,7 +178,10 @@ Returns all scores made by a specific player.
 
 
 ### Get User's Players
-
+```
+GET neuroarcade.org/api/users/<user_id>/players/
+```
+Returns players associated with a user.
 
 
 ## Posters
@@ -188,10 +191,32 @@ All of these endpoints require valid authentication as stated in the authenticat
 section of this reference (both user token and CSRF token are necessary).
 
 ### Post Game Score
+```
+POST neuroarcade.org/api/games/<slug:game_name_slug>/add-score/
+```
+Post Score for a game. The format for the body of the Post request is as follows:
 
+For every score type header, the request needs to have a field called the same as the score header. 
+Additionally, the request needs to specify the player responsible for the score by including either
+the id ('PlayerID') or name ('PlayerName') of the player. Keep in mind that the player needs to be
+associated with the current authenticated user, or the request will be refused.
+
+Example: for a score type with a single header called 'Points' then the request needs to have
+a field called 'Points' and a field either called 'PlayerID' or 'PlayerName'.
 
 ### Post Unprocessed Results
+```
+POST neuroarcade.org/api/upload/unprocessed-result/
+```
+Upload of raw score that will need to be evaluated. User needs to be authenticated.
 
+Request format: ```{
+    game: <game slug>,
+    player: <player slug>,
+    content: <raw score as string>,
+}```
+
+Player field needs to be owned by the user making the request
 
 ### Post New Model/Player (Should only be player)
 
