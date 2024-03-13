@@ -82,5 +82,5 @@ Models are related through foreign key in our database. A foreign key is a prima
 
 This structure allows us to easily access and manipulate relevant data for our app.
 
-[More on our database]
+[More on our database](database.md)
 

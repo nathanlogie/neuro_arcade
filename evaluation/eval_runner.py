@@ -6,6 +6,7 @@ import subprocess
 
 BACKLOG_PATH = './backlog/'
 
+
 def main():
     # todo: shouldn't this script just fetch it's own score?
     #  or will the dispatcher be a different script
