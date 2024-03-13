@@ -96,7 +96,7 @@ export function GameForm() {
                 console.log(response);
                 reset();
                 setImage(null);
-                setError("root", {message: "Model submitted successfully"});
+                setError("root", {message: "Game submitted successfully"});
                 setTags(null);
             })
             .catch(function (response) {
