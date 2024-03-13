@@ -15,7 +15,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from na.models import PlayerTag
+from na.models import PlayerTag, validate_score_type
 from django.conf import settings
 
 from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
@@ -356,6 +356,11 @@ def post_new_game(request: Request) -> Response:
         return Response(status=400, data='Invalid data; `evaluationScript` must be provided!')
     if score_types is None:
         return Response(status=400, data='Invalid data; `scoreTypes` must be provided!')
+
+    # validating the score_type
+    valid_score_type, score_type_error = validate_score_type(score_types)
+    if not valid_score_type:
+        return Response(status=400, data='Invalid data; `scoreTypes` is not valid: ' + score_type_error)
 
     try:
         game_obj, _ = Game.objects.get_or_create(
