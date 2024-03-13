@@ -422,7 +422,7 @@ export async function deletePlayer(playerName) {
  * @returns {Promise<axios.AxiosResponse<Player>>}
  */
 export async function getHumanPlayerFromCurrentUser() {
-    const url = API_ROOT + "/get_human_player/";
+    const url = API_ROOT + "/get-human-player/";
 
     if (!isLoggedIn())
         throw new UserNotAuthenticatedError();
