@@ -218,17 +218,49 @@ Request format: ```{
 
 Player field needs to be owned by the user making the request
 
-### Post New Model/Player (Should only be player)
-
+### Post New Model/Player
+```
+POST neuroarcade.org/api/create-player/
+```
+Requests the creation of a new model, represented in the backend as a Player.
+The request should be of format: {playerName: str, description: str, playerTags: [str]}
 
 ### Delete Player
-
+```
+POST neuroarcade.org/api/delete-player/
+```
+Requests the deletion of a player associated with the current user.
+The request should be of format: {playerName: str}
 
 ### Post About Data (admin only)
-
+```
+POST neuroarcade.org/api/edit-about/
+```
+Retrieves About data from edit about form and posts it to media/about.json
+Gets a field and value. Depending on the field, it handles the data appropriately
 
 ### Post User Status (admin only)
-
+```
+POST neuroarcade.org/api/update-status/
+```
+Changes the approval status of a user. The request should be formatted like so:
+```json
+{
+  'user': <username>,
+  'status': <'pending' or 'approved' or 'blocked'>
+}
+```
 
 ### Post Game Rank (admin only)
-
+```
+POST neuroarcade.org/api/post-admin-ranking/
+```
+Posts admin ranking for a game, which is represented by the stars shown on the website.
+The request should be formatted like so:
+```json
+{
+  'id': <game id>,
+  'ranking': <number>
+}
+```
+The ranking number needs to be between 0 and 10. 
