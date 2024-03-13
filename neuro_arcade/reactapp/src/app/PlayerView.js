@@ -71,7 +71,7 @@ export function PlayerView() {
 
     let content = <>...</>;
     if (!loadingPlayer && !loadingScores) {
-        let table = <>There are currently no scores for this player.</>
+        let table = <div className={styles.Text}>There are currently no scores for this player.</div>
         if (playerScores.length !== 0){
           table = <PlayerViewTable inputData={playerScores} />
         }
