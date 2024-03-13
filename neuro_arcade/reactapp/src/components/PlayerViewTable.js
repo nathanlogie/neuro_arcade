@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import {DataGrid} from "@mui/x-data-grid";
 import styles from "../styles/components/Table.module.css";
 import {createTheme, ThemeProvider} from "@mui/material";
+import {Link} from "react-router-dom";
 
 /**
  *
@@ -25,7 +26,18 @@ export function PlayerViewTable({inputData}) {
              */
             renderHeader: function () {
                 return <strong>Game</strong>;
-            }
+            },
+            renderCell: (params) => (
+                <Link
+                    to={"/all-games/" + params.value.replace(/\s+/g, "-").toLowerCase()}
+                    style={{
+                        color: "#FFFFFF",
+                        textDecoration: "none"
+                    }}
+                >
+                    {params.value}
+                </Link>
+            )
         }
     ];
 
