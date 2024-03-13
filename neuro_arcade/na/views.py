@@ -360,7 +360,7 @@ def post_new_game(request: Request) -> Response:
     try:
         game_obj, _ = Game.objects.get_or_create(
             name=game_name,
-            user=request.user,
+            owner=request.user,
             description=description,
             play_link=play_link,
             icon=icon,
@@ -378,7 +378,7 @@ def post_new_game(request: Request) -> Response:
         # Note: this can create new tags
         selected_tag = GameTag.objects.get_or_create(name=tag)[0]
         tags_to_add.append(selected_tag)
-    game_tags.tags.set(tags_to_add)
+    game_obj.tags.set(tags_to_add)
 
     return Response(status=200, data={
         'msg': 'Game was successfully created!',

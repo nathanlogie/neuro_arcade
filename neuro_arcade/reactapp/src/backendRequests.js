@@ -303,6 +303,7 @@ export async function createNewGame(
         gameTags: gameTags,
         evaluationScript: evaluationScript,
         scoreTypes: scoreTypes,
+        playLink: playLink,
     };
     if (image)
         data.icon = image;
