@@ -87,7 +87,7 @@ export function AccountPage() {
                 }
             })
             .catch(() => {});
-            getGamesFromCurrentUser()
+        getGamesFromCurrentUser()
             .then((g) => {
                 let games = [];
                 g.data.map((game) => games.push(game));

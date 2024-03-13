@@ -18,7 +18,6 @@ import {ImCross} from "react-icons/im";
  * Lets admins see all users and approve new ones
  */
 export function AllUsers() {
-
     const [users, setUsers] = useState([]);
 
     let nav_left = <Button name={"user account"} link={"/user_account"} orientation={"left"} direction={"left"} />;
@@ -56,20 +55,26 @@ export function AllUsers() {
                 if (user.status === "approved") {
                     return (
                         <>
-                            <motion.button className={table.Revoke} onClick={() => changeUserStatus(user, "pending")}
-                                           whileHover={{scale: 1.1}}
-                                           whileTap={{scale: 0.9}}>
+                            <motion.button
+                                className={table.Revoke}
+                                onClick={() => changeUserStatus(user, "pending")}
+                                whileHover={{scale: 1.1}}
+                                whileTap={{scale: 0.9}}
+                            >
                                 Revoke
                                 <div>
-                                    <ImCross/>
+                                    <ImCross />
                                 </div>
                             </motion.button>
-                            <motion.button className={table.Block} onClick={() => changeUserStatus(user, "blocked")}
-                                           whileHover={{scale: 1.1}}
-                                           whileTap={{scale: 0.9}}>
+                            <motion.button
+                                className={table.Block}
+                                onClick={() => changeUserStatus(user, "blocked")}
+                                whileHover={{scale: 1.1}}
+                                whileTap={{scale: 0.9}}
+                            >
                                 Block
                                 <div>
-                                    <MdBlock/>
+                                    <MdBlock />
                                 </div>
                             </motion.button>
                         </>
@@ -77,20 +82,26 @@ export function AllUsers() {
                 } else if (user.status === "pending") {
                     return (
                         <>
-                            <motion.button className={table.Approve} onClick={() => changeUserStatus(user, "approved")}
-                                           whileHover={{scale: 1.1}}
-                                           whileTap={{scale: 0.9}}>
+                            <motion.button
+                                className={table.Approve}
+                                onClick={() => changeUserStatus(user, "approved")}
+                                whileHover={{scale: 1.1}}
+                                whileTap={{scale: 0.9}}
+                            >
                                 Approve
                                 <div>
-                                    <FaPlus/>
+                                    <FaPlus />
                                 </div>
                             </motion.button>
-                            <motion.button className={table.Block} onClick={() => changeUserStatus(user, "blocked")}
-                                           whileHover={{scale: 1.1}}
-                                           whileTap={{scale: 0.9}}>
+                            <motion.button
+                                className={table.Block}
+                                onClick={() => changeUserStatus(user, "blocked")}
+                                whileHover={{scale: 1.1}}
+                                whileTap={{scale: 0.9}}
+                            >
                                 Block
                                 <div>
-                                    <MdBlock/>
+                                    <MdBlock />
                                 </div>
                             </motion.button>
                         </>
@@ -129,7 +140,7 @@ export function AllUsers() {
                 animate={{opacity: 1, x: 0}}
                 exit={{opacity: 0, x: 100}}
             >
-                <div className={styles.Content} id={styles["big"]}>
+                <div className={styles.DataBlock} id={styles["big"]}>
                     <div className={table.TableContainer} id={table["allUsers"]}>
                         <h2>All Users</h2>
                         <ThemeProvider theme={table_theme}>
@@ -152,7 +163,7 @@ export function AllUsers() {
                         </ThemeProvider>
                     </div>
                 </div>
-                <div className={styles.MobileBannerBuffer}/>
+                <div className={styles.MobileBannerBuffer} />
             </motion.div>
         </>
     );

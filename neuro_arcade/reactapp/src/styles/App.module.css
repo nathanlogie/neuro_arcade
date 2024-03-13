@@ -300,6 +300,7 @@
         padding: 0 3em;
         width: 100%;
         display: flex;
+        justify-content: center;
         overflow-x: auto;
         gap: 3em;
         .Graphs {
