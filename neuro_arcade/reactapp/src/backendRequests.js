@@ -217,7 +217,7 @@ export async function requestGame(gameName) {
 /**
  * Requests a list of all available GameTags.
  *
- * @return {GameTag[]} response data
+ * @return {Promise<GameTag[]>} response data
  *
  * @throws Error when the request is rejected.
  */
