@@ -746,7 +746,7 @@ def get_user_players(request: Request, user_id: int) -> Response:
 
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
-def update_game(request, game_name_slug) -> Response:
+def update_game(request: Request, game_name_slug: str) -> Response:
     """
     PATCH request to update game data
 
@@ -762,16 +762,32 @@ def update_game(request, game_name_slug) -> Response:
             with status 400 otherwise
     """
 
-    game = get_object_or_404(Game, slug=game_name_slug)
-    if game.owner != request.user and not request.user.is_superuser:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+    game_obj = get_object_or_404(Game, slug=game_name_slug)
+    if game_obj.owner != request.user and not request.user.is_superuser:
+        return Response(status=401)
 
-    serializer = GameSerializer(game, data=request.data, partial=True)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(status=status.HTTP_200_OK, data=serializer.data)
+    # removing tags from the request
+    new_tags = request.data.get('gameTags')
+    request.data['gameTags'] = None
 
-    return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
+    serializer = GameSerializer(game_obj, data=request.data, partial=True)
+    if not serializer.is_valid():
+        return Response(status=400, data=serializer.errors)
+    serializer.save()
+
+    if new_tags is not None:
+        # removing tags from the game object
+        game_obj.tags.set([])
+
+        # adding game tags to the game
+        tags_to_add = []
+        for tag in new_tags:
+            # Note: this can create new tags
+            selected_tag = GameTag.objects.get_or_create(name=tag)[0]
+            tags_to_add.append(selected_tag)
+        game_obj.tags.set(tags_to_add)
+
+    return Response(status=200, data=serializer.data)
 
 
 @api_view(['PATCH'])

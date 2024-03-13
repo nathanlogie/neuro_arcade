@@ -193,7 +193,7 @@ export async function ping() {
  *
  * @param {string} gameName - slug of the game name
  *
- * @return {Game} response data
+ * @return {Promise<axios.AxiosResponse<Object>>} response data
  *
  * @throws Error when the request is rejected.
  */
@@ -937,14 +937,13 @@ export async function requestUserPlayers(userID) {
 /**
  * Update Game Info
  *
- * @param {string} gameSlug: slug of game to update
- * @param {dict} data: data to update to
+ * @param gameSlug {string}
+ * @param data {{}} new game data
  *
  * @Returns {Response} response to patch call
  */
 export async function updateGames(gameSlug, data){
     const url = API_ROOT + `/games/${gameSlug}/update_game/`
-
     return await axios.patch(url, data, await getHeaders('patch', true));
 }
 

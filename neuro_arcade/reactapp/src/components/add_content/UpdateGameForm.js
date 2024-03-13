@@ -16,7 +16,7 @@ import {
     IMAGE_EXTENSION,
     SCORE_EXTENSION,
     EVAL_EXTENSION,
-    customStyles
+    customStyles, handleFileUpload
 } from "./formHelper";
 import {useNavigate, useParams} from "react-router-dom";
 import {FaSave} from "react-icons/fa";
@@ -41,44 +41,50 @@ export function GameUpdateForm() {
     let [scoreType, setScoreType] = useState(null);
     let [name, setName] = useState("");
     let [description, setDescription] = useState("");
-    let [tags, setTags] = useState([]);
     let [playLink, setPlayLink] = useState("");
+    let [imageURL, setImageURL] = useState(null);
+    let [tags, setTags] = useState([]);
+
     let [options, setOptions] = useState([]);
     let [existingTags, setExistingTags] = useState([]);
     let [currentValues, setCurrentValues] = useState(null);
     let [loading, setLoading] = useState(true);
-    let [imageURL, setImageURL] = useState(null);
-    let [header, setHeader] = useState(null);
     const gameSlug = useParams().game_slug;
     const navigate = useNavigate();
 
     useEffect(() => {
-        requestGame(gameSlug).then((currentData) => {
-            setCurrentValues(currentData.game);
-            setImageURL(`${API_ROOT}/${currentData.icon}`);
-            getHeaders("PATCH", true).then((header) => {
-                setHeader(header);
-                requestGameTags().then((tags) => {
-                    setExistingTags(tags);
-                    setLoading(false);
-                    console.log(currentValues);
-                });
-            });
+        requestGame(gameSlug).then((response) => {
+            console.log(response.game)
+            setCurrentValues(response.game);
+            setImageURL(`${API_ROOT}/${response.game.icon}`);
+            console.log(response.game.tags);
+            let _tags = []
+            response.game.tags.forEach((tagName) => {
+                _tags.push({
+                    value: tagName,
+                    label: tagName,
+                })
+            })
+            setTags(_tags);
+            console.log(tags);
+            setLoading(false);
         });
     }, []);
 
-    existingTags.forEach((tag) => {
-        options.push({
-            value: tag.id,
-            label: tag.name
-        });
-    });
+    useEffect(() => {
+        requestGameTags().then((tags) => setExistingTags(tags));
+    }, []);
 
-    options.forEach((option) => {
-        if (currentValues.tags.includes(option.value)) {
-            tags.push(option);
-        }
-    });
+    useEffect(() => {
+        let newOpt = [];
+        existingTags.forEach((tag) =>
+            newOpt.push({
+                value: tag.name,
+                label: tag.name
+            })
+        );
+        setOptions(newOpt);
+    }, [existingTags]);
 
     function handleTagReset() {
         setTags([]);
@@ -112,7 +118,7 @@ export function GameUpdateForm() {
             });
             return;
         }
-
+        //todo this shouldn't be done through a ViewSet
         let url = `${API_ROOT}/api/games/${currentValues.id}/`;
         axios
             .delete(url)
@@ -141,50 +147,12 @@ export function GameUpdateForm() {
         }
     };
 
-    async function handleCreate(tagName) {
-        let formData = new FormData();
-        let url = `${API_ROOT}/api/gameTag/`;
-        formData.append("name", tagName);
-        formData.append("slug", slugify(tagName));
-        formData.append("description", "default description");
-        await axios
-            .post(url, formData, header)
-            .then((response) => {
-                console.log(response);
-                let newValue = {
-                    value: response.data.id,
-                    label: response.data.name
-                };
-                setOptions((prev) => [...prev, newValue]);
-                setTags((prev) => [...prev, newValue]);
-            })
-            .catch(() => {
-                setError("tags", {message: "Error creating new tag"});
-            });
-    }
-
     const handleEvalScript = (event) => {
-        const file = event.target.files[0];
-        const acceptedFormats = EVAL_EXTENSION;
-        const fileExtension = file.name.split(".").pop().toLowerCase();
-        if (!acceptedFormats.includes(fileExtension)) {
-            setError("evaluationScript", {message: "Invalid file type provided"});
-            setEvaluationScript(null);
-        } else {
-            setEvaluationScript(file);
-        }
+        handleFileUpload(event.target.files[0], EVAL_EXTENSION, setEvaluationScript, setError, 'evaluationScript');
     };
 
     const handleScores = (event) => {
-        const file = event.target.files[0];
-        const acceptedFormats = SCORE_EXTENSION;
-        const fileExtension = file.name.split(".").pop().toLowerCase();
-        if (!acceptedFormats.includes(fileExtension)) {
-            setError("scoreType", {message: "Invalid file type provided"});
-            setScoreType(null);
-        } else {
-            setScoreType(file);
-        }
+        handleFileUpload(event.target.files[0], SCORE_EXTENSION, setScoreType, setError, 'scoreType');
     };
 
     const onUpdate = async (event) => {
@@ -195,51 +163,38 @@ export function GameUpdateForm() {
             return;
         }
 
-        let formData = new FormData();
+        let data = {};
         if (name !== "") {
-            formData.append("name", name);
-            formData.append("slug", slugify(name));
+            data.name = name;
+            data.slug = slugify(name);
         }
         if (description !== "") {
-            formData.append("description", description);
+            data.description = description;
         }
         if (playLink !== "") {
-            formData.append("play_link", playLink);
+            data['play_link'] = playLink;
         }
-
         if (image) {
-            formData.append("icon", image);
+            data.icon = image;
         }
         if (evaluationScript) {
-            formData.append("evaluation_script", evaluationScript);
+            data["evaluation_script"] = evaluationScript;
         }
         if (scoreType) {
-            formData.append("scoreType", scoreType);
+            data.scoreType = scoreType;
         }
+        data.gameTags = tags.map(t => t.value);
 
-        if (formData.entries().next().done && tags.length === 0) {
+        if (data === {}) {
             setError("root", {
                 message: "No changes detected"
             });
             return;
         }
 
-        await updateGames(gameSlug, formData)
+        await updateGames(gameSlug, data)
             .then((response) => {
                 console.log(response);
-
-                if (tags.length !== 0) {
-                    const finalTagIDs = tags.map((tag) => tag.value);
-                    formData.append("tags", finalTagIDs);
-                    let url = `${API_ROOT}/api/games/${response.data.id}/add_tags/`;
-                    axios.post(url, formData, header).catch((response) => {
-                        console.log(response);
-                        setError("root", {message: "Error during tag change"});
-                    });
-                }
-                reset();
-                setError("root", {message: "game updated successfully"});
-                setTags([]);
                 if (name !== "") {
                     navigate(`/all-games/${slugify(name)}`);
                 } else {
@@ -309,7 +264,7 @@ export function GameUpdateForm() {
                     isMulti
                     defaultValue={currentValues.tags}
                     onChange={(newValue) => setTags(newValue)}
-                    onCreateOption={handleCreate}
+                    // onCreateOption={handleCreate}
                     value={tags}
                     options={options}
                     components={makeAnimated()}
