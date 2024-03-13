@@ -2,6 +2,8 @@ from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, TypedDic
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.template.defaultfilters import slugify
 
 MAX_SCORE_VALUE_SIZE = 256
@@ -366,3 +368,10 @@ class UserStatus(models.Model):
 
     def __str__(self):
         return "Status of " + self.user.username + ": " + self.status
+
+
+@receiver(post_save, sender=User)
+def on_superuser_created(sender, instance, created, **kwargs):
+    if created and instance.is_superuser:
+        player = Player.objects.get_or_create(
+            name = instance.username, description = "Human Player for " + instance.username, is_ai=False, user=instance)
