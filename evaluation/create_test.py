@@ -4,17 +4,25 @@ Creates dummy unprocessed results in the database
 Depends on games and players from populate.py
 """
 
-from na.models import UnprocessedResults, Game, Player, validate_score
-from django.db.utils import OperationalError
-import json
-import django
+# Imports need to happen in a specific order to setup django
+# autopep8: off
+
 import os
 import sys
-import subprocess
 
 sys.path.insert(0, '../neuro_arcade')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'neuro_arcade.settings')
+import django
 django.setup()
+
+import json
+
+import django
+from django.db.utils import OperationalError
+
+from na.models import UnprocessedResults, Game, Player, validate_score
+
+# autopep8: on
 
 BACKLOG_PATH = './backlog/'
 

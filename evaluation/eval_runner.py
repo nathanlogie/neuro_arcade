@@ -1,15 +1,7 @@
 # MAKE SURE YOU RUN THIS FILE FROM INSIDE /evaluation/ !!!
-from na.models import UnprocessedResults, Score, validate_score
-from django.db.utils import OperationalError
-from django.db import transaction
-import time
-from threading import Thread
-from tempfile import TemporaryDirectory
-import subprocess
-import shutil
-import json
-from enum import IntEnum
-import django
+
+# autopep8: off
+
 import sys
 import os
 
@@ -18,8 +10,24 @@ from django.core.mail import EmailMessage
 
 sys.path.insert(0, '../neuro_arcade')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'neuro_arcade.settings')
+import django
 django.setup()
 
+from enum import IntEnum
+import json
+import shutil
+import subprocess
+from tempfile import TemporaryDirectory
+from threading import Thread
+import time
+
+import django
+from django.db.utils import OperationalError
+from django.db import transaction
+
+from na.models import UnprocessedResults, Score, validate_score
+
+# autopep8: on
 
 class EvalError(IntEnum):
     # Ran successfully
