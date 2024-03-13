@@ -26,4 +26,6 @@ urlpatterns = [
     path('players/<slug:player_name_slug>/score/', views.get_player_scores, name='player_scores'),
     path('users/<user_id>/players/', views.get_user_players, name='get_user_players'),
     path('<user_id>/get_all_users/', views.get_all_users, name='get_all_users'),
+    path('games/<slug:game_name_slug>/update_game/', views.update_game, name='update_game'),
+    path('players/<slug:player_name_slug>/update_player/', views.update_player, name='update_player')
 ]
