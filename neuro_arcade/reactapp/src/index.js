@@ -4,7 +4,7 @@ import './styles/index.css';
 import {HomePage} from "./app/HomePage";
 import {AboutPage} from './app/about/AboutPage';
 import reportWebVitals from './app/reportWebVitals';
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, Navigate, RouterProvider, useParams} from "react-router-dom";
 import {AccountPage} from "./app/user_account/AccountPage";
 import {FormPage} from "./app/user_account/FormPage";
 import {AllGames} from "./app/AllGames";
@@ -19,6 +19,26 @@ import {Background} from "./components/Background";
 import {AuthTest} from "./app/AuthTest";
 import {AllUsers} from "./app/user_account/AllUsers"
 import {LoginRoutes, EditRoute, ApprovedRoutes, AdminRoutes} from "./ProtectedRoutes"
+
+/**
+ * Protected Route for edit game pages requiring ownership
+ */
+export function GameOwnerRoute({children}){
+    if (!isOwner("game")){
+        return <PageNotFound/>
+    }
+    return children;
+}
+
+/**
+ * Protected Route for edit game pages requiring ownership
+ */
+export function PlayerOwnerRoute({children}){
+    if (!isOwner("player")){
+        return <PageNotFound/>
+    }
+    return children;
+}
 
 const router = createBrowserRouter([
     {
@@ -74,16 +94,16 @@ const router = createBrowserRouter([
     {
         path: 'all_players/:player_slug/edit',
         element:
-            <ApprovedRoutes>
+            <PlayerOwnerRoute>
                 <FormPage type={'modelUpdate'}/>
-            </ApprovedRoutes>
+            </PlayerOwnerRoute>
     },
     {
         path: 'all_games/:game_slug/edit',
         element:
-            <ApprovedRoutes>
+            <GameOwnerRoute>
                 <FormPage type={'gameUpdate'}/>
-            </ApprovedRoutes>
+            </GameOwnerRoute>
     },
     {
         path: "all_games",
