@@ -121,7 +121,7 @@
                 height: 10rem;
                 object-fit: cover;
                 border-radius: 2em;
-                margin: 0 1.5em;
+                margin: 1em;
             }
             & p {
                 width: 100%;
@@ -138,6 +138,7 @@
         }
         #details {
             gap: 5em;
+            overflow-x: scroll;
         }
         .Header {
             z-index: 1;
@@ -315,7 +316,6 @@
         padding: 0 3em;
         width: 100%;
         display: flex;
-        justify-content: center;
         overflow-x: auto;
         gap: 3em;
         .Graphs {
@@ -373,6 +373,12 @@
             top: -1.4em;
         }
         & form {
+            & img {
+                width: 10rem;
+                height: 10rem;
+                object-fit: cover;
+                border-radius: 2em;
+            }
             button {
                 position: relative;
                 width: max-content;

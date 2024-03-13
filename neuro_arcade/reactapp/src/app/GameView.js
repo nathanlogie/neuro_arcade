@@ -109,6 +109,12 @@ export function GameView() {
                     <div className={styles.ContentBlock} id={styles["details"]}>
                         {tags}
                         {owner}
+                        <Button
+                            name={"play"}
+                            link={gameData.game.play_link}
+                            orientation={"right"}
+                            direction={"right"}
+                        />
                     </div>
                 </div>
                 <div className={styles.DataBlock}>

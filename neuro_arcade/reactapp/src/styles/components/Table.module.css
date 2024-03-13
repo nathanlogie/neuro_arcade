@@ -29,7 +29,8 @@
 
 #allUsers {
     height: unset;
-    margin-left: unset;
+    margin-left: auto;
+    margin-right: auto;
     * {
         font-family: inherit;
         justify-content: space-between;
