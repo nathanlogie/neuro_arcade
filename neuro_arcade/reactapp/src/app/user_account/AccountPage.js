@@ -86,7 +86,8 @@ export function AccountPage() {
             .then((g) => {
                 let games = [];
                 g.data.map((game) => games.push(game));
-                setGameGrid(<CardGrid subjects={games} linkPrefix={"/all-games/"} />);
+                if (games.length > 0)
+                    setGameGrid(<CardGrid subjects={games} linkPrefix={"/all-games/"} />);
             })
             .catch(() => {});
     }, []);
