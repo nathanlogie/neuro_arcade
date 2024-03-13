@@ -85,14 +85,10 @@ export function GameView() {
                 <></>
             );
         let owner =
-            gameData.game.owner === gameData.game.name ? (
-                <p>This is a registered player</p>
-            ) : (
                 <div>
                     <h3>Uploaded by</h3>
-                    <div>{gameData.game.owner}</div>
-                </div>
-            );
+                    <div>{gameData.game.owner.name}</div>
+                </div>;
 
         content = (
             <motion.div className={styles.MainBlock} id={styles["small"]} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>

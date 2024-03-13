@@ -1,6 +1,7 @@
 import Rating from "@mui/material/Rating";
 import {useState} from "react";
 import {postAdminRanking, isLoggedIn, userIsAdmin} from "../backendRequests";
+import {createTheme, ThemeProvider} from "@mui/material";
 
 /**
  *
@@ -16,12 +17,36 @@ export function AdminRanking({game, rating}) {
         await postAdminRanking(game, newValue);
     }
 
+    const table_theme = createTheme({
+        palette: {
+            mode: "dark"
+        }
+    });
+
     return (
         <>
             {isLoggedIn() && userIsAdmin() ? (
-                <Rating name='half-rating customized-10' value={value} onChange={handleChange} precision={0.5} max={10} />
+                <ThemeProvider theme={table_theme}>
+                    <Rating
+                        sx={{
+                            backgroundColor: 'rgba(255,255,255,0.15)',
+                            borderRadius: '0.75em',
+                            padding: '0.5em',
+                            color: '#79FFB7',
+                        }}
+                        name='half-rating customized-10' value={value} onChange={handleChange} precision={0.5} max={10} />
+                </ThemeProvider>
             ) : (
-                <Rating name='half-rating customized-10' value={value} precision={0.5} max={10} readOnly />
+                <ThemeProvider theme={table_theme}>
+                    <Rating
+                        sx={{
+                            backgroundColor: 'rgba(255,255,255,0.15)',
+                            borderRadius: '0.75em',
+                            padding: '0.5em',
+                            color: '#79FFB7',
+                        }}
+                        name='half-rating customized-10' value={value} precision={0.5} max={10} readOnly />
+                </ThemeProvider>
             )}
         </>
     );
