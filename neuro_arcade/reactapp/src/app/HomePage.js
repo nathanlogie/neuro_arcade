@@ -35,7 +35,7 @@ export function HomePage() {
 
     let nav_left = <Button name={"about"} link={"/about"} orientation={"left"} direction={"left"} />;
 
-    let nav_right = <Card id={"nav"} link={"sign-up"} text={"Guest"} icon={<FaRegUserCircle />} />;
+    let nav_right = <Card id={"nav"} link={"login"} text={"Guest"} icon={<FaRegUserCircle />} />;
 
     // Fetch the data tags on load
     useEffect(() => {
