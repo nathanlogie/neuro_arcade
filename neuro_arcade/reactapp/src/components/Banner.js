@@ -19,6 +19,10 @@ export function Banner({size, left, right, selected}) {
 
     const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(selected);
     const navigate = useNavigate();
+    let link = "/all_games";
+    if (window.location.pathname === "/all_games"){
+      link = "/";
+    }
 
     const handleSwitcherChange = (selectedValue) => {
         setSelectedSwitcherValue(selectedValue);
@@ -43,7 +47,7 @@ export function Banner({size, left, right, selected}) {
             <>
                 <div className={styles.Banner} id={styles["small"]}>
                     <div className={styles.Buffer}>
-                        <Button name={"back"} link={"/all_games"} direction={"up"} orientation={"left"} />
+                        <Button name={"back"} link={link} direction={"up"} orientation={"left"} />
                     </div>
                     <Logo size={size} />
                     <div className={styles.Buffer}>

@@ -864,13 +864,3 @@ export function isOwner(type){
         return JSON.parse(localStorage.getItem("game")).owner === user.id;
     }
 }
-
-/**
- * Get prev url (for back buttons)
- */
-export function getBackURL(){
-    const url = window.location.pathname;
-    const backURL = url.split("/")
-    backURL.pop();
-    return backURL.concat("/");
-}
