@@ -1,10 +1,11 @@
-import {useParams} from "react-router-dom";
-import {API_ROOT, requestPlayer, requestPlayerScores} from "../backendRequests";
+import {Link, useParams} from "react-router-dom";
+import {API_ROOT, requestPlayer, requestPlayerScores, isOwner} from "../backendRequests";
 import styles from "../styles/App.module.css";
 import React, {useEffect, useState} from "react";
 import {PlayerViewTable} from "../components/PlayerViewTable";
 import {Banner, MobileBanner} from "../components/Banner";
 import {motion} from "framer-motion";
+import {FaRegPenToSquare} from "react-icons/fa6";
 import placeholder from "../static/images/placeholder.webp";
 
 /**
@@ -16,7 +17,6 @@ export function PlayerView() {
     let playerSlug = useParams().player_slug;
     let [loadingPlayer, setLoadingPlayer] = useState(true);
     let [playerData, setPlayerData] = useState({});
-
     let [loadingScores, setLoadingScores] = useState(true);
     let [playerScores, setPlayerScores] = useState([]);
     useEffect(() => {
@@ -58,6 +58,17 @@ export function PlayerView() {
             </div>
         );
 
+    const editButton = (
+        <Link
+         to={'edit'}>
+            <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
+                <div>
+                    <FaRegPenToSquare />
+                </div>
+            </motion.div>
+        </Link>
+    )
+
     let content = <>...</>;
     if (!loadingPlayer && !loadingScores) {
         let icon = <img src={placeholder} alt='icon' />;
@@ -70,6 +81,7 @@ export function PlayerView() {
                 <div className={styles.Content} id={styles["small"]}>
                     <div className={styles.Title}>
                         <h1>{playerData.name}</h1>
+                        {isOwner("player") ? editButton : null}
                     </div>
                     <div className={styles.ContentBlock}>
                         <p>

@@ -9,6 +9,7 @@ import slugify from "react-slugify";
 import makeAnimated from "react-select/animated";
 import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION} from "./variableHelper";
 import {useNavigate, useParams} from "react-router-dom";
+import {updatePlayer} from "../../backendRequests";
 import {FaSave} from "react-icons/fa";
 import {GrPowerReset} from "react-icons/gr";
 
@@ -67,7 +68,7 @@ export function ModelUpdateForm() {
         requestPlayer(player_name).then((currentData) => {
             setCurrentValues(currentData);
             setImageURL(`${API_ROOT}/${currentData.icon}`);
-            getHeaders("PATCH", true, "multipart/form-data").then((header) => {
+            getHeaders("PATCH", true).then((header) => {
                 setHeader(header);
                 requestPlayerTags().then((tags) => {
                     setExistingTags(tags);
@@ -186,7 +187,7 @@ export function ModelUpdateForm() {
         if (image) {
             formData.append("icon", image);
         }
-        let url = `${API_ROOT}/api/players/${currentValues.id}/`;
+
         if (formData.entries().next().done && tags.length === 0) {
             setError("root", {
                 message: "No changes detected"
@@ -194,8 +195,7 @@ export function ModelUpdateForm() {
             return;
         }
 
-        await axios
-            .patch(url, formData, header)
+        await updatePlayer(player_name, formData)
             .then(function (response) {
                 if (tags.length !== 0) {
                     const finalTagIDs = tags.map((tag) => tag.value);

@@ -3,22 +3,18 @@
 """
 Populate the database with example data
 """
-from na.models import *
-from typing import Dict
-from django.contrib.auth.models import Group, Permission
-import django
-from neuro_arcade.settings import MEDIA_ROOT, STATIC_DIR
-from shutil import copy
-import os
-import random
+
+# Imports need to be in a specific order
+# autopep8: off
 
 """
 Setup django
 """
 
-
+import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'neuro_arcade.settings')
 
+import django
 
 django.setup()
 
@@ -26,6 +22,17 @@ django.setup()
 Main program
 """
 
+import random
+from shutil import copy
+from typing import Dict
+
+from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import Group, Permission
+
+from neuro_arcade.settings import MEDIA_ROOT, STATIC_DIR
+from na.models import *
+
+# autopep8: on
 
 # For the randomly assigned priority
 

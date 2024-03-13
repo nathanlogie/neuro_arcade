@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {Link, Navigate, useParams} from "react-router-dom";
 import {API_ROOT, requestGame} from "../backendRequests";
 import styles from "../styles/App.module.css";
 import {Table} from "../components/game/Table";
@@ -12,8 +12,9 @@ import {MdBubbleChart} from "react-icons/md";
 import {AiOutlineRadarChart} from "react-icons/ai";
 import {AdminRanking} from "../components/AdminRanking";
 import {Button} from "../components/Button";
-import {isLoggedIn} from "../backendRequests";
 import placeholder from "../static/images/placeholder.webp";
+import {isLoggedIn, isOwner} from "../backendRequests";
+import { FaRegPenToSquare } from "react-icons/fa6";
 
 /**
  *
@@ -48,6 +49,17 @@ export function GameView() {
         setSelectedSwitcherValue(selectedValue);
     };
 
+    const editButton = (
+        <Link
+         to={'edit'}>
+            <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
+                <div>
+                    <FaRegPenToSquare />
+                </div>
+            </motion.div>
+        </Link>
+    )
+
     let content = <>...</>;
     if (!loading) {
         let icon = <img src={placeholder} alt='icon' />;
@@ -60,6 +72,7 @@ export function GameView() {
                 <div className={styles.Content}>
                     <div className={styles.Title}>
                         <h1>{gameData.game.name}</h1>
+                        {isOwner("game") ? editButton : null}
                     </div>
                     <div className={styles.Title}>
                         <AdminRanking game={gameData.game.id} rating={gameData.game.priority} />
