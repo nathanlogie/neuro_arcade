@@ -7,36 +7,11 @@ import CreatableSelect from "react-select/creatable";
 import {requestPlayerTags, getUser, getHeaders, API_ROOT, requestPlayer} from "../../backendRequests";
 import slugify from "react-slugify";
 import makeAnimated from "react-select/animated";
-import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION} from "./formHelper";
+import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION, customStyles} from "./formHelper";
 import {useNavigate, useParams} from "react-router-dom";
 import {updatePlayer} from "../../backendRequests";
 import {FaSave} from "react-icons/fa";
 import {GrPowerReset} from "react-icons/gr";
-
-const customStyles = {
-    option: (provided) => ({...provided, color: "white"}),
-    control: (provided) => ({
-        ...provided,
-        color: "black",
-        backgroundColor: "rgba(255, 255, 255, 0.2)",
-        border: "none",
-        borderRadius: "0.5em",
-        marginBottom: "1em"
-    }),
-    valueContainer: (provided) => ({...provided, height: "max-content"}),
-    placeholder: (provided) => ({
-        ...provided,
-        color: "#CCCCCC",
-        textAlign: "left",
-        fontSize: "0.9em",
-        paddingLeft: "1em"
-    }),
-    input: (provided) => ({...provided, color: "#FFFFFF", paddingLeft: "1em", fontSize: "0.9em"}),
-    multiValue: (provided) => ({...provided, backgroundColor: "rgba(0,0,0,0.2)", color: "white", borderRadius: "0.5em"}),
-    multiValueLabel: (provided) => ({...provided, color: "white"}),
-    multiValueRemove: (provided) => ({...provided, borderRadius: "0.5em"}),
-    menu: (provided) => ({...provided, borderRadius: "0.5em", position: "relative"})
-};
 
 /**
  * @returns {JSX.Element} update existing model form

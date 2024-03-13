@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {SCORE_EXTENSION} from "./formHelper";
+import {SCORE_EXTENSION, customStyles} from "./formHelper";
 import {useForm} from "react-hook-form";
 import {motion} from "framer-motion";
 import {LuFileJson} from "react-icons/lu";
@@ -8,21 +8,6 @@ import {getUser, requestUserPlayers, postUnprocessedResults} from "../../backend
 import makeAnimated from "react-select/animated";
 import Select from "react-select";
 import {useParams} from "react-router-dom";
-
-const customStyles = {
-    option: (provided) => ({...provided, color: "white"}),
-    control: (provided) => ({
-        ...provided,
-        color: "black",
-        backgroundColor: "rgba(255, 255, 255, 0.2)",
-        border: "none",
-        borderRadius: "0.5em"
-    }),
-    valueContainer: (provided) => ({...provided, height: "max-content"}),
-    placeholder: (provided) => ({...provided, color: "#CCCCCC", textAlign: "left", fontSize: "0.9em", paddingLeft: "1em"}),
-    input: (provided) => ({...provided, color: "#FFFFFF", paddingLeft: "1em", fontSize: "0.9em"}),
-    menu: (provided) => ({...provided, borderRadius: "0.5em", position: "relative"})
-};
 
 // https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file
 async function parseJsonFile(file) {

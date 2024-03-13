@@ -920,7 +920,8 @@ export async function postAdminRanking(gameID, ranking){
  * @throws {Error} error otherwise
  *
  */
-export async function requestUserPlayers(userID){
+export async function requestUserPlayers(userID) {
+    //todo change this to something more sensible
     const url = API_ROOT + '/users/' + userID + '/players/';
 
     return await axios.get(url)
