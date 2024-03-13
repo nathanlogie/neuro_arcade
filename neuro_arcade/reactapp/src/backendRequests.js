@@ -687,7 +687,7 @@ export async function getAllUsers() {
 export async function updateStatus(user, newStatus){
     const url = API_ROOT + '/update-status/';
 
-    await axios.post(url, {user: user, status: newStatus})
+    await axios.post(url, {user: user, status: newStatus}, await getHeaders('POST', true))
         .then( function (response) {
                 return response;
             }
