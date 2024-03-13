@@ -335,7 +335,7 @@ export async function createNewGame(
  * @throws {Error | UserNotAuthenticatedError}
  */
 export async function createNewPlayer(playerName, description, playerTags, image=null) {
-    const url = API_ROOT + "/create_player/";
+    const url = API_ROOT + "/create-player/";
     if (!isLoggedIn())
         throw UserNotAuthenticatedError()
 
@@ -363,7 +363,7 @@ export async function createNewPlayer(playerName, description, playerTags, image
  * @throws Error when request is rejected
  */
 export async function requestPlayers() {
-    const url = API_ROOT + '/api/players/';
+    const url = API_ROOT + 'api/players/';
     try {
         let response = await axios.get(url);
         return response.data;
@@ -379,7 +379,7 @@ export async function requestPlayers() {
  * @return {RankedModel[]} - Models in descending order of overall score
  */
 export async function requestPlayersRanked() {
-    const url = API_ROOT + '/player_rankings/';
+    const url = API_ROOT + '/player-rankings/';
     return await axios.get(url)
         .then((response) => {
             return response.data;
@@ -399,7 +399,7 @@ export async function requestPlayersRanked() {
  * @throws {Error | UserNotAuthenticatedError}
  */
 export async function deletePlayer(playerName) {
-    const url = API_ROOT + "/delete_player/";
+    const url = API_ROOT + "/delete-player/";
 
     if (!isLoggedIn())
         throw new UserNotAuthenticatedError()
@@ -497,7 +497,7 @@ export async function getGamesFromCurrentUser() {
  * @throws {Error | UserNotAuthenticatedError} when the request is rejected or when the user is not logged in.
  */
 export async function postGameScore(gameName, playerIdentification, scoreData) {
-    const url = API_ROOT + '/games/' + gameName + '/add_score/'
+    const url = API_ROOT + '/games/' + gameName + '/add-score/'
     // checking if the user is logged in
     if (!isLoggedIn())
         throw UserNotAuthenticatedError()
@@ -588,7 +588,7 @@ export async function getAboutData(){
  * @returns {Object} response when post is accepted
  */
 export async function postDescription(description){
-    const url = API_ROOT + '/edit_about/'
+    const url = API_ROOT + '/edit-about/'
 
     axios.post(url, {value: description, field: "description"}, await getHeaders('POST', true))
         .then(function (response) {
@@ -610,7 +610,7 @@ export async function postDescription(description){
  * @return {Object} response if successful
  */
 export async function postPublications(publications){
-    const url = API_ROOT + '/edit_about/'
+    const url = API_ROOT + '/edit-about/'
 
     try {
         const response = await axios.post(url, { value: publications, field: "publications" }, await getHeaders('POST', true));
@@ -644,19 +644,20 @@ export function getUser() {
  * @throws error if user is not admin
  */
 export async function getAllUsers() {
+    const url = API_ROOT + `/get-all-users/`;
+
     if (!getUser() || !userIsAdmin()){
         throw new Error;
     }
 
-    const userID = getUser().id
-    const url = API_ROOT + `/${userID}/get_all_users/`;
-    return await axios.get(url).then((response) => {
+    //todo test
+    return await axios.get(url, await getHeaders('GET', true)).then((response) => {
         return(response.data.map(function(user) {
             let status = "";
             if (user.status) {
                 status = user.status.status;
             }
-            else{
+            else {
                 status = "Admin";
             }
             return ({
@@ -682,7 +683,7 @@ export async function getAllUsers() {
  * @throws error otherwise
  */
 export async function updateStatus(user, newStatus){
-    const url = API_ROOT + '/update_status/';
+    const url = API_ROOT + '/update-status/';
 
     await axios.post(url, {user: user, status: newStatus})
         .then( function (response) {
@@ -748,7 +749,7 @@ function passwordValidator(password) {
  *  An error can also be thrown if the password is invalid.
  */
 export async function signupNewUser(userName, email, password) {
-    const url = API_ROOT + '/sign_up/';
+    const url = API_ROOT + '/sign-up/';
     const emailRegex = new RegExp('[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}');
 
     // validating the password on client side:
@@ -897,7 +898,7 @@ export async function requestPlayerScores(playerName) {
  * @throws error otherwise
  */
 export async function postAdminRanking(gameID, ranking){
-    const url = API_ROOT + '/post_admin_ranking/'
+    const url = API_ROOT + '/post-admin-ranking/'
 
     await axios.post(url, {id: gameID, ranking: ranking*10}, await getHeaders('POST', true))
         .then((response) => {

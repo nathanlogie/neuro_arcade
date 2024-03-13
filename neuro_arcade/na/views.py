@@ -121,7 +121,8 @@ def get_tags(request: Request) -> Response:
     Retrieves the GameTags
     """
     return Response(
-        [GameTagSerializer(tag).data for tag in GameTag.objects.all()])
+        [GameTagSerializer(tag).data for tag in GameTag.objects.all()]
+    )
 
 
 @api_view(['GET'])
@@ -162,9 +163,9 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
     elif playerName is not None:
         player = Player.objects.get(name=playerName, user=request.user)
     else:
-        return Response(
-            status=400, data={
-                'description': 'No player field provided, or provided player is not associated with this your user.'})
+        return Response(status=400, data={
+            'description': 'No player field provided, or provided player is not associated with this your user.'
+        })
 
     game = get_object_or_404(Game, slug=game_name_slug)
     added_score = {}
@@ -495,7 +496,12 @@ def sign_up(request: Request) -> Response:
 
 
 @api_view(['POST'])
+@permission_classes([IsAdminUser])
 def update_user_status(request: Request) -> Response:
+    """
+    Changes the approval status of a user. The request should be formatted like so:
+    {'user': <username>, 'status': <'pending' or 'approved' or 'blocked'>}
+    """
     if not request.data['user'] or not request.data['status']:
         return Response(status=400, data='Missing data in request')
 
@@ -623,7 +629,7 @@ def get_games_for_logged_in_user(request: Request) -> Response:
 @api_view(['GET'])
 def get_player_scores(request: Request, player_name_slug: str) -> Response:
     """
-    Retrieve all scores made by players
+    Retrieve all scores made by a player.
     """
     player = get_object_or_404(Player, slug=player_name_slug)
 
@@ -644,7 +650,10 @@ def get_player_scores(request: Request, player_name_slug: str) -> Response:
 @permission_classes([IsAdminUser])
 def post_admin_ranking(request) -> Response:
     """
-    Posts admin ranking for a game
+    Posts admin ranking for a game, which is represented by the stars shown on the website.
+    The request should be formatted like so:
+    {'id': <game id>, 'ranking': <number> }
+    The ranking number needs to be between 0 and 10.
     """
     game = get_object_or_404(Game, id=request.data["id"])
     ranking = request.data.get("ranking")
@@ -821,16 +830,18 @@ def update_player(request, player_name_slug) -> Response:
 
 
 @api_view(['GET'])
-def get_all_users(request, user_id) -> Response:
-
-    current_user = User.objects.get(id=user_id)
-    if not current_user.is_superuser:
+@permission_classes([IsAuthenticated, IsAdminUser])
+def get_all_users(request) -> Response:
+    """
+    Returns a list of all users. Admin only.
+    """
+    if not request.user.is_superuser:
         return Response(status=401)
 
     users = User.objects.all()
     users_serialised = UserSerializer(users, many=True).data
 
-    return Response(data=users_serialised)
+    return Response(status=200, data=users_serialised)
 
 
 class GameViewSet(viewsets.ModelViewSet):

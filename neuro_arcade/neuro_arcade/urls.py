@@ -17,19 +17,9 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 from django.contrib.staticfiles.urls import static
-from na.views import GameViewSet, GameTagViewSet, PlayerViewSet, PlayerTagViewSet
-from rest_framework import routers
-
-router = routers.DefaultRouter()
-router.register(r'games', GameViewSet)
-# router.register(r'users', UserViewSet)
-router.register(r'gameTag', GameTagViewSet)
-router.register(r'players', PlayerViewSet)
-router.register(r'playerTag', PlayerTagViewSet)
 
 urlpatterns = [
     path('', include('na.urls')),
     path('admin/', admin.site.urls),
-    path('', include('reactapp.urls')),
-    path('api/', include(router.urls)),
+    # path('', include('reactapp.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

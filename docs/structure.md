@@ -1,6 +1,8 @@
+# Project Structure
+
 ![structure.img](structure.png)
 
-### Client [React]
+## Client [React]
 
 Our client uses React JS to provide modularity for the frontend of the website. 
 It helps with separation of concerns and makes the structure of the code easier to understand. 
@@ -17,7 +19,7 @@ It creates routes to each page then renders the documents.
 
 [More on the React Client](client.md)
 
-### API Server [Django]
+## API Server [Django]
 
 Our API server is the main point of communication between our database and our client.
 It takes a http request - most commonly a 'POST' or 'GET' request - and alters/creates/retrieves 
@@ -42,9 +44,9 @@ to the API server. API requests are sent from our React JS client via Axios http
 (see [backendRequests.js](../neuro_arcade/reactapp/src/backendRequests.js)).
 Our django server receives this data and does the appropriate actions (see [views.py](../neuro_arcade/na/views.py)).
 
-[More on the Django API Server]
+[More on the Django API Server](api_reference.md)
 
-### Score Processing [Celery + Docker]
+## Score Processing [Python + Docker]
 
 This regards the process and processing of game scores and the components involved in them.
 The server returns unprocessed data which must be in a json format. 
@@ -56,12 +58,12 @@ their own AI bots.
 
 [More on Score Processing](score_pipeline.md)
 
-### Frontend Server [Serve]
+## Frontend Server [Serve]
 
 Our frontend server provides precompiled React files to users. It sends the React client to 
 the clients.
 
-### Database [SQLite]
+## Database [SQLite]
 
 Our database runs with SQLite. It helps to structure our data and provides relationships between
 related data. Our backend uses Django models to assemble this information (see [models.py](../neuro_arcade/na/models.py)).
@@ -84,3 +86,9 @@ This structure allows us to easily access and manipulate relevant data for our a
 
 [More on our database](database.md)
 
+## Scalability
+
+The architecture of the project should be relative scalable. As-is, a single server running all of the processes
+should be able to handle a decent number of users, and most components (frontend serving, django backend server,
+and evaluation worker processes) are designed to be able to have multiple instances running in parallel, which
+would allow for them to be deployed on multiple servers at once to handle extra load.
