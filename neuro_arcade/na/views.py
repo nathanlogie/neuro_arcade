@@ -36,10 +36,29 @@ def get_game_dict(game_slug: str):
     """
     game = get_object_or_404(Game, slug=game_slug)
     dictionary = {'game': GameSerializer(game).data}
+
+    # scores:
     headers, scores = game.get_score_table()
     if headers is not None and scores is not None:
         dictionary['table_headers'] = headers
         dictionary['rows'] = scores
+
+    # replacing the game tags ids with the tag names
+    tag_ids = dictionary['game']['tags']
+    tag_names = []
+    for tag_id in tag_ids:
+        tag = GameTag.objects.get(id=tag_id)
+        tag_names.append(tag.name)
+    dictionary['game']['tags'] = tag_names
+
+    # adding the owner name field:
+    owner_id = dictionary['game']['owner']
+    owner_obj = User.objects.get(id=owner_id)
+    dictionary['game']['owner'] = {
+        'name': owner_obj.username,
+        'id': owner_id
+    }
+
     return dictionary
 
 
