@@ -330,7 +330,7 @@ def post_new_game(request: Request) -> Response:
     {
         gameName: str,
         description: str,
-        playLink: str,          // optional
+        playLink: str,           //optional
         icon: Image,             //optional
         evaluationScript: str,
         scoreTypes: str,
@@ -355,26 +355,24 @@ def post_new_game(request: Request) -> Response:
         return Response(status=400, data='Invalid data; `evaluationScript` must be provided!')
     if score_types is None:
         return Response(status=400, data='Invalid data; `scoreTypes` must be provided!')
+    if game_tags is not None:
+        game_tags = game_tags.split(',')
 
     # validating the score_type
+    score_types = json.load(score_types)
     valid_score_type, score_type_error = validate_score_type(score_types)
     if not valid_score_type:
         return Response(status=400, data='Invalid data; `scoreTypes` is not valid: ' + score_type_error)
 
-    try:
-        game_obj, _ = Game.objects.get_or_create(
-            name=game_name,
-            owner=request.user,
-            description=description,
-            play_link=play_link,
-            icon=icon,
-            evaluation_script=evaluation_script,
-            score_type=score_types
-        )
-    except IntegrityError:  # todo what is this even doing
-        return Response(
-            status=500,
-            data='Internal Server Error: maybe a game with that name already exists.')
+    game_obj, _ = Game.objects.get_or_create(
+        name=game_name,
+        owner=request.user,
+        description=description,
+        play_link=play_link,
+        icon=icon,
+        evaluation_script=evaluation_script,
+        score_type=score_types
+    )
 
     # adding game tags to the new game
     tags_to_add = []

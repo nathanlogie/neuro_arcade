@@ -40,7 +40,7 @@ const router = createBrowserRouter([
             </LoginRoutes>
     },
     {
-        path: "user-account/all_users",
+        path: "user-account/all-users",
         element:
             <AdminRoutes>
                 <AllUsers/>

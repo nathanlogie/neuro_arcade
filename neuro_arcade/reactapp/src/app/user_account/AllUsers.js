@@ -20,7 +20,7 @@ import {ImCross} from "react-icons/im";
 export function AllUsers() {
     const [users, setUsers] = useState([]);
 
-    let nav_left = <Button name={"user account"} link={"/user_account"} orientation={"left"} direction={"left"} />;
+    let nav_left = <Button name={"user account"} link={"/user-account"} orientation={"left"} direction={"left"} />;
 
     useEffect(() => {
         getAllUsers().then((usersResponse) => {
