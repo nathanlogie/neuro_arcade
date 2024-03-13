@@ -69,4 +69,3 @@ User - An instance of the django inbuilt user class which this status links to.
 See below for a visual representation of the database and the database dependencies. <br>
 
 ![ER.img](db-table-diagram.png)
-![Dependency.img](model-dependecy-diagram.png)
