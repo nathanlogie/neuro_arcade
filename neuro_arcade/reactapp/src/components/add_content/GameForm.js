@@ -50,28 +50,30 @@ export function GameForm() {
         reset
     } = useForm();
 
-    const [image, setImage] = useState(null);
-    const [evaluationScript, setEvaluationScript] = useState(null);
-    const [scoreType, setScoreType] = useState(null);
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [tags, setTags] = useState([]);
-    const [playLink, setPlayLink] = useState("");
-    const [options, setOptions] = useState([]);
-    const [existingTags, setExistingTags] = useState([]);
-    const [user, setUser] = useState(null);
-    const [header, setHeader] = useState(null);
+    let [image, setImage] = useState(null);
+    let [evaluationScript, setEvaluationScript] = useState(null);
+    let [scoreType, setScoreType] = useState(null);
+    let [name, setName] = useState("");
+    let [description, setDescription] = useState("");
+    let [playLink, setPlayLink] = useState("");
+    let [tags, setTags] = useState([]);
+    let [existingTags, setExistingTags] = useState([]);
+    let [options, setOptions] = useState([]);
 
     useEffect(() => {
-        requestGameTags().then((tags) => {
-            tags.forEach(tag => {
-                options.push({
-                    value: tag.id,
-                    label: tag.name
-                });
-        });
-        getHeaders("POST", true, "multipart/form-data").then(setHeader);
+        requestGameTags().then((tags) => setExistingTags(tags));
     }, []);
+
+    useEffect(() => {
+        let newOpt = [];
+        existingTags.forEach((tag) =>
+            newOpt.push({
+                value: tag.name,
+                label: tag.name
+            })
+        );
+        setOptions(newOpt);
+    }, [existingTags]);
 
     const handleImage = (event) => {
         handleFileUpload(event.target.files[0], IMAGE_EXTENSION, setImage, setError, 'root');
