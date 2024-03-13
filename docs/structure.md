@@ -46,7 +46,7 @@ Our django server receives this data and does the appropriate actions (see [view
 
 [More on the Django API Server]
 
-### Score Processing [Python + Docker]
+## Score Processing [Python + Docker]
 
 This regards the process and processing of game scores and the components involved in them.
 The server returns unprocessed data which must be in a json format. 
