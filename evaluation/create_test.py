@@ -19,12 +19,13 @@ import json
 
 import django
 from django.db.utils import OperationalError
-
+import time
 from na.models import UnprocessedResults, Game, Player, validate_score
 
 # autopep8: on
 
 BACKLOG_PATH = './backlog/'
+LOCK_SLEEP_TIME = 1
 
 
 def create_result(content, player, game):
@@ -38,7 +39,8 @@ def create_result(content, player, game):
             )
             return
         except OperationalError:
-            pass
+            time.sleep(LOCK_SLEEP_TIME)
+            continue
 
 
 for i in range(int(sys.argv[1])):

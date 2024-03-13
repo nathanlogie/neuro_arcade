@@ -63,7 +63,11 @@ class EvalError(IntEnum):
 
 # Time to wait in seconds before polling the database again if
 # there were no scores available the last time
-POLLING_TIME = 1
+POLLING_TIME = 10
+
+# Time to wait in seconds before retrying if the datbase was
+# locked on the last access
+LOCK_SLEEP_TIME = 1
 
 # Time to wait in seconds before trying again when the connection
 # to the email server is refused
@@ -137,6 +141,7 @@ def create_score(game, player, score_data):
             )
             return
         except OperationalError:
+            time.sleep(LOCK_SLEEP_TIME)
             pass
 
 
@@ -149,6 +154,7 @@ def worker_thread():
         try:
             result = try_claim_result()
         except OperationalError:
+            time.sleep(LOCK_SLEEP_TIME)
             continue
 
         # If no results existed, sleep for a bit and try again
