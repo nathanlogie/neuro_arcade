@@ -506,7 +506,10 @@ def get_player(request: Request, player_name_slug: str) -> Response:
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_human_player_for_logged_in_user(request: Request) -> Response:
-    player_obj = Player.objects.get(user=request.user, is_ai=False)
+    try:
+        player_obj = Player.objects.get(user=request.user, is_ai=False)
+    except ObjectDoesNotExist:
+        return Response(status=404, data='Human user does not exist!')
     data = PlayerSerializer(player_obj).data
     return Response(status=200, data=data)
 
