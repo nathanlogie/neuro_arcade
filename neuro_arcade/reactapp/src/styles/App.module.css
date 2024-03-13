@@ -26,21 +26,10 @@
                 width: max-content;
                 padding-bottom: 0.15em;
             }
-            div {
-                position: relative;
-                left: 0.25em;
-                height: 4em;
-                margin: 1em auto;
-                outline: none;
-                border: none;
-                color: #FFFFFF;
-                cursor: pointer;
-                padding: 0 1.25em 0 0.75em;
-
+            .EditButton {
+                display: flex;
+                justify-content: center;
                 & div {
-                    position: absolute;
-                    top: -0.5em;
-                    width: 2em;
                     height: 3em;
                     border-radius: 5em;
                     background-color: rgba(255, 255, 255, 0.72);
@@ -48,12 +37,10 @@
                     backdrop-filter: blur(5px);
                 }
                 & div > * {
-                        width: 75%;
-                        height: 100%;
-                        margin: 0 1.5em 0 0.5em;
-                    }
+                    width: 50%;
+                    height: 100%;
+                }
             }
-
             .FilterButton {
                 width: 2em;
                 height: 2em;
