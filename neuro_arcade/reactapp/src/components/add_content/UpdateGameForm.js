@@ -389,7 +389,7 @@ export function GameUpdateForm() {
                                 onChange={handleImage}
                             />
                         </motion.div>
-                        <h2>Current image</h2>
+                        <h3>Current image</h3>
                         <img src={imageURL} alt='icon' />
                     </div>
 

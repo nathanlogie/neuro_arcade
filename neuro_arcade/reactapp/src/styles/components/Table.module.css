@@ -29,12 +29,13 @@
 
 #allUsers {
     height: unset;
-    margin-left: unset;
+    margin-left: auto;
+    margin-right: auto;
     * {
         font-family: inherit;
         justify-content: space-between;
     }
-    & .Revoke, .Approve, .Block {
+    & .Revoke, .Approve, .Block, .Unblock {
         position: relative;
         width: max-content;
         left: 0.5em;
@@ -78,6 +79,11 @@
     & .Block {
         & div {
             background-color: #d14062;
+        }
+    }
+    & .Unblock {
+        & div {
+            background-color: #c2a15b;
         }
     }
 }

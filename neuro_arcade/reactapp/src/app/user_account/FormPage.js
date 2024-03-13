@@ -39,7 +39,7 @@ export function FormPage({type}) {
         title = "Update Game";
     } else if (type === "modelUpdate") {
         form = <ModelUpdateForm />;
-        title = "Update Model";
+        title = "Update Player";
     } else if (type === "score") {
         form = <ScoreForm />;
         title = "Upload Score";
