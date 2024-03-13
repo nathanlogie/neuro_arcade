@@ -342,6 +342,7 @@ class UnprocessedResults(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     status = models.IntegerField(choices=status_choices, default=0)
     errors = models.TextField(blank=True)
+    return_code = models.IntegerField(blank=True, null=True, default=None)
 
     def __str__(self):
         return ("UnprocessedResults for game " + self.game.name +

@@ -11,6 +11,7 @@ from django.core.mail import EmailMessage
 sys.path.insert(0, '../neuro_arcade')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'neuro_arcade.settings')
 import django
+
 django.setup()
 
 from enum import IntEnum
@@ -26,6 +27,7 @@ from django.db.utils import OperationalError
 from django.db import transaction
 
 from na.models import UnprocessedResults, Score, validate_score
+
 
 # autopep8: on
 
@@ -195,6 +197,7 @@ def worker_thread():
             # Log to database
             result.status = 2
             result.errors = output
+            result.return_code = return_code
             result.save()
 
             # Email required users
@@ -252,9 +255,9 @@ def admin_notification(
     subject = f"ADMIN NOTIFICATION: Docker Failure in {result.game.name}"
     message = ""
     if return_code not in [
-            EvalError.VOLUME_NOT_FOUND,
-            EvalError.EVAL_NOT_FOUND,
-            EvalError.RESULT_NOT_FOUND]:
+        EvalError.VOLUME_NOT_FOUND,
+        EvalError.EVAL_NOT_FOUND,
+        EvalError.RESULT_NOT_FOUND]:
         return
     elif return_code == EvalError.VOLUME_NOT_FOUND:
         message = build_message(
