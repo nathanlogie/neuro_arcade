@@ -15,7 +15,6 @@ import {ModelUpdateForm} from "../../components/add_content/UpdateModelForm";
  * @constructor builds add game page
  */
 export function FormPage({type}) {
-
     let nav_left = (
         <Button
             name={"back"}

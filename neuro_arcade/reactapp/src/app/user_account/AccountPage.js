@@ -73,17 +73,12 @@ export function AccountPage() {
                                 {icon}
                                 {player.description}
                             </p>
-                            <Button
-                                name={"view page"}
-                                link={"/all_players/" + player.slug}
-                                orientation={"right"}
-                                direction={"right"}
-                            />
+                            <Button name={"view page"} link={"/all-players/" + player.slug} orientation={"right"} direction={"right"} />
                         </div>
                     );
                 }
                 if (models.length > 0) {
-                    setModelGrid(<CardGrid subjects={models} linkPrefix={"/all_players/"} />);
+                    setModelGrid(<CardGrid subjects={models} linkPrefix={"/all-players/"} />);
                 }
             })
             .catch(() => {});
@@ -91,7 +86,7 @@ export function AccountPage() {
             .then((g) => {
                 let games = [];
                 g.data.map((game) => games.push(game));
-                setGameGrid(<CardGrid subjects={games} linkPrefix={"/all_games/"} />);
+                setGameGrid(<CardGrid subjects={games} linkPrefix={"/all-games/"} />);
             })
             .catch(() => {});
     }, []);

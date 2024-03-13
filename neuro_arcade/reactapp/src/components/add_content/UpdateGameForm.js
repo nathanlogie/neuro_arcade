@@ -243,7 +243,7 @@ export function GameUpdateForm() {
         }
 
         await updateGames(gameSlug, formData)
-            .then(response => {
+            .then((response) => {
                 console.log(response);
 
                 if (tags.length !== 0) {
