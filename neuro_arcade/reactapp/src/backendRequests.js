@@ -444,7 +444,7 @@ export async function getHumanPlayerFromCurrentUser() {
  * @returns {Promise<axios.AxiosResponse<Player[]>>}
  */
 export async function getPlayersFromCurrentUser() {
-    const url = API_ROOT + "/get-players/";
+    const url = API_ROOT + "/get-my-players/";
 
     if (!isLoggedIn())
         throw new UserNotAuthenticatedError();
@@ -466,7 +466,7 @@ export async function getPlayersFromCurrentUser() {
  * @returns {Promise<axios.AxiosResponse<Game[]>>}
  */
 export async function getGamesFromCurrentUser() {
-    const url = API_ROOT + "/get-games/";
+    const url = API_ROOT + "/get-my-games/";
 
     if (!isLoggedIn())
         throw new UserNotAuthenticatedError();
