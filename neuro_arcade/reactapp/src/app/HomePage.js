@@ -55,7 +55,6 @@ export function HomePage() {
 
     let content = <>...</>;
     if (!loadingTags && !loadingPlayers) {
-
         if (isLoggedIn()) {
             getHumanPlayerFromCurrentUser()
                 .then((p) => {

@@ -9,7 +9,7 @@ import {motion} from "framer-motion";
 import {Button} from "../../components/Button";
 import {Link, useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {API_ROOT, getPlayersFromCurrentUser, logout} from "../../backendRequests";
+import {API_ROOT, getGamesFromCurrentUser, getPlayersFromCurrentUser, logout} from "../../backendRequests";
 import {getUser} from "../../backendRequests";
 import {userIsAdmin} from "../../backendRequests";
 import {IoExit} from "react-icons/io5";
@@ -33,6 +33,7 @@ export function AccountPage() {
     const [user, setUser] = useState(getUser());
     const [userContent, setUserContent] = useState(<>not a registered player</>);
     const [modelGrid, setModelGrid] = useState(<>no registered models</>);
+    const [gameGrid, setGameGrid] = useState(<>no registered games</>);
 
     const pendingUser = (
         <div>
@@ -54,7 +55,7 @@ export function AccountPage() {
             .then((m) => {
                 let models = [];
                 let player;
-                m.data.map(model => {
+                m.data.map((model) => {
                     if (!model.is_ai) {
                         player = model;
                     } else {
@@ -72,13 +73,25 @@ export function AccountPage() {
                                 {icon}
                                 {player.description}
                             </p>
-                            <Button name={"view statistics"} link={"/all_players/" + player.slug} orientation={"right"} direction={"right"} />
+                            <Button
+                                name={"view statistics"}
+                                link={"/all_players/" + player.slug}
+                                orientation={"right"}
+                                direction={"right"}
+                            />
                         </div>
                     );
                 }
                 if (models.length > 0) {
                     setModelGrid(<CardGrid subjects={models} linkPrefix={"/all_players/"} />);
                 }
+            })
+            .catch(() => {});
+            getGamesFromCurrentUser()
+            .then((g) => {
+                let games = [];
+                g.data.map((game) => games.push(game));
+                setGameGrid(<CardGrid subjects={games} linkPrefix={"/all_games/"} />);
             })
             .catch(() => {});
     }, []);
@@ -104,6 +117,10 @@ export function AccountPage() {
                         <h1>Registered models</h1>
                     </div>
                     {modelGrid}
+                    <div className={styles.Title}>
+                        <h1>Registered games</h1>
+                    </div>
+                    {gameGrid}
                     <div className={styles.ContentBlock} id={styles["vertical"]}>
                         <p>
                             Contact <Link to='mailto:benjamin.peters@glasgow.ac.uk'>benjamin.peters@glasgow.ac.uk</Link> for account

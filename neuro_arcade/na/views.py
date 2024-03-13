@@ -500,6 +500,16 @@ def get_players_for_logged_in_user(request: Request) -> Response:
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_games_for_logged_in_user(request: Request) -> Response:
+    game_objs = Game.objects.filter(user=request.user)
+    data = []
+    for game_obj in game_objs:
+        data.append(PlayerSerializer(game_obj).data)
+    return Response(status=200, data=data)
+
+
+@api_view(['GET'])
 def get_player_scores(request: Request, player_name_slug: str) -> Response:
     """
     Retrieve all scores made by players
