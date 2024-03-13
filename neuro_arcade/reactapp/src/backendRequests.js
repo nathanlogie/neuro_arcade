@@ -269,6 +269,58 @@ export async function requestGames() {
 }
 
 /**
+ * Creates a new game associated with the current user.
+ * Requires the user to be authenticated, will throw an error if not.
+ *
+ * @param {string} gameName
+ * @param {string} description
+ * @param {[string]} gameTags
+ * @param {string} playLink
+ * @param {Image} image
+ * @param {File} evaluationScript  // todo File?
+ * @param {File} scoreTypes
+ *
+ * @return {Promise<axios.AxiosResponse<{}>>}
+ *
+ * @throws {Error | UserNotAuthenticatedError}
+ */
+export async function createNewGame(
+    gameName,
+    description,
+    gameTags=[],
+    playLink,
+    image=null,
+    evaluationScript,
+    scoreTypes
+) {
+    const url = API_ROOT + "/create-game/";
+    if (!isLoggedIn())
+        throw UserNotAuthenticatedError()
+
+    let data = {
+        gameName: gameName,
+        description: description,
+        gameTags: gameTags,
+        evaluationScript: evaluationScript,
+        scoreTypes: scoreTypes,
+    };
+    if (image)
+        data.icon = image;
+
+    return await axios.post(url,
+        data,
+        await getHeaders('POST', true)
+    ).then((response) => {
+        console.log('Creation of game ' + gameName + ' successful!');
+        return response;
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    })
+}
+
+
+/**
  * Creates a new player associated with the current user. Only AI players are generated.
  * Requires the user to be authenticated, will throw an error if not.
  *

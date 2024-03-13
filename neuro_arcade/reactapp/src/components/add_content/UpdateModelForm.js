@@ -149,7 +149,7 @@ export function ModelUpdateForm() {
     function handleDelete() {
         if (currentValues.user !== getUser().id && !getUser().is_admin) {
             setError("root", {
-                message: "You do not have permissions to edit this game"
+                message: "You do not have permissions to edit this player"
             });
             return;
         }
@@ -158,11 +158,11 @@ export function ModelUpdateForm() {
         axios
             .delete(url)
             .then((response) => {
-                navigate("/all_players/");
+                navigate("/all-players/");
             })
             .catch(() => {
                 setError("root", {
-                    message: "Could not delete model"
+                    message: "Could not delete player"
                 });
             });
     }
@@ -170,7 +170,7 @@ export function ModelUpdateForm() {
     const onUpdate = async () => {
         if (currentValues.user !== getUser().id && !getUser().is_admin) {
             setError("root", {
-                message: "You do not have permissions to edit this game"
+                message: "You do not have permissions to edit this player"
             });
             return;
         }
@@ -208,12 +208,12 @@ export function ModelUpdateForm() {
                 }
                 reset();
                 setImage(null);
-                setError("root", {message: "model updated successfully"});
+                setError("root", {message: "player updated successfully"});
                 setTags(null);
                 if (name === "") {
-                    navigate(`/all_players/${currentValues.slug}`);
+                    navigate(`/all-players/${currentValues.slug}`);
                 } else {
-                    navigate(`/all_players/${slugify(name)}`);
+                    navigate(`/all-players/${slugify(name)}`);
                 }
             })
             .catch(function (response) {
@@ -221,7 +221,7 @@ export function ModelUpdateForm() {
                     setError("root", {message: "No response from server"});
                 } else {
                     if (response.response.data.slug) {
-                        setError("root", {message: "A Model with that name already exists!"});
+                        setError("root", {message: "A player with that name already exists!"});
                         return;
                     } else if (response.response.data.tags) {
                         setError("root", {message: "Tag upload failed"});
@@ -229,7 +229,7 @@ export function ModelUpdateForm() {
                     }
                     if (response)
                         if (response.response.data.includes("IntegrityError")) {
-                            setError("root", {message: "A Model with that name already exists!"});
+                            setError("root", {message: "A player with that name already exists!"});
                         } else {
                             setError("root", {
                                 message: `Something went wrong... ${response.response.data}`
@@ -247,11 +247,11 @@ export function ModelUpdateForm() {
                     {...register("name", {
                         maxLength: {
                             value: MAX_NAME_LENGTH_MODEL,
-                            message: `Maximum model title length has been exceeded (${MAX_NAME_LENGTH_MODEL})`
+                            message: `Maximum player title length has been exceeded (${MAX_NAME_LENGTH_MODEL})`
                         }
                     })}
                     type={"text"}
-                    placeholder={"game name"}
+                    placeholder={"player name"}
                     defaultValue={currentValues.name}
                     onChange={(event) => setName(event.target.value)}
                 />
@@ -266,13 +266,13 @@ export function ModelUpdateForm() {
                         }
                     })}
                     type={"text"}
-                    placeholder={"This game measures..."}
+                    placeholder={"This player measures..."}
                     defaultValue={currentValues.description}
                     onChange={(event) => setDescription(event.target.value)}
                 />
                 {errors.description && <div>{errors.description.message}</div>}
 
-                <h3>Model Tags</h3>
+                <h3>Player Tags</h3>
                 <CreatableSelect
                     isClearable
                     isMulti
@@ -303,7 +303,7 @@ export function ModelUpdateForm() {
 
                 <span>
                     <div>
-                        <h3>Game Icon</h3>
+                        <h3>Player Icon</h3>
                         <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
                             <label htmlFor={"icon"}>
                                 <p>{image ? image.name : "No file chosen"}</p>
@@ -321,7 +321,7 @@ export function ModelUpdateForm() {
                                 onChange={handleImage}
                             />
                         </motion.div>
-                        <h2>Current image</h2>
+                        <h3>Current image</h3>
                         <img src={imageURL} alt='icon' />
                     </div>
                 </span>

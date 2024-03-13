@@ -107,7 +107,19 @@ export function AllUsers() {
                         </>
                     );
                 } else if (user.status === "blocked") {
-                    return <button onClick={() => changeUserStatus(user, "pending")}>Unblock User</button>;
+                    return (
+                        <motion.button
+                            className={table.Unblock}
+                            onClick={() => changeUserStatus(user, "pending")}
+                            whileHover={{scale: 1.1}}
+                            whileTap={{scale: 0.9}}
+                        >
+                            Unblock
+                            <div>
+                                <ImCross />
+                            </div>
+                        </motion.button>
+                    );
                 }
             }
         }

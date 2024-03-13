@@ -50,6 +50,6 @@ export function PlayerGrid({mode = PlayerGridMode.ALL, textQuery = "", tagQuery 
                 (mode === PlayerGridMode.HUMAN && !player.is_ai)
         );
 
-        return <CardGrid subjects={displayed} textQuery={textQuery} tagQuery={tagQuery} num={num} id={id} linkPrefix={"/all_players/"} />;
+        return <CardGrid subjects={displayed} textQuery={textQuery} tagQuery={tagQuery} num={num} id={id} linkPrefix='/all-players/' />;
     }
 }

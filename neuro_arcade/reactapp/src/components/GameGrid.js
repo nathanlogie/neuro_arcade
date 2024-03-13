@@ -28,6 +28,6 @@ export function GameGrid({textQuery = "", tagQuery = [], num = 0, id}) {
     if (loading) {
         return null;
     } else {
-        return <CardGrid subjects={games} textQuery={textQuery} tagQuery={tagQuery} num={num} id={id} linkPrefix='/all_games/' />;
+        return <CardGrid subjects={games} textQuery={textQuery} tagQuery={tagQuery} num={num} id={id} linkPrefix='/all-games/' />;
     }
 }

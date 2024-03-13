@@ -14,7 +14,6 @@ import placeholder from "../static/images/placeholder.webp";
  * @constructor builds player view page
  */
 export function PlayerView() {
-
     let playerSlug = useParams().player_slug;
     let [loadingPlayer, setLoadingPlayer] = useState(true);
     let [playerData, setPlayerData] = useState({});
@@ -61,15 +60,14 @@ export function PlayerView() {
         );
 
     const editButton = (
-        <Link
-         to={'edit'}>
+        <Link to={"edit"}>
             <motion.div className={styles.EditButton} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
                 <div>
                     <FaRegPenToSquare />
                 </div>
             </motion.div>
         </Link>
-    )
+    );
 
     let content = <>...</>;
     if (!loadingPlayer && !loadingScores) {

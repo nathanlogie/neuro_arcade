@@ -14,7 +14,7 @@ import {AdminRanking} from "../components/AdminRanking";
 import {Button} from "../components/Button";
 import placeholder from "../static/images/placeholder.webp";
 import {isLoggedIn, isOwner} from "../backendRequests";
-import { FaRegPenToSquare } from "react-icons/fa6";
+import {FaRegPenToSquare} from "react-icons/fa6";
 
 /**
  *
@@ -50,15 +50,14 @@ export function GameView() {
     };
 
     const editButton = (
-        <Link
-         to={'edit'}>
+        <Link to={"edit"}>
             <motion.div className={styles.EditButton} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
                 <div>
                     <FaRegPenToSquare />
                 </div>
             </motion.div>
         </Link>
-    )
+    );
 
     let content = <>...</>;
     if (!loading) {
@@ -84,11 +83,12 @@ export function GameView() {
             ) : (
                 <></>
             );
-        let owner =
-                <div>
-                    <h3>Uploaded by</h3>
-                    <div>{gameData.game.owner.name}</div>
-                </div>;
+        let owner = (
+            <div>
+                <h3>Uploaded by</h3>
+                <div>{gameData.game.owner.name}</div>
+            </div>
+        );
 
         content = (
             <motion.div className={styles.MainBlock} id={styles["small"]} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
@@ -98,7 +98,7 @@ export function GameView() {
                         {isOwner("game") ? editButton : null}
                     </div>
                     <div className={styles.Title}>
-                        <AdminRanking game={gameData.game.id} rating={gameData.game.priority}/>
+                        <AdminRanking game={gameData.game.id} rating={gameData.game.priority} />
                     </div>
                     <div className={styles.ContentBlock}>
                         <p>
@@ -109,10 +109,11 @@ export function GameView() {
                     <div className={styles.ContentBlock} id={styles["details"]}>
                         {tags}
                         {owner}
+                        <Button name={"play"} link={gameData.game.play_link} orientation={"right"} direction={"right"} />
                     </div>
                 </div>
                 <div className={styles.DataBlock}>
-                    <Table inputData={gameData}/>
+                    <Table inputData={gameData} />
                     <div className={styles.Graphs}>
                         <h2>Trends</h2>
                         <div className={styles.GraphSwitcher}>
@@ -133,7 +134,7 @@ export function GameView() {
                         </div>
                     </div>
                 </div>
-                {isLoggedIn() ? <Button name={"Upload Scores"} link={"upload_scores"} orientation={"right"} direction={"down"} /> : null}
+                {isLoggedIn() ? <Button name={"Upload Scores"} link={"upload-scores"} orientation={"right"} direction={"down"} /> : null}
                 <div className={styles.MobileBannerBuffer} />
             </motion.div>
         );
