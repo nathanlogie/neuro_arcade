@@ -43,7 +43,7 @@ export function Banner({size, left, right, selected}) {
             <>
                 <div className={styles.Banner} id={styles["small"]}>
                     <div className={styles.Buffer}>
-                        <Button name={"back"} link={-1} direction={"up"} orientation={"left"} />
+                        <Button name={"back"} link={"/all_games"} direction={"up"} orientation={"left"} />
                     </div>
                     <Logo size={size} />
                     <div className={styles.Buffer}>

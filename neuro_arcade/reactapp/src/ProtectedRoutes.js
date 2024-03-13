@@ -1,4 +1,4 @@
-import {isLoggedIn, getUserStatus, userIsAdmin} from "./backendRequests";
+import {isLoggedIn, getUserStatus, userIsAdmin, isOwner} from "./backendRequests";
 import {EditAbout} from "./app/about/EditAbout";
 import {Navigate} from "react-router-dom";
 import { PageNotFound } from "./app/PageNotFound";
@@ -51,6 +51,26 @@ export function AdminRoutes({children}){
 export function EditRoute({children}){
     if (isLoggedIn() && userIsAdmin()){
         return <EditAbout />
+    }
+    return children;
+}
+
+/**
+ * Protected Route for edit game pages requiring ownership
+ */
+export function GameOwnerRoute({children}){
+    if (!isOwner("game")){
+        return <PageNotFound/>
+    }
+    return children;
+}
+
+/**
+ * Protected Route for edit game pages requiring ownership
+ */
+export function PlayerOwnerRoute({children}){
+    if (!isOwner("player")){
+        return <PageNotFound/>
     }
     return children;
 }

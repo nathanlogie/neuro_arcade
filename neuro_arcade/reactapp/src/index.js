@@ -18,27 +18,7 @@ import {AnimatePresence} from 'framer-motion'
 import {Background} from "./components/Background";
 import {AuthTest} from "./app/AuthTest";
 import {AllUsers} from "./app/user_account/AllUsers"
-import {LoginRoutes, EditRoute, ApprovedRoutes, AdminRoutes} from "./ProtectedRoutes"
-
-/**
- * Protected Route for edit game pages requiring ownership
- */
-export function GameOwnerRoute({children}){
-    if (!isOwner("game")){
-        return <PageNotFound/>
-    }
-    return children;
-}
-
-/**
- * Protected Route for edit game pages requiring ownership
- */
-export function PlayerOwnerRoute({children}){
-    if (!isOwner("player")){
-        return <PageNotFound/>
-    }
-    return children;
-}
+import {LoginRoutes, EditRoute, ApprovedRoutes, AdminRoutes, GameOwnerRoute, PlayerOwnerRoute} from "./ProtectedRoutes"
 
 const router = createBrowserRouter([
     {
