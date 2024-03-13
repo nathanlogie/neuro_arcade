@@ -17,7 +17,7 @@ import {GrPowerReset} from "react-icons/gr";
  * @returns {JSX.Element} update existing model form
  * @constructor builds update existing model form
  */
-export function ModelUpdateForm() {
+export function ModelUpdateForm() {  //TODO (Andrei) Fix this form: it has issues with the tags
     const {
         register,
         handleSubmit,
