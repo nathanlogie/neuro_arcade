@@ -297,20 +297,22 @@ export async function createNewGame(
     if (!isLoggedIn())
         throw UserNotAuthenticatedError()
 
-    let data = {
-        gameName: gameName,
-        description: description,
-        gameTags: gameTags,
-        evaluationScript: evaluationScript,
-        scoreTypes: scoreTypes,
-        playLink: playLink,
-    };
+    let formData = new FormData();
+    console.log(gameTags);
+    formData.append("gameName", gameName);
+    formData.append("description", description);
+    formData.append("gameTags", gameTags);
+    formData.append("playLink", playLink);
     if (image)
-        data.icon = image;
+        formData.append("icon", image);
+    if (evaluationScript)
+        formData.append("evaluationScript", evaluationScript);
+    if (scoreTypes)
+        formData.append("scoreTypes", scoreTypes);
 
     return await axios.post(url,
-        data,
-        await getHeaders('POST', true)
+        formData,
+        await getHeaders('POST', true, 'multipart/form-data')
     ).then((response) => {
         console.log('Creation of game ' + gameName + ' successful!');
         return response;
