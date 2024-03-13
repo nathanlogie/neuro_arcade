@@ -73,6 +73,10 @@ export function PlayerView() {
 
     let content = <>...</>;
     if (!loadingPlayer && !loadingScores) {
+        let table = <>There are currently no scores for this player.</>
+        if (playerScores.length !== 0){
+          table = <PlayerViewTable inputData={playerScores} />
+        }
         let icon = <img src={placeholder} alt='icon' />;
         if (playerData.icon) {
             icon = <img src={API_ROOT + playerData.icon} alt={"image"} />;
@@ -97,7 +101,7 @@ export function PlayerView() {
                     </div>
                 </div>
                 <div className={styles.Side}>
-                    <PlayerViewTable inputData={playerScores} />
+                  {table}
                 </div>
             </motion.div>
         );
