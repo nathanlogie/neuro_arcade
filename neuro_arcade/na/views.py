@@ -635,16 +635,18 @@ def get_user_players(request: Request, user_id: int) -> Response:
 
 
 @api_view(['GET'])
-def get_all_users(request, user_id) -> Response:
-
-    current_user = User.objects.get(id=user_id)
-    if not current_user.is_superuser:
+@permission_classes([IsAuthenticated, IsAdminUser])
+def get_all_users(request) -> Response:
+    """
+    Returns a list of all users. Admin only.
+    """
+    if not request.user.is_superuser:
         return Response(status=401)
 
     users = User.objects.all()
     users_serialised = UserSerializer(users, many=True).data
 
-    return Response(data=users_serialised)
+    return Response(status=200, data=users_serialised)
 
 
 class GameViewSet(viewsets.ModelViewSet):

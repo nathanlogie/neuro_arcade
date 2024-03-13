@@ -518,19 +518,20 @@ export function getUser() {
  * @throws error if user is not admin
  */
 export async function getAllUsers() {
+    const url = API_ROOT + `/get-all-users/`;
+
     if (!getUser() || !userIsAdmin()){
         throw new Error;
     }
 
-    const userID = getUser().id
-    const url = API_ROOT + `/${userID}/get_all_users/`;
-    return await axios.get(url).then((response) => {
+    //todo test
+    return await axios.get(url, await getHeaders('GET', true)).then((response) => {
         return(response.data.map(function(user) {
             let status = "";
             if (user.status) {
                 status = user.status.status;
             }
-            else{
+            else {
                 status = "Admin";
             }
             return ({
