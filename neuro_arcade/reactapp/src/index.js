@@ -99,7 +99,10 @@ const router = createBrowserRouter([
     },
     {
         path: "auth_test",
-        element: <AuthTest/>
+        element:
+            <AdminRoutes>
+                <AuthTest/>
+            </AdminRoutes>
     },
     {
         path: "all-players",
