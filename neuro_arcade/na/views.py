@@ -185,8 +185,6 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
                     header['name'] + ' is invalid: value is above the allowed maximum.'
                 return Response(status=400, data={'description': msg})
 
-            # TODO use validation script here
-
             # Value is valid, so it will be added to the database
             added_score[header['name']] = score
         else:

@@ -730,7 +730,7 @@ export function getUserStatus(){
  * @return {boolean} true if valid
  */
 function passwordValidator(password) {
-    // Todo: make this more thorough.
+    // Todo: make passwordValidator more thorough.
     return password.length >= 8;
 }
 
