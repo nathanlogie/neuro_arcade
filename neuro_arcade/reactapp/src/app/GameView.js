@@ -139,7 +139,7 @@ export function GameView() {
                         </div>
                     </div>
                 </div>
-                {isLoggedIn() ? <Button name={"Upload Scores"} link={"upload_scores"} orientation={"right"} direction={"down"} /> : null}
+                {isLoggedIn() ? <Button name={"Upload Scores"} link={"upload-scores"} orientation={"right"} direction={"down"} /> : null}
                 <div className={styles.MobileBannerBuffer} />
             </motion.div>
         );

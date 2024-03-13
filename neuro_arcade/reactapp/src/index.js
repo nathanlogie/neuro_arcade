@@ -13,82 +13,12 @@ import {SignUp} from "./app/SignUp";
 import {Login} from "./app/Login";
 import {AllPlayers} from './app/AllPlayers';
 import {PlayerView} from './app/PlayerView';
-import {EditAbout} from "./app/about/EditAbout";
 import {PageNotFound} from "./app/PageNotFound"
 import {AnimatePresence} from 'framer-motion'
 import {Background} from "./components/Background";
 import {AuthTest} from "./app/AuthTest";
 import {AllUsers} from "./app/user_account/AllUsers"
-import {isLoggedIn, getUserStatus, userIsAdmin, isOwner} from "./backendRequests";
-
-/**
- * Protected routes for routes that only require a login
- * @param children - The JSX Element returned if the user is logged in
- * @returns {React.JSX.Element|*} - Returns child element if logged in, otherwise redirects to login
- */
-export function LoginRoutes({children}){
-    if (!isLoggedIn()){
-        return <Navigate to={'/login'} />
-    }
-    return children;
-}
-
-/**
- * Protected routes for routes that require an approved user
- * @param children - The JSX Element returned if the user is approved or is an admin
- * @returns {React.JSX.Element|*} - Returns child element if user is approved
- * or is an admin, otherwise returns PageNotFound component
- */
-export function ApprovedRoutes({children}){
-    if((!isLoggedIn() || getUserStatus()!=='approved') && !userIsAdmin()){
-        return <PageNotFound />
-    }
-    return children;
-}
-
-/**
- * Protected routes for routes that require an admin
- * @param children - The JSX Element returned if the user is an admin
- * @returns {React.JSX.Element|*} - Returns child element if an admin, otherwise returns PageNotFound
- */
-export function AdminRoutes({children}){
-    if (!userIsAdmin()){
-        return <PageNotFound />
-    }
-    return children;
-}
-
-/**
- * Protected routes for routes that require an admin
- * @param children - The JSX Element returned if the user is not an admin
- * @returns {React.JSX.Element|*} - Returns child element if user is not an admin, returns EditAbout otherwise
- */
-export function EditRoute({children}){
-    if (isLoggedIn() && userIsAdmin()){
-        return <EditAbout />
-    }
-    return children;
-}
-
-/**
- * Protected Route for edit game pages requiring ownership
- */
-export function GameOwnerRoute({children}){
-    if (!isOwner("game")){
-        return <PageNotFound/>
-    }
-    return children;
-}
-
-/**
- * Protected Route for edit game pages requiring ownership
- */
-export function PlayerOwnerRoute({children}){
-    if (!isOwner("player")){
-        return <PageNotFound/>
-    }
-    return children;
-}
+import {LoginRoutes, EditRoute, ApprovedRoutes, AdminRoutes, GameOwnerRoute, PlayerOwnerRoute} from "./ProtectedRoutes"
 
 const router = createBrowserRouter([
     {
@@ -103,64 +33,64 @@ const router = createBrowserRouter([
             </EditRoute>
     },
     {
-        path: "user_account", //TODO slug for users
+        path: "user-account", //TODO slug for users
         element:
             <LoginRoutes>
                 <AccountPage/>
             </LoginRoutes>
     },
     {
-        path: "user_account/all_users",
+        path: "user-account/all_users",
         element:
             <AdminRoutes>
                 <AllUsers/>
             </AdminRoutes>
     },
     {
-        path: "add_game",
+        path: "add-game",
         element:
             <ApprovedRoutes>
                 <FormPage type={'game'}/>
             </ApprovedRoutes>
     },
     {
-        path: "add_model",
+        path: "add-model",
         element:
             <ApprovedRoutes>
                 <FormPage type={'model'}/>
             </ApprovedRoutes>
     },
     {
-        path: 'all_games/:game_slug',
+        path: 'all-games/:game_slug',
         element: <GameView/>
     },
     {
-        path: 'all_games/:game_slug/upload_scores',
+        path: 'all-games/:game_slug/upload-scores',
         element:
             <ApprovedRoutes>
                 <FormPage type={'score'} />
             </ApprovedRoutes>
     },
     {
-        path: 'all_players/:player_slug/edit',
+        path: 'all-players/:player_slug/edit',
         element:
             <PlayerOwnerRoute>
                 <FormPage type={'modelUpdate'}/>
             </PlayerOwnerRoute>
     },
     {
-        path: 'all_games/:game_slug/edit',
+        path: 'all-games/:game_slug/edit',
         element:
             <GameOwnerRoute>
                 <FormPage type={'gameUpdate'}/>
             </GameOwnerRoute>
     },
     {
-        path: "all_games",
+        path: "all-games",
         element: <AllGames/>
     },
     {
-        path: "sign_up",
+        path: "sign-up",
         element: <SignUp/>
     },
     {
@@ -172,11 +102,11 @@ const router = createBrowserRouter([
         element: <AuthTest/>
     },
     {
-        path: "all_players",
+        path: "all-players",
         element: <AllPlayers/>
     },
     {
-        path: "all_players/:player_slug",
+        path: "all-players/:player_slug",
         element: <PlayerView/>
     },
     {

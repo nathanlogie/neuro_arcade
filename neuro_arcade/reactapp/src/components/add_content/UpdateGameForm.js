@@ -135,7 +135,7 @@ export function GameUpdateForm() {
         axios
             .delete(url)
             .then((response) => {
-                navigate("/all_games/");
+                navigate("/all-games/");
             })
             .catch(() => {
                 setError("root", {
@@ -259,9 +259,9 @@ export function GameUpdateForm() {
                 setError("root", {message: "game updated successfully"});
                 setTags([]);
                 if (name !== "") {
-                    navigate(`/all_games/${slugify(name)}`);
+                    navigate(`/all-games/${slugify(name)}`);
                 } else {
-                    navigate(`/all_games/${currentValues.slug}`);
+                    navigate(`/all-games/${currentValues.slug}`);
                 }
             })
             .catch(function (response) {
