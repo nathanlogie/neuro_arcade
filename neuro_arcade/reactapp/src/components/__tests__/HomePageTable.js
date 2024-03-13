@@ -26,7 +26,7 @@ test("HomePageTable renders data", () => {
     renderWithRouter(<HomePageTable inputData={data} />);
 
     expect(screen.getByText("Player1")).toBeInTheDocument();
-    expect(screen.getByText("100.0")).toBeInTheDocument();
+    expect(screen.getByText("100")).toBeInTheDocument();
     expect(screen.getByText("Player2")).toBeInTheDocument();
-    expect(screen.getByText("80.0")).toBeInTheDocument();
+    expect(screen.getByText("80")).toBeInTheDocument();
 });
