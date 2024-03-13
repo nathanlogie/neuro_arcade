@@ -15,12 +15,11 @@ import {ModelUpdateForm} from "../../components/add_content/UpdateModelForm";
  * @constructor builds add game page
  */
 export function FormPage({type}) {
-    let gameSlug = "";
 
     let nav_left = (
         <Button
-            name={"user account"}
-            link={"/user_account"} //TODO add user specific page
+            name={"back"}
+            link={-1} //TODO add user specific page
             orientation={"left"}
             direction={"left"}
         />
@@ -43,8 +42,6 @@ export function FormPage({type}) {
     } else if (type === "score") {
         form = <ScoreForm />;
         title = "Upload Score";
-        gameSlug = useParams().game_slug;
-        nav_left = <Button name={"Back"} link={`/all_games/${gameSlug}`} orientation={"left"} direction={"left"} />;
     } else {
         throw "invalid form type";
     }

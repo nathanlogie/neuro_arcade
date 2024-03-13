@@ -2,6 +2,8 @@ from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, TypedDic
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.template.defaultfilters import slugify
 
 MAX_SCORE_VALUE_SIZE = 256
@@ -53,7 +55,7 @@ class ScoreType(TypedDict):
 
 def validate_score_header(header: Any) -> Tuple[bool, Optional[str]]:
     """Takes an object parsed from json and checks it's a valid score type
-    
+
     Returns whether the test passed, and the error message if not"""
 
     # While header is expected to be a ScoreHeader, it could be any object
@@ -101,7 +103,7 @@ def validate_score_header(header: Any) -> Tuple[bool, Optional[str]]:
 
 def validate_score_type(score_type: Any) -> Tuple[bool, Optional[str]]:
     """Takes an object parsed from json and checks it's a valid score type
-    
+
     Returns whether the test passed, and the error message if not"""
 
     # While score_type is expected to be a ScoreType, it could be any object
@@ -133,7 +135,8 @@ def validate_score_type(score_type: Any) -> Tuple[bool, Optional[str]]:
     return True, None
 
 
-def validate_score(score_type: ScoreType, score: Any) -> Tuple[bool, Optional[str]]:
+def validate_score(score_type: ScoreType,
+                   score: Any) -> Tuple[bool, Optional[str]]:
     """Takes an object parsed from json and checks it's a valid score for its type
     Assumes score_type is already valid
 
@@ -199,7 +202,9 @@ class Game(models.Model):
         self.slug = slugify(self.name)
         super(Game, self).save(*args, **kwargs)
 
-    def matches_search(self, query: Optional[str], tags: Optional[Iterable[GameTag]]) -> bool:
+    def matches_search(self,
+                       query: Optional[str],
+                       tags: Optional[Iterable[GameTag]]) -> bool:
         accept = True
 
         # Check tags
@@ -233,7 +238,9 @@ class Game(models.Model):
             return headers, scores
 
         except TypeError:  # this can happen if score_type is not populated
-            print("[WARN] Something went wrong when trying to get the scores for ", self)
+            print(
+                "[WARN] Something went wrong when trying to get the scores for ",
+                self)
             print("[WARN]  This might happen if score_type is not populated.")
             return None, None
 
@@ -302,7 +309,8 @@ class Player(models.Model):
     slug = models.SlugField(unique=True, null=True)
     is_ai = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    description = models.TextField(max_length=MAX_PLAYER_DESCRIPTION_LENGTH, default='')
+    description = models.TextField(
+        max_length=MAX_PLAYER_DESCRIPTION_LENGTH, default='')
     tags = models.ManyToManyField(PlayerTag, blank=True)
     icon = models.ImageField(upload_to=PROFILE_SUBDIR, blank=True)
 
@@ -360,8 +368,21 @@ class UserStatus(models.Model):
         ("pending", "Pending")
     ]
 
-    status = models.CharField(max_length=10, choices=STATUS_OPTIONS, default="pending")
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="status")
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_OPTIONS,
+        default="pending")
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name="status")
 
     def __str__(self):
         return "Status of " + self.user.username + ": " + self.status
+
+
+@receiver(post_save, sender=User)
+def on_superuser_created(sender, instance, created, **kwargs):
+    if created and instance.is_superuser:
+        player = Player.objects.get_or_create(
+            name = instance.username, description = "Human Player for " + instance.username, is_ai=False, user=instance)

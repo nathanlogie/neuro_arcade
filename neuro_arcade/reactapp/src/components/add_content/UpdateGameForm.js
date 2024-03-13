@@ -10,6 +10,7 @@ import CreatableSelect from "react-select/creatable";
 import {requestGameTags, requestGame, API_ROOT, getUser, getHeaders} from "../../backendRequests";
 import slugify from "react-slugify";
 import makeAnimated from "react-select/animated";
+import {updateGames} from "../../backendRequests";
 
 import {MAX_NAME_LENGTH_GAME, MAX_DESCRIPTION_LENGTH_GAME, IMAGE_EXTENSION, SCORE_EXTENSION, EVAL_EXTENSION} from "./variableHelper";
 import {useNavigate, useParams} from "react-router-dom";
@@ -72,7 +73,7 @@ export function GameUpdateForm() {
         requestGame(gameSlug).then((currentData) => {
             setCurrentValues(currentData.game);
             setImageURL(`${API_ROOT}/${currentData.icon}`);
-            getHeaders("PATCH", true, "multipart/form-data").then((header) => {
+            getHeaders("PATCH", true).then((header) => {
                 setHeader(header);
                 requestGameTags().then((tags) => {
                     setExistingTags(tags);
@@ -133,7 +134,7 @@ export function GameUpdateForm() {
         axios
             .delete(url)
             .then((response) => {
-                navigate("/all_games/");
+                navigate("/all-games/");
             })
             .catch(() => {
                 setError("root", {
@@ -233,8 +234,6 @@ export function GameUpdateForm() {
             formData.append("scoreType", scoreType);
         }
 
-        let url = `${API_ROOT}/api/games/${currentValues.id}/`;
-
         if (formData.entries().next().done && tags.length === 0) {
             setError("root", {
                 message: "No changes detected"
@@ -242,9 +241,8 @@ export function GameUpdateForm() {
             return;
         }
 
-        await axios
-            .patch(url, formData, header)
-            .then(function (response) {
+        await updateGames(gameSlug, formData)
+            .then(response => {
                 console.log(response);
 
                 if (tags.length !== 0) {
@@ -260,9 +258,9 @@ export function GameUpdateForm() {
                 setError("root", {message: "game updated successfully"});
                 setTags([]);
                 if (name !== "") {
-                    navigate(`/all_games/${slugify(name)}`);
+                    navigate(`/all-games/${slugify(name)}`);
                 } else {
-                    navigate(`/all_games/${currentValues.slug}`);
+                    navigate(`/all-games/${currentValues.slug}`);
                 }
             })
             .catch(function (response) {

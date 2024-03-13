@@ -3,17 +3,15 @@
 """
 Populate the database with example data
 """
-import random
+
+# Imports need to be in a specific order
+# autopep8: off
 
 """
 Setup django
 """
 
 import os
-from shutil import copy
-
-from neuro_arcade.settings import MEDIA_ROOT, STATIC_DIR
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'neuro_arcade.settings')
 
 import django
@@ -24,9 +22,17 @@ django.setup()
 Main program
 """
 
-from django.contrib.auth.models import Group, Permission
+import random
+from shutil import copy
 from typing import Dict
+
+from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import Group, Permission
+
+from neuro_arcade.settings import MEDIA_ROOT, STATIC_DIR
 from na.models import *
+
+# autopep8: on
 
 # For the randomly assigned priority
 
@@ -733,13 +739,15 @@ def add_game(data: Dict) -> Game:
         game.icon.name = add_media_from_static(Game.ICON_SUBDIR, data['icon'])
 
     if 'evaluation' in data:
-        game.evaluation_script.name = add_media_from_static(Game.EVALUATION_SUBDIR, data['evaluation'])
+        game.evaluation_script.name = add_media_from_static(
+            Game.EVALUATION_SUBDIR, data['evaluation'])
 
     for tag_name in data.get('tags', []):
         try:
             tag = GameTag.objects.get(name=tag_name)
         except GameTag.DoesNotExist:
-            tag = add_game_tag({'name': tag_name, 'description': 'Default description'})
+            tag = add_game_tag(
+                {'name': tag_name, 'description': 'Default description'})
 
         game.tags.add(tag)
 
@@ -773,7 +781,8 @@ def add_player(data: Dict):
             tag = PlayerTag.objects.get(name=tag_name)
         except PlayerTag.DoesNotExist:
             # Create the tag if it doesn't exist
-            tag = add_player_tag({'name': tag_name, 'description': 'Default description'})
+            tag = add_player_tag(
+                {'name': tag_name, 'description': 'Default description'})
 
         player.tags.add(tag)
 

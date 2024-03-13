@@ -96,9 +96,11 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.csrf.CsrfViewMiddleware',  # needs to be before other middleware
+    'django.middleware.csrf.CsrfViewMiddleware',
+    # needs to be before other middleware
     'django.middleware.security.SecurityMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # needs to be after the security middleware
+    # needs to be after the security middleware
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',  # needs to be after CORS
     'django.contrib.auth.middleware.AuthenticationMiddleware',
