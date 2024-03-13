@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {SCORE_EXTENSION} from "./variableHelper";
+import {SCORE_EXTENSION} from "./formHelper";
 import {useForm} from "react-hook-form";
 import {motion} from "framer-motion";
 import {LuFileJson} from "react-icons/lu";

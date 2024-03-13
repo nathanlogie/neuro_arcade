@@ -11,7 +11,7 @@ import slugify from "react-slugify";
 import makeAnimated from "react-select/animated";
 import {updateGames} from "../../backendRequests";
 
-import {MAX_NAME_LENGTH_GAME, MAX_DESCRIPTION_LENGTH_GAME, IMAGE_EXTENSION, SCORE_EXTENSION, EVAL_EXTENSION} from "./variableHelper";
+import {MAX_NAME_LENGTH_GAME, MAX_DESCRIPTION_LENGTH_GAME, IMAGE_EXTENSION, SCORE_EXTENSION, EVAL_EXTENSION} from "./formHelper";
 import {useNavigate, useParams} from "react-router-dom";
 import {FaSave} from "react-icons/fa";
 import {GrPowerReset} from "react-icons/gr";

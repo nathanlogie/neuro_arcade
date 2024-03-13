@@ -5,7 +5,7 @@ import {FaImage, FaPlus} from "react-icons/fa6";
 import CreatableSelect from "react-select/creatable";
 import {requestPlayerTags, createNewPlayer} from "../../backendRequests";
 import makeAnimated from "react-select/animated";
-import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION} from "./variableHelper";
+import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION, handleFileUpload} from "./formHelper";
 
 const customStyles = {
     option: (provided) => ({...provided, color: "white"}),
@@ -64,16 +64,8 @@ export function ModelForm() {
     }, [existingTags]);
 
     const handleImage = (event) => {
-        const file = event.target.files[0];
-        const fileExtension = file.name.split(".").pop().toLowerCase();
-        if (IMAGE_EXTENSION.includes(fileExtension)) {
-            setImage(file);
-        } else {
-            // file doesn't include an accepted image file extension, so it's refused
-            setError("root", {message: "Invalid file type provided"});
-            setImage(null);
-        }
-    };
+        handleFileUpload(event.target.files[0], IMAGE_EXTENSION, setImage, setError, 'root');
+    }
 
     const onSubmit = async () => {
         let requestTags = [];

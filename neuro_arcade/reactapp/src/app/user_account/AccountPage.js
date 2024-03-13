@@ -43,10 +43,10 @@ export function AccountPage() {
     const regularContent = (
         <div className={styles.AddContent}>
             <div className={styles.FormMenu}>
-                <Card link={"/add_game"} text={"New Game"} icon={<FaGamepad />} />
-                <Card link={"/add_model"} text={"New Model"} icon={<TbBoxModel />} />
+                <Card link={"/add-game"} text={"New Game"} icon={<FaGamepad />} />
+                <Card link={"/add-model"} text={"New Model"} icon={<TbBoxModel />} />
             </div>
-            {user && userIsAdmin() ? <Button name={"all users"} link={"all_users"} orientation={"right"} direction={"down"} /> : null}
+            {user && userIsAdmin() ? <Button name={"all users"} link={"all-users"} orientation={"right"} direction={"down"} /> : null}
         </div>
     );
 

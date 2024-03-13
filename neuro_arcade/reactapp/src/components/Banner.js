@@ -25,6 +25,9 @@ export function Banner({size, left, right, selected}) {
     } else if (window.location.pathname.includes("players")) {
         link = "/all-players";
     }
+    if (left) {
+        link = -1;
+    }
 
     const handleSwitcherChange = (selectedValue) => {
         setSelectedSwitcherValue(selectedValue);

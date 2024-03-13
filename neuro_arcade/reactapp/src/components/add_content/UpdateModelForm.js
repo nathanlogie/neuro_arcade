@@ -7,7 +7,7 @@ import CreatableSelect from "react-select/creatable";
 import {requestPlayerTags, getUser, getHeaders, API_ROOT, requestPlayer} from "../../backendRequests";
 import slugify from "react-slugify";
 import makeAnimated from "react-select/animated";
-import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION} from "./variableHelper";
+import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION} from "./formHelper";
 import {useNavigate, useParams} from "react-router-dom";
 import {updatePlayer} from "../../backendRequests";
 import {FaSave} from "react-icons/fa";
