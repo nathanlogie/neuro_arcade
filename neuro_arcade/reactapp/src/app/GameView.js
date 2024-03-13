@@ -1,5 +1,5 @@
 import {Link, Navigate, useParams} from "react-router-dom";
-import {requestGame} from "../backendRequests";
+import {API_ROOT, requestGame} from "../backendRequests";
 import styles from "../styles/App.module.css";
 import {Table} from "../components/game/Table";
 import {RadarC} from "../components/game/RadarC";
@@ -12,8 +12,9 @@ import {MdBubbleChart} from "react-icons/md";
 import {AiOutlineRadarChart} from "react-icons/ai";
 import {AdminRanking} from "../components/AdminRanking";
 import {Button} from "../components/Button";
+import placeholder from "../static/images/placeholder.webp";
 import {isLoggedIn, isOwner} from "../backendRequests";
-import { FaRegPenToSquare } from "react-icons/fa6";
+import {FaRegPenToSquare} from "react-icons/fa6";
 
 /**
  *
@@ -49,18 +50,46 @@ export function GameView() {
     };
 
     const editButton = (
-        <Link
-         to={'edit'}>
-            <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
+        <Link to={"edit"}>
+            <motion.div className={styles.EditButton} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
                 <div>
                     <FaRegPenToSquare />
                 </div>
             </motion.div>
         </Link>
-    )
+    );
 
     let content = <>...</>;
     if (!loading) {
+        let icon = <img src={placeholder} alt='icon' />;
+        if (gameData.game.icon) {
+            icon = <img src={API_ROOT + gameData.game.icon} alt={"image"} />;
+        }
+
+        let tags =
+            gameData.game.tags && gameData.game.tags.length > 0 ? (
+                <div>
+                    <h3>Tags</h3>
+                    <ul>
+                        {gameData.game.tags.map((tag) => {
+                            return (
+                                <li>
+                                    <p>{tag}</p>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>
+            ) : (
+                <></>
+            );
+        let owner = (
+            <div>
+                <h3>Uploaded by</h3>
+                <div>{gameData.game.owner.name}</div>
+            </div>
+        );
+
         content = (
             <motion.div className={styles.MainBlock} id={styles["small"]} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
                 <div className={styles.Content}>
@@ -73,12 +102,14 @@ export function GameView() {
                     </div>
                     <div className={styles.ContentBlock}>
                         <p>
-                            <img
-                                src='https://loremflickr.com/500/500'
-                                alt={"image"} // TODO add query for image here
-                            />
+                            {icon}
                             {gameData.game.description}
                         </p>
+                    </div>
+                    <div className={styles.ContentBlock} id={styles["details"]}>
+                        {tags}
+                        {owner}
+                        <Button name={"play"} link={gameData.game.play_link} orientation={"right"} direction={"right"} />
                     </div>
                 </div>
                 <div className={styles.DataBlock}>

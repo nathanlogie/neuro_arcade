@@ -26,21 +26,10 @@
                 width: max-content;
                 padding-bottom: 0.15em;
             }
-            div {
-                position: relative;
-                left: 0.25em;
-                height: 4em;
-                margin: 1em auto;
-                outline: none;
-                border: none;
-                color: #FFFFFF;
-                cursor: pointer;
-                padding: 0 1.25em 0 0.75em;
-
+            .EditButton {
+                display: flex;
+                justify-content: center;
                 & div {
-                    position: absolute;
-                    top: -0.5em;
-                    width: 2em;
                     height: 3em;
                     border-radius: 5em;
                     background-color: rgba(255, 255, 255, 0.72);
@@ -48,12 +37,10 @@
                     backdrop-filter: blur(5px);
                 }
                 & div > * {
-                        width: 75%;
-                        height: 100%;
-                        margin: 0 1.5em 0 0.5em;
-                    }
+                    width: 50%;
+                    height: 100%;
+                }
             }
-
             .FilterButton {
                 width: 2em;
                 height: 2em;
@@ -96,7 +83,7 @@
                     border-radius: 0.5em;
                 }
             }
-            & #edit, #save {
+            & #edit, #save, #logout {
                 position: relative;
                 width: max-content;
                 left: 0.5em;
@@ -132,18 +119,26 @@
                 float: left;
                 width: 10rem;
                 height: 10rem;
-                object-fit: contain;
+                object-fit: cover;
                 border-radius: 2em;
-                margin: 0 1.5em;
+                margin: 1em;
             }
             & p {
                 width: 100%;
                 text-align: left;
                 line-height: 2em;
+                & a {
+                    color: #79FFB7;
+                }
             }
+        }
+        #vertical {
+            flex-direction: column;
+            align-items: center;
         }
         #details {
             gap: 5em;
+            overflow-x: scroll;
         }
         .Header {
             z-index: 1;
@@ -169,6 +164,9 @@
         .ContentBlock {
             display: flex;
             justify-content: center;
+        }
+        .Text {
+            margin-top: 5em;
         }
         .Publications {
             position: relative;
@@ -303,6 +301,19 @@
                 }
             }
         }
+        .AddContent {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .FormMenu {
+                display: flex;
+                gap: 2em;
+                margin: 2em;
+            }
+        }
+    }
+    #addContent {
+        margin-top: 2em;
     }
     .DataBlock {
         padding: 0 3em;
@@ -365,6 +376,12 @@
             top: -1.4em;
         }
         & form {
+            & img {
+                width: 10rem;
+                height: 10rem;
+                object-fit: cover;
+                border-radius: 2em;
+            }
             button {
                 position: relative;
                 width: max-content;

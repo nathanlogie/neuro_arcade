@@ -14,7 +14,6 @@
     width: fit-content;
     height: 30.75em;
     margin: 3em 0 0 auto;
-
     .TabSwitcher {
         right: 0;
         top: -2em;
@@ -25,6 +24,67 @@
         top: -1.5em;
         left: 1em;
         font-size: 1.75em;
+    }
+}
+
+#allUsers {
+    height: unset;
+    margin-left: auto;
+    margin-right: auto;
+    * {
+        font-family: inherit;
+        justify-content: space-between;
+    }
+    & .Revoke, .Approve, .Block, .Unblock {
+        position: relative;
+        width: max-content;
+        left: 0.5em;
+        height: 2em;
+        border-radius: 0.75em;
+        margin: 0 1em;
+        outline: none;
+        border: none;
+        background-color: rgba(255, 255, 255, 0.72);
+        font-family: inherit;
+        color: #41584C;
+        font-weight: 600;
+        font-size: 0.9em;
+        cursor: pointer;
+        padding: 0 1em 0 2em;
+        & div {
+            position: absolute;
+            top: -0.5em;
+            left: -1.5em;
+            width: 3em;
+            height: 3em;
+            border-radius: 3em;
+            color: #FFFFFF;
+            backdrop-filter: blur(5px);
+        }
+        & div > * {
+            height: 100%;
+            width: 40%;
+        }
+    }
+    & .Revoke {
+        & div {
+            background-color: #D14081;
+        }
+    }
+    & .Approve {
+        & div {
+            background-color: #6aad8b;
+        }
+    }
+    & .Block {
+        & div {
+            background-color: #d14062;
+        }
+    }
+    & .Unblock {
+        & div {
+            background-color: #c2a15b;
+        }
     }
 }
 

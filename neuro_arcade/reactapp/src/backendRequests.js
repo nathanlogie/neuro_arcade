@@ -158,16 +158,17 @@ async function getCSRFToken() {
  *
  * @param {string} method HTTP method (so like GET, POST etc.)
  * @param {boolean} authenticated
+ * @param {string} content_type defaults to 'application/json'
  *
  * @return Axios Request Config
  */
-export async function getHeaders(method, authenticated=false) {
+export async function getHeaders(method, authenticated=false, content_type='application/json') {
     let config = {
         credentials: 'include',
         method: method,
         mode: 'same-origin',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': content_type,
         },
     }
     if (authenticated) {
@@ -192,7 +193,7 @@ export async function ping() {
  *
  * @param {string} gameName - slug of the game name
  *
- * @return {Game} response data
+ * @return {Promise<axios.AxiosResponse<Object>>} response data
  *
  * @throws Error when the request is rejected.
  */
@@ -217,7 +218,7 @@ export async function requestGame(gameName) {
 /**
  * Requests a list of all available GameTags.
  *
- * @return {GameTag[]} response data
+ * @return {Promise<GameTag[]>} response data
  *
  * @throws Error when the request is rejected.
  */
@@ -268,6 +269,59 @@ export async function requestGames() {
 }
 
 /**
+ * Creates a new game associated with the current user.
+ * Requires the user to be authenticated, will throw an error if not.
+ *
+ * @param {string} gameName
+ * @param {string} description
+ * @param {[string]} gameTags
+ * @param {string} playLink
+ * @param {Image} image
+ * @param {File} evaluationScript  // todo File?
+ * @param {File} scoreTypes
+ *
+ * @return {Promise<axios.AxiosResponse<{}>>}
+ *
+ * @throws {Error | UserNotAuthenticatedError}
+ */
+export async function createNewGame(
+    gameName,
+    description,
+    gameTags=[],
+    playLink,
+    image=null,
+    evaluationScript,
+    scoreTypes
+) {
+    const url = API_ROOT + "/create-game/";
+    if (!isLoggedIn())
+        throw UserNotAuthenticatedError()
+
+    let data = {
+        gameName: gameName,
+        description: description,
+        gameTags: gameTags,
+        evaluationScript: evaluationScript,
+        scoreTypes: scoreTypes,
+        playLink: playLink,
+    };
+    if (image)
+        data.icon = image;
+
+    return await axios.post(url,
+        data,
+        await getHeaders('POST', true)
+    ).then((response) => {
+        console.log('Creation of game ' + gameName + ' successful!');
+        return response;
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    })
+}
+
+
+/**
  * Creates a new player associated with the current user. Only AI players are generated.
  * Requires the user to be authenticated, will throw an error if not.
  *
@@ -287,7 +341,7 @@ export async function createNewPlayer(playerName, description, playerTags, image
 
     let data = { playerName: playerName, description: description, playerTags: playerTags };
     if (image)
-        data.image = image;
+        data.icon = image;
 
     return await axios.post(url,
         data,
@@ -351,8 +405,74 @@ export async function deletePlayer(playerName) {
         throw new UserNotAuthenticatedError()
 
     return await axios.post(url, { playerName: playerName }, await getHeaders('POST', true))
-        .then((response) => {
+    .then((response) => {
         console.log('Deletion of player ' + playerName + ' successful!');
+        return response;
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    })
+}
+
+/**
+ * Makes a request for the human player associated with the logged-in user.
+ *
+ * @throws {UserNotAuthenticatedError}
+ *
+ * @returns {Promise<axios.AxiosResponse<Player>>}
+ */
+export async function getHumanPlayerFromCurrentUser() {
+    const url = API_ROOT + "/get-human-player/";
+
+    if (!isLoggedIn())
+        throw new UserNotAuthenticatedError();
+
+    return await axios.get(url, await getHeaders('GET', true))
+    .then((response) => {
+        return response;
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    })
+}
+
+/**
+ * Makes a request for the players associated with the logged-in user.
+ *
+ * @throws {UserNotAuthenticatedError}
+ *
+ * @returns {Promise<axios.AxiosResponse<Player[]>>}
+ */
+export async function getPlayersFromCurrentUser() {
+    const url = API_ROOT + "/get-players/";
+
+    if (!isLoggedIn())
+        throw new UserNotAuthenticatedError();
+
+    return await axios.get(url, await getHeaders('GET', true))
+    .then((response) => {
+        return response;
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    })
+}
+
+/**
+ * Makes a request for the games associated with the logged-in user.
+ *
+ * @throws {UserNotAuthenticatedError}
+ *
+ * @returns {Promise<axios.AxiosResponse<Game[]>>}
+ */
+export async function getGamesFromCurrentUser() {
+    const url = API_ROOT + "/get-games/";
+
+    if (!isLoggedIn())
+        throw new UserNotAuthenticatedError();
+
+    return await axios.get(url, await getHeaders('GET', true))
+    .then((response) => {
         return response;
     }).catch((error) => {
         console.log(error);
@@ -611,7 +731,7 @@ export function getUserStatus(){
  * @return {boolean} true if valid
  */
 function passwordValidator(password) {
-    // Todo: make this more thorough.
+    // Todo: make passwordValidator more thorough.
     return password.length >= 8;
 }
 
@@ -801,7 +921,8 @@ export async function postAdminRanking(gameID, ranking){
  * @throws {Error} error otherwise
  *
  */
-export async function requestUserPlayers(userID){
+export async function requestUserPlayers(userID) {
+    //todo change this to something more sensible
     const url = API_ROOT + '/users/' + userID + '/players/';
 
     return await axios.get(url)
@@ -817,14 +938,13 @@ export async function requestUserPlayers(userID){
 /**
  * Update Game Info
  *
- * @param {string} gameSlug: slug of game to update
- * @param {dict} data: data to update to
+ * @param gameSlug {string}
+ * @param data {{}} new game data
  *
  * @Returns {Response} response to patch call
  */
 export async function updateGames(gameSlug, data){
     const url = API_ROOT + `/games/${gameSlug}/update_game/`
-
     return await axios.patch(url, data, await getHeaders('patch', true));
 }
 

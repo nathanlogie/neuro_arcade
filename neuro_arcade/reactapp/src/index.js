@@ -33,7 +33,7 @@ const router = createBrowserRouter([
             </EditRoute>
     },
     {
-        path: "user-account", //TODO slug for users
+        path: "user-account",
         element:
             <LoginRoutes>
                 <AccountPage/>

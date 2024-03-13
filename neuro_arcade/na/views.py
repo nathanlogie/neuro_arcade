@@ -15,7 +15,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from na.models import PlayerTag
+from na.models import PlayerTag, validate_score_type
 from django.conf import settings
 
 from na.serialisers import GameSerializer, UserSerializer, GameTagSerializer, PlayerSerializer, PlayerTagSerializer
@@ -36,10 +36,29 @@ def get_game_dict(game_slug: str):
     """
     game = get_object_or_404(Game, slug=game_slug)
     dictionary = {'game': GameSerializer(game).data}
+
+    # scores:
     headers, scores = game.get_score_table()
     if headers is not None and scores is not None:
         dictionary['table_headers'] = headers
         dictionary['rows'] = scores
+
+    # replacing the game tags ids with the tag names
+    tag_ids = dictionary['game']['tags']
+    tag_names = []
+    for tag_id in tag_ids:
+        tag = GameTag.objects.get(id=tag_id)
+        tag_names.append(tag.name)
+    dictionary['game']['tags'] = tag_names
+
+    # adding the owner name field:
+    owner_id = dictionary['game']['owner']
+    owner_obj = User.objects.get(id=owner_id)
+    dictionary['game']['owner'] = {
+        'name': owner_obj.username,
+        'id': owner_id
+    }
+
     return dictionary
 
 
@@ -167,8 +186,6 @@ def post_game_score(request: Request, game_name_slug: str) -> Response:
                     header['name'] + ' is invalid: value is above the allowed maximum.'
                 return Response(status=400, data={'description': msg})
 
-            # TODO use validation script here
-
             # Value is valid, so it will be added to the database
             added_score[header['name']] = score
         else:
@@ -268,6 +285,7 @@ def post_new_player(request: Request) -> Response:
     player_name = request.data.get('playerName')
     description = request.data.get('description')
     player_tags = request.data.get('playerTags')
+    # todo read image
     if player_name is None:
         return Response(
             status=400,
@@ -283,7 +301,7 @@ def post_new_player(request: Request) -> Response:
     try:
         player_obj, _ = Player.objects.get_or_create(
             name=player_name, description=description, is_ai=True, user=request.user)
-    except IntegrityError:
+    except IntegrityError:  # todo what is this even doing
         return Response(
             status=500,
             data='A Model with that name already exists!')
@@ -305,11 +323,81 @@ def post_new_player(request: Request) -> Response:
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+def post_new_game(request: Request) -> Response:
+    """
+    Requests the creation of a new game.
+    The request should be of format:
+    {
+        gameName: str,
+        description: str,
+        playLink: str,          // optional
+        icon: Image,             //optional
+        evaluationScript: str,
+        scoreTypes: str,
+        gameTags: [str]
+    }
+    """
+    game_name = request.data.get('gameName')
+    description = request.data.get('description')
+    play_link = request.data.get('playLink')
+    icon = request.data.get('icon')
+    evaluation_script = request.data.get('evaluationScript')
+    score_types = request.data.get('scoreTypes')
+    game_tags = request.data.get('gameTags')
+
+    if game_name is None:
+        return Response(status=400, data='Invalid data; `gameName` must be provided!')
+    if description is None:
+        return Response(status=400, data='Invalid data; `description` must be provided!')
+    if play_link is None:
+        return Response(status=400, data='Invalid data; `playLink` must be provided!')
+    if evaluation_script is None:
+        return Response(status=400, data='Invalid data; `evaluationScript` must be provided!')
+    if score_types is None:
+        return Response(status=400, data='Invalid data; `scoreTypes` must be provided!')
+
+    # validating the score_type
+    valid_score_type, score_type_error = validate_score_type(score_types)
+    if not valid_score_type:
+        return Response(status=400, data='Invalid data; `scoreTypes` is not valid: ' + score_type_error)
+
+    try:
+        game_obj, _ = Game.objects.get_or_create(
+            name=game_name,
+            owner=request.user,
+            description=description,
+            play_link=play_link,
+            icon=icon,
+            evaluation_script=evaluation_script,
+            score_type=score_types
+        )
+    except IntegrityError:  # todo what is this even doing
+        return Response(
+            status=500,
+            data='Internal Server Error: maybe a game with that name already exists.')
+
+    # adding game tags to the new game
+    tags_to_add = []
+    for tag in game_tags:
+        # Note: this can create new tags
+        selected_tag = GameTag.objects.get_or_create(name=tag)[0]
+        tags_to_add.append(selected_tag)
+    game_obj.tags.set(tags_to_add)
+
+    return Response(status=200, data={
+        'msg': 'Game was successfully created!',
+        'playerID': game_obj.id
+    })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def delete_player(request: Request) -> Response:
     """
     Requests the deletion of a player associated with the current user.
     The request should be of format: {playerName: str}
     """
+    # todo look over for delete_player required; keep in mind that user shouldn't delete their own human player
     user = request.user
     player_name = request.data.get('playerName')
     if player_name is None:
@@ -508,6 +596,37 @@ def get_player(request: Request, player_name_slug: str) -> Response:
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_human_player_for_logged_in_user(request: Request) -> Response:
+    try:
+        player_obj = Player.objects.get(user=request.user, is_ai=False)
+    except ObjectDoesNotExist:
+        return Response(status=404, data='Human user does not exist!')
+    data = PlayerSerializer(player_obj).data
+    return Response(status=200, data=data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_players_for_logged_in_user(request: Request) -> Response:
+    player_objs = Player.objects.filter(user=request.user)
+    data = []
+    for player_obj in player_objs:
+        data.append(PlayerSerializer(player_obj).data)
+    return Response(status=200, data=data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_games_for_logged_in_user(request: Request) -> Response:
+    game_objs = Game.objects.filter(owner=request.user)
+    data = []
+    for game_obj in game_objs:
+        data.append(GameSerializer(game_obj).data)
+    return Response(status=200, data=data)
+
+
+@api_view(['GET'])
 def get_player_scores(request: Request, player_name_slug: str) -> Response:
     """
     Retrieve all scores made by a player.
@@ -636,7 +755,7 @@ def get_user_players(request: Request, user_id: int) -> Response:
 
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
-def update_game(request, game_name_slug) -> Response:
+def update_game(request: Request, game_name_slug: str) -> Response:
     """
     PATCH request to update game data
 
@@ -652,16 +771,32 @@ def update_game(request, game_name_slug) -> Response:
             with status 400 otherwise
     """
 
-    game = get_object_or_404(Game, slug=game_name_slug)
-    if game.owner != request.user and not request.user.is_superuser:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+    game_obj = get_object_or_404(Game, slug=game_name_slug)
+    if game_obj.owner != request.user and not request.user.is_superuser:
+        return Response(status=401)
 
-    serializer = GameSerializer(game, data=request.data, partial=True)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(status=status.HTTP_200_OK, data=serializer.data)
+    # removing tags from the request
+    new_tags = request.data.get('gameTags')
+    request.data['gameTags'] = None
 
-    return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
+    serializer = GameSerializer(game_obj, data=request.data, partial=True)
+    if not serializer.is_valid():
+        return Response(status=400, data=serializer.errors)
+    serializer.save()
+
+    if new_tags is not None:
+        # removing tags from the game object
+        game_obj.tags.set([])
+
+        # adding game tags to the game
+        tags_to_add = []
+        for tag in new_tags:
+            # Note: this can create new tags
+            selected_tag = GameTag.objects.get_or_create(name=tag)[0]
+            tags_to_add.append(selected_tag)
+        game_obj.tags.set(tags_to_add)
+
+    return Response(status=200, data=serializer.data)
 
 
 @api_view(['PATCH'])

@@ -1,11 +1,12 @@
 import {Link, useParams} from "react-router-dom";
-import {requestPlayer, requestPlayerScores, isOwner} from "../backendRequests";
+import {API_ROOT, requestPlayer, requestPlayerScores, isOwner} from "../backendRequests";
 import styles from "../styles/App.module.css";
 import React, {useEffect, useState} from "react";
 import {PlayerViewTable} from "../components/PlayerViewTable";
 import {Banner, MobileBanner} from "../components/Banner";
 import {motion} from "framer-motion";
 import {FaRegPenToSquare} from "react-icons/fa6";
+import placeholder from "../static/images/placeholder.webp";
 
 /**
  *
@@ -18,6 +19,7 @@ export function PlayerView() {
     let [playerData, setPlayerData] = useState({});
     let [loadingScores, setLoadingScores] = useState(true);
     let [playerScores, setPlayerScores] = useState([]);
+
     useEffect(() => {
         requestPlayer(playerSlug).then((data) => {
             setPlayerData(data);
@@ -58,18 +60,26 @@ export function PlayerView() {
         );
 
     const editButton = (
-        <Link
-         to={'edit'}>
-            <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
+        <Link to={"edit"}>
+            <motion.div className={styles.EditButton} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
                 <div>
                     <FaRegPenToSquare />
                 </div>
             </motion.div>
         </Link>
-    )
+    );
 
     let content = <>...</>;
     if (!loadingPlayer && !loadingScores) {
+        let table = <div className={styles.Text}>There are currently no scores for this player.</div>
+        if (playerScores.length !== 0){
+          table = <PlayerViewTable inputData={playerScores} />
+        }
+        let icon = <img src={placeholder} alt='icon' />;
+        if (playerData.icon) {
+            icon = <img src={API_ROOT + playerData.icon} alt={"image"} />;
+        }
+
         content = (
             <motion.div className={styles.MainBlock} id={styles["small"]} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
                 <div className={styles.Content} id={styles["small"]}>
@@ -79,10 +89,7 @@ export function PlayerView() {
                     </div>
                     <div className={styles.ContentBlock}>
                         <p>
-                            <img
-                                src='https://loremflickr.com/500/500'
-                                alt={"image"} // TODO add query for image here
-                            />
+                            {icon}
                             {playerData.description}
                         </p>
                     </div>
@@ -92,7 +99,7 @@ export function PlayerView() {
                     </div>
                 </div>
                 <div className={styles.Side}>
-                    <PlayerViewTable inputData={playerScores} />
+                  {table}
                 </div>
             </motion.div>
         );

@@ -1,7 +1,7 @@
 import styles from "../styles/components/Card.module.css";
 import {Link} from "react-router-dom";
 import {motion} from "framer-motion";
-import {API_ROOT} from "../backendRequests";
+import placeholder from "../static/images/placeholder.webp";
 
 /**
  * Interface for objects displayable in a Card
@@ -21,7 +21,7 @@ import {API_ROOT} from "../backendRequests";
  *
  * @param {string?} props.link - full URL
  * @param {string?} props.text
- * @param {string?} props.icon - full URL
+ * @param {JSX.Element} props.icon - full URL
  *
  * @returns
  */
@@ -30,13 +30,11 @@ export function Card({subject, linkPrefix, link, text, icon, id}) {
     if (subject) {
         link = linkPrefix + subject.slug;
         text = subject.name || "Name";
-        icon = (
-            <img
-                src={subject.icon || `${API_ROOT}/media/game_icons/example.png`}
-                alt='icon'
-                // TODO Populate game icons
-            />
-        );
+        if (subject.icon) {
+            icon = <img src={subject.icon} alt='icon' />;
+        } else {
+            icon = <img src={placeholder} alt='icon' />;
+        }
     }
     if (text && icon && link) {
         return (

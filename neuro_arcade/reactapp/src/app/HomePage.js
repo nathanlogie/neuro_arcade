@@ -6,7 +6,7 @@ import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {TagFilter} from "../components/TagFilter";
 import {HomePageTable} from "../components/HomePageTable";
-import {requestGameTags, requestPlayersRanked} from "../backendRequests";
+import {API_ROOT, getHumanPlayerFromCurrentUser, getUser, requestGameTags, requestPlayersRanked} from "../backendRequests";
 import {motion} from "framer-motion";
 import {useEffect, useState} from "react";
 import {IoFilter} from "react-icons/io5";
@@ -31,20 +31,11 @@ export function HomePage() {
 
     const [loggedIn, setLoggedIn] = useState(isLoggedIn());
 
+    const [playerIcon, setPlayerIcon] = useState(<FaRegUserCircle />);
+
     let nav_left = <Button name={"about"} link={"/about"} orientation={"left"} direction={"left"} />;
 
-    let nav_right = <Card id={"nav"} link={"sign-up"} text={"guest"} icon={<FaRegUserCircle />} />;
-
-    if (isLoggedIn()) {
-        nav_right = (
-            <Card
-                id={"nav"}
-                link={"user-account"}
-                text={"user"}
-                icon={<FaRegUserCircle />} //TODO signed in user profile display
-            />
-        );
-    }
+    let nav_right = <Card id={"nav"} link={"login"} text={"Guest"} icon={<FaRegUserCircle />} />;
 
     // Fetch the data tags on load
     useEffect(() => {
@@ -64,6 +55,17 @@ export function HomePage() {
 
     let content = <>...</>;
     if (!loadingTags && !loadingPlayers) {
+        if (isLoggedIn()) {
+            getHumanPlayerFromCurrentUser()
+                .then((p) => {
+                    if (p.data.icon) {
+                        setPlayerIcon(<img src={API_ROOT + p.data.icon} />);
+                    }
+                })
+                .catch(() => {});
+            nav_right = <Card id={"nav"} link={"user-account"} text={getUser().name} icon={playerIcon} />;
+        }
+
         content = (
             <motion.div className={styles.MainBlock} id={styles["big"]} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
                 <div className={styles.Content}>

@@ -53,7 +53,7 @@ export function Login() {
                             </div>
                         </motion.button>
                         <p>
-                            Don't have an account? <Link to='/sign_up'>Sign up here...</Link>
+                            Don't have an account? <Link to='/sign-up'>Sign up here...</Link>
                         </p>
                     </form>
                 </div>

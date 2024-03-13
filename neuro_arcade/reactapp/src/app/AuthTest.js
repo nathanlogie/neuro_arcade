@@ -1,7 +1,18 @@
 import {Background} from "../components/Background";
 import {MobileBanner} from "../components/Banner";
 import styles from "../styles/App.module.css";
-import {createNewPlayer, deletePlayer, ping, login, logout, postGameScore, signupNewUser, postUnprocessedResults} from "../backendRequests";
+import {
+    createNewPlayer,
+    deletePlayer,
+    ping,
+    login,
+    logout,
+    postGameScore,
+    signupNewUser,
+    postUnprocessedResults,
+    getHumanPlayerFromCurrentUser,
+    getPlayersFromCurrentUser
+} from "../backendRequests";
 import {useState} from "react";
 import {motion} from "framer-motion";
 
@@ -67,6 +78,28 @@ export function AuthTest() {
                         }
                     >
                         postGameScore
+                    </button>
+                    <button
+                        onClick={() =>
+                            getHumanPlayerFromCurrentUser().then((r) => {
+                                console.log(r);
+                                setResponse(r);
+                                setUserInfo(localStorage.getItem("user"));
+                            })
+                        }
+                    >
+                        getHumanPlayerFromCurrentUser
+                    </button>
+                    <button
+                        onClick={() =>
+                            getPlayersFromCurrentUser().then((r) => {
+                                console.log(r);
+                                setResponse(r);
+                                setUserInfo(localStorage.getItem("user"));
+                            })
+                        }
+                    >
+                        getPlayersFromCurrentUser
                     </button>
                     <button
                         onClick={() =>

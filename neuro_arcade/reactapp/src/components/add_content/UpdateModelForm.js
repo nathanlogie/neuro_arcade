@@ -2,45 +2,22 @@ import {useForm} from "react-hook-form";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {motion} from "framer-motion";
-import {FaImage, FaPlus, FaPython} from "react-icons/fa6";
+import {FaImage, FaTrash} from "react-icons/fa6";
 import CreatableSelect from "react-select/creatable";
 import {requestPlayerTags, getUser, getHeaders, API_ROOT, requestPlayer} from "../../backendRequests";
 import slugify from "react-slugify";
 import makeAnimated from "react-select/animated";
-import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION} from "./variableHelper";
+import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION, customStyles} from "./formHelper";
 import {useNavigate, useParams} from "react-router-dom";
 import {updatePlayer} from "../../backendRequests";
-
-const customStyles = {
-    option: (provided) => ({...provided, color: "white"}),
-    control: (provided) => ({
-        ...provided,
-        color: "black",
-        backgroundColor: "rgba(255, 255, 255, 0.2)",
-        border: "none",
-        borderRadius: "0.5em",
-        marginBottom: "1em"
-    }),
-    valueContainer: (provided) => ({...provided, height: "max-content"}),
-    placeholder: (provided) => ({
-        ...provided,
-        color: "#CCCCCC",
-        textAlign: "left",
-        fontSize: "0.9em",
-        paddingLeft: "1em"
-    }),
-    input: (provided) => ({...provided, color: "#FFFFFF", paddingLeft: "1em", fontSize: "0.9em"}),
-    multiValue: (provided) => ({...provided, backgroundColor: "rgba(0,0,0,0.2)", color: "white", borderRadius: "0.5em"}),
-    multiValueLabel: (provided) => ({...provided, color: "white"}),
-    multiValueRemove: (provided) => ({...provided, borderRadius: "0.5em"}),
-    menu: (provided) => ({...provided, borderRadius: "0.5em", position: "relative"})
-};
+import {FaSave} from "react-icons/fa";
+import {GrPowerReset} from "react-icons/gr";
 
 /**
  * @returns {JSX.Element} update existing model form
  * @constructor builds update existing model form
  */
-export function ModelUpdateForm() {
+export function ModelUpdateForm() {  //TODO (Andrei) Fix this form: it has issues with the tags
     const {
         register,
         handleSubmit,
@@ -147,7 +124,7 @@ export function ModelUpdateForm() {
     function handleDelete() {
         if (currentValues.user !== getUser().id && !getUser().is_admin) {
             setError("root", {
-                message: "You do not have permissions to edit this game"
+                message: "You do not have permissions to edit this player"
             });
             return;
         }
@@ -160,7 +137,7 @@ export function ModelUpdateForm() {
             })
             .catch(() => {
                 setError("root", {
-                    message: "Could not delete model"
+                    message: "Could not delete player"
                 });
             });
     }
@@ -168,7 +145,7 @@ export function ModelUpdateForm() {
     const onUpdate = async () => {
         if (currentValues.user !== getUser().id && !getUser().is_admin) {
             setError("root", {
-                message: "You do not have permissions to edit this game"
+                message: "You do not have permissions to edit this player"
             });
             return;
         }
@@ -206,7 +183,7 @@ export function ModelUpdateForm() {
                 }
                 reset();
                 setImage(null);
-                setError("root", {message: "model updated successfully"});
+                setError("root", {message: "player updated successfully"});
                 setTags(null);
                 if (name === "") {
                     navigate(`/all-players/${currentValues.slug}`);
@@ -219,7 +196,7 @@ export function ModelUpdateForm() {
                     setError("root", {message: "No response from server"});
                 } else {
                     if (response.response.data.slug) {
-                        setError("root", {message: "A Model with that name already exists!"});
+                        setError("root", {message: "A player with that name already exists!"});
                         return;
                     } else if (response.response.data.tags) {
                         setError("root", {message: "Tag upload failed"});
@@ -227,7 +204,7 @@ export function ModelUpdateForm() {
                     }
                     if (response)
                         if (response.response.data.includes("IntegrityError")) {
-                            setError("root", {message: "A Model with that name already exists!"});
+                            setError("root", {message: "A player with that name already exists!"});
                         } else {
                             setError("root", {
                                 message: `Something went wrong... ${response.response.data}`
@@ -240,16 +217,16 @@ export function ModelUpdateForm() {
     if (!loading) {
         return (
             <form>
-                <h3> {currentValues.name} </h3>
+                <h3> Name </h3>
                 <input
                     {...register("name", {
                         maxLength: {
                             value: MAX_NAME_LENGTH_MODEL,
-                            message: `Maximum model title length has been exceeded (${MAX_NAME_LENGTH_MODEL})`
+                            message: `Maximum player title length has been exceeded (${MAX_NAME_LENGTH_MODEL})`
                         }
                     })}
                     type={"text"}
-                    placeholder={"game name"}
+                    placeholder={"player name"}
                     defaultValue={currentValues.name}
                     onChange={(event) => setName(event.target.value)}
                 />
@@ -264,13 +241,13 @@ export function ModelUpdateForm() {
                         }
                     })}
                     type={"text"}
-                    placeholder={"This game measures..."}
+                    placeholder={"This player measures..."}
                     defaultValue={currentValues.description}
                     onChange={(event) => setDescription(event.target.value)}
                 />
                 {errors.description && <div>{errors.description.message}</div>}
 
-                <h3>Model Tags</h3>
+                <h3>Player Tags</h3>
                 <CreatableSelect
                     isClearable
                     isMulti
@@ -301,7 +278,7 @@ export function ModelUpdateForm() {
 
                 <span>
                     <div>
-                        <h3>Game Icon</h3>
+                        <h3>Player Icon</h3>
                         <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
                             <label htmlFor={"icon"}>
                                 <p>{image ? image.name : "No file chosen"}</p>
@@ -319,27 +296,27 @@ export function ModelUpdateForm() {
                                 onChange={handleImage}
                             />
                         </motion.div>
-                        <h2>Current image</h2>
+                        <h3>Current image</h3>
                         <img src={imageURL} alt='icon' />
                     </div>
                 </span>
 
                 <motion.button whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} onClick={handleSubmit(onUpdate)}>
-                    {"Save Changes"}
+                    {"save"}
                     <div>
-                        <FaPlus />
+                        <FaSave />
                     </div>
                 </motion.button>
                 <motion.button whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} onClick={handleSubmit(handleReset)}>
-                    {"RESET"}
+                    {"reset"}
                     <div>
-                        <FaPlus />
+                        <GrPowerReset />
                     </div>
                 </motion.button>
                 <motion.button whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} onClick={handleSubmit(handleDelete)}>
-                    {"Delete Model"}
+                    {"delete"}
                     <div>
-                        <FaPlus />
+                        <FaTrash />
                     </div>
                 </motion.button>
                 {errors.root && <div>{errors.root.message}</div>}

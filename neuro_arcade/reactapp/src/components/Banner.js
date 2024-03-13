@@ -20,11 +20,13 @@ export function Banner({size, left, right, selected}) {
     const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(selected);
     const navigate = useNavigate();
     let link = "/all-games";
-    if (window.location.pathname === "/all-games" || window.location.pathname === "/all-players"){
-      link = "/";
+    if (window.location.pathname === "/all-games" || window.location.pathname === "/all-players") {
+        link = "/";
+    } else if (window.location.pathname.includes("players")) {
+        link = "/all-players";
     }
-    else if (window.location.pathname.includes("players")){
-      link = "/all-players"
+    if (left) {
+        link = -1;
     }
 
     const handleSwitcherChange = (selectedValue) => {
