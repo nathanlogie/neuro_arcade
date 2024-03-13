@@ -336,15 +336,26 @@ class Score(models.Model):
 class UnprocessedResults(models.Model):
     """Scores that have yet to be processed by evaluation scripts. """
 
+    status_choices = [
+
+        (0, "Not processed"),
+        (1, "Processing"),
+        (2, "Completed with errors")
+        # No option for completed with no errors as entry would be deleted if no errors
+    ]
+
     upload_date = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    status = models.IntegerField(choices=status_choices, default=0)
+    errors = models.TextField(blank=True)
+    return_code = models.IntegerField(blank=True, null=True, default=None)
 
     def __str__(self):
         return ("UnprocessedResults for game " + self.game.name +
                 " by player " + self.player.name +
-                ": " + self.upload_date.__str__())
+                ": " + self.upload_date.__str__() + f" ({self.get_status_display()})")
 
 
 class UserStatus(models.Model):

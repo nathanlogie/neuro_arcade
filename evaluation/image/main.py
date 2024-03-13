@@ -4,6 +4,7 @@
 # --------------------------------------------------------------------
 
 import os
+import subprocess
 
 VOLUME_PATH = './volume'
 EVALUATION_SCRIPT_PATH = VOLUME_PATH + '/evaluation.py'
@@ -14,54 +15,56 @@ def main():
     # checks that the `volume` directory exists:
     if not os.path.exists(VOLUME_PATH):
         print(
-            "Error #1: directory `volume` not found!\n" +
+            "Docker setup error: directory `volume` not found!\n" +
             " Something is wrong with the docker run command,\n" +
             " make sure it includes the argument `-v ./volume:/usr/src/app/volume/`")
         return 1
 
     # checks that the evaluation script is present in volume:
-    # PLACEHOLDER
-    try:
-        from volume import evaluation
-        # TODO this should run evaluation, rather it should just run the full
-        # file
-    except ImportError:
+    if not os.path.isfile(EVALUATION_SCRIPT_PATH):
         # this will always give you errors if you try to
         # execute it outside the docker container
         print(
-            "Error #2: evaluation script not found!\n" +
+            "Docker setup error: evaluation script not found!\n" +
             " This can happen if the evaluation script is not copied properly,\n" +
             " or if it was copied and not renamed into `evaluation.py`.")
         return 2
 
     # checks that the input file is present:
     if not os.path.isfile(INPUT_FILE_PATH):
-        print("Error #3: input file not found!\n" +
+        print("Docker setup error: input file not found!\n" +
               " This can happen if the input file is not copied properly,\n" +
               " or if it was copied and not renamed into `input.txt`.")
         return 3
 
-    with open('volume/input.txt', 'r') as f:
-        data = f.read()
+    # This will automatically print the stdout and stderr which will be picked
+    # up by the master thread
+    output = subprocess.run(
+        ['python', EVALUATION_SCRIPT_PATH, INPUT_FILE_PATH], capture_output=True)
 
-    # todo: rather than running an arbitrary function, maybe run it as main?
-    #  the example file in /neuro_arcade/static/population/evaluation_functions/example.py
-    #  starts executing outside a function (inside an if __name__==`__main__`)
-    #  some ideas to get you started:
-    # 1: the issue is that opinion on using exec() online is very mixed, and this will be a malicious attack angle
-    # exec(path_to_eval_script)
-    # 2: just run it as a shell script
-    # output = subprocess.run(['python', path_to_eval_script], capture_output=True)
-    # this is how you get the output of the script
-    # (stdout is where all print statements print to)
-    # print('stdout: ', output.stdout.decode())
+    # Pass outputs up to higher layers
+    print(output.stdout.decode())
+    print(output.stderr.decode())
 
-    output = evaluation.evaluation(data)
+    # Return return code mapped to our own custom return codes
+    return_code = output.returncode
 
-    print(output)
-
-    # no issue encountered, returning 0
-    return 0
+    if return_code == 0:
+        # Works fine
+        return 0
+    elif return_code == 1:
+        print("Evaluation script error: script crashed!\n" +
+              " Script exited with code 1.")
+        return 4
+    elif return_code == 2:
+        print("Evaluation script error: bad input reported!\n" +
+              " Script exited with code 2.")
+        return 5
+    else:
+        # Unexpected return code
+        print("Evaluation script error: unexpected return code!\n" +
+              f" Script exited with code {return_code}.")
+        return 6
 
 
 if __name__ == '__main__':
