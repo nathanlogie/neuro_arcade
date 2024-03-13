@@ -24,13 +24,14 @@ Score type:
 """
 
 import json
+import sys
 
 # Test importing, not actually used
 import pandas
 import numpy
 import scipy
 
-with open("/usr/src/app/volume/input.txt") as f:
+with open(sys.argv[1]) as f:
     inp = json.load(f)
 
 try:
@@ -43,7 +44,7 @@ except KeyError as e:
 out = json.dumps(
     {
         "Length 1": len(s1),
-        "Length 2": len(s2),
+        "Length 2": -len(s2),
     }
 )
 print(out)
