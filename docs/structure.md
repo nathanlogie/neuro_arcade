@@ -1,6 +1,8 @@
+# Project Structure
+
 ![structure.img](structure.png)
 
-### Client [React]
+## Client [React]
 
 Our client uses React JS to provide modularity for the frontend of the website. 
 It helps with separation of concerns and makes the structure of the code easier to understand. 
@@ -17,7 +19,7 @@ It creates routes to each page then renders the documents.
 
 [More on the React Client](client.md)
 
-### API Server [Django]
+## API Server [Django]
 
 Our API server is the main point of communication between our database and our client.
 It takes a http request - most commonly a 'POST' or 'GET' request - and alters/creates/retrieves 
@@ -44,7 +46,7 @@ Our django server receives this data and does the appropriate actions (see [view
 
 [More on the Django API Server]
 
-### Score Processing [Celery + Docker]
+### Score Processing [Python + Docker]
 
 This regards the process and processing of game scores and the components involved in them.
 The server returns unprocessed data which must be in a json format. 
@@ -56,12 +58,12 @@ their own AI bots.
 
 [More on Score Processing](score_pipeline.md)
 
-### Frontend Server [Serve]
+## Frontend Server [Serve]
 
 Our frontend server provides precompiled React files to users. It sends the React client to 
 the clients.
 
-### Database [SQLite]
+## Database [SQLite]
 
 Our database runs with SQLite. It helps to structure our data and provides relationships between
 related data. Our backend uses Django models to assemble this information (see [models.py](../neuro_arcade/na/models.py)).
