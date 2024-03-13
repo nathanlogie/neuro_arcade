@@ -275,7 +275,7 @@ export async function requestGames() {
  * @throws {Error | UserNotAuthenticatedError}
  */
 export async function createNewPlayer(playerName, description, playerTags, image=null) {
-    const url = API_ROOT + "/create_player/";
+    const url = API_ROOT + "/create-player/";
     if (!isLoggedIn())
         throw UserNotAuthenticatedError()
 
@@ -303,7 +303,7 @@ export async function createNewPlayer(playerName, description, playerTags, image
  * @throws Error when request is rejected
  */
 export async function requestPlayers() {
-    const url = API_ROOT + '/api/players/';
+    const url = API_ROOT + 'api/players/';
     try {
         let response = await axios.get(url);
         return response.data;
@@ -339,7 +339,7 @@ export async function requestPlayersRanked() {
  * @throws {Error | UserNotAuthenticatedError}
  */
 export async function deletePlayer(playerName) {
-    const url = API_ROOT + "/delete_player/";
+    const url = API_ROOT + "/delete-player/";
 
     if (!isLoggedIn())
         throw new UserNotAuthenticatedError()
@@ -462,7 +462,7 @@ export async function getAboutData(){
  * @returns {Object} response when post is accepted
  */
 export async function postDescription(description){
-    const url = API_ROOT + '/edit_about/'
+    const url = API_ROOT + '/edit-about/'
 
     axios.post(url, {value: description, field: "description"}, await getHeaders('POST', true))
         .then(function (response) {
@@ -484,7 +484,7 @@ export async function postDescription(description){
  * @return {Object} response if successful
  */
 export async function postPublications(publications){
-    const url = API_ROOT + '/edit_about/'
+    const url = API_ROOT + '/edit-about/'
 
     try {
         const response = await axios.post(url, { value: publications, field: "publications" }, await getHeaders('POST', true));
@@ -556,7 +556,7 @@ export async function getAllUsers() {
  * @throws error otherwise
  */
 export async function updateStatus(user, newStatus){
-    const url = API_ROOT + '/update_status/';
+    const url = API_ROOT + '/update-status/';
 
     await axios.post(url, {user: user, status: newStatus})
         .then( function (response) {
@@ -765,7 +765,7 @@ export async function requestPlayerScores(playerName) {
  * @throws error otherwise
  */
 export async function postAdminRanking(gameID, ranking){
-    const url = API_ROOT + '/post_admin_ranking/'
+    const url = API_ROOT + '/post-admin-ranking/'
 
     await axios.post(url, {id: gameID, ranking: ranking*10}, await getHeaders('POST', true))
         .then((response) => {

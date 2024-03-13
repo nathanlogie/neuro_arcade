@@ -408,7 +408,12 @@ def sign_up(request: Request) -> Response:
 
 
 @api_view(['POST'])
+@permission_classes([IsAdminUser])
 def update_user_status(request: Request) -> Response:
+    """
+    Changes the approval status of a user. The request should be formatted like so:
+    {'user': <username>, 'status': <'pending' or 'approved' or 'blocked'>}
+    """
     if not request.data['user'] or not request.data['status']:
         return Response(status=400, data='Missing data in request')
 
@@ -526,7 +531,10 @@ def get_player_scores(request: Request, player_name_slug: str) -> Response:
 @permission_classes([IsAdminUser])
 def post_admin_ranking(request) -> Response:
     """
-    Posts admin ranking for a game
+    Posts admin ranking for a game, which is represented by the stars shown on the website.
+    The request should be formatted like so:
+    {'id': <game id>, 'ranking': <number> }
+    The ranking number needs to be between 0 and 10.
     """
     game = get_object_or_404(Game, id=request.data["id"])
     ranking = request.data.get("ranking")
