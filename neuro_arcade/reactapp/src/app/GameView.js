@@ -67,6 +67,33 @@ export function GameView() {
             icon = <img src={API_ROOT + gameData.game.icon} alt={"image"} />;
         }
 
+        let tags =
+            gameData.game.tags && gameData.game.tags.length > 0 ? (
+                <div>
+                    <h3>Tags</h3>
+                    <ul>
+                        {gameData.game.tags.map((tag) => {
+                            return (
+                                <li>
+                                    <p>{tag}</p>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>
+            ) : (
+                <></>
+            );
+        let owner =
+            gameData.game.owner === gameData.game.name ? (
+                <p>This is a registered player</p>
+            ) : (
+                <div>
+                    <h3>Uploaded by</h3>
+                    <div>{gameData.game.owner}</div>
+                </div>
+            );
+
         content = (
             <motion.div className={styles.MainBlock} id={styles["small"]} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
                 <div className={styles.Content}>
@@ -75,7 +102,7 @@ export function GameView() {
                         {isOwner("game") ? editButton : null}
                     </div>
                     <div className={styles.Title}>
-                        <AdminRanking game={gameData.game.id} rating={gameData.game.priority} />
+                        <AdminRanking game={gameData.game.id} rating={gameData.game.priority}/>
                     </div>
                     <div className={styles.ContentBlock}>
                         <p>
@@ -83,9 +110,13 @@ export function GameView() {
                             {gameData.game.description}
                         </p>
                     </div>
+                    <div className={styles.ContentBlock} id={styles["details"]}>
+                        {tags}
+                        {owner}
+                    </div>
                 </div>
                 <div className={styles.DataBlock}>
-                    <Table inputData={gameData} />
+                    <Table inputData={gameData}/>
                     <div className={styles.Graphs}>
                         <h2>Trends</h2>
                         <div className={styles.GraphSwitcher}>

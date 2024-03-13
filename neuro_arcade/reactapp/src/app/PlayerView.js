@@ -14,11 +14,13 @@ import placeholder from "../static/images/placeholder.webp";
  * @constructor builds player view page
  */
 export function PlayerView() {
+
     let playerSlug = useParams().player_slug;
     let [loadingPlayer, setLoadingPlayer] = useState(true);
     let [playerData, setPlayerData] = useState({});
     let [loadingScores, setLoadingScores] = useState(true);
     let [playerScores, setPlayerScores] = useState([]);
+
     useEffect(() => {
         requestPlayer(playerSlug).then((data) => {
             setPlayerData(data);
