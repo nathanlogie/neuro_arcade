@@ -2,6 +2,8 @@ from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, TypedDic
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.template.defaultfilters import slugify
 
 MAX_SCORE_VALUE_SIZE = 256
@@ -334,15 +336,26 @@ class Score(models.Model):
 class UnprocessedResults(models.Model):
     """Scores that have yet to be processed by evaluation scripts. """
 
+    status_choices = [
+
+        (0, "Not processed"),
+        (1, "Processing"),
+        (2, "Completed with errors")
+        # No option for completed with no errors as entry would be deleted if no errors
+    ]
+
     upload_date = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    status = models.IntegerField(choices=status_choices, default=0)
+    errors = models.TextField(blank=True)
+    return_code = models.IntegerField(blank=True, null=True, default=None)
 
     def __str__(self):
         return ("UnprocessedResults for game " + self.game.name +
                 " by player " + self.player.name +
-                ": " + self.upload_date.__str__())
+                ": " + self.upload_date.__str__() + f" ({self.get_status_display()})")
 
 
 class UserStatus(models.Model):
@@ -366,3 +379,10 @@ class UserStatus(models.Model):
 
     def __str__(self):
         return "Status of " + self.user.username + ": " + self.status
+
+
+@receiver(post_save, sender=User)
+def on_superuser_created(sender, instance, created, **kwargs):
+    if created and instance.is_superuser:
+        player = Player.objects.get_or_create(
+            name = instance.username, description = "Human Player for " + instance.username, is_ai=False, user=instance)

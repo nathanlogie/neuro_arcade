@@ -139,7 +139,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -185,3 +184,17 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+# Email address to send admin errors to
+ADMIN_EMAIL = "arcadeneuro@gmail.com"
+
+# Configuration for error emails in the evaluation pipeline
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+
+# The email account to send the error emails from
+EMAIL_HOST_USER = "arcadeneuro@gmail.com"
+EMAIL_HOST_PASSWORD = 'fueg awlu apid wzwk'
