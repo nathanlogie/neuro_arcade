@@ -302,7 +302,7 @@ def post_new_player(request: Request) -> Response:
     try:
         player_obj, _ = Player.objects.get_or_create(
             name=player_name, description=description, is_ai=True, user=request.user)
-    except IntegrityError:
+    except IntegrityError:  # todo what is this even doing
         return Response(
             status=500,
             data='A Model with that name already exists!')
@@ -319,6 +319,70 @@ def post_new_player(request: Request) -> Response:
     return Response(status=201, data={
         'msg': 'Player was successfully created!',
         'playerID': player_obj.id
+    })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def post_new_game(request: Request) -> Response:
+    """
+    Requests the creation of a new game.
+    The request should be of format:
+    {
+        gameName: str,
+        description: str,
+        playLink: str,          // optional
+        icon: Image,             //optional
+        evaluationScript: str,
+        scoreTypes: str,
+        gameTags: [str]
+    }
+    """
+    game_name = request.data.get('gameName')
+    description = request.data.get('description')
+    play_link = request.data.get('playLink')
+    icon = request.data.get('icon')
+    evaluation_script = request.data.get('evaluationScript')
+    score_types = request.data.get('scoreTypes')
+    game_tags = request.data.get('gameTags')
+
+    if game_name is None:
+        return Response(status=400, data='Invalid data; `gameName` must be provided!')
+    if description is None:
+        return Response(status=400, data='Invalid data; `description` must be provided!')
+    if play_link is None:
+        return Response(status=400, data='Invalid data; `playLink` must be provided!')
+    if evaluation_script is None:
+        return Response(status=400, data='Invalid data; `evaluationScript` must be provided!')
+    if score_types is None:
+        return Response(status=400, data='Invalid data; `scoreTypes` must be provided!')
+
+    try:
+        game_obj, _ = Game.objects.get_or_create(
+            name=game_name,
+            user=request.user,
+            description=description,
+            play_link=play_link,
+            icon=icon,
+            evaluation_script=evaluation_script,
+            score_type=score_types
+        )
+    except IntegrityError:  # todo what is this even doing
+        return Response(
+            status=500,
+            data='Internal Server Error: maybe a game with that name already exists.')
+
+    # adding game tags to the new game
+    tags_to_add = []
+    for tag in game_tags:
+        # Note: this can create new tags
+        selected_tag = GameTag.objects.get_or_create(name=tag)[0]
+        tags_to_add.append(selected_tag)
+    game_tags.tags.set(tags_to_add)
+
+    return Response(status=200, data={
+        'msg': 'Game was successfully created!',
+        'playerID': game_obj.id
     })
 
 
