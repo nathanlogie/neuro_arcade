@@ -363,7 +363,7 @@ export async function createNewPlayer(playerName, description, playerTags, image
  * @throws Error when request is rejected
  */
 export async function requestPlayers() {
-    const url = API_ROOT + 'api/players/';
+    const url = API_ROOT + '/api/players/';
     try {
         let response = await axios.get(url);
         return response.data;
