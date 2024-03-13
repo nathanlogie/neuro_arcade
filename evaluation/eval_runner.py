@@ -222,8 +222,7 @@ def email_worker():
 
         # Attempt to send email
         try:
-            # email_to_send.send()
-            print(email_to_send.message())
+            email_to_send.send()
         except Exception as e:
             # Retry later if connection refused
             # smtplib has a range of errors and we seem to keep hitting new
