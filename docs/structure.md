@@ -86,3 +86,9 @@ This structure allows us to easily access and manipulate relevant data for our a
 
 [More on our database](database.md)
 
+## Scalability
+
+The architecture of the project should be relative scalable. As-is, a single server running all of the processes
+should be able to handle a decent number of users, and most components (frontend serving, django backend server,
+and evaluation worker processes) are designed to be able to have multiple instances running in parallel, which
+would allow for them to be deployed on multiple servers at once to handle extra load.
