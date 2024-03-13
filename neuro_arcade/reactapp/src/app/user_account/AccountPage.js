@@ -74,7 +74,7 @@ export function AccountPage() {
                                 {player.description}
                             </p>
                             <Button
-                                name={"view statistics"}
+                                name={"view page"}
                                 link={"/all_players/" + player.slug}
                                 orientation={"right"}
                                 direction={"right"}
