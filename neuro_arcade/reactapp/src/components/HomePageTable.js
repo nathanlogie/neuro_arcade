@@ -31,7 +31,7 @@ export function HomePageTable({inputData}) {
             renderHeader: () => <strong>Player</strong>,
             renderCell: (params) => (
                 <Link
-                    to={"/all_players/" + params.value.replace(/\s+/g, "-").toLowerCase()}
+                    to={"/all-players/" + params.value.replace(/\s+/g, "-").toLowerCase()}
                     style={{
                         color: "#FFFFFF",
                         textDecoration: "none"
@@ -41,7 +41,7 @@ export function HomePageTable({inputData}) {
                 </Link>
             )
         },
-        {field: "score", headerName: "Overall Score", width: 150, renderHeader: () => <strong>Overall score</strong>},
+        {field: "score", headerName: "Overall Score", width: 150, type: "float", renderHeader: () => <strong>Overall score</strong>},
         {field: "is_AI", width: 150, type: "boolean", renderHeader: () => <strong>is AI?</strong>}
     ];
 
@@ -56,7 +56,7 @@ export function HomePageTable({inputData}) {
         return {
             id: index + 1,
             name: item.player.name,
-            score: item.overall_score.toFixed(1),
+            score: parseFloat(item.overall_score.toFixed(1)),
             is_AI: item.player.is_ai
         };
     });

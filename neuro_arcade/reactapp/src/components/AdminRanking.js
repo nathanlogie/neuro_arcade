@@ -29,23 +29,33 @@ export function AdminRanking({game, rating}) {
                 <ThemeProvider theme={table_theme}>
                     <Rating
                         sx={{
-                            backgroundColor: 'rgba(255,255,255,0.15)',
-                            borderRadius: '0.75em',
-                            padding: '0.5em',
-                            color: '#79FFB7',
+                            backgroundColor: "rgba(255,255,255,0.1)",
+                            borderRadius: "0.75em",
+                            padding: "0.5em",
+                            color: "#79FFB7"
                         }}
-                        name='half-rating customized-10' value={value} onChange={handleChange} precision={0.5} max={10} />
+                        name='half-rating customized-10'
+                        value={value}
+                        onChange={handleChange}
+                        precision={0.5}
+                        max={10}
+                    />
                 </ThemeProvider>
             ) : (
                 <ThemeProvider theme={table_theme}>
                     <Rating
                         sx={{
-                            backgroundColor: 'rgba(255,255,255,0.15)',
-                            borderRadius: '0.75em',
-                            padding: '0.5em',
-                            color: '#79FFB7',
+                            backgroundColor: "rgba(255,255,255,0.15)",
+                            borderRadius: "0.75em",
+                            padding: "0.5em",
+                            color: "#79FFB7"
                         }}
-                        name='half-rating customized-10' value={value} precision={0.5} max={10} readOnly />
+                        name='half-rating customized-10'
+                        value={value}
+                        precision={0.5}
+                        max={10}
+                        readOnly
+                    />
                 </ThemeProvider>
             )}
         </>
