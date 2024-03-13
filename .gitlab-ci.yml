@@ -2,6 +2,7 @@ stages:          # List of stages for jobs, and their order of execution
   - build
   - django
   - react
+  - format
 
 variables:
   PYTHON_VERSION: "3.11.5"
@@ -38,6 +39,19 @@ unit-test-job:
     - cd neuro_arcade
     - python manage.py test
 
+format-test-job:
+  image: python:3.11
+  before_script:
+  - python -m venv venv
+  - source venv/bin/activate
+  - cd neuro_arcade
+  - pip install -r requirements.txt
+  - cd ..
+  stage: django
+  script:
+  - cd neuro_arcade
+  - find . -type f -name '*.py' ! -path '*/migrations/*' -exec autopep8 --list-fixes '{}' \;
+
 unit-test-r-job:
   stage: react
   image: node:latest
@@ -50,3 +64,15 @@ unit-test-r-job:
     - npm test
     #  Maybe try and export as artifact at some point?
     - npm test -- --coverage
+
+format-test-r-job:
+  stage: react
+  image: node:latest
+  allow_failure: true
+  before_script:
+    - cd neuro_arcade
+    - cd reactapp
+    - npm install --force
+  script:
+    - npm run testFormat
+    - prettier src/**/*.js --check && prettier src/**/**/*.js --check
