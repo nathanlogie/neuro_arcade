@@ -7,10 +7,17 @@ import {FaPython} from "react-icons/fa6";
 import {FaPlus} from "react-icons/fa6";
 import {motion} from "framer-motion";
 import CreatableSelect from "react-select/creatable";
-import {requestGameTags, getUser, getHeaders, API_ROOT} from "../../backendRequests";
+import {requestGameTags, getUser, getHeaders, API_ROOT, requestPlayerTags, createNewGame} from "../../backendRequests";
 import slugify from "react-slugify";
 import makeAnimated from "react-select/animated";
-import {MAX_NAME_LENGTH_GAME, MAX_DESCRIPTION_LENGTH_GAME, IMAGE_EXTENSION, SCORE_EXTENSION, EVAL_EXTENSION} from "./variableHelper";
+import {
+    MAX_NAME_LENGTH_GAME,
+    MAX_DESCRIPTION_LENGTH_GAME,
+    IMAGE_EXTENSION,
+    SCORE_EXTENSION,
+    EVAL_EXTENSION,
+    handleFileUpload
+} from "./formHelper";
 
 const customStyles = {
     option: (provided) => ({...provided, color: "white"}),
@@ -57,116 +64,38 @@ export function GameForm() {
 
     useEffect(() => {
         requestGameTags().then((tags) => {
-            setExistingTags(tags);
-            setUser(getUser().id);
+            tags.forEach(tag => {
+                options.push({
+                    value: tag.id,
+                    label: tag.name
+                });
         });
-        getHeaders("POST", true, "multipart/form-data").then((header) => setHeader(header));
+        getHeaders("POST", true, "multipart/form-data").then(setHeader);
     }, []);
 
-    existingTags.forEach((tag) => {
-        options.push({
-            value: tag.id,
-            label: tag.name
-        });
-    });
-
     const handleImage = (event) => {
-        const file = event.target.files[0];
-        const acceptedFormats = IMAGE_EXTENSION;
-        const fileExtension = file.name.split(".").pop().toLowerCase();
-        if (!acceptedFormats.includes(fileExtension)) {
-            setError("root", {message: "Invalid file type provided"});
-            setImage(null);
-        } else {
-            setImage(file);
-        }
-    };
-
-    async function handleCreate(tagName) {
-        let formData = new FormData();
-        let url = `${API_ROOT}/api/gameTag`;
-        formData.append("name", tagName);
-        formData.append("slug", slugify(tagName));
-        formData.append("description", "default description");
-        await axios
-            .post(url, formData, header)
-            .then((response) => {
-                console.log(response);
-                let newValue = {
-                    value: response.data.id,
-                    label: response.data.name
-                };
-                setOptions((prev) => [...prev, newValue]);
-                setTags((prev) => [...prev, newValue]);
-            })
-            .catch(() => {
-                setError("tags", {message: "Error creating new tag"});
-            });
+        handleFileUpload(event.target.files[0], IMAGE_EXTENSION, setImage, setError, 'root');
     }
 
     const handleEvalScript = (event) => {
-        const file = event.target.files[0];
-        const acceptedFormats = EVAL_EXTENSION;
-        const fileExtension = file.name.split(".").pop().toLowerCase();
-        if (!acceptedFormats.includes(fileExtension)) {
-            setError("evaluationScript", {message: "Invalid file type provided"});
-            setEvaluationScript(null);
-        } else {
-            setEvaluationScript(file);
-        }
-    };
+        handleFileUpload(event.target.files[0], EVAL_EXTENSION, setEvaluationScript, setError, 'evaluationScript');
+    }
 
     const handleScores = (event) => {
-        const file = event.target.files[0];
-        const acceptedFormats = SCORE_EXTENSION;
-        const fileExtension = file.name.split(".").pop().toLowerCase();
-        if (!acceptedFormats.includes(fileExtension)) {
-            setError("scoreType", {message: "Invalid file type provided"});
-            setScoreType(null);
-        } else {
-            setScoreType(file);
-        }
-    };
+        handleFileUpload(event.target.files[0], SCORE_EXTENSION, setScoreType, setError, 'scoreType');
+    }
 
     const onSubmit = async (event) => {
-        let formData = new FormData();
-        formData.append("name", name);
-        formData.append("description", description);
-        formData.append("owner", user);
-        formData.append("play_link", playLink);
-        formData.append("slug", slugify(name));
+        let requestTags = [];
+        tags.forEach((tag) => requestTags.push(tag.value));
 
-        if (image) {
-            formData.append("icon", image);
-        }
-        if (evaluationScript) {
-            formData.append("evaluation_script", evaluationScript);
-        }
-        if (scoreType) {
-            formData.append("scoreType", scoreType);
-        }
-
-        console.log(header);
-
-        let url = `${API_ROOT}/api/games/`;
-        await axios
-            .post(url, formData, header)
+        await createNewGame(name, description, requestTags, playLink, image, evaluationScript, scoreType)
             .then(function (response) {
                 console.log(response);
-
-                if (tags.length !== 0) {
-                    const finalTagIDs = tags.map((tag) => tag.value);
-                    formData.append("tags", finalTagIDs);
-                    let url = `${API_ROOT}/api/games/${response.data.id}/add_tags/`;
-                    axios.post(url, formData, header).catch((response) => {
-                        console.log(response);
-                        setError("root", {message: "Error during tag upload"});
-                    });
-                }
-
                 reset();
-                setError("root", {message: "game submitted successfully"});
-                setTags([]);
+                setImage(null);
+                setError("root", {message: "Model submitted successfully"});
+                setTags(null);
             })
             .catch(function (response) {
                 console.log(response);
@@ -191,7 +120,7 @@ export function GameForm() {
                         }
                 }
             });
-    };
+    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -230,7 +159,7 @@ export function GameForm() {
                 isClearable
                 isMulti
                 onChange={(newValue) => setTags(newValue)}
-                onCreateOption={handleCreate}
+                // onCreateOption={handleCreate}
                 value={tags}
                 options={options}
                 components={makeAnimated()}
