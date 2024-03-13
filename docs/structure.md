@@ -44,7 +44,7 @@ to the API server. API requests are sent from our React JS client via Axios http
 (see [backendRequests.js](../neuro_arcade/reactapp/src/backendRequests.js)).
 Our django server receives this data and does the appropriate actions (see [views.py](../neuro_arcade/na/views.py)).
 
-[More on the Django API Server]
+[More on the Django API Server](api_reference.md)
 
 ## Score Processing [Python + Docker]
 
