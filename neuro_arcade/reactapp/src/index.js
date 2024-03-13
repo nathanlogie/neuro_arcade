@@ -33,64 +33,64 @@ const router = createBrowserRouter([
             </EditRoute>
     },
     {
-        path: "user_account", //TODO slug for users
+        path: "user-account", //TODO slug for users
         element:
             <LoginRoutes>
                 <AccountPage/>
             </LoginRoutes>
     },
     {
-        path: "user_account/all_users",
+        path: "user-account/all_users",
         element:
             <AdminRoutes>
                 <AllUsers/>
             </AdminRoutes>
     },
     {
-        path: "add_game",
+        path: "add-game",
         element:
             <ApprovedRoutes>
                 <FormPage type={'game'}/>
             </ApprovedRoutes>
     },
     {
-        path: "add_model",
+        path: "add-model",
         element:
             <ApprovedRoutes>
                 <FormPage type={'model'}/>
             </ApprovedRoutes>
     },
     {
-        path: 'all_games/:game_slug',
+        path: 'all-games/:game_slug',
         element: <GameView/>
     },
     {
-        path: 'all_games/:game_slug/upload_scores',
+        path: 'all-games/:game_slug/upload-scores',
         element:
             <ApprovedRoutes>
                 <FormPage type={'score'} />
             </ApprovedRoutes>
     },
     {
-        path: 'all_players/:player_slug/edit',
+        path: 'all-players/:player_slug/edit',
         element:
             <PlayerOwnerRoute>
                 <FormPage type={'modelUpdate'}/>
             </PlayerOwnerRoute>
     },
     {
-        path: 'all_games/:game_slug/edit',
+        path: 'all-games/:game_slug/edit',
         element:
             <GameOwnerRoute>
                 <FormPage type={'gameUpdate'}/>
             </GameOwnerRoute>
     },
     {
-        path: "all_games",
+        path: "all-games",
         element: <AllGames/>
     },
     {
-        path: "sign_up",
+        path: "sign-up",
         element: <SignUp/>
     },
     {
@@ -102,11 +102,11 @@ const router = createBrowserRouter([
         element: <AuthTest/>
     },
     {
-        path: "all_players",
+        path: "all-players",
         element: <AllPlayers/>
     },
     {
-        path: "all_players/:player_slug",
+        path: "all-players/:player_slug",
         element: <PlayerView/>
     },
     {

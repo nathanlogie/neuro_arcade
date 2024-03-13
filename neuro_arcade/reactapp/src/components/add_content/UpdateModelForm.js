@@ -156,7 +156,7 @@ export function ModelUpdateForm() {
         axios
             .delete(url)
             .then((response) => {
-                navigate("/all_players/");
+                navigate("/all-players/");
             })
             .catch(() => {
                 setError("root", {
@@ -209,9 +209,9 @@ export function ModelUpdateForm() {
                 setError("root", {message: "model updated successfully"});
                 setTags(null);
                 if (name === "") {
-                    navigate(`/all_players/${currentValues.slug}`);
+                    navigate(`/all-players/${currentValues.slug}`);
                 } else {
-                    navigate(`/all_players/${slugify(name)}`);
+                    navigate(`/all-players/${slugify(name)}`);
                 }
             })
             .catch(function (response) {

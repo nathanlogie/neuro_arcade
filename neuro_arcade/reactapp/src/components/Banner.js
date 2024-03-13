@@ -19,18 +19,21 @@ export function Banner({size, left, right, selected}) {
 
     const [selectedSwitcherValue, setSelectedSwitcherValue] = React.useState(selected);
     const navigate = useNavigate();
-    let link = "/all_games";
-    if (window.location.pathname === "/all_games"){
+    let link = "/all-games";
+    if (window.location.pathname === "/all-games" || window.location.pathname === "/all-players"){
       link = "/";
+    }
+    else if (window.location.pathname.includes("players")){
+      link = "/all-players"
     }
 
     const handleSwitcherChange = (selectedValue) => {
         setSelectedSwitcherValue(selectedValue);
         if (selectedValue === "Games") {
-            navigate("/all_games");
+            navigate("/all-games");
         }
         if (selectedValue === "Players") {
-            navigate("/all_players");
+            navigate("/all-players");
         }
     };
 
@@ -61,7 +64,7 @@ export function Banner({size, left, right, selected}) {
                     </div>
                 </div>
                 <NavBar
-                    left={<Button name={"back"} link={-1} direction={"up"} orientation={"left"} />}
+                    left={<Button name={"back"} link={link} direction={"up"} orientation={"left"} />}
                     right={
                         <Switcher data={switcher_labels} onSwitcherChange={handleSwitcherChange} switcherDefault={selectedSwitcherValue} />
                     }

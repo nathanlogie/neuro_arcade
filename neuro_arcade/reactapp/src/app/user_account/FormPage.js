@@ -15,19 +15,6 @@ import {ModelUpdateForm} from "../../components/add_content/UpdateModelForm";
  * @constructor builds add game page
  */
 export function FormPage({type}) {
-    // let slug = "";
-    // let link = '';
-    //
-    // if (type.)
-    // if (type.includes("game") || type === "score"){
-    //     slug = useParams().game_slug;
-    //     link = `/all_games/${slug}`
-    // }
-    // else {
-    //     slug = useParams().player_slug;
-    //     link = `/all_players/${slug}`;
-    // }
-
 
     let nav_left = (
         <Button

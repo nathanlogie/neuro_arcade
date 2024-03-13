@@ -33,13 +33,13 @@ export function HomePage() {
 
     let nav_left = <Button name={"about"} link={"/about"} orientation={"left"} direction={"left"} />;
 
-    let nav_right = <Card id={"nav"} link={"sign_up"} text={"guest"} icon={<FaRegUserCircle />} />;
+    let nav_right = <Card id={"nav"} link={"sign-up"} text={"guest"} icon={<FaRegUserCircle />} />;
 
     if (isLoggedIn()) {
         nav_right = (
             <Card
                 id={"nav"}
-                link={"user_account"}
+                link={"user-account"}
                 text={"user"}
                 icon={<FaRegUserCircle />} //TODO signed in user profile display
             />
@@ -86,13 +86,13 @@ export function HomePage() {
                         onMouseOut={() => setHover(false)}
                     />
                     <GameGrid num={8} tagQuery={tags.filter((tag, i) => selectedTags[i]).map((tag) => tag.id)} />
-                    <Button name={"more games"} link={"all_games"} orientation={"right"} direction={"down"} />
+                    <Button name={"more games"} link={"all-games"} orientation={"right"} direction={"down"} />
                 </div>
                 <div className={styles.Side}>
                     <div className={styles.DataBlock}>
                         <HomePageTable inputData={players} />
                     </div>
-                    <Button name={"all players"} link={"all_players"} orientation={"right"} direction={"down"} />
+                    <Button name={"all players"} link={"all-players"} orientation={"right"} direction={"down"} />
                 </div>
                 <div className={styles.MobileBannerBuffer} />
             </motion.div>

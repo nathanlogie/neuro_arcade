@@ -28,7 +28,7 @@ export function Table({inputData}) {
             renderHeader: () => <strong>Player</strong>,
             renderCell: (params) => (
                 <Link
-                    to={"/all_players/" + params.value.replace(/\s+/g, "-").toLowerCase()}
+                    to={"/all-players/" + params.value.replace(/\s+/g, "-").toLowerCase()}
                     style={{
                         color: "#FFFFFF",
                         textDecoration: "none"
