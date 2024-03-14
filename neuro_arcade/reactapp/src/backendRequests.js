@@ -1,7 +1,7 @@
 import axios from "axios";
-import slugify from "react-slugify";
 
 export const API_ROOT = "http://localhost:8000";
+export const MEDIA_ROOT = "http://localhost:8000"; //todo replace places where API_ROOT is wrongfully used
 /**
  * This file contains functions that request or upload data from/to the backend
  */

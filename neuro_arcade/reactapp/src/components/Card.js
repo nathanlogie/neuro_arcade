@@ -2,6 +2,7 @@ import styles from "../styles/components/Card.module.css";
 import {Link} from "react-router-dom";
 import {motion} from "framer-motion";
 import placeholder from "../static/images/placeholder.webp";
+import {MEDIA_ROOT} from "../backendRequests";
 
 /**
  * Interface for objects displayable in a Card
@@ -31,7 +32,13 @@ export function Card({subject, linkPrefix, link, text, icon, id}) {
         link = linkPrefix + subject.slug;
         text = subject.name || "Name";
         if (subject.icon) {
-            icon = <img src={subject.icon} alt='icon' />;
+            let iconSrc = subject.icon
+            // making sure the path for the icon is good,
+            // by checking if it has API_ROOT in front
+            if (! iconSrc.includes(MEDIA_ROOT))
+                iconSrc = MEDIA_ROOT + iconSrc
+
+            icon = <img src={iconSrc} alt="icon" />;
         } else {
             icon = <img src={placeholder} alt='icon' />;
         }
