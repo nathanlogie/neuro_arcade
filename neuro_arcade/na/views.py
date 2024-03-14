@@ -285,26 +285,22 @@ def post_new_player(request: Request) -> Response:
     player_name = request.data.get('playerName')
     description = request.data.get('description')
     player_tags = request.data.get('playerTags')
-    # todo read image
-    if player_name is None:
-        return Response(
-            status=400,
-            data='Invalid data; `playerName` must be provided!')
-    if description is None:
-        return Response(
-            status=400,
-            data='Invalid data; `description` must be provided!')
-    # if len(player_tags) > 0 and type(player_tags[0]) is str:
-    # return Response(status=400, data='Invalid data; `playerTags` must be an
-    # array of strings!')
+    icon = request.data.get('icon')
 
-    try:
-        player_obj, _ = Player.objects.get_or_create(
-            name=player_name, description=description, is_ai=True, user=request.user)
-    except IntegrityError:  # todo what is this even doing
-        return Response(
-            status=500,
-            data='A Model with that name already exists!')
+    if player_name is None:
+        return Response(status=400, data='Invalid data; `playerName` must be provided!')
+    if description is None:
+        return Response(status=400, data='Invalid data; `description` must be provided!')
+    if player_tags is not None:
+        player_tags = player_tags.split(',')
+
+    player_obj, _ = Player.objects.get_or_create(
+        name=player_name,
+        description=description,
+        is_ai=True,
+        icon=icon,
+        user=request.user
+    )
 
     # adding player tags to the new player
     tags_to_add = []

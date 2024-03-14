@@ -306,7 +306,6 @@ export async function createNewGame(
         throw UserNotAuthenticatedError()
 
     let formData = new FormData();
-    console.log(gameTags);
     formData.append("gameName", gameName);
     formData.append("description", description);
     formData.append("gameTags", gameTags);
@@ -321,10 +320,7 @@ export async function createNewGame(
     return await axios.post(url,
         formData,
         await getHeaders('POST', true, 'multipart/form-data')
-    ).then((response) => {
-        console.log('Creation of game ' + gameName + ' successful!');
-        return response;
-    }).catch((error) => {
+    ).catch((error) => {
         console.log(error);
         throw error;
     })
@@ -349,13 +345,16 @@ export async function createNewPlayer(playerName, description, playerTags, image
     if (!isLoggedIn())
         throw UserNotAuthenticatedError()
 
-    let data = { playerName: playerName, description: description, playerTags: playerTags };
+    let formData = new FormData();
+    formData.append("playerName", playerName);
+    formData.append("description", description);
+    formData.append("playerTags", playerTags);
     if (image)
-        data.icon = image;
+        formData.append("icon", image);
 
     return await axios.post(url,
-        data,
-        await getHeaders('POST', true)
+        formData,
+        await getHeaders('POST', true, 'multipart/form-data')
     ).then((response) => {
         console.log('Creation of player ' + playerName + ' successful!');
         return response;
