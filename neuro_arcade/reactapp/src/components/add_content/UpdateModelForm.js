@@ -4,7 +4,15 @@ import axios from "axios";
 import {motion} from "framer-motion";
 import {FaImage, FaTrash} from "react-icons/fa6";
 import CreatableSelect from "react-select/creatable";
-import {requestPlayerTags, getUser, getHeaders, API_ROOT, requestPlayer, MEDIA_ROOT} from "../../backendRequests";
+import {
+    requestPlayerTags,
+    getUser,
+    getHeaders,
+    API_ROOT,
+    requestPlayer,
+    MEDIA_ROOT,
+    deletePlayer
+} from "../../backendRequests";
 import slugify from "react-slugify";
 import makeAnimated from "react-select/animated";
 import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION, customStyles} from "./formHelper";
@@ -105,17 +113,9 @@ export function ModelUpdateForm() {
             return;
         }
 
-        let url = `${API_ROOT}/players/${currentValues.id}/`;
-        axios
-            .delete(url)
-            .then((response) => {
-                navigate("/all-players/");
-            })
-            .catch(() => {
-                setError("root", {
-                    message: "Could not delete player"
-                });
-            });
+        deletePlayer(currentValues.name)
+            .then(() => navigate("/all-players/"))
+            .catch(() => setError("root", {message: "Could not delete player"}));
     }
 
     async function onUpdate() {

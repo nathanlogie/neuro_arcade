@@ -391,23 +391,21 @@ def delete_player(request: Request) -> Response:
     Requests the deletion of a player associated with the current user.
     The request should be of format: {playerName: str}
     """
-    # todo look over for delete_player required; keep in mind that user shouldn't delete their own human player
     user = request.user
     player_name = request.data.get('playerName')
     if player_name is None:
-        return Response(
-            status=400,
-            data='Invalid data; `playerName` must be provided!')
+        return Response(status=400, data='Invalid data; `playerName` must be provided!')
 
     try:
-        player = Player.objects.get(name=player_name, user=user)
+        player = Player.objects.get(name=player_name)
     except ObjectDoesNotExist:
         return Response(status=404, data='Player not found!')
 
+    if player.user != request.user and not request.user.is_superuser:
+        return Response(status=400, data='Request Refused; This player is not owned by you!')
+
     if not player.is_ai:
-        return Response(
-            status=400,
-            data='Request Refused; Only AI players (AI Models) can be deleted!')
+        return Response(status=400, data='Request Refused; Only AI players (AI Models) can be deleted!')
 
     player.delete()
     return Response(status=200, data='Player successfully deleted!')
