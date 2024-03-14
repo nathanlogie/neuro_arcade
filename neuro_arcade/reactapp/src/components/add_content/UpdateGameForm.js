@@ -218,14 +218,14 @@ export function GameUpdateForm() {
                 {errors.name && <div>{errors.name.message}</div>}
 
                 <h3>Description</h3>
-                <input
+                <textarea
                     {...register("description", {
                         maxLength: {
                             value: MAX_DESCRIPTION_LENGTH_GAME,
                             message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH_GAME})`
                         }
                     })}
-                    type={"text"}
+                    style={{height: '6em', lineHeight: '2em', paddingTop: '1em', paddingBottom: '1em', resize: 'vertical'}}
                     placeholder={"This game measures..."}
                     defaultValue={currentValues.description}
                     onChange={(event) => setDescription(event.target.value)}

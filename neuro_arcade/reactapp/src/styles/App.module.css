@@ -426,7 +426,7 @@
                 font-weight: 600;
                 color: #DDDDDD;
             }
-            & input {
+            & input, textarea {
                 height: 3em;
                 margin-bottom: 1.5em;
                 border-radius: 0.5em;
@@ -437,7 +437,7 @@
                 color: #FFFFFF;
                 font-family: inherit;
             }
-            & input::placeholder {
+            & input::placeholder, textarea::placeholder  {
                 color: #CCCCCC;
             }
             & span {
@@ -732,4 +732,8 @@
 
 ::-webkit-scrollbar-track {
   background-color: transparent;
+}
+
+::-webkit-scrollbar-corner {
+    background: rgba(0,0,0,0);
 }
