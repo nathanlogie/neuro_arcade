@@ -428,6 +428,30 @@ export async function deletePlayer(playerName) {
 }
 
 /**
+ * Deletes a game associated with the logged-in user.
+ * Requires the user to be authenticated, will throw an error if not.
+ *
+ * @param {string} gameName
+ *
+ * @throws {Error | UserNotAuthenticatedError}
+ */
+export async function deleteGame(gameName) {
+    const url = API_ROOT + "/delete-game/";
+
+    if (!isLoggedIn())
+        throw new UserNotAuthenticatedError()
+
+    return await axios.post(url, { gameName: gameName }, await getHeaders('POST', true))
+    .then((response) => {
+        console.log('Deletion of game ' + gameName + ' successful!');
+        return response;
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    })
+}
+
+/**
  * Makes a request for the human player associated with the logged-in user.
  *
  * @throws {UserNotAuthenticatedError}

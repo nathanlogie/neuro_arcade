@@ -6,7 +6,15 @@ import {LuFileJson} from "react-icons/lu";
 import {FaPython} from "react-icons/fa6";
 import {motion} from "framer-motion";
 import CreatableSelect from "react-select/creatable";
-import {requestGameTags, requestGame, API_ROOT, getUser, getHeaders, MEDIA_ROOT} from "../../backendRequests";
+import {
+    requestGameTags,
+    requestGame,
+    API_ROOT,
+    getUser,
+    getHeaders,
+    MEDIA_ROOT,
+    deleteGame
+} from "../../backendRequests";
 import slugify from "react-slugify";
 import makeAnimated from "react-select/animated";
 import {updateGames} from "../../backendRequests";
@@ -105,18 +113,10 @@ export function GameUpdateForm() {
             });
             return;
         }
-        //todo this shouldn't be done through a ViewSet
-        let url = `${API_ROOT}/games/${currentValues.id}/`;
-        axios
-            .delete(url)
-            .then((response) => {
-                navigate("/all-games/");
-            })
-            .catch(() => {
-                setError("root", {
-                    message: "Could not delete game"
-                });
-            });
+
+        deleteGame(currentValues.name)
+            .then(() => navigate("/all-games/"))
+            .catch(() => setError("root", {message: "Could not delete game"}));
     }
 
     function handleImage(event) {

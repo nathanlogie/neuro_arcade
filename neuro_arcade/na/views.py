@@ -386,12 +386,34 @@ def post_new_game(request: Request) -> Response:
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+def delete_game(request: Request) -> Response:
+    """
+    Requests the deletion of a game associated with the current user.
+    The request should be of format: {gameName: str}
+    """
+    game_name = request.data.get('gameName')
+    if game_name is None:
+        return Response(status=400, data='Invalid data; `gameName` must be provided!')
+
+    try:
+        game = Game.objects.get(name=game_name)
+    except ObjectDoesNotExist:
+        return Response(status=404, data='Game not found!')
+
+    if game.owner != request.user and not request.user.is_superuser:
+        return Response(status=400, data='Request Refused; This game is not owned by you!')
+
+    game.delete()
+    return Response(status=200, data='Game successfully deleted!')
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def delete_player(request: Request) -> Response:
     """
     Requests the deletion of a player associated with the current user.
     The request should be of format: {playerName: str}
     """
-    user = request.user
     player_name = request.data.get('playerName')
     if player_name is None:
         return Response(status=400, data='Invalid data; `playerName` must be provided!')
