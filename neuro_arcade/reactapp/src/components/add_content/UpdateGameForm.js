@@ -166,11 +166,11 @@ export function GameUpdateForm() {
         let requestTags = [];
         tags.forEach((tag) => requestTags.push(tag.value));
 
-        await updateGames(gameSlug, name, description, requestTags, playLink, image, evaluationScript, scoreType)
+        await updateGames(gameSlug, '', description, requestTags, playLink, image, evaluationScript, scoreType)
             .then((response) => {
                 console.log(response);
                 if (name !== "") {
-                    navigate(`/all-games/${slugify(name)}`);
+                    navigate(`/all-games/`);
                 } else {
                     navigate(`/all-games/${currentValues.slug}`);
                 }
@@ -202,20 +202,21 @@ export function GameUpdateForm() {
     if (!loading) {
         return (
             <form>
-                <h3> Name </h3>
-                <input
-                    {...register("name", {
-                        maxLength: {
-                            value: MAX_NAME_LENGTH_GAME,
-                            message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH_GAME})`
-                        }
-                    })}
-                    type={"text"}
-                    placeholder={"game name"}
-                    defaultValue={currentValues.name}
-                    onChange={(event) => setName(event.target.value)}
-                />
-                {errors.name && <div>{errors.name.message}</div>}
+                <h3> Name: {currentValues.name} </h3>
+                {/* todo: Name Change doesn't work due to reason I don't understand */}
+                {/*<input*/}
+                {/*    {...register("name", {*/}
+                {/*        maxLength: {*/}
+                {/*            value: MAX_NAME_LENGTH_GAME,*/}
+                {/*            message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH_GAME})`*/}
+                {/*        }*/}
+                {/*    })}*/}
+                {/*    type={"text"}*/}
+                {/*    placeholder={"game name"}*/}
+                {/*    defaultValue={currentValues.name}*/}
+                {/*    onChange={(event) => setName(event.target.value)}*/}
+                {/*/>*/}
+                {/*{errors.name && <div>{errors.name.message}</div>}*/}
 
                 <h3>Description</h3>
                 <textarea
