@@ -54,19 +54,11 @@ export function GameUpdateForm() {
 
     useEffect(() => {
         requestGame(gameSlug).then((response) => {
-            console.log(response.game)
             setCurrentValues(response.game);
             setImageURL(`${MEDIA_ROOT}/${response.game.icon}`);
-            console.log(response.game.tags);
-            let _tags = []
-            response.game.tags.forEach((tagName) => {
-                _tags.push({
-                    value: tagName,
-                    label: tagName,
-                })
-            })
+            let _tags = [];
+            response.game.tags.forEach((tagName) => _tags.push({value: tagName, label: tagName}));
             setTags(_tags);
-            console.log(tags);
             setLoading(false);
         });
     }, []);
@@ -87,12 +79,7 @@ export function GameUpdateForm() {
     }, [existingTags]);
 
     function handleTagReset() {
-        setTags([]);
-        options.forEach((option) => {
-            if (currentValues.tags.includes(option.value)) {
-                tags.push(option);
-            }
-        });
+        setTags(currentValues.tags);
     }
 
     function handleReset() {
@@ -132,30 +119,29 @@ export function GameUpdateForm() {
             });
     }
 
-    const handleImage = (event) => {
+    function handleImage(event) {
         const file = event.target.files[0];
         const acceptedFormats = IMAGE_EXTENSION;
         const fileExtension = file.name.split(".").pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
             setError("root", {message: "Invalid file type provided"});
             setImage(null);
-            setImageURL(null);
             setImageURL(`${MEDIA_ROOT}/${currentValues.icon}`);
         } else {
             setImage(file);
             setImageURL(URL.createObjectURL(file));
         }
-    };
+    }
 
-    const handleEvalScript = (event) => {
+    function handleEvalScript(event) {
         handleFileUpload(event.target.files[0], EVAL_EXTENSION, setEvaluationScript, setError, 'evaluationScript');
-    };
+    }
 
-    const handleScores = (event) => {
+    function handleScores(event) {
         handleFileUpload(event.target.files[0], SCORE_EXTENSION, setScoreType, setError, 'scoreType');
-    };
+    }
 
-    const onUpdate = async (event) => {
+    async function onUpdate() {
         if (currentValues.user !== getUser().id && !getUser().is_admin) {
             setError("root", {
                 message: "You do not have permissions to edit this game"
@@ -163,46 +149,27 @@ export function GameUpdateForm() {
             return;
         }
 
-        let requestTags = [];
-        tags.forEach((tag) => requestTags.push(tag.value));
+        let requestTags = tags.map(t => t.value);
 
         await updateGames(gameSlug, '', description, requestTags, playLink, image, evaluationScript, scoreType)
             .then((response) => {
                 console.log(response);
                 if (name !== "") {
-                    navigate(`/all-games/`);
+                    navigate("/all-games/");
                 } else {
-                    navigate(`/all-games/${currentValues.slug}`);
+                    navigate("/all-games/" + gameSlug);
                 }
             })
-            .catch(function (response) {
+            .catch((response) => {
+                setError("root", {message: "Something went wrong"});
                 console.log(response);
-                if (!response) {
-                    setError("root", {message: "No response from server"});
-                } else {
-                    if (response.response.data.slug) {
-                        setError("root", {message: "A game with that name already exists!"});
-                        return;
-                    } else if (response.response.data.tags) {
-                        setError("root", {message: "Tag update failed"});
-                        return;
-                    }
-                    if (response)
-                        if (response.response.data.includes("IntegrityError")) {
-                            setError("root", {message: "A game with that name already exists!"});
-                        } else {
-                            setError("root", {
-                                message: `Something went wrong... ${response.response.data}`
-                            });
-                        }
-                }
-            });
-    };
+            })
+    }
 
     if (!loading) {
         return (
             <form>
-                <h3> Name: {currentValues.name} </h3>
+                <h3> Editing <strong>{currentValues.name}</strong>...</h3>
                 {/* todo: Name Change doesn't work due to reason I don't understand */}
                 {/*<input*/}
                 {/*    {...register("name", {*/}
@@ -238,8 +205,7 @@ export function GameUpdateForm() {
                     isClearable
                     isMulti
                     defaultValue={currentValues.tags}
-                    onChange={(newValue) => setTags(newValue)}
-                    // onCreateOption={handleCreate}
+                    onChange={setTags}
                     value={tags}
                     options={options}
                     components={makeAnimated()}

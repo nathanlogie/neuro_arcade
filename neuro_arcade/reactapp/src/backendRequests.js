@@ -858,7 +858,7 @@ export function logout() {
  *
  * @param {string} playerName - slug of the player name
  *
- * @return {Player} response data
+ * @return {Promise<Player>} response data
  *
  * @throws Error when the request is rejected.
  */
@@ -918,7 +918,7 @@ export async function postAdminRanking(gameID, ranking){
     await axios.post(url, {id: gameID, ranking: ranking*10}, await getHeaders('POST', true))
         .then((response) => {
             return response;
-    })
+        })
         .catch((error) => {
             console.log(error);
             throw error;
@@ -953,7 +953,7 @@ export async function requestUserPlayers(userID) {
 /**
  * Update Game Info
  *
- * @param gameSlug {string}
+ * @param {string} gameSlug
  * @param {string} gameName
  * @param {string} description
  * @param {[string]} gameTags
@@ -979,11 +979,13 @@ export async function updateGames(
 ) {
     const url = API_ROOT + `/games/${gameSlug}/update/`;
     if (!isLoggedIn())
-        throw UserNotAuthenticatedError()
+        throw new UserNotAuthenticatedError();
 
     let formData = new FormData();
-    if (name)
-        formData.append("name", gameName);
+    // editing Game Name is currently disabled due to bugs
+    // check the comments on the form for more info
+    // if (gameName)
+    //     formData.append("name", gameName);
     if (description)
         formData.append("description", description);
     if (gameTags)
@@ -1008,18 +1010,37 @@ export async function updateGames(
 /**
  * Update Player Data
  *
- * @param {string} playerSlug: slug of player to update
+ * @param {string} playerSlug slug of player to update
+ * @param {string} name
+ * @param {string} description
+ * @param {[string]} tags
+ * @param {Image} image
  *
- * @param {dict} data: data to update to
- *
- * @Returns {Response} response to patch call
+ * @Returns {Promise<Response>} response to patch call
  */
-export async function updatePlayer(playerSlug, data){
-    const url = API_ROOT + `/players/${playerSlug}/update_player/`
+export async function updatePlayer(playerSlug, name, description, tags, image) {
+    const url = API_ROOT + `/players/${playerSlug}/update_player/`;
+    if (!isLoggedIn())
+        throw new UserNotAuthenticatedError();
 
-    return await axios.patch(url, data, await getHeaders('patch', true))
-        .then((response) => console.log(response))
-        .catch(error => console.log(error))
+    let formData = new FormData();
+    // editing Player Name is currently disabled due to bugs
+    // check the comments on the form for more info
+    // if (name)
+    //     formData.append("name", name);
+    if (description)
+        formData.append("description", description);
+    if (tags)
+        formData.append("playerTags", tags);
+    if (image)
+        formData.append("icon", image);
+
+    // if formData is empty, then throw an error
+    // from: https://stackoverflow.com/questions/40364692/check-if-formdata-is-empty
+    if (formData.entries().next().done)
+        throw new EmptyFormError();
+
+    return await axios.patch(url, formData, await getHeaders('PATCH', true, 'multipart/form-data'));
 }
 
 /**

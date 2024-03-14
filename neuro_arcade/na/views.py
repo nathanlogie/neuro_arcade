@@ -805,16 +805,26 @@ def update_player(request, player_name_slug) -> Response:
             with status 400 otherwise
     """
 
-    player = get_object_or_404(Player, slug=player_name_slug)
-    if player.user != request.user and not request.user.is_superuser:
+    player_obj = get_object_or_404(Player, slug=player_name_slug)
+    if player_obj.user != request.user and not request.user.is_superuser:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-    serializer = PlayerSerializer(player, data=request.data, partial=True)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(status=status.HTTP_200_OK, data=serializer.data)
+    serializer = PlayerSerializer(player_obj, data=request.data, partial=True)
+    if not serializer.is_valid():
+        return Response(status=400, data=serializer.errors)
+    serializer.save()
 
-    return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
+    # adding tags
+    if request.data.get('playerTags') is not None:
+        tags_to_add = []
+        player_obj.tags.set([])
+        for tag in request.data.get('playerTags').split(','):
+            # Note: this can create new tags
+            selected_tag = PlayerTag.objects.get_or_create(name=tag)[0]
+            tags_to_add.append(selected_tag)
+        player_obj.tags.set(tags_to_add)
+
+    return Response(status=200, data=serializer.data)
 
 
 @api_view(['GET'])
