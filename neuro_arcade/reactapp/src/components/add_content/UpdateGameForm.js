@@ -170,7 +170,7 @@ export function GameUpdateForm() {
             .then((response) => {
                 console.log(response);
                 if (name !== "") {
-                    navigate(`/all-games/${slugify(name)}`);
+                    navigate(`/all-games/`);
                 } else {
                     navigate(`/all-games/${currentValues.slug}`);
                 }
