@@ -142,7 +142,7 @@
             align-items: unset;
             gap: 5em;
             padding: 0 1em;
-            overflow-x: scroll;
+            overflow-x: auto;
             flex-direction: row;
         }
         .Header {
