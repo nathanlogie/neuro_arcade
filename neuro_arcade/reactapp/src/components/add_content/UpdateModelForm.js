@@ -4,7 +4,7 @@ import axios from "axios";
 import {motion} from "framer-motion";
 import {FaImage, FaTrash} from "react-icons/fa6";
 import CreatableSelect from "react-select/creatable";
-import {requestPlayerTags, getUser, getHeaders, API_ROOT, requestPlayer} from "../../backendRequests";
+import {requestPlayerTags, getUser, getHeaders, API_ROOT, requestPlayer, MEDIA_ROOT} from "../../backendRequests";
 import slugify from "react-slugify";
 import makeAnimated from "react-select/animated";
 import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION, customStyles} from "./formHelper";
@@ -42,7 +42,7 @@ export function ModelUpdateForm() {  //TODO (Andrei) Fix this form: it has issue
     useEffect(() => {
         requestPlayer(player_name).then((currentData) => {
             setCurrentValues(currentData);
-            setImageURL(`${API_ROOT}/${currentData.icon}`);
+            setImageURL(`${MEDIA_ROOT}/${currentData.icon}`);
             getHeaders("PATCH", true).then((header) => {
                 setHeader(header);
                 requestPlayerTags().then((tags) => {
@@ -81,7 +81,7 @@ export function ModelUpdateForm() {  //TODO (Andrei) Fix this form: it has issue
         });
         setName("");
         setDescription("");
-        setImageURL(`${API_ROOT}/${currentValues.icon}`);
+        setImageURL(`${MEDIA_ROOT}/${currentValues.icon}`);
         setImage(null);
         handleTagReset();
     }
@@ -100,7 +100,7 @@ export function ModelUpdateForm() {  //TODO (Andrei) Fix this form: it has issue
 
     async function handleCreate(tagName) {
         let formData = new FormData();
-        let url = `${API_ROOT}/api/playerTag/`;
+        let url = `${API_ROOT}/playerTag/`;
 
         formData.append("name", tagName);
         formData.append("slug", slugify(tagName));
@@ -129,7 +129,7 @@ export function ModelUpdateForm() {  //TODO (Andrei) Fix this form: it has issue
             return;
         }
 
-        let url = `${API_ROOT}/api/players/${currentValues.id}/`;
+        let url = `${API_ROOT}/players/${currentValues.id}/`;
         axios
             .delete(url)
             .then((response) => {
@@ -175,7 +175,7 @@ export function ModelUpdateForm() {  //TODO (Andrei) Fix this form: it has issue
                 if (tags.length !== 0) {
                     const finalTagIDs = tags.map((tag) => tag.value);
                     formData.append("tags", finalTagIDs);
-                    let url = `${API_ROOT}/api/players/${response.data.id}/add_tags/`;
+                    let url = `${API_ROOT}/players/${response.data.id}/add_tags/`;
                     axios.post(url, formData, header).catch((response) => {
                         console.log(response);
                         setError("root", {message: "Error during tag change"});

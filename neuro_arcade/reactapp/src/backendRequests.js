@@ -1,7 +1,11 @@
 import axios from "axios";
 
-export const API_ROOT = "http://localhost:8000";
-export const MEDIA_ROOT = "http://localhost:8000"; //todo replace places where API_ROOT is wrongfully used
+export const API_ROOT = "http://localhost:8000/api";
+export const MEDIA_ROOT = "http://localhost:8000";
+// the media root is actually at /media/,
+// but the constant needs to not include /media/
+// because all API responses include /media/ in the path of an image
+
 /**
  * This file contains functions that request or upload data from/to the backend
  */
@@ -231,7 +235,7 @@ export async function requestGame(gameName) {
  * @throws Error when the request is rejected.
  */
 export async function requestGameTags() {
-    const url = API_ROOT + '/api/gameTag/';
+    const url = API_ROOT + '/gameTag/';
     try {
         let response = await axios.get(url);
         return response.data;
@@ -249,7 +253,7 @@ export async function requestGameTags() {
  * @throws Error when the request is rejected.
  */
 export async function requestPlayerTags() {
-    const url = API_ROOT + '/api/playerTag/';
+    const url = API_ROOT + '/playerTag/';
     return await axios.get(url)
         .then((response) => {
             return response.data;
@@ -267,7 +271,7 @@ export async function requestPlayerTags() {
  * @throws Error when request is rejected
  */
 export async function requestGames() {
-    const url = API_ROOT + '/api/games/';
+    const url = API_ROOT + '/games/';
     return await axios.get(url).then((response) => {
         return response.data;
     }).catch((error) => {
@@ -372,7 +376,7 @@ export async function createNewPlayer(playerName, description, playerTags, image
  * @throws Error when request is rejected
  */
 export async function requestPlayers() {
-    const url = API_ROOT + '/api/players/';
+    const url = API_ROOT + '/players/';
     try {
         let response = await axios.get(url);
         return response.data;
@@ -577,14 +581,16 @@ export async function postUnprocessedResults(content, game_slug, player_name) {
  * @returns {Promise} response if successful
  */
 export async function getAboutData(){
-    try {
-        let response = await axios.get(API_ROOT + '/about/')
-        return response.data
-    }
-    catch (err){
-        console.log("ERROR WHILE FETCHING ABOUT DATA: " + err)
-        throw err
-    }
+    const url = API_ROOT + '/about/';
+
+    return await axios.get(url)
+        .then(response => {
+            return response.data
+        })
+        .catch (err => {
+            console.log("ERROR WHILE FETCHING ABOUT DATA: " + err);
+            throw err;
+        })
 }
 
 /**

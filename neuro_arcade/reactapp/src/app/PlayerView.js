@@ -1,5 +1,5 @@
 import {Link, useParams} from "react-router-dom";
-import {API_ROOT, requestPlayer, requestPlayerScores, isOwner} from "../backendRequests";
+import {API_ROOT, requestPlayer, requestPlayerScores, isOwner, MEDIA_ROOT} from "../backendRequests";
 import styles from "../styles/App.module.css";
 import React, {useEffect, useState} from "react";
 import {PlayerViewTable} from "../components/PlayerViewTable";
@@ -77,7 +77,7 @@ export function PlayerView() {
         }
         let icon = <img src={placeholder} alt='icon' />;
         if (playerData.icon) {
-            icon = <img src={API_ROOT + playerData.icon} alt={"image"} />;
+            icon = <img src={MEDIA_ROOT + playerData.icon} alt={"image"} />;
         }
 
         content = (
