@@ -33,8 +33,8 @@ export function AllPlayers() {
      * @returns {PlayerGridMode} mode
      */
     function convertModeName(displayName) {
-        if (displayName == "AI Platforms") return PlayerGridMode.AI;
-        if (displayName == "Humans") return PlayerGridMode.HUMAN;
+        if (displayName === "AI Platforms") return PlayerGridMode.AI;
+        if (displayName === "Humans") return PlayerGridMode.HUMAN;
         return PlayerGridMode.ALL;
     }
 
