@@ -6,7 +6,7 @@ import {LuFileJson} from "react-icons/lu";
 import {FaPython} from "react-icons/fa6";
 import {motion} from "framer-motion";
 import CreatableSelect from "react-select/creatable";
-import {requestGameTags, requestGame, API_ROOT, getUser, getHeaders} from "../../backendRequests";
+import {requestGameTags, requestGame, API_ROOT, getUser, getHeaders, MEDIA_ROOT} from "../../backendRequests";
 import slugify from "react-slugify";
 import makeAnimated from "react-select/animated";
 import {updateGames} from "../../backendRequests";
@@ -56,7 +56,7 @@ export function GameUpdateForm() {
         requestGame(gameSlug).then((response) => {
             console.log(response.game)
             setCurrentValues(response.game);
-            setImageURL(`${API_ROOT}/${response.game.icon}`);
+            setImageURL(`${MEDIA_ROOT}/${response.game.icon}`);
             console.log(response.game.tags);
             let _tags = []
             response.game.tags.forEach((tagName) => {
@@ -106,7 +106,7 @@ export function GameUpdateForm() {
         setName("");
         setDescription("");
         setPlayLink("");
-        setImageURL(`${API_ROOT}/${currentValues.icon}`);
+        setImageURL(`${MEDIA_ROOT}/${currentValues.icon}`);
         setImage(null);
         handleTagReset();
     }
@@ -119,7 +119,7 @@ export function GameUpdateForm() {
             return;
         }
         //todo this shouldn't be done through a ViewSet
-        let url = `${API_ROOT}/api/games/${currentValues.id}/`;
+        let url = `${API_ROOT}/games/${currentValues.id}/`;
         axios
             .delete(url)
             .then((response) => {
@@ -140,7 +140,7 @@ export function GameUpdateForm() {
             setError("root", {message: "Invalid file type provided"});
             setImage(null);
             setImageURL(null);
-            setImageURL(`${API_ROOT}/${currentValues.icon}`);
+            setImageURL(`${MEDIA_ROOT}/${currentValues.icon}`);
         } else {
             setImage(file);
             setImageURL(URL.createObjectURL(file));

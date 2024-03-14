@@ -6,7 +6,14 @@ import {MobileBanner} from "../components/Banner";
 import {Button} from "../components/Button";
 import {TagFilter} from "../components/TagFilter";
 import {HomePageTable} from "../components/HomePageTable";
-import {API_ROOT, getHumanPlayerFromCurrentUser, getUser, requestGameTags, requestPlayersRanked} from "../backendRequests";
+import {
+    API_ROOT,
+    getHumanPlayerFromCurrentUser,
+    getUser,
+    MEDIA_ROOT,
+    requestGameTags,
+    requestPlayersRanked
+} from "../backendRequests";
 import {motion} from "framer-motion";
 import {useEffect, useState} from "react";
 import {IoFilter} from "react-icons/io5";
@@ -59,7 +66,7 @@ export function HomePage() {
             getHumanPlayerFromCurrentUser()
                 .then((p) => {
                     if (p.data.icon) {
-                        setPlayerIcon(<img src={API_ROOT + p.data.icon} />);
+                        setPlayerIcon(<img src={MEDIA_ROOT + p.data.icon} />);
                     }
                 })
                 .catch(() => {});

@@ -41,5 +41,5 @@ urlpatterns = [
     path('players/<slug:player_name_slug>/update_player/', views.update_player, name='update_player'),
     path('get-all-users/', views.get_all_users, name='get_all_users'),
     # View Sets:
-    path('api/', include(router.urls)),
+    path('', include(router.urls)),
 ]

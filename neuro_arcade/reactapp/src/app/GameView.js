@@ -1,5 +1,4 @@
-import {Link, Navigate, useParams} from "react-router-dom";
-import {API_ROOT, requestGame} from "../backendRequests";
+import {Link, useParams} from "react-router-dom";
 import styles from "../styles/App.module.css";
 import {Table} from "../components/game/Table";
 import {RadarC} from "../components/game/RadarC";
@@ -13,7 +12,7 @@ import {AiOutlineRadarChart} from "react-icons/ai";
 import {AdminRanking} from "../components/AdminRanking";
 import {Button} from "../components/Button";
 import placeholder from "../static/images/placeholder.webp";
-import {isLoggedIn, isOwner} from "../backendRequests";
+import {isLoggedIn, isOwner, MEDIA_ROOT, requestGame} from "../backendRequests";
 import {FaRegPenToSquare} from "react-icons/fa6";
 
 /**
@@ -63,7 +62,7 @@ export function GameView() {
     if (!loading) {
         let icon = <img src={placeholder} alt='icon' />;
         if (gameData.game.icon) {
-            icon = <img src={API_ROOT + gameData.game.icon} alt={"image"} />;
+            icon = <img src={MEDIA_ROOT + gameData.game.icon} alt={"image"} />;
         }
 
         let tags =

@@ -19,7 +19,6 @@ from django.urls import include, path
 from django.contrib.staticfiles.urls import static
 
 urlpatterns = [
-    path('', include('na.urls')),
+    path('api/', include('na.urls')),
     path('admin/', admin.site.urls),
-    # path('', include('reactapp.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
