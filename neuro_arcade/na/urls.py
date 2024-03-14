@@ -18,6 +18,7 @@ urlpatterns = [
     path('sign-up/', views.sign_up, name='sign_up'),
     path('games/<slug:game_name_slug>/data/', views.get_game, name='get_game'),
     path('games/<slug:game_name_slug>/add-score/', views.post_game_score, name='post_game_score'),
+    path('games/<slug:game_name_slug>/update/', views.update_game, name='update_game'),
     path('create-game/', views.post_new_game, name='post_new_game'),
     path('tags/', views.get_tags, name='get_tags'),
     path('get-games/', views.get_games_sorted, name='get_games'),
@@ -37,7 +38,6 @@ urlpatterns = [
     path('post-admin-ranking/', views.post_admin_ranking, name='post_admin_ranking'),
     path('players/<slug:player_name_slug>/score/', views.get_player_scores, name='player_scores'),
     path('users/<user_id>/players/', views.get_user_players, name='get_user_players'),
-    path('games/<slug:game_name_slug>/update_game/', views.update_game, name='update_game'),
     path('players/<slug:player_name_slug>/update_player/', views.update_player, name='update_player'),
     path('get-all-users/', views.get_all_users, name='get_all_users'),
     # View Sets:

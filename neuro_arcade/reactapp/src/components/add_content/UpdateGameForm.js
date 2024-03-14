@@ -163,36 +163,10 @@ export function GameUpdateForm() {
             return;
         }
 
-        let data = {};
-        if (name !== "") {
-            data.name = name;
-            data.slug = slugify(name);
-        }
-        if (description !== "") {
-            data.description = description;
-        }
-        if (playLink !== "") {
-            data['play_link'] = playLink;
-        }
-        if (image) {
-            data.icon = image;
-        }
-        if (evaluationScript) {
-            data["evaluation_script"] = evaluationScript;
-        }
-        if (scoreType) {
-            data.scoreType = scoreType;
-        }
-        data.gameTags = tags.map(t => t.value);
+        let requestTags = [];
+        tags.forEach((tag) => requestTags.push(tag.value));
 
-        if (data === {}) {
-            setError("root", {
-                message: "No changes detected"
-            });
-            return;
-        }
-
-        await updateGames(gameSlug, data)
+        await updateGames(gameSlug, name, description, requestTags, playLink, image, evaluationScript, scoreType)
             .then((response) => {
                 console.log(response);
                 if (name !== "") {
