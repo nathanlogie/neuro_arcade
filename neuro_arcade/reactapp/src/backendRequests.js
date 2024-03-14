@@ -1,4 +1,5 @@
 import axios from "axios";
+import slugify from "react-slugify";
 
 export const API_ROOT = "http://localhost:8000";
 /**
@@ -126,6 +127,13 @@ export class UserNotAuthenticatedError extends Error {
     constructor() {
         super("User not logged in!");
         this.name = "UserNotAuthenticatedError";
+    }
+}
+
+export class EmptyFormError extends Error {
+    constructor() {
+        super("The provided form is empty!");
+        this.name = "EmptyFormError";
     }
 }
 
@@ -277,7 +285,7 @@ export async function requestGames() {
  * @param {[string]} gameTags
  * @param {string} playLink
  * @param {Image} image
- * @param {File} evaluationScript  // todo File?
+ * @param {File} evaluationScript
  * @param {File} scoreTypes
  *
  * @return {Promise<axios.AxiosResponse<{}>>}
@@ -941,13 +949,55 @@ export async function requestUserPlayers(userID) {
  * Update Game Info
  *
  * @param gameSlug {string}
- * @param data {{}} new game data
+ * @param {string} gameName
+ * @param {string} description
+ * @param {[string]} gameTags
+ * @param {string} playLink
+ * @param {Image} image
+ * @param {File} evaluationScript
+ * @param {File} scoreTypes
  *
- * @Returns {Response} response to patch call
+ * @throws {EmptyFormError}
+ * @throws {UserNotAuthenticatedError}
+ *
+ * @Returns {Promise<Response>} response to patch call
  */
-export async function updateGames(gameSlug, data){
-    const url = API_ROOT + `/games/${gameSlug}/update_game/`
-    return await axios.patch(url, data, await getHeaders('patch', true));
+export async function updateGames(
+    gameSlug,
+    gameName,
+    description,
+    gameTags=[],
+    playLink,
+    image=null,
+    evaluationScript,
+    scoreTypes
+) {
+    const url = API_ROOT + `/games/${gameSlug}/update/`;
+    if (!isLoggedIn())
+        throw UserNotAuthenticatedError()
+
+    let formData = new FormData();
+    if (name)
+        formData.append("gameName", gameName);
+    if (description)
+        formData.append("description", description);
+    if (gameTags)
+        formData.append("gameTags", gameTags);
+    if (playLink)
+        formData.append("playLink", playLink);
+    if (image)
+        formData.append("icon", image);
+    if (evaluationScript)
+        formData.append("evaluationScript", evaluationScript);
+    if (scoreTypes)
+        formData.append("scoreTypes", scoreTypes);
+
+    // if formData is empty, then throw an error
+    // from: https://stackoverflow.com/questions/40364692/check-if-formdata-is-empty
+    if (formData.entries().next().done)
+        throw new EmptyFormError();
+
+    return await axios.patch(url, formData, await getHeaders('PATCH', true, 'multipart/form-data'));
 }
 
 /**

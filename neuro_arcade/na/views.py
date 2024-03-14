@@ -773,22 +773,16 @@ def update_game(request: Request, game_name_slug: str) -> Response:
     if game_obj.owner != request.user and not request.user.is_superuser:
         return Response(status=401)
 
-    # removing tags from the request
-    new_tags = request.data.get('gameTags')
-    request.data['gameTags'] = None
-
     serializer = GameSerializer(game_obj, data=request.data, partial=True)
     if not serializer.is_valid():
         return Response(status=400, data=serializer.errors)
     serializer.save()
 
-    if new_tags is not None:
-        # removing tags from the game object
-        game_obj.tags.set([])
-
-        # adding game tags to the game
+    # adding tags
+    if request.data.get('gameTags') is not None:
         tags_to_add = []
-        for tag in new_tags:
+        game_obj.tags.set([])
+        for tag in request.data.get('gameTags').split(','):
             # Note: this can create new tags
             selected_tag = GameTag.objects.get_or_create(name=tag)[0]
             tags_to_add.append(selected_tag)
