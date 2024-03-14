@@ -139,8 +139,9 @@
             align-items: center;
         }
         #details {
+            align-items: unset;
             gap: 5em;
-            margin: 0 1em;
+            padding: 0 1em;
             overflow-x: scroll;
             flex-direction: row;
         }
