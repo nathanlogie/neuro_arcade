@@ -983,19 +983,19 @@ export async function updateGames(
 
     let formData = new FormData();
     if (name)
-        formData.append("gameName", gameName);
+        formData.append("name", gameName);
     if (description)
         formData.append("description", description);
     if (gameTags)
         formData.append("gameTags", gameTags);
     if (playLink)
-        formData.append("playLink", playLink);
+        formData.append("play_link", playLink);
     if (image)
         formData.append("icon", image);
     if (evaluationScript)
-        formData.append("evaluationScript", evaluationScript);
+        formData.append("evaluation_script", evaluationScript);
     if (scoreTypes)
-        formData.append("scoreTypes", scoreTypes);
+        formData.append("score_type", scoreTypes);
 
     // if formData is empty, then throw an error
     // from: https://stackoverflow.com/questions/40364692/check-if-formdata-is-empty
