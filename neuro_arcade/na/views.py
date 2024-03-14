@@ -499,7 +499,7 @@ def sign_up(request: Request) -> Response:
         return Response(status=500, data='Error creating new user.')
 
     # creating a human player associated with the User:
-    Player.objects.create(  # Todo: can this fail? If it can, handle the error.
+    Player.objects.create(
         name=username,
         is_ai=False,
         user=new_user,

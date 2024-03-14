@@ -685,11 +685,9 @@ export function getUser() {
 export async function getAllUsers() {
     const url = API_ROOT + `/get-all-users/`;
 
-    if (!getUser() || !userIsAdmin()){
-        throw new Error;
-    }
+    if (!isLoggedIn() || !userIsAdmin())
+        throw new Error('User is not admin!');
 
-    //todo test
     return await axios.get(url, await getHeaders('GET', true)).then((response) => {
         return(response.data.map(function(user) {
             let status = "";
@@ -961,7 +959,6 @@ export async function postAdminRanking(gameID, ranking){
  *
  */
 export async function requestUserPlayers(userID) {
-    //todo change this to something more sensible
     const url = API_ROOT + '/users/' + userID + '/players/';
 
     return await axios.get(url)
