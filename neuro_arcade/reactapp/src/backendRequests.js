@@ -1,14 +1,13 @@
 import axios from "axios";
 
+export let MEDIA_ROOT = '';
 let IP = new URL(location.origin);
 IP.port = '';
 IP = IP.toString();
 IP = IP.slice(0, -1);
 if (IP === 'http://localhost') {
     IP = IP + ':8000';
-    export const MEDIA_ROOT = IP;
-} else {
-    export const MEDIA_ROOT = '';
+    MEDIA_ROOT = IP;
 }
 export const API_ROOT = IP + "/api"; //todo port should not be here
 
