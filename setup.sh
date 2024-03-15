@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Change WEBSITE_URL in neuro_arcade/neuro_arcade/settings.py to desired domain
+
 apt-get update && upgrade -y
 
 # database
@@ -13,8 +15,16 @@ python -m ensurepip --upgrade
 apt-get install nodejs
 
 # ngix
+
 apt-get install nginx
+
+# Configure nginx-config.txt for any occurrences of the domain, you domain must have CA certification and configured
+# for nginx with Let's Encrypt
+
 cp nginx-config.txt /etc/nginx/sites-available/default
+
+# IMPORTANT FOR MEDIA: edit /etc/nginx/nginx.conf and change the user at the first line to match the current user of the system
+
 nginx -t
 service nginx restart
 
@@ -28,7 +38,7 @@ cd ../../
 
 # Add Docker's official GPG key:
 apt install apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
 apt-cache policy docker-ce
 # install docker
