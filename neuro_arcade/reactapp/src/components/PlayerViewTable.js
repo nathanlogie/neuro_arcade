@@ -15,6 +15,14 @@ export function PlayerViewTable({inputData}) {
     if (!inputData) {
         return <h2>No Data</h2>;
     }
+    function slugify(text) {
+      return text.toString().toLowerCase()
+        .replace(/\s+/g, '-')           // Replace spaces with -
+        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')             // Trim - from start of text
+        .replace(/-+$/, '');            // Trim - from end of text
+    }
 
     const columns = [
         {
@@ -29,7 +37,7 @@ export function PlayerViewTable({inputData}) {
             },
             renderCell: (params) => (
                 <Link
-                    to={"/all-games/" + params.value.replace(/\s+/g, "-").toLowerCase()}
+                    to={"/all-games/" + slugify(params.value)}
                     style={{
                         color: "#FFFFFF",
                         textDecoration: "none"
