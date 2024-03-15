@@ -5,7 +5,9 @@ sudo apt update
 sudo apt install libpq-dev postgresql postgresql-contrib
 
 # Create database
-echo "CREATE DATABASE neuro_arcade;
+echo "DROP DATABASE neuro_arcade;
+CREATE DATABASE neuro_arcade;
+DROP USER django_user;
 CREATE USER django_user WITH PASSWORD '$NEURO_ARCADE_DB_PASSWORD';
 ALTER ROLE django_user SET client_encoding TO 'utf8';
 ALTER ROLE django_user SET default_transaction_isolation TO 'read committed';
