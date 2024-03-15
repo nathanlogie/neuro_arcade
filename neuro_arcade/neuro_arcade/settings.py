@@ -152,7 +152,7 @@ else:
             'NAME': 'neuro_arcade',
             'USER': 'django_user',
             'PASSWORD': os.environ.get("NEURO_ARCADE_DB_PASSWORD"),
-            'HOST': 'localhost', # TODO
+            'HOST': os.environ.get("NEURO_ARCADE_DB_IP"),
             'PORT': '',
         }
     }
