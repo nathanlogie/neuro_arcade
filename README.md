@@ -5,32 +5,44 @@ NeuroArcade is a web project developed by SH08 as part of the Professional Softw
 
 The ultimate goal is to help make cognitive science more openly collaborative.
 
-## Visuals
-See wireframes below for an idea of what some of the completed pages will look like.
+## Installation and Deployment
 
-### Home Page
+### For Production
 
-![Home page JPG](docs/rmFiles/home.jpg)
+Deploying the server on a new machine is as easy as running the following scripts:
+```shell
+sudo sh setup.sh
+```
+```shell
+sh run_server.sh
+```
+It is recommend you read the setup script and its comments before you run it, as additional actions might be required depending on your system. Note that ``setup.sh`` requires sudo privileges and might prompt you for your root password. Please keep in mind that the actual server should never be run with ``sudo``!
 
-### All Games Page
+Some caveats: ``setup.sh`` assumes it is running on a linux system that uses ``apt-get`` as its package repository (such as Ubuntu). On other systems it is recommended you install the required packages manually.  
 
-![All Games Page JPG](docs/rmFiles/allTasks.jpg)
+To close the server, run:
+```shell
+sh stop.sh
+```
 
-### Individual Games Page
+### For Development
 
-![Game Page JPG](docs/rmFiles/game.jpg)
+As long as your shell environment doesn't have a ``$NEURO_ARCADE`` environment variable, the server will run in development mode, which is ideal for running it on your local machine and not open to the internet.
 
-## Installation
-The project can currently only be run locally. To run it git clone the project locally and run the following commands.
+The server has two processes that need to run:
+1. The Django API Server
+2. The Frontend Server
 
-1. python manage.py makemigrations
-2. python manage.py migrate
-3. python populate.py
-4. python manage.py runserver
-5. cd reactapp
-6. npm run start
+Both of these can have their dependencies updated by running ``update_dependencies.sh`` in the neuro_arcade folder.
 
-The project will then start locally at 'http://localhost:3000/'
+In order to get a database populated with test data, use the ``rebuild-db.sh`` script. Only use this on development instances of the server! 
+
+And now, we can actually run the two servers:
+
+- Start Django: ``python manage.py runserver`` in ``neuro_arcade``
+- Start Frontend: ``npm start`` in ``neuro_arcade/reactapp``
+
+Note that both servers need to be running at the same time. On user-friendly systems this is as easy as running the two commands on different terminal tabs/windows. On a command line only system, it is recommended you run each one of them in a different ``screen`` instance. 
 
 ## Testing
 
@@ -51,10 +63,7 @@ The frontend tests are implemented through react-scripts. They can be accessed b
 Automatic formatting is built in through use of running 'npm run format' in the reactapp.
 
 ## Support
-For any help or support, please create an issue on GitLab or message one of the contributors on Microsoft Teams. 
-
-## Contributing
-Not currently accepting contributions from external contributors.
+For any help or support, please create an issue on GitLab or message one of the contributors on Microsoft Teams.
 
 ## Authors and acknowledgment
 Key Contributors to this project:
@@ -70,5 +79,3 @@ Key Contributors to this project:
 ## License
 NeuroArcade is licensed under the MIT open source license.
 
-## Project status
-This project is under active development which will continue until April 2024 at the earliest.
