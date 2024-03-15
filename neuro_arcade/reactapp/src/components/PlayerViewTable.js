@@ -1,61 +1,63 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {DataGrid} from '@mui/x-data-grid';
-import styles from '../styles/components/Table.module.css';
+import React from "react";
+import PropTypes from "prop-types";
+import {DataGrid} from "@mui/x-data-grid";
+import styles from "../styles/components/Table.module.css";
 import {createTheme, ThemeProvider} from "@mui/material";
+import {Link} from "react-router-dom";
 
 /**
- * 
+ *
  * @param {Object} props
  * @param {PlayerScores} props.inputData
  * @returns {JSX Element}
  */
 export function PlayerViewTable({inputData}) {
-
-    
-    if(!inputData){
-        return(
-            <h2>No Data</h2>
-        );
+    if (!inputData) {
+        return <h2>No Data</h2>;
     }
 
     const columns = [
         {
-            field: 'game',
+            field: "game",
             width: 150,
             /**
              * bold title
              * @returns  {JSX Element}
              */
-            renderHeader: function() {
-                return (
-                    <strong>
-                        Game
-                    </strong>
-                );
+            renderHeader: function () {
+                return <strong>Game</strong>;
             },
-        },
+            renderCell: (params) => (
+                <Link
+                    to={"/all-games/" + params.value.replace(/\s+/g, "-").toLowerCase()}
+                    style={{
+                        color: "#FFFFFF",
+                        textDecoration: "none"
+                    }}
+                >
+                    {params.value}
+                </Link>
+            )
+        }
     ];
-    
 
     /**
      * iterates through inputData and then iterates through its value. It then adds the score type to the set in lowercase
-     * @param entry {Object} 
+     * @param entry {Object}
      */
     const scoreTypes = new Set();
-    inputData.forEach(function(entry) {
+    inputData.forEach(function (entry) {
         const value = entry.value;
-        Object.keys(value).forEach(function(key) {
+        Object.keys(value).forEach(function (key) {
             scoreTypes.add(key.toLowerCase());
         });
     });
-    
 
     /**
      * iterates through each score type and adds it to columns with all required fields
      * @param {Object}
      */
-    scoreTypes.forEach(function(scoreType) {
+    scoreTypes.forEach(function (scoreType) {
         columns.push({
             field: scoreType.toLowerCase(),
             headerName: scoreType.charAt(0).toUpperCase() + scoreType.slice(1),
@@ -64,16 +66,11 @@ export function PlayerViewTable({inputData}) {
              * bold title in upercase form
              * @returns {JSX Element}
              */
-            renderHeader: function() {
-                return (
-                    <strong>
-                        {scoreType.charAt(0).toUpperCase() + scoreType.slice(1)}
-                    </strong>
-                );
-            },
+            renderHeader: function () {
+                return <strong>{scoreType.charAt(0).toUpperCase() + scoreType.slice(1)}</strong>;
+            }
         });
     });
-
 
     /**
      * mapping game name to its data
@@ -81,56 +78,54 @@ export function PlayerViewTable({inputData}) {
      * @param index {integer}
      * @returns {Object}
      **/
-    const rows = inputData.map(function(item, index) {
+    const rows = inputData.map(function (item, index) {
         return {
             id: index + 1,
             game: item.game_name,
-            ...Object.entries(item.value).reduce((acc, [key, value]) => ({ ...acc, [key.toLowerCase()]: value }), {}),
+            ...Object.entries(item.value).reduce((acc, [key, value]) => ({...acc, [key.toLowerCase()]: value}), {})
         };
     });
-    
 
     const table_theme = createTheme({
-      palette: {
-          mode: 'dark',
-      },
+        palette: {
+            mode: "dark"
+        }
     });
 
-    
-    return(
-        <div className={styles.TableContainer} id={styles['home']}>
+    return (
+        <div className={styles.TableContainer} id={styles["home"]}>
             <h2>Game Scores</h2>
             <ThemeProvider theme={table_theme}>
                 <DataGrid
                     sx={{
                         boxShadow: 2,
                         border: 2,
-                        color: 'white',
-                        borderColor: 'rgba(0,0,0,0)',
-                        '& .MuiDataGrid-cell:hover': {
-                          color: 'white',
+                        color: "white",
+                        borderColor: "rgba(0,0,0,0)",
+                        "& .MuiDataGrid-cell:hover": {
+                            color: "white"
                         },
-                        height: '100%',
-                        width: '32.5em',
-                        fontFamily: 'inherit'
+                        height: "100%",
+                        width: "32.5em",
+                        fontFamily: "inherit"
                     }}
                     rows={rows}
                     columns={columns}
                     initialState={{
                         pagination: {
                             paginationModel: {
-                                pageSize: 7,
-                            },
-                        },
+                                pageSize: 7
+                            }
+                        }
                     }}
                     pageSizeOptions={[7]}
                     disableRowSelectionOnClick
                 />
             </ThemeProvider>
         </div>
-    )
+    );
 }
 
 PlayerViewTable.propTypes = {
-    inputData: PropTypes.array.isRequired,
-}
+    inputData: PropTypes.array.isRequired
+};

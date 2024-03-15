@@ -1,14 +1,12 @@
-import { screen } from "@testing-library/react";
-import { Switcher } from "../Switcher";
+import {screen} from "@testing-library/react";
+import {Switcher} from "../Switcher";
 import userEvent from "@testing-library/user-event";
 
-test('Switcher renders without crashing', () => {
+test("Switcher renders without crashing", () => {
     renderWithRouter(
         <Switcher
             data={{
-                table_headers: [
-                    {name: "Name",},
-                ],
+                table_headers: [{name: "Name"}]
             }}
             switcherDefault={"Name"}
         />
@@ -17,14 +15,11 @@ test('Switcher renders without crashing', () => {
     expect(screen.getByText("Name")).toBeInTheDocument();
 });
 
-test('Switcher renders multiple headers without crashing', () => {
+test("Switcher renders multiple headers without crashing", () => {
     renderWithRouter(
         <Switcher
             data={{
-                table_headers: [
-                    {name: "Name1"},
-                    {name: "Name2"},
-                ],
+                table_headers: [{name: "Name1"}, {name: "Name2"}]
             }}
             switcherDefault={"Name1"}
         />
@@ -35,7 +30,7 @@ test('Switcher renders multiple headers without crashing', () => {
     expect(screen.getByText("Name2")).toBeInTheDocument();
 });
 
-test('Switcher callback works', () => {
+test("Switcher callback works", () => {
     let called = false;
     function cb(val) {
         called = true;
@@ -45,10 +40,7 @@ test('Switcher callback works', () => {
     renderWithRouter(
         <Switcher
             data={{
-                table_headers: [
-                    {name: "Name1"},
-                    {name: "Name2"},
-                ],
+                table_headers: [{name: "Name1"}, {name: "Name2"}]
             }}
             onSwitcherChange={cb}
             switcherDefault={"Name1"}

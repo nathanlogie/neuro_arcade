@@ -1,46 +1,43 @@
-import { screen } from "@testing-library/react";
-import { NavBar } from "../NavBar";
+import {screen} from "@testing-library/react";
+import {NavBar} from "../NavBar";
 import {Button} from "../Button";
 
-test('NavBar renders without crashing', () => {
+test("NavBar renders without crashing", () => {
     renderWithRouter(<NavBar />);
 });
 
-const buttonLeft =
+const buttonLeft = (
     <Button
-        name={'Left'}
+        name={"Left"}
         ink={"."} // Buttons don't render if this is blank
         direction={"left"}
         orientation={"left"}
-    />;
-const buttonRight =
+    />
+);
+const buttonRight = (
     <Button
-        name={'Right'}
+        name={"Right"}
         ink={"."} // Buttons don't render if this is blank
         direction={"right"}
         orientation={"right"}
-    />;
+    />
+);
 
-test('NavBar shows a buttonLeft', () => {
+test("NavBar shows a buttonLeft", () => {
     renderWithRouter(<NavBar left={buttonLeft} />);
 
     expect(screen.getByText("Left")).toBeInTheDocument();
-})
+});
 
-test('NavBar shows a buttonRight', () => {
+test("NavBar shows a buttonRight", () => {
     renderWithRouter(<NavBar right={buttonRight} />);
 
     expect(screen.getByText("Right")).toBeInTheDocument();
-})
+});
 
-test('NavBar shows a buttonLeft and buttonRight', () => {
-    renderWithRouter(
-        <NavBar
-            left={buttonLeft}
-            right={buttonRight}
-        />
-    );
+test("NavBar shows a buttonLeft and buttonRight", () => {
+    renderWithRouter(<NavBar left={buttonLeft} right={buttonRight} />);
 
     expect(screen.getByText("Left")).toBeInTheDocument();
     expect(screen.getByText("Right")).toBeInTheDocument();
-})
+});

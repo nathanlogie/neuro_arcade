@@ -1,11 +1,11 @@
-import { screen, waitFor } from "@testing-library/react";
-import { GameGrid } from "../GameGrid";
+import {screen, waitFor} from "@testing-library/react";
+import {GameGrid} from "../GameGrid";
 
 // We need to mock requestGames to control the component
-import { requestGames } from "../../backendRequests";
-jest.mock('../../backendRequests');
+import {requestGames} from "../../backendRequests";
+jest.mock("../../backendRequests");
 
-test('GameGrid renders without crashing', async () => {
+test("GameGrid renders without crashing", async () => {
     requestGames.mockResolvedValue([]);
     renderWithRouter(<GameGrid />);
     // Wait for load to complete
@@ -14,7 +14,7 @@ test('GameGrid renders without crashing', async () => {
     });
 });
 
-test('GameGrid shows a player', async () => {
+test("GameGrid shows a player", async () => {
     requestGames.mockResolvedValue([
         {
             id: 1,
@@ -26,8 +26,8 @@ test('GameGrid shows a player', async () => {
             tags: [],
             score_type: {},
             play_link: "",
-            evaluation_script: null,
-        },
+            evaluation_script: null
+        }
     ]);
     renderWithRouter(<GameGrid />);
 

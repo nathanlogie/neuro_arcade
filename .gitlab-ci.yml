@@ -23,6 +23,7 @@ django-build-job:
     - python neuro_arcade/manage.py makemigrations --check
     - python neuro_arcade/manage.py migrate
     - python neuro_arcade/manage.py check
+    - python neuro_arcade/populate.py
 
 unit-test-job: 
   image: python:latest

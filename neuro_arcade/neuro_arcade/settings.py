@@ -103,9 +103,11 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.csrf.CsrfViewMiddleware',  # needs to be before other middleware
+    'django.middleware.csrf.CsrfViewMiddleware',
+    # needs to be before other middleware
     'django.middleware.security.SecurityMiddleware',
-    'corsheaders.middleware.CorsMiddleware',   # needs to be after the security middleware
+    # needs to be after the security middleware
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',  # needs to be after CORS
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -143,7 +145,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -190,3 +191,17 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+# Email address to send admin errors to
+ADMIN_EMAIL = "arcadeneuro@gmail.com"
+
+# Configuration for error emails in the evaluation pipeline
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+
+# The email account to send the error emails from
+EMAIL_HOST_USER = "arcadeneuro@gmail.com"
+EMAIL_HOST_PASSWORD = 'fueg awlu apid wzwk'

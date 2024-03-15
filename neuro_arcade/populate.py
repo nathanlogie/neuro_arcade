@@ -3,17 +3,15 @@
 """
 Populate the database with example data
 """
-import random
+
+# Imports need to be in a specific order
+# autopep8: off
 
 """
 Setup django
 """
 
 import os
-from shutil import copy
-
-from neuro_arcade.settings import MEDIA_ROOT, STATIC_DIR
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'neuro_arcade.settings')
 
 import django
@@ -24,9 +22,17 @@ django.setup()
 Main program
 """
 
-from django.contrib.auth.models import Group, Permission
+import random
+from shutil import copy
 from typing import Dict
+
+from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import Group, Permission
+
+from neuro_arcade.settings import MEDIA_ROOT, STATIC_DIR
 from na.models import *
+
+# autopep8: on
 
 # For the randomly assigned priority
 
@@ -165,7 +171,6 @@ games = [
         'owner': "kangaroo14",
         'icon': "example.png",
         'tags': ["Tracking Games", "High AI Score"],
-        'score_type': "{collected_coins: {max: 100, type: int}}",
         'priority': 100
     },
     {
@@ -174,7 +179,6 @@ games = [
         'owner': "hippo88",
         'icon': "example.png",
         'tags': ["Judgement Games", "High Human Player Score"],
-        'score_type': "{collected_points: {max: 20, type: int}}",
         'priority': 90
     },
     {
@@ -183,7 +187,6 @@ games = [
         'owner': "kangaroo14",
         'icon': "example.png",
         'tags': ["Tracking Games", "High AI Score"],
-        'score_type': "{collected_points: {max: 100.0, type: float}}",
         'priority': 80
     },
     {
@@ -192,7 +195,6 @@ games = [
         'owner': "giraffe10",
         'icon': "example.png",
         'tags': ["Pattern Recognition Games", "Strategic Games"],
-        'score_type': "{collected_points: {max: 10000, type: int}}",
         'priority': 70
     },
     {
@@ -201,7 +203,6 @@ games = [
         'owner': "giraffe10",
         'icon': "example.png",
         'tags': ["Puzzle Games", "Strategic Games"],
-        'score_type': "{collected_points: {max: 10000, type: int}}",
         'priority': 60
     },
     {
@@ -210,7 +211,6 @@ games = [
         'owner': "duck44",
         'icon': "example.png",
         'tags': ["Reflex Games", "Tracking Games"],
-        'score_type': "{collected_points: {max: 100.0, type: float}}",
         'priority': 50
     },
     {
@@ -219,7 +219,6 @@ games = [
         'owner': "duck44",
         'icon': "example.png",
         'tags': ["Reflex Games", "Timing Games"],
-        'score_type': "{collected_points: {max: 10000, type: int}}",
         'priority': 100
     },
     {
@@ -228,7 +227,6 @@ games = [
         'owner': "penguin726",
         'icon': "example.png",
         'tags': ["High AI Score", "Puzzle Games", "Problem Solving Games"],
-        'score_type': "{time_taken: {max: 600.0, type: float}}",
         'priority': 30
     },
     {
@@ -237,7 +235,6 @@ games = [
         'owner': "duck44",
         'icon': "example.png",
         'tags': ["High Human Score", "Puzzle Games", "Problem Solving Games"],
-        'score_type': "{time_taken: {max: 600.0, type: float}}",
         'priority': 20
     },
     {
@@ -247,7 +244,6 @@ games = [
         'owner': "kangaroo14",
         'icon': "example.png",
         'tags': ["Reflex Games", "Pattern Recognition Games", "Memory Games", "Timing Games"],
-        'score_type': "{attempt_made: {max: 100, type: int}}",
         'priority': 100
     },
     {
@@ -256,7 +252,6 @@ games = [
         'owner': "hippo88",
         'icon': "example.png",
         'tags': ["Strategic Games", "Tracking Games"],
-        'score_type': "{time_taken: {max: 600.0, type: float}}",
         'priority': 10
     },
     {
@@ -265,7 +260,6 @@ games = [
         'owner': "panda22",
         'icon': "example.png",
         'tags': ["Strategic Games", "Puzzle Games"],
-        'score_type': "{time_taken: {max: 600.0, type: float}}",
         'priority': 10
     },
     {
@@ -274,7 +268,6 @@ games = [
         'owner': "panda22",
         'icon': "example.png",
         'tags': ["Strategic Games", "Puzzle Games"],
-        'score_type': "{collected_points: {max: 200, type: int}}",
         'priority': 85
     },
     {
@@ -283,7 +276,6 @@ games = [
         'owner': "giraffe10",
         'icon': "example.png",
         'tags': ["Memory Games", "Pattern Recognition Games"],
-        'score_type': "{collected_points: {max: 25, type: int}}",
         'priority': 95
     },
     {
@@ -292,7 +284,6 @@ games = [
         'owner': "panda22",
         'icon': "example.png",
         'tags': ["Timing Games", "Reflex Games", "High AI Score"],
-        'score_type': "{collected_points: {max: 250, type: int}}",
         'priority': 60
     },
     {
@@ -301,7 +292,6 @@ games = [
         'owner': "lion589",
         'icon': "example.png",
         'tags': ["Pattern Recognition Games", "Problem Solving Games"],
-        'score_type': "{time_taken: {max: 600.0, type: float}}",
         'priority': 5
     },
     {
@@ -310,7 +300,6 @@ games = [
         'owner': "duck44",
         'icon': "example.png",
         'tags': ["Pattern Recognition Games", "High Human Player Score"],
-        'score_type': "{time_taken: {max: 600.0, type: float}}",
         'priority': 100
     },
     {
@@ -319,8 +308,8 @@ games = [
         'owner': "lion589",
         'icon': "example.png",
         'tags': ["Pattern Recognition Games", "Problem Solving Games"],
-        'score_type': "{collected_points: {max: 75, type: int}}",
-        'priority': 20
+        'priority': 20,
+        'evaluation': "example.py"
     },
     {
         'name': "Wordsearch",
@@ -328,7 +317,6 @@ games = [
         'owner': "lion589",
         'icon': "example.png",
         'tags': ["Puzzle Games", "Problem Solving Games"],
-        'score_type': "{time_taken: {max: 600.0, type: float}}",
         'priority': 10
     },
 ]
@@ -441,7 +429,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Coins',
-                'description': "Number of coins collected",
+                'type': 'int',
                 'min': 0,
                 'max': 100,
             }
@@ -451,7 +439,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Points',
-                'description': "Number of points collected",
+                'type': 'int',
                 'min': 0,
                 'max': 20,
             }
@@ -461,7 +449,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Points',
-                'description': "Number of points collected",
+                'type': 'int',
                 'min': 0,
                 'max': 100,
             }
@@ -471,7 +459,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Points',
-                'description': "Number of points collected",
+                'type': 'int',
                 'min': 0,
                 'max': 10000,
             }
@@ -481,7 +469,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Points',
-                'description': "Number of points collected",
+                'type': 'int',
                 'min': 0,
                 'max': 10000,
             }
@@ -491,19 +479,19 @@ score_types = {
         'headers': [
             {
                 'name': 'Points',
-                'description': "Number of points collected",
+                'type': 'int',
                 'min': 0,
                 'max': 10,
             },
             {
                 'name': 'Time',
-                'description': "Time",
+                'type': 'int',
                 'min': 0,
                 'max': 9999,
             },
             {
                 'name': 'Coins',
-                'description': "Coins collected",
+                'type': 'int',
                 'min': 0,
                 'max': 10,
             },
@@ -528,7 +516,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Time',
-                'description': "Time taken to complete",
+                'type': 'int',
                 'min': 0,
                 'max': 600,
             }
@@ -538,7 +526,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Time',
-                'description': "Time taken to complete",
+                'type': 'int',
                 'min': 0,
                 'max': 600,
             }
@@ -548,7 +536,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Attempts',
-                'description': "Number of attempts taken to complete",
+                'type': 'int',
                 'min': 0,
                 'max': 100,
             }
@@ -558,7 +546,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Time',
-                'description': "Time taken to complete",
+                'type': 'int',
                 'min': 0,
                 'max': 600,
             }
@@ -568,7 +556,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Time',
-                'description': "Time taken to complete",
+                'type': 'int',
                 'min': 0,
                 'max': 600,
             }
@@ -578,7 +566,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Points',
-                'description': "Number of points collected",
+                'type': 'int',
                 'min': 0,
                 'max': 200,
             }
@@ -588,7 +576,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Points',
-                'description': "Number of points collected",
+                'type': 'int',
                 'min': 0,
                 'max': 25,
             }
@@ -598,7 +586,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Points',
-                'description': "Number of points collected",
+                'type': 'int',
                 'min': 0,
                 'max': 250,
             }
@@ -608,7 +596,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Time',
-                'description': "Time taken to complete",
+                'type': 'int',
                 'min': 0,
                 'max': 600,
             }
@@ -618,7 +606,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Time',
-                'description': "Time taken to complete",
+                'type': 'int',
                 'min': 0,
                 'max': 600,
             }
@@ -627,10 +615,14 @@ score_types = {
     'Words': {
         'headers': [
             {
-                'name': 'Points',
-                'description': "Number of points collected",
-                'min': 0,
-                'max': 75,
+                "name": "Length 1",
+                "type": "int",
+                "min": 0
+            },
+            {
+                "name": "Length 2",
+                "type": "int",
+                "min": 0
             }
         ]
     },
@@ -638,7 +630,7 @@ score_types = {
         'headers': [
             {
                 'name': 'Time',
-                'description': "Time taken to complete",
+                'type': 'int',
                 'min': 0,
                 'max': 600,
             }
@@ -747,13 +739,15 @@ def add_game(data: Dict) -> Game:
         game.icon.name = add_media_from_static(Game.ICON_SUBDIR, data['icon'])
 
     if 'evaluation' in data:
-        game.evaluation_script.name = add_media_from_static(Game.EVALUATION_SUBDIR, data['evaluation'])
+        game.evaluation_script.name = add_media_from_static(
+            Game.EVALUATION_SUBDIR, data['evaluation'])
 
     for tag_name in data.get('tags', []):
         try:
             tag = GameTag.objects.get(name=tag_name)
         except GameTag.DoesNotExist:
-            tag = add_game_tag({'name': tag_name, 'description': 'Default description'})
+            tag = add_game_tag(
+                {'name': tag_name, 'description': 'Default description'})
 
         game.tags.add(tag)
 
@@ -787,7 +781,8 @@ def add_player(data: Dict):
             tag = PlayerTag.objects.get(name=tag_name)
         except PlayerTag.DoesNotExist:
             # Create the tag if it doesn't exist
-            tag = add_player_tag({'name': tag_name, 'description': 'Default description'})
+            tag = add_player_tag(
+                {'name': tag_name, 'description': 'Default description'})
 
         player.tags.add(tag)
 

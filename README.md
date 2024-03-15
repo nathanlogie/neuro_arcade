@@ -27,6 +27,10 @@ The project can currently only be run locally. To run it git clone the project l
 2. python manage.py migrate
 3. python populate.py
 4. python manage.py runserver
+5. cd reactapp
+6. npm run start
+
+The project will then start locally at 'http://localhost:3000/'
 
 ## Testing
 
@@ -54,14 +58,14 @@ Not currently accepting contributions from external contributors.
 
 ## Authors and acknowledgment
 Key Contributors to this project:
-- Dr Benjamin Peters
+- Dr Benjamin Peters (Client)
 - Nour Sameh Mohamed Hosni Elfangary
 - Andrei Ghita
 - Daniel Hally
 - Nathan Logie
 - Eilidh Macdonald
 - Anzela Tariq
-- Christopher Gunn
+- Christopher Gunn (Coach)
 
 ## License
 NeuroArcade is licensed under the MIT open source license.

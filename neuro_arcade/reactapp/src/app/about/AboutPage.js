@@ -13,86 +13,84 @@ import {Link} from "react-router-dom";
  * @constructor builds about page
  */
 export function AboutPage() {
+    let nav_right = <Button name={"home"} link={"/"} orientation={"right"} direction={"right"} />;
 
-    let nav_right = (
-        <Button
-            name={'home'}
-            link={'/'}
-            orientation={'right'}
-            direction={'right'}
-        />
-    );
-
-    const [aboutData, updateAboutData] = useState()
+    const [aboutData, updateAboutData] = useState();
 
     useEffect(() => {
-        getAboutData()
-            .then(data => {
-                updateAboutData(data)
-            })
-    }, [])
+        getAboutData().then((data) => {
+            updateAboutData(data);
+        });
+    }, []);
 
     let content = <>...</>;
-    if (aboutData){
-
+    if (aboutData) {
         let publications = aboutData["publications"].map(function (publication) {
-        return (
-                <li key={publication.id + 1}>{ publication.link ?
-                            (
-                                <Link to={publication.link}>
-                                        <label>{publication.title}</label>
-                                        <label>{publication.author}</label>
-                                    </Link>
-                            ) : (
-                                <span>
-                                    <label>{publication.title}</label>
-                                    <label>{publication.author}</label>
-                                </span>
-                            )}
+            return (
+                <li key={publication.id + 1}>
+                    {publication.link ? (
+                        <Link to={publication.link}>
+                            <label>{publication.title}</label>
+                            <label>{publication.author}</label>
+                        </Link>
+                    ) : (
+                        <span>
+                            <label>{publication.title}</label>
+                            <label>{publication.author}</label>
+                        </span>
+                    )}
                 </li>
             );
         });
 
-        content = <>
-                <div className={styles.Content} id={styles['big']}>
+        content = (
+            <>
+                <div className={styles.Content} id={styles["big"]}>
                     <div className={styles.ContentBlock}>
-                        <Description description={aboutData.description}/>
+                        <Description description={aboutData.description} />
                     </div>
                 </div>
-            <div className={styles.Side}>
-                <div className={styles.DataBlock}>
-                    <div className={styles.Publications}>
-                        <h2>Publications</h2>
-                        <main>
-                            <li key={0}>
-                        <span>
-                            <div><strong>Title</strong></div>
-                            <div><strong>Author</strong></div>
-                        </span>
-                            </li>
-                            {publications}
-                        </main>
+                { aboutData.publications.length > 0 ?
+                    <div className={styles.Side}>
+                        <div className={styles.DataBlock}>
+                            <div className={styles.Publications}>
+                                <h2>Publications</h2>
+                                <main>
+                                    <li key={0}>
+                                        <span>
+                                            <div>
+                                                <strong>Title</strong>
+                                            </div>
+                                            <div>
+                                                <strong>Author</strong>
+                                            </div>
+                                        </span>
+                                    </li>
+                                    {publications}
+                                </main>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </>
-        ;
+                  : null
+                }
+            </>
+        );
     }
 
     return (
         <>
-            <Banner size={'big'} right={nav_right}/>
-            <MobileBanner/>
-            <NavBar right={nav_right}/>
+            <Banner size={"big"} right={nav_right} />
+            <MobileBanner />
+            <NavBar right={nav_right} />
             <motion.div
                 className={styles.MainBlock}
-                id={styles['big']}
+                id={styles["big"]}
                 initial={{opacity: 0, x: -100}}
                 animate={{opacity: 1, x: 0}}
                 exit={{opacity: 0, x: -100}}
             >
                 {content}
-                <div className={styles.MobileBannerBuffer}/>
+                <div className={styles.MobileBannerBuffer} />
             </motion.div>
         </>
     );

@@ -9,11 +9,7 @@ import {motion} from "framer-motion";
 export function Background() {
     return (
         <>
-            <img
-                src={overlay}
-                id={styles['hexagon']}
-                alt={''}
-            />
+            <img src={overlay} id={styles["hexagon"]} alt={""} />
             <div className={styles.Gradient} />
         </>
     );

@@ -26,6 +26,21 @@
                 width: max-content;
                 padding-bottom: 0.15em;
             }
+            .EditButton {
+                display: flex;
+                justify-content: center;
+                & div {
+                    height: 3em;
+                    border-radius: 5em;
+                    background-color: rgba(255, 255, 255, 0.72);
+                    color: #41584C;
+                    backdrop-filter: blur(5px);
+                }
+                & div > * {
+                    width: 50%;
+                    height: 100%;
+                }
+            }
             .FilterButton {
                 width: 2em;
                 height: 2em;
@@ -50,6 +65,8 @@
             display: flex;
             gap: 1em;
             margin: 1em 0;
+            flex-direction: column;
+            align-items: center;
             .Toolbar {
                 border-radius: 0.5em 0.5em 0 0;
                 background-color: rgba(255, 255, 255, 0.1);
@@ -68,7 +85,7 @@
                     border-radius: 0.5em;
                 }
             }
-            & #edit, #save {
+            & #edit, #save, #logout {
                 position: relative;
                 width: max-content;
                 left: 0.5em;
@@ -104,18 +121,28 @@
                 float: left;
                 width: 10rem;
                 height: 10rem;
-                object-fit: contain;
+                object-fit: cover;
                 border-radius: 2em;
-                margin: 0 1.5em;
+                margin: 1em;
             }
             & p {
                 width: 100%;
                 text-align: left;
                 line-height: 2em;
+                & a {
+                    color: #79FFB7;
+                }
             }
         }
+        #vertical {
+            flex-direction: column;
+            align-items: center;
+        }
         #details {
+            align-items: unset;
             gap: 5em;
+            padding: 0 1em;
+            flex-direction: row;
         }
         .Header {
             z-index: 1;
@@ -141,6 +168,10 @@
         .ContentBlock {
             display: flex;
             justify-content: center;
+        }
+        .Text {
+            margin-top: 5em;
+            padding: 2em;
         }
         .Publications {
             position: relative;
@@ -275,6 +306,19 @@
                 }
             }
         }
+        .AddContent {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .FormMenu {
+                display: flex;
+                gap: 2em;
+                margin: 2em;
+            }
+        }
+    }
+    #addContent {
+        margin-top: 2em;
     }
     .DataBlock {
         padding: 0 3em;
@@ -337,6 +381,12 @@
             top: -1.4em;
         }
         & form {
+            & img {
+                width: 10rem;
+                height: 10rem;
+                object-fit: cover;
+                border-radius: 2em;
+            }
             button {
                 position: relative;
                 width: max-content;
@@ -376,7 +426,7 @@
                 font-weight: 600;
                 color: #DDDDDD;
             }
-            & input {
+            & input, textarea {
                 height: 3em;
                 margin-bottom: 1.5em;
                 border-radius: 0.5em;
@@ -387,7 +437,7 @@
                 color: #FFFFFF;
                 font-family: inherit;
             }
-            & input::placeholder {
+            & input::placeholder, textarea::placeholder  {
                 color: #CCCCCC;
             }
             & span {
@@ -395,6 +445,7 @@
                 flex-direction: column;
                 width: 100%;
                 margin-bottom: 2em;
+                margin-top: 2em;
                 align-items: center;
                 & h3 {
                     text-align: center;
@@ -448,6 +499,35 @@
                     color: #79FFB7;
                 }
             }
+            & ul {
+                list-style-type: none;
+
+                & li {
+                    justify-content: space-between;
+                    display: flex;
+                    margin: 1em;
+
+                    & label {
+                        width: 100%;
+                    }
+
+                    button {
+
+                        background-color: rgba(255, 255, 255, 0);
+                        padding: 0;
+                        width: max-content;
+                        height: max-content;
+                        margin: 0 1em;
+
+                        & div {
+                            position: inherit;
+                            left: 0;
+                            width: 3em;
+                            height: 2em;
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -491,6 +571,9 @@
             width: 100%;
             padding: 2em !important;
             margin: 0;
+            .ContentBlock {
+                width: 50em;
+            }
             & p {
                 margin: 0 1em;
                 width: calc(100% - 2em) !important;
@@ -504,7 +587,7 @@
                 }
             }
             .Title {
-                padding-left: 3em;
+                width: 50em;
             }
         }
         .Content#big {
@@ -523,7 +606,13 @@
     .MainBlock {
         .Content {
             .Title {
-                padding-left: unset;
+                width: 100%;
+            }
+            #details {
+                gap: 1em;
+                flex-direction: column;
+                width: max-content;
+                align-items: center;
             }
         }
         .DataBlock {
@@ -652,4 +741,8 @@
 
 ::-webkit-scrollbar-track {
   background-color: transparent;
+}
+
+::-webkit-scrollbar-corner {
+    background: rgba(0,0,0,0);
 }

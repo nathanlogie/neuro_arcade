@@ -8,11 +8,13 @@ import {
     login,
     logout,
     postGameScore,
-    signupNewUser, postUnprocessedResults
+    signupNewUser,
+    postUnprocessedResults,
+    getHumanPlayerFromCurrentUser,
+    getPlayersFromCurrentUser
 } from "../backendRequests";
 import {useState} from "react";
-import {motion} from "framer-motion"
-
+import {motion} from "framer-motion";
 
 /**
  * Page for testing various authentication related functions.
@@ -20,85 +22,100 @@ import {motion} from "framer-motion"
  */
 export function AuthTest() {
     let [response, setResponse] = useState({});
-    let [userInfo, setUserInfo] = useState(localStorage.getItem("user"))
+    let [userInfo, setUserInfo] = useState(localStorage.getItem("user"));
     return (
         <div>
-            <Background/>
-            <MobileBanner size={'big'}/>
-            <motion.div
-                className={styles.MainBlock}
-                initial={{opacity: 0}}
-                animate={{opacity: 1}}
-                exit={{opacity: 0}}
-            >
+            <Background />
+            <MobileBanner size={"big"} />
+            <motion.div className={styles.MainBlock} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
                 <div className={styles.Content}>
-                    <button onClick={() =>
-                        signupNewUser('newGuy', 'newGuy@gmail.com', "asdfqwer112!")
-                            .then((r) => {
+                    <button
+                        onClick={() =>
+                            signupNewUser("newGuy", "newGuy@gmail.com", "asdfqwer112!").then((r) => {
                                 setResponse(r);
                                 setUserInfo(localStorage.getItem("user"));
                             })
-                    }>
+                        }
+                    >
                         signup as 'newGuy'
                     </button>
-                    <button onClick={() =>
-                        login('newGuy', "asdfqwer112!")
-                            .then((r) => {
+                    <button
+                        onClick={() =>
+                            login("newGuy", "asdfqwer112!").then((r) => {
                                 setResponse(r);
                                 setUserInfo(localStorage.getItem("user"));
                             })
-                    }>
+                        }
+                    >
                         login as 'newGuy' with username
                     </button>
-                    <button onClick={() =>
-                        login('newGuy@gmail.com', "asdfqwer112!")
-                            .then((r) => {
+                    <button
+                        onClick={() =>
+                            login("newGuy@gmail.com", "asdfqwer112!").then((r) => {
                                 setResponse(r);
                                 setUserInfo(localStorage.getItem("user"));
                             })
-                    }>
+                        }
+                    >
                         login as 'newGuy@gmail.com' with email
                     </button>
-                    <button onClick={() => {
-                        logout()
-                        setUserInfo(localStorage.getItem("user"));
-                    }
-                    }>
+                    <button
+                        onClick={() => {
+                            logout();
+                            setUserInfo(localStorage.getItem("user"));
+                        }}
+                    >
                         logout
                     </button>
-                    <button onClick={() =>
-                        createNewPlayer('newGuyPlayer', true).then((r) => setResponse(r))
-                    }>
-                        create newGuyPlayer
-                    </button>
-                    <button onClick={() => deletePlayer('newGuyPlayer').then((r) => setResponse(r))}>
-                        delete newGuyPlayer
-                    </button>
-                    <button onClick={() =>
-                        postGameScore('words', 'newGuyPlayer', {Points: 20})
-                            .then((r) => {
+                    <button onClick={() => createNewPlayer("newGuyPlayer", true).then((r) => setResponse(r))}>create newGuyPlayer</button>
+                    <button onClick={() => deletePlayer("newGuyPlayer").then((r) => setResponse(r))}>delete newGuyPlayer</button>
+                    <button
+                        onClick={() =>
+                            postGameScore("words", "newGuyPlayer", {Points: 20}).then((r) => {
                                 setResponse(r);
                                 setUserInfo(localStorage.getItem("user"));
                             })
-                    }>
+                        }
+                    >
                         postGameScore
                     </button>
-                    <button onClick={() =>
-                        postUnprocessedResults('things', 'words', 'newGuyPlayer')
-                            .then((r) => {
+                    <button
+                        onClick={() =>
+                            getHumanPlayerFromCurrentUser().then((r) => {
+                                console.log(r);
                                 setResponse(r);
                                 setUserInfo(localStorage.getItem("user"));
                             })
-                    }>
+                        }
+                    >
+                        getHumanPlayerFromCurrentUser
+                    </button>
+                    <button
+                        onClick={() =>
+                            getPlayersFromCurrentUser().then((r) => {
+                                console.log(r);
+                                setResponse(r);
+                                setUserInfo(localStorage.getItem("user"));
+                            })
+                        }
+                    >
+                        getPlayersFromCurrentUser
+                    </button>
+                    <button
+                        onClick={() =>
+                            postUnprocessedResults("things", "words", "newGuyPlayer").then((r) => {
+                                setResponse(r);
+                                setUserInfo(localStorage.getItem("user"));
+                            })
+                        }
+                    >
                         postUnprocessedResult
                     </button>
-                    <button onClick={() => ping().then((r) => setResponse(r))}>
-                        ping!
-                    </button>
+                    <button onClick={() => ping().then((r) => setResponse(r))}>ping!</button>
                     <h2>CURRENT USER:</h2>
                     {userInfo}
                     <h2>RESPONSE:</h2>
-                    status: {response.status} <br/>
+                    status: {response.status} <br />
                     data: {JSON.stringify(response.data)}
                 </div>
             </motion.div>

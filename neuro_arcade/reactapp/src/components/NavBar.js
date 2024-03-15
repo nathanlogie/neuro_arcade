@@ -11,12 +11,8 @@ import React from "react";
 export function NavBar({left, right}) {
     return (
         <div className={styles.NavBar}>
-            <div className={styles.Buffer}>
-                {left}
-            </div>
-            <div className={styles.Buffer}>
-                {right}
-            </div>
+            <div className={styles.Buffer}>{left}</div>
+            <div className={styles.Buffer}>{right}</div>
         </div>
-    )
+    );
 }

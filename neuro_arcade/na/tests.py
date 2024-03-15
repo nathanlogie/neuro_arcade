@@ -100,6 +100,7 @@ class PopulationScriptTests(TestCase):
         self.assertTrue(len(players) > 1)
         self.assertTrue(len(playertags) > 1)
 
+
 class ScoreHeaderTests(TestCase):
     """Tests for ScoreHeader validation"""
 
