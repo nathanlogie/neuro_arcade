@@ -18,5 +18,18 @@ cp nginx-config.txt /etc/nginx/sites-available/default
 nginx -t
 service nginx restart
 
-#start
+# installing python dependencies
+pip install -r ./neuro_arcade/requirements.txt
+
+# installing npm dependencies
+cd ./neuro_arcade/reactapp/
+npm install
+cd ../../
+
+# creating the docker image for evaluating scripts
+cd ./evaluation/
+sh docker_build.sh
+cd ../
+
+# start
 sh ./run_server.sh
