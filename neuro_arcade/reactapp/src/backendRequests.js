@@ -1081,6 +1081,6 @@ export function isOwner(type){
         return JSON.parse(localStorage.getItem("player")).user === user.name;
     }
     else if (type==="game"){
-        return JSON.parse(localStorage.getItem("game")).owner === user.id;
+        return JSON.parse(localStorage.getItem("game")).owner.id === user.id;
     }
 }

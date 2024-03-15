@@ -87,7 +87,9 @@ export function GameUpdateForm() {
     }, [existingTags]);
 
     function handleTagReset() {
-        setTags(currentValues.tags);
+        let _tags = [];
+        currentValues.tags.forEach((tagName) => _tags.push({value: tagName, label: tagName}));
+        setTags(_tags);
     }
 
     function handleReset() {
@@ -107,7 +109,7 @@ export function GameUpdateForm() {
     }
 
     function handleDelete() {
-        if (currentValues.user !== getUser().id && !getUser().is_admin) {
+        if (currentValues.owner.id !== getUser().id && !getUser().is_admin) {
             setError("root", {
                 message: "You do not have permissions to edit this game"
             });
@@ -142,7 +144,7 @@ export function GameUpdateForm() {
     }
 
     async function onUpdate() {
-        if (currentValues.user !== getUser().id && !getUser().is_admin) {
+        if (currentValues.owner.name !== getUser().name && !getUser().is_admin) {
             setError("root", {
                 message: "You do not have permissions to edit this game"
             });

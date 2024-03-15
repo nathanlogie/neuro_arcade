@@ -76,7 +76,9 @@ export function ModelUpdateForm() {
     }, [existingTags]);
 
     function handleTagReset() {
-        setTags(currentValues.tags);
+        let _tags = [];
+        currentValues.tags.forEach((tagName) => _tags.push({value: tagName, label: tagName}));
+        setTags(_tags);
     }
 
     function handleReset() {
@@ -106,7 +108,7 @@ export function ModelUpdateForm() {
     }
 
     function handleDelete() {
-        if (currentValues.user !== getUser().id && !getUser().is_admin) {
+        if (currentValues.user !== getUser().name && !getUser().is_admin) {
             setError("root", {
                 message: "You do not have permissions to edit this player"
             });
@@ -119,7 +121,7 @@ export function ModelUpdateForm() {
     }
 
     async function onUpdate() {
-        if (currentValues.user !== getUser().id && !getUser().is_admin) {
+        if (currentValues.user !== getUser().name && !getUser().is_admin) {
             setError("root", {
                 message: "You do not have permissions to edit this player"
             });
