@@ -455,6 +455,12 @@ def login(request: Request) -> Response:
     if user is None:
         return Response(status=403, data="Wrong credentials provided.")
 
+    user_status = 'approved'
+    if not user.is_superuser:
+        user_status = user.status.status
+        if user_status == 'blocked':
+            return Response(status=403, data="Your user account was blocked by an admin.")
+
     token = Token.objects.get_or_create(user=user)[0]
     response_data = {
         'username': user.username,
@@ -462,10 +468,8 @@ def login(request: Request) -> Response:
         'is_admin': user.is_superuser,
         'id': user.id,
         'token': token.key,
-        'status': None,
+        'status': user_status,
     }
-    if not user.is_superuser:
-        response_data['status'] = user.status.status
 
     return Response(status=200, data=response_data)
 
