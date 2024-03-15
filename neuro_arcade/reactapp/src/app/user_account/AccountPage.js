@@ -31,9 +31,9 @@ export function AccountPage() {
     let nav_left = <Button name={"home"} link={"/"} orientation={"left"} direction={"left"} />;
 
     const user = getUser();
-    const [userContent, setUserContent] = useState(<>not a registered player</>);
-    const [modelGrid, setModelGrid] = useState(<>no registered models</>);
-    const [gameGrid, setGameGrid] = useState(<>no registered games</>);
+    const [userContent, setUserContent] = useState(<p>not a registered player</p>);
+    const [modelGrid, setModelGrid] = useState(<p>no registered models</p>);
+    const [gameGrid, setGameGrid] = useState(<p>no registered games</p>);
 
     const pendingUser = (
         <div>

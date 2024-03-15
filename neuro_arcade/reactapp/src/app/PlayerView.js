@@ -81,8 +81,9 @@ export function PlayerView() {
         }
 
         content = (
-            <motion.div className={styles.MainBlock} id={styles["small"]} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
-                <div className={styles.Content} id={styles["small"]}>
+            <motion.div className={styles.MainBlock} id={styles["small"]} initial={{opacity: 0}} animate={{opacity: 1}}
+                        exit={{opacity: 0}}>
+                <div className={styles.Content}>
                     <div className={styles.Title}>
                         <h1>{playerData.name}</h1>
                         {isOwner("player") ? editButton : null}
@@ -99,8 +100,11 @@ export function PlayerView() {
                     </div>
                 </div>
                 <div className={styles.Side}>
-                  {table}
+                    <div className={styles.DataBlock}>
+                        {table}
+                    </div>
                 </div>
+                <div className={styles.MobileBannerBuffer}/>
             </motion.div>
         );
     }
