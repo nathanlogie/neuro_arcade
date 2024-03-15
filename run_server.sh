@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PYTHON='python3.9'
+PYTHON='python'
 export NEURO_ARCADE=1
 
 # run DB process
@@ -9,7 +9,7 @@ sh ./run.sh
 cd ../
 
 # django server
-screen -dmS django_server bash -c "cd ./neuro_arcade/ ; {$PYTHON} manage.py runserver"
+screen -dmS django_server $PYTHON ./neuro_arcade/manage.py runserver
 
 # frontend server
 # shellcheck disable=SC2164

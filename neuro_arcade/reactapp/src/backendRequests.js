@@ -1,14 +1,16 @@
 import axios from "axios";
 
+export let MEDIA_ROOT = '';
 let IP = new URL(location.origin);
 IP.port = '';
 IP = IP.toString();
 IP = IP.slice(0, -1);
 if (IP === 'http://localhost') {
     IP = IP + ':8000';
+    MEDIA_ROOT = IP;
 }
 export const API_ROOT = IP + "/api"; //todo port should not be here
-export const MEDIA_ROOT = IP;
+
 // the media root is actually at /media/,
 // but the constant needs to not include /media/
 // because all API responses include /media/ in the path of an image
