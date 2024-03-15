@@ -132,6 +132,7 @@ export function AllPlayers() {
                 exit={{opacity: 0, y: -100}}
             >
                 {content}
+                <div className={styles.MobileBannerBuffer}/>
             </motion.div>
         </div>
     );

@@ -58,18 +58,18 @@ export function HomePage() {
             setPlayers(players);
             setLoadingPlayers(false);
         });
-    }, []);
-
-    let content = <>...</>;
-    if (!loadingTags && !loadingPlayers) {
-        if (isLoggedIn()) {
-            getHumanPlayerFromCurrentUser()
+        getHumanPlayerFromCurrentUser()
                 .then((p) => {
                     if (p.data.icon) {
                         setPlayerIcon(<img src={MEDIA_ROOT + p.data.icon} />);
                     }
                 })
                 .catch(() => {});
+    }, []);
+
+    let content = <>...</>;
+    if (!loadingTags && !loadingPlayers) {
+        if (isLoggedIn()) {
             nav_right = <Card id={"nav"} link={"user-account"} text={getUser().name} icon={playerIcon} />;
         }
 

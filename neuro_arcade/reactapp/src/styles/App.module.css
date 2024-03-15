@@ -142,7 +142,6 @@
             align-items: unset;
             gap: 5em;
             padding: 0 1em;
-            overflow-x: auto;
             flex-direction: row;
         }
         .Header {
@@ -172,6 +171,7 @@
         }
         .Text {
             margin-top: 5em;
+            padding: 2em;
         }
         .Publications {
             position: relative;
@@ -571,6 +571,9 @@
             width: 100%;
             padding: 2em !important;
             margin: 0;
+            .ContentBlock {
+                width: 50em;
+            }
             & p {
                 margin: 0 1em;
                 width: calc(100% - 2em) !important;
@@ -584,7 +587,7 @@
                 }
             }
             .Title {
-                padding-left: 3em;
+                width: 50em;
             }
         }
         .Content#big {
@@ -603,7 +606,13 @@
     .MainBlock {
         .Content {
             .Title {
-                padding-left: unset;
+                width: 100%;
+            }
+            #details {
+                gap: 1em;
+                flex-direction: column;
+                width: max-content;
+                align-items: center;
             }
         }
         .DataBlock {
