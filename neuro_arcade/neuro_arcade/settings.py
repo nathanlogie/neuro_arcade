@@ -33,6 +33,7 @@ REACT_MEDIA_ROOT = os.path.join(REACT_STATIC_DIR, 'media')
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 if IN_PRODUCTION:
+    WEBSITE_URL = "sh08.ccni-socs-tp3.xyz"
     SECRET_KEY = os.getenv('NEURO_ARCADE_SECRET_KEY')
     DEBUG = False
 else:
@@ -41,7 +42,7 @@ else:
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
 
-ALLOWED_HOSTS = ["sh08.ccni-socs-tp3.xyz",
+ALLOWED_HOSTS = [WEBSITE_URL,
                  "127.0.0.1", "localhost"]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -52,11 +53,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://locahost:8000",
     "https://localhost:8000",
     "https://" + WEBSITE_URL,
-    # "https://sh08.ccni-socs-tp3.xyz"
 ]
 CORS_ALLOWED_ORIGIN_REGEXES = [
     'http://localhost:3000/*.',
-    # "https://sh08.ccni-socs-tp3.xyz/*.",
     WEBSITE_URL + '/*'
 ]
 CORS_ALLOW_HEADERS = (
@@ -72,7 +71,6 @@ CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'  # on client: 'X-CSRFToken'
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://sh08.ccni-socs-tp3.xyz",
     "https://" + WEBSITE_URL
 ]
 
