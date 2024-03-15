@@ -6,6 +6,10 @@ apt-get update && upgrade -y
 
 # database
 sh ./db/init.sh
+if [ $? -ne 0 ]; then
+    echo "Error in database setup"
+    exit 1
+fi
 
 # python
 apt-get install python3

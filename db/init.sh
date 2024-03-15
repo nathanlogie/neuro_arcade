@@ -3,8 +3,10 @@
 # Install and initialise postgress
 
 if [ -z "${NEURO_ARCADE_DB_PASSWORD}" ]; then
-    echo "Environment variable NEURO_ARCADE_DB_PASSWORD must be set"
-    exit 1
+    echo "Please enter a password for the database user."
+    echo "The NEURO_ARCADE_DB_PASSWORD environment variable should be set to match"
+    echo "this when running the django server."
+    read NEURO_ARCADE_DB_PASSWORD
 fi
 
 # Install postgres
