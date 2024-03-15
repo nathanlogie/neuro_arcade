@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PYTHON='python3.9'
+PYTHON='python'
 export NEURO_ARCADE=1
 
 # run DB process
