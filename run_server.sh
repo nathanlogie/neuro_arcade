@@ -1,6 +1,7 @@
 #!/bin/bash
 
 PYTHON='python3.9'
+export NEURO_ARCADE=1
 
 # run DB process
 sh ./db/run.sh
