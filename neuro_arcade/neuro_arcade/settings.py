@@ -137,12 +137,25 @@ WSGI_APPLICATION = 'neuro_arcade.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Use sqlite for pipeline and development, postgresql for actual use
+if os.environ.get("CI") or not os.environ.get("NEURO_ARCADE"):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'neuro_arcade',
+            'USER': 'django_user',
+            'PASSWORD': 'password', # TODO
+            'HOST': 'localhost', # TODO
+            'PORT': '',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
