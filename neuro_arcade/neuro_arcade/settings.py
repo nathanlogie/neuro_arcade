@@ -14,7 +14,8 @@ import os
 from corsheaders.defaults import default_headers
 from pathlib import Path
 
-# TODO: change this to the URL of the website
+IN_PRODUCTION = os.getenv('NEURO_ARCADE')
+
 WEBSITE_URL = "localhost:3000"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,13 +32,17 @@ REACT_MEDIA_ROOT = os.path.join(REACT_STATIC_DIR, 'media')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-4#($c-j6(9ujy#i&&gj)&umiojdi_-aa8u3x2$!qqh%xj(e@@k'
+if IN_PRODUCTION:
+    WEBSITE_URL = "sh08.ccni-socs-tp3.xyz"
+    SECRET_KEY = os.getenv('NEURO_ARCADE_SECRET_KEY')
+    DEBUG = False
+else:
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = 'django-insecure-4#($c-j6(9ujy#i&&gj)&umiojdi_-aa8u3x2$!qqh%xj(e@@k'
+    # SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = True
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ["sh08.pythonanywhere.com",
+ALLOWED_HOSTS = [WEBSITE_URL,
                  "127.0.0.1", "localhost"]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -47,7 +52,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://localhost:3000",
     "http://locahost:8000",
     "https://localhost:8000",
-    "https://" + WEBSITE_URL
+    "https://" + WEBSITE_URL,
 ]
 CORS_ALLOWED_ORIGIN_REGEXES = [
     'http://localhost:3000/*.',
@@ -132,12 +137,25 @@ WSGI_APPLICATION = 'neuro_arcade.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Use sqlite for pipeline and development, postgresql for actual use
+if os.environ.get("CI") or not os.environ.get("NEURO_ARCADE"):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'neuro_arcade',
+            'USER': 'django_user',
+            'PASSWORD': 'password', # TODO
+            'HOST': 'localhost', # TODO
+            'PORT': '',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
