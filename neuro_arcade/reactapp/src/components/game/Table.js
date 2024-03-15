@@ -21,6 +21,15 @@ export function Table({inputData}) {
         setSelectedSwitcherValue(selectedValue);
     };
 
+    function slugify(text) {
+      return text.toString().toLowerCase()
+        .replace(/\s+/g, '-')           // Replace spaces with -
+        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')             // Trim - from start of text
+        .replace(/-+$/, '');            // Trim - from end of text
+    }
+
     const columns = [
         {
             field: "player",
@@ -28,7 +37,7 @@ export function Table({inputData}) {
             renderHeader: () => <strong>Player</strong>,
             renderCell: (params) => (
                 <Link
-                    to={"/all-players/" + params.value.replace(/\s+/g, "-").toLowerCase()}
+                    to={"/all-players/" + slugify(params.value)}
                     style={{
                         color: "#FFFFFF",
                         textDecoration: "none"
