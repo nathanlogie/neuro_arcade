@@ -151,7 +151,7 @@ else:
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'neuro_arcade',
             'USER': 'django_user',
-            'PASSWORD': 'password', # TODO
+            'PASSWORD': os.environ.get("NEURO_ARCADE_DB_PASSWORD"),
             'HOST': 'localhost', # TODO
             'PORT': '',
         }
