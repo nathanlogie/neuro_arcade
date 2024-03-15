@@ -2,6 +2,11 @@
 
 # Install and initialise postgress
 
+if [ -z "${NEURO_ARCADE_DB_PASSWORD}" ]; then
+    echo "Environment variable NEURO_ARCADE_DB_PASSWORD must be set"
+    exit 1
+fi
+
 # Install postgres
 sudo apt update
 sudo apt install libpq-dev postgresql postgresql-contrib
