@@ -12,7 +12,7 @@ import {AiOutlineRadarChart} from "react-icons/ai";
 import {AdminRanking} from "../components/AdminRanking";
 import {Button} from "../components/Button";
 import placeholder from "../static/images/placeholder.webp";
-import {isLoggedIn, isOwner, MEDIA_ROOT, requestGame} from "../backendRequests";
+import {getUser, isLoggedIn, isOwner, MEDIA_ROOT, requestGame} from "../backendRequests";
 import {FaRegPenToSquare} from "react-icons/fa6";
 
 /**
@@ -133,7 +133,7 @@ export function GameView() {
                         </div>
                     </div>
                 </div>
-                {isLoggedIn() ? <Button name={"Upload Scores"} link={"upload-scores"} orientation={"right"} direction={"down"} /> : null}
+                {isLoggedIn() && (gameData.game.owner === getUser() || getUser().is_admin) ? <Button name={"Upload Scores"} link={"upload-scores"} orientation={"right"} direction={"down"} /> : null}
                 <div className={styles.MobileBannerBuffer} />
             </motion.div>
         );
