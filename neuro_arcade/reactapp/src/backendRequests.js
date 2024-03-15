@@ -1,6 +1,18 @@
 import axios from "axios";
 
-export const API_ROOT = "http://localhost:8000";
+let IP = new URL(location.origin);
+IP.port = '';
+IP = IP.toString();
+IP = IP.slice(0, -1);
+if (IP === 'http://localhost') {
+    IP = IP + ':8000';
+}
+export const API_ROOT = IP + "/api"; //todo port should not be here
+export const MEDIA_ROOT = IP;
+// the media root is actually at /media/,
+// but the constant needs to not include /media/
+// because all API responses include /media/ in the path of an image
+
 /**
  * This file contains functions that request or upload data from/to the backend
  */
@@ -129,6 +141,13 @@ export class UserNotAuthenticatedError extends Error {
     }
 }
 
+export class EmptyFormError extends Error {
+    constructor() {
+        super("The provided form is empty!");
+        this.name = "EmptyFormError";
+    }
+}
+
 /**
  * CSRF token used for security things.
  *
@@ -223,7 +242,7 @@ export async function requestGame(gameName) {
  * @throws Error when the request is rejected.
  */
 export async function requestGameTags() {
-    const url = API_ROOT + '/api/gameTag/';
+    const url = API_ROOT + '/gameTag/';
     try {
         let response = await axios.get(url);
         return response.data;
@@ -241,7 +260,7 @@ export async function requestGameTags() {
  * @throws Error when the request is rejected.
  */
 export async function requestPlayerTags() {
-    const url = API_ROOT + '/api/playerTag/';
+    const url = API_ROOT + '/playerTag/';
     return await axios.get(url)
         .then((response) => {
             return response.data;
@@ -259,7 +278,7 @@ export async function requestPlayerTags() {
  * @throws Error when request is rejected
  */
 export async function requestGames() {
-    const url = API_ROOT + '/api/games/';
+    const url = API_ROOT + '/games/';
     return await axios.get(url).then((response) => {
         return response.data;
     }).catch((error) => {
@@ -277,7 +296,7 @@ export async function requestGames() {
  * @param {[string]} gameTags
  * @param {string} playLink
  * @param {Image} image
- * @param {File} evaluationScript  // todo File?
+ * @param {File} evaluationScript
  * @param {File} scoreTypes
  *
  * @return {Promise<axios.AxiosResponse<{}>>}
@@ -298,7 +317,6 @@ export async function createNewGame(
         throw UserNotAuthenticatedError()
 
     let formData = new FormData();
-    console.log(gameTags);
     formData.append("gameName", gameName);
     formData.append("description", description);
     formData.append("gameTags", gameTags);
@@ -313,10 +331,7 @@ export async function createNewGame(
     return await axios.post(url,
         formData,
         await getHeaders('POST', true, 'multipart/form-data')
-    ).then((response) => {
-        console.log('Creation of game ' + gameName + ' successful!');
-        return response;
-    }).catch((error) => {
+    ).catch((error) => {
         console.log(error);
         throw error;
     })
@@ -341,13 +356,16 @@ export async function createNewPlayer(playerName, description, playerTags, image
     if (!isLoggedIn())
         throw UserNotAuthenticatedError()
 
-    let data = { playerName: playerName, description: description, playerTags: playerTags };
+    let formData = new FormData();
+    formData.append("playerName", playerName);
+    formData.append("description", description);
+    formData.append("playerTags", playerTags);
     if (image)
-        data.icon = image;
+        formData.append("icon", image);
 
     return await axios.post(url,
-        data,
-        await getHeaders('POST', true)
+        formData,
+        await getHeaders('POST', true, 'multipart/form-data')
     ).then((response) => {
         console.log('Creation of player ' + playerName + ' successful!');
         return response;
@@ -365,7 +383,7 @@ export async function createNewPlayer(playerName, description, playerTags, image
  * @throws Error when request is rejected
  */
 export async function requestPlayers() {
-    const url = API_ROOT + '/api/players/';
+    const url = API_ROOT + '/players/';
     try {
         let response = await axios.get(url);
         return response.data;
@@ -409,6 +427,30 @@ export async function deletePlayer(playerName) {
     return await axios.post(url, { playerName: playerName }, await getHeaders('POST', true))
     .then((response) => {
         console.log('Deletion of player ' + playerName + ' successful!');
+        return response;
+    }).catch((error) => {
+        console.log(error);
+        throw error;
+    })
+}
+
+/**
+ * Deletes a game associated with the logged-in user.
+ * Requires the user to be authenticated, will throw an error if not.
+ *
+ * @param {string} gameName
+ *
+ * @throws {Error | UserNotAuthenticatedError}
+ */
+export async function deleteGame(gameName) {
+    const url = API_ROOT + "/delete-game/";
+
+    if (!isLoggedIn())
+        throw new UserNotAuthenticatedError()
+
+    return await axios.post(url, { gameName: gameName }, await getHeaders('POST', true))
+    .then((response) => {
+        console.log('Deletion of game ' + gameName + ' successful!');
         return response;
     }).catch((error) => {
         console.log(error);
@@ -570,14 +612,16 @@ export async function postUnprocessedResults(content, game_slug, player_name) {
  * @returns {Promise} response if successful
  */
 export async function getAboutData(){
-    try {
-        let response = await axios.get(API_ROOT + '/about/')
-        return response.data
-    }
-    catch (err){
-        console.log("ERROR WHILE FETCHING ABOUT DATA: " + err)
-        throw err
-    }
+    const url = API_ROOT + '/about/';
+
+    return await axios.get(url)
+        .then(response => {
+            return response.data
+        })
+        .catch (err => {
+            console.log("ERROR WHILE FETCHING ABOUT DATA: " + err);
+            throw err;
+        })
 }
 
 /**
@@ -648,11 +692,9 @@ export function getUser() {
 export async function getAllUsers() {
     const url = API_ROOT + `/get-all-users/`;
 
-    if (!getUser() || !userIsAdmin()){
-        throw new Error;
-    }
+    if (!isLoggedIn() || !userIsAdmin())
+        throw new Error('User is not admin!');
 
-    //todo test
     return await axios.get(url, await getHeaders('GET', true)).then((response) => {
         return(response.data.map(function(user) {
             let status = "";
@@ -845,7 +887,7 @@ export function logout() {
  *
  * @param {string} playerName - slug of the player name
  *
- * @return {Player} response data
+ * @return {Promise<Player>} response data
  *
  * @throws Error when the request is rejected.
  */
@@ -905,7 +947,7 @@ export async function postAdminRanking(gameID, ranking){
     await axios.post(url, {id: gameID, ranking: ranking*10}, await getHeaders('POST', true))
         .then((response) => {
             return response;
-    })
+        })
         .catch((error) => {
             console.log(error);
             throw error;
@@ -924,7 +966,6 @@ export async function postAdminRanking(gameID, ranking){
  *
  */
 export async function requestUserPlayers(userID) {
-    //todo change this to something more sensible
     const url = API_ROOT + '/users/' + userID + '/players/';
 
     return await axios.get(url)
@@ -940,31 +981,94 @@ export async function requestUserPlayers(userID) {
 /**
  * Update Game Info
  *
- * @param gameSlug {string}
- * @param data {{}} new game data
+ * @param {string} gameSlug
+ * @param {string} gameName
+ * @param {string} description
+ * @param {[string]} gameTags
+ * @param {string} playLink
+ * @param {Image} image
+ * @param {File} evaluationScript
+ * @param {File} scoreTypes
  *
- * @Returns {Response} response to patch call
+ * @throws {EmptyFormError}
+ * @throws {UserNotAuthenticatedError}
+ *
+ * @Returns {Promise<Response>} response to patch call
  */
-export async function updateGames(gameSlug, data){
-    const url = API_ROOT + `/games/${gameSlug}/update_game/`
-    return await axios.patch(url, data, await getHeaders('patch', true));
+export async function updateGames(
+    gameSlug,
+    gameName,
+    description,
+    gameTags=[],
+    playLink,
+    image=null,
+    evaluationScript,
+    scoreTypes
+) {
+    const url = API_ROOT + `/games/${gameSlug}/update/`;
+    if (!isLoggedIn())
+        throw new UserNotAuthenticatedError();
+
+    let formData = new FormData();
+    // editing Game Name is currently disabled due to bugs
+    // check the comments on the form for more info
+    // if (gameName)
+    //     formData.append("name", gameName);
+    if (description)
+        formData.append("description", description);
+    if (gameTags)
+        formData.append("gameTags", gameTags);
+    if (playLink)
+        formData.append("play_link", playLink);
+    if (image)
+        formData.append("icon", image);
+    if (evaluationScript)
+        formData.append("evaluation_script", evaluationScript);
+    if (scoreTypes)
+        formData.append("score_type", scoreTypes);
+
+    // if formData is empty, then throw an error
+    // from: https://stackoverflow.com/questions/40364692/check-if-formdata-is-empty
+    if (formData.entries().next().done)
+        throw new EmptyFormError();
+
+    return await axios.patch(url, formData, await getHeaders('PATCH', true, 'multipart/form-data'));
 }
 
 /**
  * Update Player Data
  *
- * @param {string} playerSlug: slug of player to update
+ * @param {string} playerSlug slug of player to update
+ * @param {string} name
+ * @param {string} description
+ * @param {[string]} tags
+ * @param {Image} image
  *
- * @param {dict} data: data to update to
- *
- * @Returns {Response} response to patch call
+ * @Returns {Promise<Response>} response to patch call
  */
-export async function updatePlayer(playerSlug, data){
-    const url = API_ROOT + `/players/${playerSlug}/update_player/`
+export async function updatePlayer(playerSlug, name, description, tags, image) {
+    const url = API_ROOT + `/players/${playerSlug}/update_player/`;
+    if (!isLoggedIn())
+        throw new UserNotAuthenticatedError();
 
-    return await axios.patch(url, data, await getHeaders('patch', true))
-        .then((response) => console.log(response))
-        .catch(error => console.log(error))
+    let formData = new FormData();
+    // editing Player Name is currently disabled due to bugs
+    // check the comments on the form for more info
+    // if (name)
+    //     formData.append("name", name);
+    if (description)
+        formData.append("description", description);
+    if (tags)
+        formData.append("playerTags", tags);
+    if (image)
+        formData.append("icon", image);
+
+    // if formData is empty, then throw an error
+    // from: https://stackoverflow.com/questions/40364692/check-if-formdata-is-empty
+    if (formData.entries().next().done)
+        throw new EmptyFormError();
+
+    return await axios.patch(url, formData, await getHeaders('PATCH', true, 'multipart/form-data'));
 }
 
 /**
@@ -984,6 +1088,6 @@ export function isOwner(type){
         return JSON.parse(localStorage.getItem("player")).user === user.name;
     }
     else if (type==="game"){
-        return JSON.parse(localStorage.getItem("game")).owner === user.id;
+        return JSON.parse(localStorage.getItem("game")).owner.id === user.id;
     }
 }

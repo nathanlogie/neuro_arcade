@@ -9,7 +9,7 @@ import {motion} from "framer-motion";
 import {Button} from "../../components/Button";
 import {Link, useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {API_ROOT, getGamesFromCurrentUser, getPlayersFromCurrentUser, logout} from "../../backendRequests";
+import {API_ROOT, getGamesFromCurrentUser, getPlayersFromCurrentUser, logout, MEDIA_ROOT} from "../../backendRequests";
 import {getUser} from "../../backendRequests";
 import {userIsAdmin} from "../../backendRequests";
 import {IoExit} from "react-icons/io5";
@@ -65,7 +65,7 @@ export function AccountPage() {
                 if (player) {
                     let icon = <img src={placeholder} alt={"icon"} />;
                     if (player.icon) {
-                        icon = <img src={API_ROOT + player.icon} alt={"image"} />;
+                        icon = <img src={MEDIA_ROOT + player.icon} alt={"image"} />;
                     }
                     setUserContent(
                         <div className={styles.ContentBlock} id={styles["vertical"]}>

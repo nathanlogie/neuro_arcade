@@ -33,8 +33,8 @@ export function AllPlayers() {
      * @returns {PlayerGridMode} mode
      */
     function convertModeName(displayName) {
-        if (displayName == "AI Platforms") return PlayerGridMode.AI;
-        if (displayName == "Humans") return PlayerGridMode.HUMAN;
+        if (displayName === "AI Platforms") return PlayerGridMode.AI;
+        if (displayName === "Humans") return PlayerGridMode.HUMAN;
         return PlayerGridMode.ALL;
     }
 
@@ -132,6 +132,7 @@ export function AllPlayers() {
                 exit={{opacity: 0, y: -100}}
             >
                 {content}
+                <div className={styles.MobileBannerBuffer}/>
             </motion.div>
         </div>
     );

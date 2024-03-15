@@ -285,26 +285,22 @@ def post_new_player(request: Request) -> Response:
     player_name = request.data.get('playerName')
     description = request.data.get('description')
     player_tags = request.data.get('playerTags')
-    # todo read image
-    if player_name is None:
-        return Response(
-            status=400,
-            data='Invalid data; `playerName` must be provided!')
-    if description is None:
-        return Response(
-            status=400,
-            data='Invalid data; `description` must be provided!')
-    # if len(player_tags) > 0 and type(player_tags[0]) is str:
-    # return Response(status=400, data='Invalid data; `playerTags` must be an
-    # array of strings!')
+    icon = request.data.get('icon')
 
-    try:
-        player_obj, _ = Player.objects.get_or_create(
-            name=player_name, description=description, is_ai=True, user=request.user)
-    except IntegrityError:  # todo what is this even doing
-        return Response(
-            status=500,
-            data='A Model with that name already exists!')
+    if player_name is None:
+        return Response(status=400, data='Invalid data; `playerName` must be provided!')
+    if description is None:
+        return Response(status=400, data='Invalid data; `description` must be provided!')
+    if player_tags is not None:
+        player_tags = player_tags.split(',')
+
+    player_obj, _ = Player.objects.get_or_create(
+        name=player_name,
+        description=description,
+        is_ai=True,
+        icon=icon,
+        user=request.user
+    )
 
     # adding player tags to the new player
     tags_to_add = []
@@ -390,28 +386,48 @@ def post_new_game(request: Request) -> Response:
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+def delete_game(request: Request) -> Response:
+    """
+    Requests the deletion of a game associated with the current user.
+    The request should be of format: {gameName: str}
+    """
+    game_name = request.data.get('gameName')
+    if game_name is None:
+        return Response(status=400, data='Invalid data; `gameName` must be provided!')
+
+    try:
+        game = Game.objects.get(name=game_name)
+    except ObjectDoesNotExist:
+        return Response(status=404, data='Game not found!')
+
+    if game.owner != request.user and not request.user.is_superuser:
+        return Response(status=400, data='Request Refused; This game is not owned by you!')
+
+    game.delete()
+    return Response(status=200, data='Game successfully deleted!')
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def delete_player(request: Request) -> Response:
     """
     Requests the deletion of a player associated with the current user.
     The request should be of format: {playerName: str}
     """
-    # todo look over for delete_player required; keep in mind that user shouldn't delete their own human player
-    user = request.user
     player_name = request.data.get('playerName')
     if player_name is None:
-        return Response(
-            status=400,
-            data='Invalid data; `playerName` must be provided!')
+        return Response(status=400, data='Invalid data; `playerName` must be provided!')
 
     try:
-        player = Player.objects.get(name=player_name, user=user)
+        player = Player.objects.get(name=player_name)
     except ObjectDoesNotExist:
         return Response(status=404, data='Player not found!')
 
+    if player.user != request.user and not request.user.is_superuser:
+        return Response(status=400, data='Request Refused; This player is not owned by you!')
+
     if not player.is_ai:
-        return Response(
-            status=400,
-            data='Request Refused; Only AI players (AI Models) can be deleted!')
+        return Response(status=400, data='Request Refused; Only AI players (AI Models) can be deleted!')
 
     player.delete()
     return Response(status=200, data='Player successfully deleted!')
@@ -439,6 +455,12 @@ def login(request: Request) -> Response:
     if user is None:
         return Response(status=403, data="Wrong credentials provided.")
 
+    user_status = 'approved'
+    if not user.is_superuser:
+        user_status = user.status.status
+        if user_status == 'blocked':
+            return Response(status=403, data="Your user account was blocked by an admin.")
+
     token = Token.objects.get_or_create(user=user)[0]
     response_data = {
         'username': user.username,
@@ -446,10 +468,8 @@ def login(request: Request) -> Response:
         'is_admin': user.is_superuser,
         'id': user.id,
         'token': token.key,
-        'status': None,
+        'status': user_status,
     }
-    if not user.is_superuser:
-        response_data['status'] = user.status.status
 
     return Response(status=200, data=response_data)
 
@@ -483,7 +503,7 @@ def sign_up(request: Request) -> Response:
         return Response(status=500, data='Error creating new user.')
 
     # creating a human player associated with the User:
-    Player.objects.create(  # Todo: can this fail? If it can, handle the error.
+    Player.objects.create(
         name=username,
         is_ai=False,
         user=new_user,
@@ -773,22 +793,16 @@ def update_game(request: Request, game_name_slug: str) -> Response:
     if game_obj.owner != request.user and not request.user.is_superuser:
         return Response(status=401)
 
-    # removing tags from the request
-    new_tags = request.data.get('gameTags')
-    request.data['gameTags'] = None
-
     serializer = GameSerializer(game_obj, data=request.data, partial=True)
     if not serializer.is_valid():
         return Response(status=400, data=serializer.errors)
     serializer.save()
 
-    if new_tags is not None:
-        # removing tags from the game object
-        game_obj.tags.set([])
-
-        # adding game tags to the game
+    # adding tags
+    if request.data.get('gameTags') is not None:
         tags_to_add = []
-        for tag in new_tags:
+        game_obj.tags.set([])
+        for tag in request.data.get('gameTags').split(','):
             # Note: this can create new tags
             selected_tag = GameTag.objects.get_or_create(name=tag)[0]
             tags_to_add.append(selected_tag)
@@ -815,16 +829,26 @@ def update_player(request, player_name_slug) -> Response:
             with status 400 otherwise
     """
 
-    player = get_object_or_404(Player, slug=player_name_slug)
-    if player.user != request.user and not request.user.is_superuser:
+    player_obj = get_object_or_404(Player, slug=player_name_slug)
+    if player_obj.user != request.user and not request.user.is_superuser:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-    serializer = PlayerSerializer(player, data=request.data, partial=True)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(status=status.HTTP_200_OK, data=serializer.data)
+    serializer = PlayerSerializer(player_obj, data=request.data, partial=True)
+    if not serializer.is_valid():
+        return Response(status=400, data=serializer.errors)
+    serializer.save()
 
-    return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
+    # adding tags
+    if request.data.get('playerTags') is not None:
+        tags_to_add = []
+        player_obj.tags.set([])
+        for tag in request.data.get('playerTags').split(','):
+            # Note: this can create new tags
+            selected_tag = PlayerTag.objects.get_or_create(name=tag)[0]
+            tags_to_add.append(selected_tag)
+        player_obj.tags.set(tags_to_add)
+
+    return Response(status=200, data=serializer.data)
 
 
 @api_view(['GET'])

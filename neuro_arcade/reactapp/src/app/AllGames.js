@@ -101,7 +101,7 @@ export function AllGames() {
                 exit={{opacity: 0, y: -100}}
             >
                 {content}
-                <div className={styles.MobileBannerBuffer}></div>
+                <div className={styles.MobileBannerBuffer} />
             </motion.div>
         </div>
     );

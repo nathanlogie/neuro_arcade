@@ -139,8 +139,9 @@
             align-items: center;
         }
         #details {
+            align-items: unset;
             gap: 5em;
-            overflow-x: scroll;
+            padding: 0 1em;
             flex-direction: row;
         }
         .Header {
@@ -170,6 +171,7 @@
         }
         .Text {
             margin-top: 5em;
+            padding: 2em;
         }
         .Publications {
             position: relative;
@@ -424,7 +426,7 @@
                 font-weight: 600;
                 color: #DDDDDD;
             }
-            & input {
+            & input, textarea {
                 height: 3em;
                 margin-bottom: 1.5em;
                 border-radius: 0.5em;
@@ -435,7 +437,7 @@
                 color: #FFFFFF;
                 font-family: inherit;
             }
-            & input::placeholder {
+            & input::placeholder, textarea::placeholder  {
                 color: #CCCCCC;
             }
             & span {
@@ -569,6 +571,9 @@
             width: 100%;
             padding: 2em !important;
             margin: 0;
+            .ContentBlock {
+                width: 50em;
+            }
             & p {
                 margin: 0 1em;
                 width: calc(100% - 2em) !important;
@@ -582,7 +587,7 @@
                 }
             }
             .Title {
-                padding-left: 3em;
+                width: 50em;
             }
         }
         .Content#big {
@@ -601,7 +606,13 @@
     .MainBlock {
         .Content {
             .Title {
-                padding-left: unset;
+                width: 100%;
+            }
+            #details {
+                gap: 1em;
+                flex-direction: column;
+                width: max-content;
+                align-items: center;
             }
         }
         .DataBlock {
@@ -730,4 +741,8 @@
 
 ::-webkit-scrollbar-track {
   background-color: transparent;
+}
+
+::-webkit-scrollbar-corner {
+    background: rgba(0,0,0,0);
 }

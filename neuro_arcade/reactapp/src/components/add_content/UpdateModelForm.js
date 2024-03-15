@@ -4,7 +4,15 @@ import axios from "axios";
 import {motion} from "framer-motion";
 import {FaImage, FaTrash} from "react-icons/fa6";
 import CreatableSelect from "react-select/creatable";
-import {requestPlayerTags, getUser, getHeaders, API_ROOT, requestPlayer} from "../../backendRequests";
+import {
+    requestPlayerTags,
+    getUser,
+    getHeaders,
+    API_ROOT,
+    requestPlayer,
+    MEDIA_ROOT,
+    deletePlayer
+} from "../../backendRequests";
 import slugify from "react-slugify";
 import makeAnimated from "react-select/animated";
 import {MAX_DESCRIPTION_LENGTH_MODEL, MAX_NAME_LENGTH_MODEL, IMAGE_EXTENSION, customStyles} from "./formHelper";
@@ -17,7 +25,7 @@ import {GrPowerReset} from "react-icons/gr";
  * @returns {JSX.Element} update existing model form
  * @constructor builds update existing model form
  */
-export function ModelUpdateForm() {  //TODO (Andrei) Fix this form: it has issues with the tags
+export function ModelUpdateForm() {
     const {
         register,
         handleSubmit,
@@ -32,46 +40,45 @@ export function ModelUpdateForm() {  //TODO (Andrei) Fix this form: it has issue
     let [existingTags, setExistingTags] = useState([]);
     let [options, setOptions] = useState([]);
     let [image, setImage] = useState(null);
-    let player_name = useParams().player_slug;
+    let [imageURL, setImageURL] = useState(null);
+
     let [loading, setLoading] = useState(true);
     let [currentValues, setCurrentValues] = useState(null);
-    let [header, setHeader] = useState(null);
-    let [imageURL, setImageURL] = useState(null);
+    let playerSlug = useParams().player_slug;
     let navigate = useNavigate();
 
     useEffect(() => {
-        requestPlayer(player_name).then((currentData) => {
+        requestPlayer(playerSlug).then((currentData) => {
             setCurrentValues(currentData);
-            setImageURL(`${API_ROOT}/${currentData.icon}`);
-            getHeaders("PATCH", true).then((header) => {
-                setHeader(header);
-                requestPlayerTags().then((tags) => {
-                    setExistingTags(tags);
-                    setLoading(false);
-                });
-            });
+            setImageURL(`${MEDIA_ROOT}/${currentData.icon}`);
+            let _tags = [];
+            currentData.tags.forEach((tagName) => _tags.push({value: tagName, label: tagName}));
+            setTags(_tags);
+            setLoading(false);
         });
     }, []);
 
-    existingTags.forEach((tag) => {
-        options.push({
-            value: tag.id,
-            label: tag.name
+    useEffect(() => {
+        requestPlayerTags().then((tags) => {
+            setExistingTags(tags);
         });
-    });
-    options.forEach((option) => {
-        if (currentValues.tags.includes(option.value)) {
-            tags.push(option);
-        }
-    });
+    }, []);
+
+    useEffect(() => {
+        let newOpt = [];
+        existingTags.forEach((tag) =>
+            newOpt.push({
+                value: tag.name,
+                label: tag.name
+            })
+        );
+        setOptions(newOpt);
+    }, [existingTags]);
 
     function handleTagReset() {
-        setTags([]);
-        options.forEach((option) => {
-            if (currentValues.tags.includes(option.value)) {
-                tags.push(option);
-            }
-        });
+        let _tags = [];
+        currentValues.tags.forEach((tagName) => _tags.push({value: tagName, label: tagName}));
+        setTags(_tags);
     }
 
     function handleReset() {
@@ -81,166 +88,91 @@ export function ModelUpdateForm() {  //TODO (Andrei) Fix this form: it has issue
         });
         setName("");
         setDescription("");
-        setImageURL(`${API_ROOT}/${currentValues.icon}`);
+        setImageURL(`${MEDIA_ROOT}/${currentValues.icon}`);
         setImage(null);
         handleTagReset();
     }
 
-    const handleImage = (event) => {
+    function handleImage(event) {
         const file = event.target.files[0];
         const acceptedFormats = IMAGE_EXTENSION;
         const fileExtension = file.name.split(".").pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
             setError("root", {message: "Invalid file type provided"});
             setImage(null);
+            setImageURL(`${MEDIA_ROOT}/${currentValues.icon}`);
         } else {
             setImage(file);
+            setImageURL(URL.createObjectURL(file));
         }
-    };
-
-    async function handleCreate(tagName) {
-        let formData = new FormData();
-        let url = `${API_ROOT}/api/playerTag/`;
-
-        formData.append("name", tagName);
-        formData.append("slug", slugify(tagName));
-        formData.append("description", "default description");
-        await axios
-            .post(url, formData, header)
-            .then((response) => {
-                console.log(response);
-                let newValue = {
-                    value: response.data.id,
-                    label: response.data.name
-                };
-                setOptions((prev) => [...prev, newValue]);
-                setTags((prev) => [...prev, newValue]);
-            })
-            .catch(() => {
-                setError("tags", {message: "Error creating new tag"});
-            });
     }
 
     function handleDelete() {
-        if (currentValues.user !== getUser().id && !getUser().is_admin) {
+        if (currentValues.user !== getUser().name && !getUser().is_admin) {
             setError("root", {
                 message: "You do not have permissions to edit this player"
             });
             return;
         }
 
-        let url = `${API_ROOT}/api/players/${currentValues.id}/`;
-        axios
-            .delete(url)
-            .then((response) => {
-                navigate("/all-players/");
-            })
-            .catch(() => {
-                setError("root", {
-                    message: "Could not delete player"
-                });
-            });
+        deletePlayer(currentValues.name)
+            .then(() => navigate("/all-players/"))
+            .catch(() => setError("root", {message: "Could not delete player"}));
     }
 
-    const onUpdate = async () => {
-        if (currentValues.user !== getUser().id && !getUser().is_admin) {
+    async function onUpdate() {
+        if (currentValues.user !== getUser().name && !getUser().is_admin) {
             setError("root", {
                 message: "You do not have permissions to edit this player"
             });
             return;
         }
 
-        let formData = new FormData();
-        if (name !== "") {
-            formData.append("name", name);
-            formData.append("slug", slugify(name));
-        }
-        if (description !== "") {
-            formData.append("description", description);
-        }
+        let requestTags = tags.map(t => t.value);
 
-        if (image) {
-            formData.append("icon", image);
-        }
-
-        if (formData.entries().next().done && tags.length === 0) {
-            setError("root", {
-                message: "No changes detected"
-            });
-            return;
-        }
-
-        await updatePlayer(player_name, formData)
-            .then(function (response) {
-                if (tags.length !== 0) {
-                    const finalTagIDs = tags.map((tag) => tag.value);
-                    formData.append("tags", finalTagIDs);
-                    let url = `${API_ROOT}/api/players/${response.data.id}/add_tags/`;
-                    axios.post(url, formData, header).catch((response) => {
-                        console.log(response);
-                        setError("root", {message: "Error during tag change"});
-                    });
-                }
-                reset();
-                setImage(null);
-                setError("root", {message: "player updated successfully"});
-                setTags(null);
-                if (name === "") {
-                    navigate(`/all-players/${currentValues.slug}`);
+        await updatePlayer(playerSlug, name, description, requestTags, image)
+            .then(response => {
+                console.log(response);
+                if (name !== "") {
+                    navigate("/all-players/");
                 } else {
-                    navigate(`/all-players/${slugify(name)}`);
+                    navigate("/all-players/" + playerSlug);
                 }
             })
-            .catch(function (response) {
-                if (!response) {
-                    setError("root", {message: "No response from server"});
-                } else {
-                    if (response.response.data.slug) {
-                        setError("root", {message: "A player with that name already exists!"});
-                        return;
-                    } else if (response.response.data.tags) {
-                        setError("root", {message: "Tag upload failed"});
-                        return;
-                    }
-                    if (response)
-                        if (response.response.data.includes("IntegrityError")) {
-                            setError("root", {message: "A player with that name already exists!"});
-                        } else {
-                            setError("root", {
-                                message: `Something went wrong... ${response.response.data}`
-                            });
-                        }
-                }
-            });
-    };
+            .catch((response) => {
+                setError("root", {message: "Something went wrong"});
+                console.log(response);
+            })
+    }
 
     if (!loading) {
         return (
             <form>
-                <h3> Name </h3>
-                <input
-                    {...register("name", {
-                        maxLength: {
-                            value: MAX_NAME_LENGTH_MODEL,
-                            message: `Maximum player title length has been exceeded (${MAX_NAME_LENGTH_MODEL})`
-                        }
-                    })}
-                    type={"text"}
-                    placeholder={"player name"}
-                    defaultValue={currentValues.name}
-                    onChange={(event) => setName(event.target.value)}
-                />
-                {errors.name && <div>{errors.name.message}</div>}
+                <h3> Editing <strong>{currentValues.name}</strong>... </h3>
+                {/* todo: Name Change doesn't work due to reason I don't understand */}
+                {/*<input*/}
+                {/*    {...register("name", {*/}
+                {/*        maxLength: {*/}
+                {/*            value: MAX_NAME_LENGTH_MODEL,*/}
+                {/*            message: `Maximum player title length has been exceeded (${MAX_NAME_LENGTH_MODEL})`*/}
+                {/*        }*/}
+                {/*    })}*/}
+                {/*    type={"text"}*/}
+                {/*    placeholder={"player name"}*/}
+                {/*    defaultValue={currentValues.name}*/}
+                {/*    onChange={(event) => setName(event.target.value)}*/}
+                {/*/>*/}
+                {/*{errors.name && <div>{errors.name.message}</div>}*/}
 
                 <h3>Description</h3>
-                <input
+                <textarea
                     {...register("description", {
                         maxLength: {
                             value: MAX_DESCRIPTION_LENGTH_MODEL,
                             message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH_MODEL})`
                         }
                     })}
-                    type={"text"}
+                    style={{height: '6em', lineHeight: '2em', paddingTop: '1em', paddingBottom: '1em', resize: 'vertical'}}
                     placeholder={"This player measures..."}
                     defaultValue={currentValues.description}
                     onChange={(event) => setDescription(event.target.value)}
@@ -252,8 +184,7 @@ export function ModelUpdateForm() {  //TODO (Andrei) Fix this form: it has issue
                     isClearable
                     isMulti
                     defaultValue={currentValues.tags}
-                    onChange={(newValue) => setTags(newValue)}
-                    onCreateOption={handleCreate}
+                    onChange={setTags}
                     value={tags}
                     options={options}
                     components={makeAnimated()}

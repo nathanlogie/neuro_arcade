@@ -6,7 +6,15 @@ import {LuFileJson} from "react-icons/lu";
 import {FaPython} from "react-icons/fa6";
 import {motion} from "framer-motion";
 import CreatableSelect from "react-select/creatable";
-import {requestGameTags, requestGame, API_ROOT, getUser, getHeaders} from "../../backendRequests";
+import {
+    requestGameTags,
+    requestGame,
+    API_ROOT,
+    getUser,
+    getHeaders,
+    MEDIA_ROOT,
+    deleteGame
+} from "../../backendRequests";
 import slugify from "react-slugify";
 import makeAnimated from "react-select/animated";
 import {updateGames} from "../../backendRequests";
@@ -54,19 +62,11 @@ export function GameUpdateForm() {
 
     useEffect(() => {
         requestGame(gameSlug).then((response) => {
-            console.log(response.game)
             setCurrentValues(response.game);
-            setImageURL(`${API_ROOT}/${response.game.icon}`);
-            console.log(response.game.tags);
-            let _tags = []
-            response.game.tags.forEach((tagName) => {
-                _tags.push({
-                    value: tagName,
-                    label: tagName,
-                })
-            })
+            setImageURL(`${MEDIA_ROOT}/${response.game.icon}`);
+            let _tags = [];
+            response.game.tags.forEach((tagName) => _tags.push({value: tagName, label: tagName}));
             setTags(_tags);
-            console.log(tags);
             setLoading(false);
         });
     }, []);
@@ -87,12 +87,9 @@ export function GameUpdateForm() {
     }, [existingTags]);
 
     function handleTagReset() {
-        setTags([]);
-        options.forEach((option) => {
-            if (currentValues.tags.includes(option.value)) {
-                tags.push(option);
-            }
-        });
+        let _tags = [];
+        currentValues.tags.forEach((tagName) => _tags.push({value: tagName, label: tagName}));
+        setTags(_tags);
     }
 
     function handleReset() {
@@ -106,152 +103,99 @@ export function GameUpdateForm() {
         setName("");
         setDescription("");
         setPlayLink("");
-        setImageURL(`${API_ROOT}/${currentValues.icon}`);
+        setImageURL(`${MEDIA_ROOT}/${currentValues.icon}`);
         setImage(null);
         handleTagReset();
     }
 
     function handleDelete() {
-        if (currentValues.user !== getUser().id && !getUser().is_admin) {
+        if (currentValues.owner.id !== getUser().id && !getUser().is_admin) {
             setError("root", {
                 message: "You do not have permissions to edit this game"
             });
             return;
         }
-        //todo this shouldn't be done through a ViewSet
-        let url = `${API_ROOT}/api/games/${currentValues.id}/`;
-        axios
-            .delete(url)
-            .then((response) => {
-                navigate("/all-games/");
-            })
-            .catch(() => {
-                setError("root", {
-                    message: "Could not delete game"
-                });
-            });
+
+        deleteGame(currentValues.name)
+            .then(() => navigate("/all-games/"))
+            .catch(() => setError("root", {message: "Could not delete game"}));
     }
 
-    const handleImage = (event) => {
+    function handleImage(event) {
         const file = event.target.files[0];
         const acceptedFormats = IMAGE_EXTENSION;
         const fileExtension = file.name.split(".").pop().toLowerCase();
         if (!acceptedFormats.includes(fileExtension)) {
             setError("root", {message: "Invalid file type provided"});
             setImage(null);
-            setImageURL(null);
-            setImageURL(`${API_ROOT}/${currentValues.icon}`);
+            setImageURL(`${MEDIA_ROOT}/${currentValues.icon}`);
         } else {
             setImage(file);
             setImageURL(URL.createObjectURL(file));
         }
-    };
+    }
 
-    const handleEvalScript = (event) => {
+    function handleEvalScript(event) {
         handleFileUpload(event.target.files[0], EVAL_EXTENSION, setEvaluationScript, setError, 'evaluationScript');
-    };
+    }
 
-    const handleScores = (event) => {
+    function handleScores(event) {
         handleFileUpload(event.target.files[0], SCORE_EXTENSION, setScoreType, setError, 'scoreType');
-    };
+    }
 
-    const onUpdate = async (event) => {
-        if (currentValues.user !== getUser().id && !getUser().is_admin) {
+    async function onUpdate() {
+        if (currentValues.owner.name !== getUser().name && !getUser().is_admin) {
             setError("root", {
                 message: "You do not have permissions to edit this game"
             });
             return;
         }
 
-        let data = {};
-        if (name !== "") {
-            data.name = name;
-            data.slug = slugify(name);
-        }
-        if (description !== "") {
-            data.description = description;
-        }
-        if (playLink !== "") {
-            data['play_link'] = playLink;
-        }
-        if (image) {
-            data.icon = image;
-        }
-        if (evaluationScript) {
-            data["evaluation_script"] = evaluationScript;
-        }
-        if (scoreType) {
-            data.scoreType = scoreType;
-        }
-        data.gameTags = tags.map(t => t.value);
+        let requestTags = tags.map(t => t.value);
 
-        if (data === {}) {
-            setError("root", {
-                message: "No changes detected"
-            });
-            return;
-        }
-
-        await updateGames(gameSlug, data)
+        await updateGames(gameSlug, '', description, requestTags, playLink, image, evaluationScript, scoreType)
             .then((response) => {
                 console.log(response);
                 if (name !== "") {
-                    navigate(`/all-games/${slugify(name)}`);
+                    navigate("/all-games/");
                 } else {
-                    navigate(`/all-games/${currentValues.slug}`);
+                    navigate("/all-games/" + gameSlug);
                 }
             })
-            .catch(function (response) {
+            .catch((response) => {
+                setError("root", {message: "Something went wrong"});
                 console.log(response);
-                if (!response) {
-                    setError("root", {message: "No response from server"});
-                } else {
-                    if (response.response.data.slug) {
-                        setError("root", {message: "A game with that name already exists!"});
-                        return;
-                    } else if (response.response.data.tags) {
-                        setError("root", {message: "Tag update failed"});
-                        return;
-                    }
-                    if (response)
-                        if (response.response.data.includes("IntegrityError")) {
-                            setError("root", {message: "A game with that name already exists!"});
-                        } else {
-                            setError("root", {
-                                message: `Something went wrong... ${response.response.data}`
-                            });
-                        }
-                }
-            });
-    };
+            })
+    }
 
     if (!loading) {
         return (
             <form>
-                <h3> Name </h3>
-                <input
-                    {...register("name", {
-                        maxLength: {
-                            value: MAX_NAME_LENGTH_GAME,
-                            message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH_GAME})`
-                        }
-                    })}
-                    type={"text"}
-                    placeholder={"game name"}
-                    defaultValue={currentValues.name}
-                    onChange={(event) => setName(event.target.value)}
-                />
-                {errors.name && <div>{errors.name.message}</div>}
+                <h3> Editing <strong>{currentValues.name}</strong>...</h3>
+                {/* todo: Name Change doesn't work due to reason I don't understand */}
+                {/*<input*/}
+                {/*    {...register("name", {*/}
+                {/*        maxLength: {*/}
+                {/*            value: MAX_NAME_LENGTH_GAME,*/}
+                {/*            message: `Maximum game title length has been exceeded (${MAX_NAME_LENGTH_GAME})`*/}
+                {/*        }*/}
+                {/*    })}*/}
+                {/*    type={"text"}*/}
+                {/*    placeholder={"game name"}*/}
+                {/*    defaultValue={currentValues.name}*/}
+                {/*    onChange={(event) => setName(event.target.value)}*/}
+                {/*/>*/}
+                {/*{errors.name && <div>{errors.name.message}</div>}*/}
 
                 <h3>Description</h3>
-                <input
+                <textarea
                     {...register("description", {
                         maxLength: {
                             value: MAX_DESCRIPTION_LENGTH_GAME,
                             message: `Maximum description length has been exceeded (${MAX_DESCRIPTION_LENGTH_GAME})`
                         }
                     })}
-                    type={"text"}
+                    style={{height: '6em', lineHeight: '2em', paddingTop: '1em', paddingBottom: '1em', resize: 'vertical'}}
                     placeholder={"This game measures..."}
                     defaultValue={currentValues.description}
                     onChange={(event) => setDescription(event.target.value)}
@@ -263,8 +207,7 @@ export function GameUpdateForm() {
                     isClearable
                     isMulti
                     defaultValue={currentValues.tags}
-                    onChange={(newValue) => setTags(newValue)}
-                    // onCreateOption={handleCreate}
+                    onChange={setTags}
                     value={tags}
                     options={options}
                     components={makeAnimated()}

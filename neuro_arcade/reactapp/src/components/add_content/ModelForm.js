@@ -95,7 +95,7 @@ export function ModelForm() {
             {errors.name && <div>{errors.name.message}</div>}
 
             <h3>Description</h3>
-            <input
+            <textarea
                 {...register("description", {
                     required: "Description is required",
                     maxLength: {
@@ -103,7 +103,7 @@ export function ModelForm() {
                         message: `Maximum description length has been exceeded (${MAX_NAME_LENGTH_MODEL}`
                     }
                 })}
-                type={"text"}
+                style={{height: '6em', lineHeight: '2em', paddingTop: '1em', paddingBottom: '1em', resize: 'vertical'}}
                 placeholder={"This model was designed to..."}
                 onChange={(event) => setDescription(event.target.value)}
             />
