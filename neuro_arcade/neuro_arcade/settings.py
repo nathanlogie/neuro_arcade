@@ -132,8 +132,8 @@ WSGI_APPLICATION = 'neuro_arcade.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# Use sqlite for pipeline, postgresql for actual use
-if os.environ.get("CI"):
+# Use sqlite for pipeline and development, postgresql for actual use
+if os.environ.get("CI") or not os.environ.get("NEURO_ARCADE"):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
