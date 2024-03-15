@@ -37,6 +37,13 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
+    # static files for django admin panel
+    # need to serve files from inside the django library
+    # todo: This should ideally not be hardcoded
+    location /static/admin/ {
+        alias /usr/local/lib/python3.10/dist-packages/django/contrib/admin/static/admin/;
+    }
+
     listen 443 ssl; # managed by Certbot
     ssl_certificate /etc/letsencrypt/live/sh08.ccni-socs-tp3.xyz/fullchain.pem; # managed by Certbot
     ssl_certificate_key /etc/letsencrypt/live/sh08.ccni-socs-tp3.xyz/privkey.pem; # managed by Certbot
