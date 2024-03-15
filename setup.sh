@@ -52,5 +52,3 @@ cd ./evaluation
 sh docker_build.sh
 cd ../
 
-# start
-sh ./run_server.sh
