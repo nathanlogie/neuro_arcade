@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Install and initialise postgress
 
 # Install postgres

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Setup background process for postgres
 
 sudo systemctl start postgresql
