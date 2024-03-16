@@ -3,7 +3,8 @@ server {
 
     # serving the reactapp
     location / {
-        alias /home/SH08/SH08-main/neuro_arcade/reactapp/build/;
+        root /home/SH08/SH08-main/neuro_arcade/reactapp/build/;
+        try_files $uri $uri/ /index.html;
     }
 
     # proxy for the frontend server
@@ -17,7 +18,7 @@ server {
         #proxy_cache_bypass $http_upgrade;
     #}
 
-    location /api/ {  # API Server on Django 
+    location /api/ {  # API Server on Django
         proxy_pass http://localhost:8000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -26,7 +27,7 @@ server {
     }
 
     location /media/ {
-	    alias /home/SH08/SH08-main/neuro_arcade/media/;
+            alias /home/SH08/SH08-main/neuro_arcade/media/;
     }
 
     location /admin/ {  # Django's Admin Page
@@ -37,9 +38,14 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
+    # static for django admin panel
+    location /static/admin/ {
+            alias /usr/local/lib/python3.10/dist-packages/django/contrib/admin/sta>
+    }
+
     listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/sh08.ccni-socs-tp3.xyz/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/sh08.ccni-socs-tp3.xyz/privkey.pem; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/sh08.ccni-socs-tp3.xyz/fullchain.pem; # >
+    ssl_certificate_key /etc/letsencrypt/live/sh08.ccni-socs-tp3.xyz/privkey.pem; >
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
