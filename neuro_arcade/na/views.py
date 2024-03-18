@@ -302,13 +302,14 @@ def post_new_player(request: Request) -> Response:
         user=request.user
     )
 
-    # adding player tags to the new player
-    tags_to_add = []
-    for tag in player_tags:
-        # Note: this can create new tags
-        selected_tag = PlayerTag.objects.get_or_create(name=tag)[0]
-        tags_to_add.append(selected_tag)
-    player_obj.tags.set(tags_to_add)
+    if player_tags != '':
+        # adding player tags to the new player
+        tags_to_add = []
+        for tag in player_tags:
+            # Note: this can create new tags
+            selected_tag = PlayerTag.objects.get_or_create(name=tag)[0]
+            tags_to_add.append(selected_tag)
+        player_obj.tags.set(tags_to_add)
 
     # successful outcome
     return Response(status=201, data={
@@ -370,13 +371,14 @@ def post_new_game(request: Request) -> Response:
         score_type=score_types
     )
 
-    # adding game tags to the new game
-    tags_to_add = []
-    for tag in game_tags:
-        # Note: this can create new tags
-        selected_tag = GameTag.objects.get_or_create(name=tag)[0]
-        tags_to_add.append(selected_tag)
-    game_obj.tags.set(tags_to_add)
+    if game_tags != '':
+        # adding game tags to the new game
+        tags_to_add = []
+        for tag in game_tags:
+            # Note: this can create new tags
+            selected_tag = GameTag.objects.get_or_create(name=tag)[0]
+            tags_to_add.append(selected_tag)
+        game_obj.tags.set(tags_to_add)
 
     return Response(status=200, data={
         'msg': 'Game was successfully created!',
