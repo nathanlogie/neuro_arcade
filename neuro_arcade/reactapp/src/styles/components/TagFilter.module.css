@@ -16,11 +16,10 @@
         margin: 2em 1em;
         width: 15em;
         display: flex;
-        justify-content: center;
         align-items: flex-start;
         flex-wrap: wrap;
         overflow-y: auto;
-        height: 26em;
+        max-height: 26em;
     }
     & label {
         width: 100%;
