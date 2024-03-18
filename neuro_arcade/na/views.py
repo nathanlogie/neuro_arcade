@@ -801,14 +801,17 @@ def update_game(request: Request, game_name_slug: str) -> Response:
     serializer.save()
 
     # adding tags
-    if request.data.get('gameTags') is not None and request.data.get('gameTags') != '':
-        tags_to_add = []
-        game_obj.tags.set([])
-        for tag in request.data.get('gameTags').split(','):
-            # Note: this can create new tags
-            selected_tag = GameTag.objects.get_or_create(name=tag)[0]
-            tags_to_add.append(selected_tag)
-        game_obj.tags.set(tags_to_add)
+    if request.data.get('gameTags') is not None:
+        if request.data.get('gameTags') == '':
+            game_obj.tags.set([])
+        else:
+            tags_to_add = []
+            game_obj.tags.set([])
+            for tag in request.data.get('gameTags').split(','):
+                # Note: this can create new tags
+                selected_tag = GameTag.objects.get_or_create(name=tag)[0]
+                tags_to_add.append(selected_tag)
+            game_obj.tags.set(tags_to_add)
 
     return Response(status=200, data=serializer.data)
 
@@ -841,14 +844,17 @@ def update_player(request, player_name_slug) -> Response:
     serializer.save()
 
     # adding tags
-    if request.data.get('playerTags') is not None and request.data.get('playerTags') != '':
-        tags_to_add = []
-        player_obj.tags.set([])
-        for tag in request.data.get('playerTags').split(','):
-            # Note: this can create new tags
-            selected_tag = PlayerTag.objects.get_or_create(name=tag)[0]
-            tags_to_add.append(selected_tag)
-        player_obj.tags.set(tags_to_add)
+    if request.data.get('playerTags') is not None:
+        if request.data.get('playerTags') == '':
+            player_obj.tags.set([])
+        else:
+            tags_to_add = []
+            player_obj.tags.set([])
+            for tag in request.data.get('playerTags').split(','):
+                # Note: this can create new tags
+                selected_tag = PlayerTag.objects.get_or_create(name=tag)[0]
+                tags_to_add.append(selected_tag)
+            player_obj.tags.set(tags_to_add)
 
     return Response(status=200, data=serializer.data)
 
