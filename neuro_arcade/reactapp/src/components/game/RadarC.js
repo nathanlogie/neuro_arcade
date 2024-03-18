@@ -10,7 +10,7 @@ import styles from "../../styles/components/Table.module.css";
  */
 export function RadarC({inputData}) {
     if (!inputData || !inputData.rows || inputData.rows.length === 0) {
-        return null;
+        return <div style={{width: "38em", height: "30.75em", lineHeight: "30.75em"}}>no data</div>;
     }
 
     const numDataTypes = inputData.table_headers.length;
