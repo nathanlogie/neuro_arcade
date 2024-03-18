@@ -133,7 +133,7 @@ export function GameView() {
                         </div>
                     </div>
                 </div>
-                {isLoggedIn() && getUser().status === 'approved' || getUser().is_admin ? <Button name={"Upload Scores"} link={"upload-scores"} orientation={"right"} direction={"down"} /> : null}
+                {isLoggedIn() && (getUser().status === 'approved' || getUser().is_admin) ? <Button name={"Upload Scores"} link={"upload-scores"} orientation={"right"} direction={"down"} /> : null}
                 <div className={styles.MobileBannerBuffer} />
             </motion.div>
         );
