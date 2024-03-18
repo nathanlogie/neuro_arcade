@@ -291,7 +291,7 @@ def post_new_player(request: Request) -> Response:
         return Response(status=400, data='Invalid data; `playerName` must be provided!')
     if description is None:
         return Response(status=400, data='Invalid data; `description` must be provided!')
-    if player_tags is not None:
+    if player_tags is not None and player_tags != '':
         player_tags = player_tags.split(',')
 
     player_obj, _ = Player.objects.get_or_create(
@@ -352,7 +352,7 @@ def post_new_game(request: Request) -> Response:
         return Response(status=400, data='Invalid data; `evaluationScript` must be provided!')
     if score_types is None:
         return Response(status=400, data='Invalid data; `scoreTypes` must be provided!')
-    if game_tags is not None:
+    if game_tags is not None and game_tags != '':
         game_tags = game_tags.split(',')
 
     # validating the score_type
@@ -371,7 +371,7 @@ def post_new_game(request: Request) -> Response:
         score_type=score_types
     )
 
-    if game_tags != '':
+    if game_tags:
         # adding game tags to the new game
         tags_to_add = []
         for tag in game_tags:
@@ -801,7 +801,7 @@ def update_game(request: Request, game_name_slug: str) -> Response:
     serializer.save()
 
     # adding tags
-    if request.data.get('gameTags') is not None:
+    if request.data.get('gameTags') is not None and request.data.get('gameTags') != '':
         tags_to_add = []
         game_obj.tags.set([])
         for tag in request.data.get('gameTags').split(','):
@@ -841,7 +841,7 @@ def update_player(request, player_name_slug) -> Response:
     serializer.save()
 
     # adding tags
-    if request.data.get('playerTags') is not None:
+    if request.data.get('playerTags') is not None and request.data.get('playerTags') != '':
         tags_to_add = []
         player_obj.tags.set([])
         for tag in request.data.get('playerTags').split(','):

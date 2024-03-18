@@ -1018,7 +1018,7 @@ export async function updateGames(
     //     formData.append("name", gameName);
     if (description)
         formData.append("description", description);
-    if (gameTags)
+    if (gameTags && gameTags.length > 0)
         formData.append("gameTags", gameTags);
     if (playLink)
         formData.append("play_link", playLink);
@@ -1060,7 +1060,7 @@ export async function updatePlayer(playerSlug, name, description, tags, image) {
     //     formData.append("name", name);
     if (description)
         formData.append("description", description);
-    if (tags)
+    if (tags && tags.length > 0)
         formData.append("playerTags", tags);
     if (image)
         formData.append("icon", image);
