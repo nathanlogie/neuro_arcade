@@ -16,7 +16,7 @@ sudo sh setup.sh
 ```shell
 sh run_server.sh
 ```
-It is recommend you read the setup script and its comments before you run it, as additional actions might be required depending on your system. Note that ``setup.sh`` requires sudo privileges and might prompt you for your root password. Please keep in mind that the actual server should never be run with ``sudo``!
+It is recommended you read the setup script and its comments before you run it, as additional actions might be required depending on your system. Note that ``setup.sh`` requires sudo privileges and might prompt you for your root password. Please keep in mind that the actual server should never be run with ``sudo``!
 
 Some caveats: ``setup.sh`` assumes it is running on a linux system that uses ``apt-get`` as its package repository (such as Ubuntu). On other systems it is recommended you install the required packages manually.  
 

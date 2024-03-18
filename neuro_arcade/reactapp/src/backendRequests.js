@@ -587,7 +587,7 @@ export async function postGameScore(gameName, playerIdentification, scoreData) {
  * @throws {Error | UserNotAuthenticatedError} when the request is rejected or when the user is not logged in.
  */
 export async function postUnprocessedResults(content, game_slug, player_name) {
-    const url = API_ROOT + '/upload/unprocessed_result/';
+    const url = API_ROOT + '/upload/unprocessed-result/';
 
     if (!isLoggedIn())
         throw UserNotAuthenticatedError()
