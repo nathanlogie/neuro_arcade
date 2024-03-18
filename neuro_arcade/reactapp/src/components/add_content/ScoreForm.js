@@ -59,17 +59,21 @@ export function ScoreForm() {
     }
 
     function handleScores(e) {
-        const file = e.target.files[0];
+        const files = e.target.files;
+        console.log(files)
         const acceptedFormats = SCORE_EXTENSION;
-        const fileExtension = file.name.split(".").pop().toLowerCase();
-        if (!acceptedFormats.includes(fileExtension)) {
-            setError("root", {message: "Invalid file type provided"});
-        } else if (filenames.includes(file.name)) {
-            setError("root", {message: "Duplicate file"});
-        } else {
-            setError("root", null);
-            scores.push(file);
-            filenames.push(file.name);
+
+        for (const f of files){
+            const fileExtension = f.name.split(".").pop().toLowerCase();
+            if (!acceptedFormats.includes(fileExtension)) {
+                setError("root", {message: "Invalid file type provided"});
+            } else if (filenames.includes(f.name)) {
+                setError("root", {message: "Duplicate file"});
+            } else {
+                setError("root", null);
+                scores.push(f);
+                filenames.push(f.name);
+            }
         }
     }
 
@@ -147,6 +151,7 @@ export function ScoreForm() {
                         })}
                         type={"file"}
                         onChange={handleScores}
+                        multiple={"multiple"}
                     />
                 </motion.div>
                 {errors.score ? <div>{errors.score.message}</div> : null}
