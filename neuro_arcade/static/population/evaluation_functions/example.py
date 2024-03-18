@@ -15,10 +15,10 @@ Score type:
             "min": 0
         },
         {
-            "name": "Length 2"
+            "name": "Length 2",
             "type": "int",
             "min": 0
-        },
+        }
     ]
 }
 """
