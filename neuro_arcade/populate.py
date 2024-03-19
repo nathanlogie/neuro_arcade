@@ -645,7 +645,12 @@ def add_random_score(game: Game, player_list):
     for header in game.score_type['headers']:
         mini = header.get('min', 0)
         maxi = header.get('max', 1000)
-        score[header['name']] = random.randint(mini, maxi)
+        if header['type'] == 'int':
+            val = random.randint(mini, maxi)
+        else:
+            val = random.uniform(mini, maxi)
+
+        score[header['name']] = val
 
     game.score_set.create(
         player_id=player.id,
@@ -736,8 +741,9 @@ def add_game(data: Dict) -> Game:
     game.save()
 
     # adding some random scores to this game
-    for _ in range(random.randint(6, 12)):
-        add_random_score(game, Player.objects.all())
+    for _ in range(random.randint(10, 20)):
+        add_random_score(game, Player.objects.filter(is_ai=1))
+        add_random_score(game, Player.objects.filter(is_ai=0))
 
     return game
 
