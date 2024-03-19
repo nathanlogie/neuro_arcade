@@ -31,6 +31,7 @@ from neuro_arcade.settings import MEDIA_ROOT, STATIC_DIR
 from na.models import *
 
 USER_ICON_SUBDIR = 'user_icons'
+PLAYER_ICON_SUBDIR = 'bot_icons'
 
 # autopep8: on
 
@@ -71,50 +72,62 @@ users = [
     {
         'username': "giraffe10",
         'email': "giraffe10@yahoo.co.uk",
+        'icon': "giraffe.jpeg",
     },
     {
         'username': "duck44",
         'email': "duck44@sky.com",
+        'icon': "duck.jpeg",
     },
     {
         'username': "cheetah123",
         'email': "cheetah123@sky.com",
+        'icon': "cheetah.jpeg",
     },
     {
         'username': "koala777",
         'email': "777koala@sky.com",
+        'icon': "koala.jpeg",
     },
     {
         'username': "elephant456",
         'email': "elephant456@yahoo.co.uk",
+        'icon': "elephant.jpeg",
     },
     {
         'username': "tiger321",
         'email': "tiger321@yahoo.co.uk",
+        'icon': "tiger.jpeg",
     },
     {
         'username': "monkey555",
         'email': "monkey555@hotmail.com",
+        'icon': "monkey.jpeg",
     },
     {
         'username': "zebra777",
         'email': "zebra777@hotmail.com",
+        'icon': "zebra.jpeg",
     },
     {
         'username': "bear234",
         'email': "bear234@hotmail.com",
+        'icon': "bear.jpeg",
     },
     {
         'username': "rhino888",
         'email': "rhino888@gmail.com",
+        'icon': "rhino.jpeg",
     },
     {
         'username': "fox789",
         'email': "fox789@gmail.com",
+        'icon': "fox.jpeg",
     },
     {
         'username': "sloth111",
         'email': "sloth111@gmail.com",
+        'icon': "sloth.jpeg",
     },
 ]
 
@@ -596,6 +609,7 @@ players = [
         'user': 'zebra777',
         'description': 'AI player that is owned by zebra777',
         'tags': ["High Puzzle Performance", "High Reflex Performance"],
+        'icon': "zebra.png",
     },
     {
         'name': 'Monkey Bot',
@@ -603,6 +617,7 @@ players = [
         'user': 'monkey555',
         'description': 'AI player that is owned by monkey555',
         'tags': ["High Memory Performance", "High Timing Performance"],
+        'icon': "monkey.png",
     },
     {
         'name': 'Tiger Bot',
@@ -610,6 +625,7 @@ players = [
         'user': 'tiger321',
         'description': 'AI player that is owned by tiger321',
         'tags': ["High Problem Solving Performance", "High Strategic Performance"],
+        'icon': "tiger.png",
     },
     {
         'name': 'Elephant Bot',
@@ -617,6 +633,7 @@ players = [
         'user': 'elephant456',
         'description': 'AI player that is owned by elephant456',
         'tags': ["High Problem Pattern Recognition Performance", "High Judgement Performance"],
+        'icon': "elephant.png",
     },
 ]
 
@@ -751,6 +768,8 @@ def add_player(data: Dict):
 
         player.tags.add(tag)
 
+    if data["icon"]:
+        player.icon.name = add_media_from_static(PLAYER_ICON_SUBDIR, data['icon'])
     player.save()
 
     return player
