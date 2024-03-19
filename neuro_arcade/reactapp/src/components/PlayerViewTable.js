@@ -90,7 +90,7 @@ export function PlayerViewTable({inputData}) {
         return {
             id: index + 1,
             game: item.game_name,
-            ...Object.entries(item.value).reduce((acc, [key, value]) => ({...acc, [key.toLowerCase()]: value}), {})
+            ...Object.entries(item.value).reduce((acc, [key, value]) => ({...acc, [key.toLowerCase()]: parseFloat(value.toFixed(2))}), {})
         };
     });
 
