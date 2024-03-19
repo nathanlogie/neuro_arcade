@@ -689,7 +689,7 @@ def add_user(data: Dict) -> User:
     player.save()
 
     user.save()
-    userStatus = UserStatus.objects.get_or_create(user=user)
+    userStatus = UserStatus.objects.get_or_create(user=user, status="approved")
 
     return user
 
