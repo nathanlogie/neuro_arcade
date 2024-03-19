@@ -62,7 +62,7 @@ export function Table({inputData}) {
         player: row.player_name,
         ...row.score.reduce((acc, score, scoreIndex) => {
             const columnName = inputData.table_headers[scoreIndex].name.toLowerCase();
-            return {...acc, [columnName]: score};
+            return {...acc, [columnName]: parseFloat(score.toFixed(2))};
         }, {}),
         is_AI: row.is_ai
     }));
