@@ -373,14 +373,13 @@ games = [
         'icon': "music.png",
         'tags': ["Reflex Games", "Pattern Recognition Games", "Memory Games", "Timing Games"],
         'priority': 100,
-        'evaluation': 'ex_coins.py',
+        'evaluation': 'ex_time.py',
         'score_type': {
             'headers': [
                 {
-                    'name': 'Coins',
-                    'type': 'int',
-                    'min': 0,
-                    'max': 100,
+                    "name": "Time",
+                    "type": "float",
+                    "min": 0,
                 }
             ]
         },
@@ -392,14 +391,13 @@ games = [
         'icon': "bricks.png",
         'tags': ["Strategic Games", "Tracking Games"],
         'priority': 10,
-        'evaluation': 'ex_coins.py',
+        'evaluation': 'ex_time.py',
         'score_type': {
             'headers': [
                 {
-                    'name': 'Coins',
-                    'type': 'int',
-                    'min': 0,
-                    'max': 100,
+                    "name": "Time",
+                    "type": "float",
+                    "min": 0,
                 }
             ]
         },
@@ -411,14 +409,13 @@ games = [
         'icon': "minesweeper.png",
         'tags': ["Strategic Games", "Puzzle Games"],
         'priority': 10,
-        'evaluation': 'ex_coins.py',
+        'evaluation': 'ex_time.py',
         'score_type': {
             'headers': [
                 {
-                    'name': 'Coins',
-                    'type': 'int',
-                    'min': 0,
-                    'max': 100,
+                    "name": "Time",
+                    "type": "float",
+                    "min": 0,
                 }
             ]
         },
@@ -430,14 +427,13 @@ games = [
         'icon': "snake.png",
         'tags': ["Strategic Games", "Puzzle Games"],
         'priority': 85,
-        'evaluation': 'ex_coins.py',
+        'evaluation': 'ex_time.py',
         'score_type': {
             'headers': [
                 {
-                    'name': 'Coins',
-                    'type': 'int',
-                    'min': 0,
-                    'max': 100,
+                    "name": "Time",
+                    "type": "float",
+                    "min": 0,
                 }
             ]
         },
@@ -449,14 +445,13 @@ games = [
         'icon': "simon.png",
         'tags': ["Memory Games", "Pattern Recognition Games"],
         'priority': 95,
-        'evaluation': 'ex_coins.py',
+        'evaluation': 'ex_time.py',
         'score_type': {
             'headers': [
                 {
-                    'name': 'Coins',
-                    'type': 'int',
-                    'min': 0,
-                    'max': 100,
+                    "name": "Time",
+                    "type": "float",
+                    "min": 0,
                 }
             ]
         },
@@ -468,14 +463,14 @@ games = [
         'icon': "frog.png",
         'tags': ["Timing Games", "Reflex Games", "High AI Score"],
         'priority': 60,
-        'evaluation': 'ex_coins.py',
+        'evaluation': 'ex_attempts.py',
         'score_type': {
             'headers': [
                 {
-                    'name': 'Coins',
-                    'type': 'int',
-                    'min': 0,
-                    'max': 100,
+                    "name": "Attempts",
+                    "type": "int",
+                    "min": 0,
+                    "max": 10,
                 }
             ]
         },
@@ -487,14 +482,14 @@ games = [
         'icon': "spelling.png",
         'tags': ["Pattern Recognition Games", "Problem Solving Games"],
         'priority': 5,
-        'evaluation': 'ex_coins.py',
+        'evaluation': 'ex_attempts.py',
         'score_type': {
             'headers': [
                 {
-                    'name': 'Coins',
-                    'type': 'int',
-                    'min': 0,
-                    'max': 100,
+                    "name": "Attempts",
+                    "type": "int",
+                    "min": 0,
+                    "max": 10,
                 }
             ]
         },
@@ -506,14 +501,14 @@ games = [
         'icon': "connections.png",
         'tags': ["Pattern Recognition Games", "High Human Player Score"],
         'priority': 100,
-        'evaluation': 'ex_coins.py',
+        'evaluation': 'ex_attempts.py',
         'score_type': {
             'headers': [
                 {
-                    'name': 'Coins',
-                    'type': 'int',
-                    'min': 0,
-                    'max': 100,
+                    "name": "Attempts",
+                    "type": "int",
+                    "min": 0,
+                    "max": 10,
                 }
             ]
         },
@@ -525,14 +520,14 @@ games = [
         'icon': "words.png",
         'tags': ["Pattern Recognition Games", "Problem Solving Games"],
         'priority': 20,
-        'evaluation': 'ex_coins.py',
+        'evaluation': 'ex_attempts.py',
         'score_type': {
             'headers': [
                 {
-                    'name': 'Coins',
-                    'type': 'int',
-                    'min': 0,
-                    'max': 100,
+                    "name": "Attempts",
+                    "type": "int",
+                    "min": 0,
+                    "max": 10,
                 }
             ]
         },
@@ -544,14 +539,14 @@ games = [
         'icon': "wordsearch.png",
         'tags': ["Puzzle Games", "Problem Solving Games"],
         'priority': 10,
-        'evaluation': 'ex_coins.py',
+        'evaluation': 'ex_attempts.py',
         'score_type': {
             'headers': [
                 {
-                    'name': 'Coins',
-                    'type': 'int',
-                    'min': 0,
-                    'max': 100,
+                    "name": "Attempts",
+                    "type": "int",
+                    "min": 0,
+                    "max": 10,
                 }
             ]
         },
