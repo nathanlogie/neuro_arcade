@@ -52,7 +52,7 @@ export function AboutPage() {
                 </div>
                 { aboutData.publications.length > 0 ?
                     <div className={styles.Side}>
-                        <div className={styles.DataBlock}>
+                        {/*<div className={styles.DataBlock}>*/}
                             <div className={styles.Publications}>
                                 <h2>Publications</h2>
                                 <main>
@@ -69,7 +69,7 @@ export function AboutPage() {
                                     {publications}
                                 </main>
                             </div>
-                        </div>
+                        {/*</div>*/}
                     </div>
                   : null
                 }

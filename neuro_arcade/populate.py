@@ -12,6 +12,7 @@ Setup django
 """
 
 import os
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'neuro_arcade.settings')
 
 import django
@@ -26,11 +27,10 @@ import random
 from shutil import copy
 from typing import Dict
 
-from django.contrib.auth.models import Group, Permission
-from django.contrib.auth.models import Group, Permission
-
 from neuro_arcade.settings import MEDIA_ROOT, STATIC_DIR
 from na.models import *
+
+USER_ICON_SUBDIR = 'user_icons'
 
 # autopep8: on
 
@@ -41,26 +41,32 @@ users = [
     {
         'username': "kangaroo14",
         'email': "kangaroo14@gmail.com",
+        'icon': "kangaroo14.jpeg",
     },
     {
         'username': "hippo88",
         'email': "hippo88@gmail.com",
+        'icon': "hippo88.jpeg",
     },
     {
         'username': "lion589",
         'email': "lion589@hotmail.com",
+        'icon': "lion589.jpeg",
     },
     {
         'username': "panda22",
         'email': "22panda@hotmail.com",
+        'icon': "panda22.jpeg",
     },
     {
         'username': "penguin726",
         'email': "ilovepenguins@hotmail.com",
+        'icon': "penguin726.jpeg",
     },
     {
         'username': "parrot66",
         'email': "parrot66@outlook.com",
+        'icon': "parrot66.jpeg",
     },
     {
         'username': "giraffe10",
@@ -110,11 +116,6 @@ users = [
         'username': "sloth111",
         'email': "sloth111@gmail.com",
     },
-    {
-        'username': "Admin1",
-        'email': "admin1@email.com",
-        'groups': ["Administrator"],
-    },
 ]
 
 game_tags = [
@@ -163,7 +164,6 @@ game_tags = [
         'description': "Games where memorisation is required",
     },
 ]
-
 games = [
     {
         'name': "Varying Shapes",
@@ -171,7 +171,24 @@ games = [
         'owner': "kangaroo14",
         'icon': "example.png",
         'tags': ["Tracking Games", "High AI Score"],
-        'priority': 100
+        'priority': 100,
+        'evaluation': 'ex_coins_accuracy.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                },
+                {
+                    'name': 'Accuracy',
+                    'type': 'float',
+                    'min': 0,
+                    'max': 1,
+                }
+            ]
+        },
     },
     {
         'name': "Flying Objects",
@@ -179,7 +196,18 @@ games = [
         'owner': "hippo88",
         'icon': "example.png",
         'tags': ["Judgement Games", "High Human Player Score"],
-        'priority': 90
+        'priority': 90,
+        'evaluation': 'ex_coins.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                }
+            ]
+        },
     },
     {
         'name': "Object Crops",
@@ -187,7 +215,18 @@ games = [
         'owner': "kangaroo14",
         'icon': "example.png",
         'tags': ["Tracking Games", "High AI Score"],
-        'priority': 80
+        'priority': 80,
+        'evaluation': 'ex_coins.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                }
+            ]
+        },
     },
     {
         'name': "Block Drops",
@@ -195,7 +234,18 @@ games = [
         'owner': "giraffe10",
         'icon': "example.png",
         'tags': ["Pattern Recognition Games", "Strategic Games"],
-        'priority': 70
+        'priority': 70,
+        'evaluation': 'ex_coins.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                }
+            ]
+        },
     },
     {
         'name': "2048",
@@ -203,7 +253,18 @@ games = [
         'owner': "giraffe10",
         'icon': "example.png",
         'tags': ["Puzzle Games", "Strategic Games"],
-        'priority': 60
+        'priority': 60,
+        'evaluation': 'ex_coins.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                }
+            ]
+        },
     },
     {
         'name': "Space Creatures",
@@ -211,7 +272,18 @@ games = [
         'owner': "duck44",
         'icon': "example.png",
         'tags': ["Reflex Games", "Tracking Games"],
-        'priority': 50
+        'priority': 50,
+        'evaluation': 'ex_coins.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                }
+            ]
+        },
     },
     {
         'name': "Flying Bird",
@@ -219,7 +291,28 @@ games = [
         'owner': "duck44",
         'icon': "example.png",
         'tags': ["Reflex Games", "Timing Games"],
-        'priority': 100
+        'priority': 100,
+        'evaluation': 'ex_coins_points_accuracy.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                },
+                {
+                    'name': 'Points',
+                    'type': 'float',
+                },
+                {
+                    'name': 'Accuracy',
+                    'type': 'float',
+                    'min': 0,
+                    'max': 1,
+                },
+            ]
+        },
     },
     {
         'name': "Suduko",
@@ -227,7 +320,18 @@ games = [
         'owner': "penguin726",
         'icon': "example.png",
         'tags': ["High AI Score", "Puzzle Games", "Problem Solving Games"],
-        'priority': 30
+        'priority': 30,
+        'evaluation': 'ex_coins.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                }
+            ]
+        },
     },
     {
         'name': "Maze",
@@ -235,7 +339,18 @@ games = [
         'owner': "duck44",
         'icon': "example.png",
         'tags': ["High Human Score", "Puzzle Games", "Problem Solving Games"],
-        'priority': 20
+        'priority': 20,
+        'evaluation': 'ex_coins.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                }
+            ]
+        },
     },
     {
         'name': "Music Jump",
@@ -244,7 +359,18 @@ games = [
         'owner': "kangaroo14",
         'icon': "example.png",
         'tags': ["Reflex Games", "Pattern Recognition Games", "Memory Games", "Timing Games"],
-        'priority': 100
+        'priority': 100,
+        'evaluation': 'ex_coins.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                }
+            ]
+        },
     },
     {
         'name': "Brick Breaker",
@@ -252,7 +378,18 @@ games = [
         'owner': "hippo88",
         'icon': "example.png",
         'tags': ["Strategic Games", "Tracking Games"],
-        'priority': 10
+        'priority': 10,
+        'evaluation': 'ex_coins.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                }
+            ]
+        },
     },
     {
         'name': "Minesweeper",
@@ -260,7 +397,18 @@ games = [
         'owner': "panda22",
         'icon': "example.png",
         'tags': ["Strategic Games", "Puzzle Games"],
-        'priority': 10
+        'priority': 10,
+        'evaluation': 'ex_coins.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                }
+            ]
+        },
     },
     {
         'name': "Snake",
@@ -268,7 +416,18 @@ games = [
         'owner': "panda22",
         'icon': "example.png",
         'tags': ["Strategic Games", "Puzzle Games"],
-        'priority': 85
+        'priority': 85,
+        'evaluation': 'ex_coins.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                }
+            ]
+        },
     },
     {
         'name': "Simon Says",
@@ -276,7 +435,18 @@ games = [
         'owner': "giraffe10",
         'icon': "example.png",
         'tags': ["Memory Games", "Pattern Recognition Games"],
-        'priority': 95
+        'priority': 95,
+        'evaluation': 'ex_coins.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                }
+            ]
+        },
     },
     {
         'name': "Frog Road",
@@ -284,7 +454,18 @@ games = [
         'owner': "panda22",
         'icon': "example.png",
         'tags': ["Timing Games", "Reflex Games", "High AI Score"],
-        'priority': 60
+        'priority': 60,
+        'evaluation': 'ex_coins.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                }
+            ]
+        },
     },
     {
         'name': "Spelling",
@@ -292,7 +473,18 @@ games = [
         'owner': "lion589",
         'icon': "example.png",
         'tags': ["Pattern Recognition Games", "Problem Solving Games"],
-        'priority': 5
+        'priority': 5,
+        'evaluation': 'ex_coins.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                }
+            ]
+        },
     },
     {
         'name': "Connections",
@@ -300,7 +492,18 @@ games = [
         'owner': "duck44",
         'icon': "example.png",
         'tags': ["Pattern Recognition Games", "High Human Player Score"],
-        'priority': 100
+        'priority': 100,
+        'evaluation': 'ex_coins.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                }
+            ]
+        },
     },
     {
         'name': "Words",
@@ -309,7 +512,17 @@ games = [
         'icon': "example.png",
         'tags': ["Pattern Recognition Games", "Problem Solving Games"],
         'priority': 20,
-        'evaluation': "example.py"
+        'evaluation': 'ex_coins.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                }
+            ]
+        },
     },
     {
         'name': "Wordsearch",
@@ -317,7 +530,18 @@ games = [
         'owner': "lion589",
         'icon': "example.png",
         'tags': ["Puzzle Games", "Problem Solving Games"],
-        'priority': 10
+        'priority': 10,
+        'evaluation': 'ex_coins.py',
+        'score_type': {
+            'headers': [
+                {
+                    'name': 'Coins',
+                    'type': 'int',
+                    'min': 0,
+                    'max': 100,
+                }
+            ]
+        },
     },
 ]
 
@@ -367,34 +591,6 @@ player_tags = [
 
 players = [
     {
-        'name': 'Amanda Wilson',
-        'is_ai': False,
-        'user': 'sloth111',
-        'description': 'human player that is owned by sloth111',
-        'tags': ["High Puzzle Performance", "High Reflex Performance"],
-    },
-    {
-        'name': 'Leonard Garry',
-        'is_ai': False,
-        'user': 'fox789',
-        'description': 'human player that is owned by fox789',
-        'tags': ["High Memory Performance", "High Timing Performance"],
-    },
-    {
-        'name': 'Shelly Giles',
-        'is_ai': False,
-        'user': 'rhino888',
-        'description': 'human player that is owned by rhino888',
-        'tags': ["High Problem Solving Performance", "High Strategic Performance"],
-    },
-    {
-        'name': 'Billy Bennett',
-        'is_ai': False,
-        'user': 'bear234',
-        'description': 'human player that is owned by bear234',
-        'tags': ["High Problem Pattern Recognition Performance", "High Judgement Performance"],
-    },
-    {
         'name': 'Zebra Bot',
         'is_ai': True,
         'user': 'zebra777',
@@ -421,227 +617,6 @@ players = [
         'user': 'elephant456',
         'description': 'AI player that is owned by elephant456',
         'tags': ["High Problem Pattern Recognition Performance", "High Judgement Performance"],
-    },
-]
-
-score_types = {
-    'Varying Shapes': {
-        'headers': [
-            {
-                'name': 'Coins',
-                'type': 'int',
-                'min': 0,
-                'max': 100,
-            }
-        ]
-    },
-    'Flying Objects': {
-        'headers': [
-            {
-                'name': 'Points',
-                'type': 'int',
-                'min': 0,
-                'max': 20,
-            }
-        ]
-    },
-    'Object Crops': {
-        'headers': [
-            {
-                'name': 'Points',
-                'type': 'int',
-                'min': 0,
-                'max': 100,
-            }
-        ]
-    },
-    'Block Drops': {
-        'headers': [
-            {
-                'name': 'Points',
-                'type': 'int',
-                'min': 0,
-                'max': 10000,
-            }
-        ]
-    },
-    '2048': {
-        'headers': [
-            {
-                'name': 'Points',
-                'type': 'int',
-                'min': 0,
-                'max': 10000,
-            }
-        ]
-    },
-    'Space Creatures': {
-        'headers': [
-            {
-                'name': 'Points',
-                'type': 'int',
-                'min': 0,
-                'max': 10,
-            },
-            {
-                'name': 'Time',
-                'type': 'int',
-                'min': 0,
-                'max': 9999,
-            },
-            {
-                'name': 'Coins',
-                'type': 'int',
-                'min': 0,
-                'max': 10,
-            },
-        ]
-    },
-    'Flying Bird': {
-        'headers': [
-            {
-                "name": "Coins",
-                "type": "int",
-                "min": 0,
-                "max": 100
-            },
-            {
-                "name": "Points",
-                "type": "float",
-                "min": 0
-            }
-        ]
-    },
-    'Suduko': {
-        'headers': [
-            {
-                'name': 'Time',
-                'type': 'int',
-                'min': 0,
-                'max': 600,
-            }
-        ]
-    },
-    'Maze': {
-        'headers': [
-            {
-                'name': 'Time',
-                'type': 'int',
-                'min': 0,
-                'max': 600,
-            }
-        ]
-    },
-    'Music Jump': {
-        'headers': [
-            {
-                'name': 'Attempts',
-                'type': 'int',
-                'min': 0,
-                'max': 100,
-            }
-        ]
-    },
-    'Brick Breaker': {
-        'headers': [
-            {
-                'name': 'Time',
-                'type': 'int',
-                'min': 0,
-                'max': 600,
-            }
-        ]
-    },
-    'Minesweeper': {
-        'headers': [
-            {
-                'name': 'Time',
-                'type': 'int',
-                'min': 0,
-                'max': 600,
-            }
-        ]
-    },
-    'Snake': {
-        'headers': [
-            {
-                'name': 'Points',
-                'type': 'int',
-                'min': 0,
-                'max': 200,
-            }
-        ]
-    },
-    'Simon Says': {
-        'headers': [
-            {
-                'name': 'Points',
-                'type': 'int',
-                'min': 0,
-                'max': 25,
-            }
-        ]
-    },
-    'Frog Road': {
-        'headers': [
-            {
-                'name': 'Points',
-                'type': 'int',
-                'min': 0,
-                'max': 250,
-            }
-        ]
-    },
-    'Spelling': {
-        'headers': [
-            {
-                'name': 'Time',
-                'type': 'int',
-                'min': 0,
-                'max': 600,
-            }
-        ]
-    },
-    'Connections': {
-        'headers': [
-            {
-                'name': 'Time',
-                'type': 'int',
-                'min': 0,
-                'max': 600,
-            }
-        ]
-    },
-    'Words': {
-        'headers': [
-            {
-                "name": "Length 1",
-                "type": "int",
-                "min": 0
-            },
-            {
-                "name": "Length 2",
-                "type": "int",
-                "min": 0
-            }
-        ]
-    },
-    'Wordsearch': {
-        'headers': [
-            {
-                'name': 'Time',
-                'type': 'int',
-                'min': 0,
-                'max': 600,
-            }
-        ]
-    },
-}
-
-groups = [
-    {
-        'name': "Administrator",
-        'permissions': [],
     },
 ]
 
@@ -689,27 +664,17 @@ def add_user(data: Dict) -> User:
     user.email = data['email']
     user.set_password(user.username)
 
-    for group_name in data.get('groups', []):
-        group = Group.objects.get(name=group_name)
-        user.groups.add(group)
+    player = Player.objects.get_or_create(name=data['username'], is_ai=False,
+                                          user=user, description="Human player of " + data['username'])[0]
+    if 'icon' in data:
+        player.icon.name = add_media_from_static(USER_ICON_SUBDIR, data['icon'])
+
+    player.save()
 
     user.save()
     userStatus = UserStatus.objects.get_or_create(user=user)
 
     return user
-
-
-def add_group(data: Dict) -> Group:
-    """Create a django user group"""
-
-    group = Group.objects.get_or_create(name=data['name'])[0]
-    for perm_name in data['permissions']:
-        perm = Permission.objects.get(codename=perm_name)
-        group.permissions.add(perm)
-
-    group.save()
-
-    return group
 
 
 def add_game_tag(data: Dict) -> GameTag:
@@ -731,7 +696,7 @@ def add_game(data: Dict) -> Game:
             'owner': User.objects.get(username=data['owner']),
         },
     )[0]
-    game.score_type = score_types[data['name']]
+    game.score_type = data['score_type']
     game.description = data.get('description', "no description")
     game.priority = data['priority']
 
@@ -794,8 +759,6 @@ def add_player(data: Dict):
 def populate():
     """Populate the database with example data"""
 
-    for data in groups:
-        add_group(data)
     for data in users:
         data["status"] = "pending"
         add_user(data)
