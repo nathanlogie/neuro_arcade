@@ -1,4 +1,5 @@
 # NeuroArcade
+![image](https://github.com/user-attachments/assets/646e3f95-ebf6-464d-83b9-ec82c5299296)
 
 ## Description
 NeuroArcade is a web project developed by SH08 as part of the Professional Software Development course at the University of Glasgow. The website will allow for a centralised system to record the results of AI models in Games and for a direct comparison with other models. Models will be ranked comparatively (How similar to humans) and competitively (Performance compared to other models).
